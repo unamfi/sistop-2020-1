@@ -1,0 +1,70 @@
+#+title: Exposiciones frente al grupo
+#+author: Gunnar Wolf
+
+* Calendario de exposiciones
+La evaluación de las exposiciones sigue los criterios descritos en las
+[[http://gwolf.sistop.org/rubricas.pdf][rúbricas del curso]], particularmente el apartado 2 (Exposición frente
+al grupo).
+
+Los temas sugeridos para exposición están disponibles [[http://gwolf.sistop.org/][en la página Web
+del curso]]. Les reitero, sin embargo, que resulta más enriquecedor (y
+como lo refleja la rúbrica, obtiene una calificación un poco más alta)
+el que ustedes me planteen los temas de su interés.
+
+|-------+------+-------------+------------+------------|
+| Fecha | Tema | Integrantes | Documentos | Evaluación |
+|-------+------+-------------+------------+------------|
+|       |      |             |            |            |
+|-------+------+-------------+------------+------------|
+
+
+* Rúbrica de evaluación
+
+La evaluación de la exposición considera factores tanto de la calidad
+del material desarrollado como de la forma en que se presenta al
+grupo, como puede apreciarse en la siguiente tabla.
+
+Toda exposición se evaluará considerando como requisitos
+indispensables:
+
+- El material presentado debe ser desarrollado íntegramente por el o
+  los alumnos expositores (con citas textuales indicadas expresamente)
+  o será descalificado.
+- La elección de tema y fecha deben ser acordadas previamente con el
+  profesor, con no menos de dos semanas de anticipación.
+
+La exposición ante el grupo constará de dos calificaciones: Un 70%
+asignado por el profesor, y un 30% proveniente de evaluación grupal en
+que los compañeros presentes en la sesión evalúen cuantitativamente y
+de forma anónima.
+
+** Criterios de evaluación grupal
+
+- Originalidad
+- Nivel adecuado
+- Relevancia
+- Claridad en la presentación
+- Presencia
+
+Los compañeros tendrán también un campo para hacer comentarios en
+formato libre al ponente.
+
+** Criterios de evaluación por el docente
+
+|--------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+------|
+|                          | *Excelente* (100%)                                                                                                                                     | *Bueno* (75%)                                                                                                                              | *Suficiente* (50%)                                                                                                              | *Insuficiente* (0%)                                                                                                                                     | Peso |
+|--------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+------|
+| *Originalidad del tema*  | Tema novedoso propuesto a iniciativa del expositor                                                                                                     | Tema complejo elegido directamente de los temas ejemplo                                                                                    | Tema sencillo elegido directamente de los temas ejemplo                                                                         |                                                                                                                                                         |  10% |
+|--------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+------|
+| *Material desarrollado*  | Presentación acompañada del material desarrollado en formato de reporte/artículo, 4-8 páginas, enviado para comentarios con 3 o más días de antelación | Presentación acompañada del material desarrollado en prosa (distinta longitud), o enviado para comentarios con muy poca antelación         | Únicamente presentación, o no enviado para comentarios con anticipación                                                         | No se entregó material                                                                                                                                  |  20% |
+|--------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+------|
+| *Contenido*              | Cubre todos los puntos relevantes del tema abordado de forma clara y organizada lógicamente                                                            | Cubre mayormente el tema abordado manteniendo una organización lógica                                                                      | Logra una cobertura parcial del tema o su organización entorpece la comprensión                                                 | La información presentada está incompleta o carece de un hilo conducente                                                                                |  20% |
+|--------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+------|
+| *Fuentes bibliográficas* | Se refiere a publicaciones especializadas, artículos de investigación, estado del arte en el campo                                                     | Cita recursos formales de consulta                                                                                                         | Cita únicamente recursos no formales                                                                                            | No menciona referencias                                                                                                                                 |  10% |
+|--------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+------|
+| *Uso del tiempo*         | Exposición en 15-20 minutos, buen tiempo para preguntas y respuestas                                                                                   | Exposición en 10-15 o en 20-25 minutos                                                                                                     | Exposición menor a 15 minutos o mayor a 25 minutos (¡el profesor puede haberla interrumpido!)                                   |                                                                                                                                                         |  10% |
+|--------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+------|
+| *Dominio del tema*       | Amplio conocimiento del tema incluso más allá del material expuesto; presenta con claridad y responde las preguntas pertinentes de los compañeros      | Buen conocimiento del tema; presenta con fluidez, pero permanece claramente dentro del material presentado                                 | Conocimiento suficiente del tema para presentarlo siguiendo necesariamente el material; responde sólo las preguntas más simples | No demuestra haber comprendido la información, depende por completo de la lectura del material para presentar, y no puede responder preguntas sencillas |  15% |
+|--------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+------|
+| *Presencia*              | Buen contacto ocular mantenido a lo largo de la sesión, presentación fluida, voz clara y segura                                                        | Buen contacto ocular, tal vez frecuentemente interrumpido por referirse a las notas. Presentación ligeramente carente de fluidez/seguridad | Contacto ocular ocasional por mantenerse leyendo la presentación. Voz baja o insegura.                                          | Sin contacto ocular por leer prácticamente la totalidad del material. El ponente murmulla, se atora con la pronunciación de términos, cuesta seguirlo   |  15% |
+|--------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+------|
