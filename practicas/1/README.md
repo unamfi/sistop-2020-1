@@ -49,7 +49,7 @@ interfaz gráfica, queda para tí el convertir las instrucciones en
 
 Si tu nombre de usuario es `fulano`, tendrás que hacer algo como:
 
-    $ git clone https://github.com/fulano/sistop-2019-1.git
+    $ git clone https://github.com/fulano/sistop-2020-1.git
 
 Eso traerá una copia del repositorio a tu computadora, desde donde
 podrás trabajar.
@@ -61,7 +61,7 @@ repositorio a lo largo del cursado de la materia.
 Ahora, vamos a estar trabajando desde *dentro* de tu directorio
 *clonado*:
 
-    $ cd sistop-2019-1
+    $ cd sistop-20201-1
 
 ## 4. ¿Dónde vas a hacer las entregas?
 
