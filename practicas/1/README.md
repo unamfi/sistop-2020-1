@@ -61,7 +61,7 @@ repositorio a lo largo del cursado de la materia.
 Ahora, vamos a estar trabajando desde *dentro* de tu directorio
 *clonado*:
 
-    $ cd sistop-20201-1
+    $ cd sistop-2020-1
 
 ## 4. ¿Dónde vas a hacer las entregas?
 
