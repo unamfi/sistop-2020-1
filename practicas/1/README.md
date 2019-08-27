@@ -25,7 +25,7 @@ bifurcación, o una copia). Para esto, oprime el botón "Fork" en la
 parte superior derecha.
 
 Notarás que, en la parte superior izquierda, en vez de mostrar
-`gwolf/sistop-2020-1`, ahora lo mostrará con tu nombre de usuario.
+`unamfi/sistop-2020-1`, ahora lo mostrará con tu nombre de usuario.
 
 ## 3. *Clona* el repositorio
 
