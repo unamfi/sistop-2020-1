@@ -1,0 +1,103 @@
+#+title: Proyecto 3: (Micro) sistema de archivos
+
+#+BEGIN_SRC yaml
+Planteamiento: 2019.__.__
+Entrega: 2019.__.__
+#+END_SRC
+
+# ¡Las [[./calificaciones.org][calificaciones y comentarios]] ya están disponibles!
+
+** Descripción del proyecto
+
+Para la unidad de sistemas de archivos, creo que resulta natural que
+el proyecto sea implementar un sistema de archivos 😉 Pero, a
+diferencia de lo que algunos de ustedes recordarán por iteraciones de
+este curso, esta vez lo harán trabajando sobre una /especificación/ y
+sobre un /caso de referencia/.
+
+Ojo: Les planteo en este momento el proyecto. Déjenme pensar un poco
+en un par de refinamientos que tengo pendientes, incluyendo desglosar
+cómo será calificado. Toda esa información, sin falta, antes del
+/martes 14 de mayo/.
+
+** ¿Qué tengo que hacer?
+
+Lo que ustedes deben desarrollar es un programa que pueda obtener,
+crear y modificar información en el micro-sistema-de-archivos de la
+Facultad de Ingeniería, =FiUnamFS=.
+
+Siguiendo la especificación que aparece en la siguiente sección,
+tienen que desarrollar un programa que pueda:
+
+1. Listar los contenidos del directorio
+2. Copiar uno de los archivos de dentro del =FiUnamFS= hacia tu sistema
+3. Copiar un archivo de tu computadora hacia tu =FiUnamFS=
+4. Eliminar un archivo del =FiUnamFS=
+5. Desafortunadamente, este sistema de archivos /simplote/ es muy dado
+   a la fragmentación externa. Generen también un programa que
+   /desfragmente/ al =FiUnamFS=. Ojo, la defragmentación debe hacerse
+   /dentro del sistema de archivos/ (no creando un sistema de archivos
+   nuevo y copiando hacia éste).
+
+*** Sistema muestra
+
+Para verificar su implementación, pueden [[./fiunamfs.img][descargar un sistema de
+archivos ejemplo]] que cumple con el planteamiento. Verifiquen que
+pueden realizar todas las tareas que les solicité con éste. Indíquenme
+— ¿Cuáles son los contenidos del /disco/?
+
+** Especificación de =FiUnamFS=
+
+- El sistema de archivos cabe en un /diskette/ tradicional. Claro, no
+  espero que tengan acceso al hardware, por lo que lo simularemos
+  representándolo en un archivo de longitud fija, de 1440 Kilobytes
+- Por simplicidad, si bien en un sistema de archivos real
+  representaríamos las magnitudes en su representación binaria, vamos
+  a hacerlo con cadenas (esto es, en vez de representar al número
+  =1354= como los caracteres ASCII =0, 0, 5, 74= (porque 5*256=1280,
+  1280+74=1354), represéntala como la cadena =1354=. Si el campo en
+  que vas a ubicar este valor mide más del espacio necesario, agrega
+  ceros a la izquierda.
+- La superficie del disco se divide en sectores de 1024 bytes. Cada
+  cluster mide un sector.
+- El pseudodispositivo no maneja /tabla de particiones/, hospeda
+  directamente un /volumen/ en la totalidad de su espacio.
+- =FiUnamFS= maneja únicamente un /directorio plano/, no se consideran
+  subdirectorios.
+- El primer cluster (#0) del pseudodispositivo es el
+  /superbloque/. Este contiene información en los siguientes bytes:
+  - 0--8 :: Para identificación, el nombre del sistema de
+            archivos. ¡Debes validar nunca modificar un sistema de
+            archivos que no sea el correcto! Debe ser la cadena =FiUnamFS=.
+  - 10--13 :: Versión de la implementación. Estamos implementando la
+              versión =0.4=
+  - 20--35 :: Etiqueta del volumen
+  - 40--45 :: Tamaño del cluster en bytes
+  - 47--49 :: Número de clusters que mide el directorio
+  - 52--60 :: Número de clusters que mide la unidad completa
+  El resto del superbloque puede quedar vacío (o puedes
+  /sobrecargarlo/ con otros datos  — No es importante para la
+  implementación.
+- El sistema de archivos es de /asignación contigua/. Toda la
+  información de los archivos está en el directorio.
+- El directorio está ubicado en los clusters 1 a 4. Cada entrada del
+  directorio mide 64 bytes, consistentes en:
+  - 0--15 :: Nombre del archivo
+  - 16--24 :: Tamaño del archivo, en bytes
+  - 25--30 :: Cluster inicial
+  - 31--45 :: Hora y fecha de creación del archivo, especificando
+              AAAAMMDDHHMMSS (p.ej. '20190509182600')
+  - 46--60 :: Hora y fecha de última modificación del archivo,
+              especificando AAAAMMDDHHMMSS (p.ej. '20190509182600')
+  - 61--64 :: Espacio no utilizado (¿reservado para expansión futura?)
+- Las entradas no utilizadas del directorio se identifican porque
+  en el campo de nombre llevan la cadena =AQUI_NO_VA_NADA=.
+  - Los nombres de archivos pueden componerse de cualquier caracter
+    dentro del subconjunto ASCII de 7 bits (no acentuados, no Unicode,
+    sólo el viejo y aburrido US-ASCII)
+- Es un sistema de archivos plano — No maneja subdirectorios.
+- Después del directorio, todo el espacio restante es espacio de
+  datos.
+
+
+
