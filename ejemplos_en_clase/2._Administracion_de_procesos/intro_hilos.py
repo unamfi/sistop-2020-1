@@ -8,7 +8,7 @@ ultimo = 0
 def un_hilo(yo):
     global ultimo
     while True:
-        print('   ' * yo, ultimo, yo)
+        print('   ' * yo, '%d%d' % (ultimo, yo) )
         ultimo = yo
         sleep(randint(0,5))
 
