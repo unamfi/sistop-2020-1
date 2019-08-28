@@ -1,7 +1,7 @@
 # Práctica 2: Ramas paralelas de desarrollo
 
-    Práctica creada: 2019.__.__
-	Entrega en tiempo: 2019.__.__
+    Práctica creada: 2019.08.27
+	Entrega en tiempo: 2019.09.03
 
 Como era de esperarse, ya ha ocurrido con varios de ustedes se
 confundan al enviar un un *pull request*, incluyendo cambios de más o
