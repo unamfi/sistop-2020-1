@@ -1,0 +1,131 @@
+\documentclass{article}
+
+\usepackage[letterpaper,right=2cm,left=2cm,top=3cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+
+
+\pagestyle{fancy}
+
+\begin{document}
+
+\begin{titlepage}
+  \begin{center}
+    \Huge{Universidad Nacional Autónoma de México}
+    \vfill
+    \includegraphics[width=0.2\linewidth]{img/UNAM_INGENIERIA}
+    \vfill
+    \LARGE{\emph{Facultad de Ingeniería}}
+    \vfill
+    
+    \Large{Alumno: Romero Andrade Cristian\\Número de Cuenta: 313160282} 
+    
+    \vfill
+    
+    \huge{Proyecto 1\\MyComputer $20^o$ Fascículo}
+    \vfill
+    
+    
+    \large{Profesor: Gunnar Eyal Wolf Iszaevich}
+
+    \vfill
+
+    {\large \today\par}
+    \newpage
+  \end{center}
+\end{titlepage}
+
+% \section{Resumen}
+
+%\tableofcontents\newpage
+
+\section{Introducción}\label{sec:introduction}
+
+El presente consiste sobre una revista famosa de los antaños 80's\footnote{Abril 1984} \texttt{MyComputer},
+la versión de habla hispana de la revista \texttt{Home Computer Course} la cual contiene artículos sobre
+diversos temas, como son el hardware, software, programas informáticos, programación en \textit{BASIC} y el
+tema que siempre destaca en la revista, la revisión y análisis de un \textit{microordenador contemporáneo} donde
+exponen imágenes de sus partes internas de manera despiezada.
+
+En este fascículo toma en su sección \textit{Modelos de Hardware} la \textbf{Memotech MTX 512}, un computadora
+doméstica de arquitectura \textit{Z80} lanzada por \textit{Memotech} entre 1983 y 1984.
+
+\section{Modelo de Hardware\ -\ Memotech MTX 512}
+
+Toda revista \texttt{MyComputer} tiene esta sección donde hablan de una computadora, exhibiendo sus partes y
+componentes, la computadora de la que habla específicamente este fascículo es la \textbf{Memotech MTX 512},
+un computador de arquitectura \textit{Z80}. Empezaremos mostrando la lista de especificaciones que nos presenta
+la revista.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|c||c|}
+    \hline
+    Dimensiones&488x202x56 [mm]\\\hline
+    CPU&Z80\\\hline
+    Reloj&4 [MHz]\\\hline
+    Memoria&ROM: 24 K\\\cline{2-2}
+               &RAM 64 K + 16 K de vídeo\\\cline{2-2}
+               &Ampliable a 512 K\\\hline
+    Visualización de Vídeo&24 Lineas de 40caracteres\\\cline{2-2}
+               &16 colores de fondo y primer plano ajustables ind.\\\cline{2-2}
+               &127 caracteres predefinidos\\\cline{2-2}
+               &127 caracteres definido por el usuario\\\hline
+    Interfaces&Cassete\\\cline{2-2}
+               &T.V.\\\cline{2-2}
+               &Monitor Vídeo Compuesto\\\hline
+    Lenguaje suministrado& BASIC, NODDY, ensamblador\\\hline
+    Teclado&79 teclas\\\hline
+    Otros&Conector Hi-Fi\\\hline
+  \end{tabular}
+\end{table}
+
+Por las especificaciones dadas vemos que es una máquina completa con una apariencia que supera a varios
+ordenadores de la época, esta estaba diseñada para que sea fácil de desarmar y tener  acceso al interior.
+Se da una observación a que su placa base tiene un gran número de circuitos integrados pero sin la
+utilización de algunas \textit{ULA's}\footnote{Unidades Aritméticas Lógicas} de mayor capacidad en la época,
+haciendo que el mantenimiento correctivo del computador sea más eficiente, ya que las \textit{ULA's}
+dificultan la tarea anterior.
+
+\subsection{Estructura}
+
+El \textbf{Memotech MTX 512} contaba con un procesador de 8 bits que viene siendo el
+\textit{Z80A}\footnote{Usados también en MSX, TRS-80 y algunas gamas ZX*}, donde estos procesadores
+tuvieron una gran popularidad en la época de los 80s\ -\ 90s. La memoria principal llega a tener los $64 [KB]$
+expandible a $512 [KB]$. El teclado viene siendo el teclado que conocemos hoy en día descartando las teclas
+direccionales.
+
+En los periféricos se encontraba una entrada para \textit{Joysticks} que cumplieran con la norma
+\textit{Atari}, dando a entender que tal vez tenia la capacidad de correr videojuegos. También tenía interfaces
+en paralelo \textit{RS232} que era una entrada para el gran número de impresoras.
+Contenía otra interfaz para \textit{Cassetes} y otra para conectar un altavoz de alta fidelidad,
+dicha entrada \textit{HI-FI} no era común para los ordenadores de la época. Asimismo contenía un enchufe
+a monitor.
+
+Un elemento que hacía destacar esta máquina de otros ordenadores es la posesión de un \textit{ensamblador-
+  desensamblador}\label{asm} que, junto con el paquete de software \textit{Front Panel}, suministra la programación a
+código máquina, aunque venia con poca documentación.
+
+\subsection{Software}
+
+Esta computadora personal contenía lenguajes de programación previamente ya suministrados, siendo uno de
+ellos \textbf{NODDY}, conteniendo solo 11 órdenes siendo sencillo para usuarios con necesidad de manejar texto
+ya que este lenguaje no podía efectuar operaciones aritméticas. Igualmente contenía el famoso lenguaje
+\textit{BASIC} y la capacidad de utilizar el lenguaje \textit{Ensamblador}\label{asm}
+
+Podemos concluir que la \textbf{Memotech MTX 512} era una excelente máquina para usuarios tanto generales como
+programadores por la versatilidad de su arquitectura y su software, aunque la documentación no tenia la
+calidad que se requería, esta no segaba la capacidad de la \textbf{Memotech}. De diseño elegante y fácil
+aprendizaje, la computadora presente contenía lo necesario para el tiempo de trabajar y la hora de recreación.
+
+
+
+
+
+
+
+
+\end{document}
