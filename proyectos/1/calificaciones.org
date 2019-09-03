@@ -1,0 +1,99 @@
+#+title: Proyecto 1 • Calificaciones y comentarios
+#+options: toc:nil
+
+* Sergio Alvarez
+- Documento :: [[./AlvarezSergio/Proyecto1.pdf][Proyecto1.pdf]]
+- Comentarios ::
+- Calificación ::
+
+* Benjamín Anguiano Morales y Ángel Omar Martín Mancilla
+- Documento :: [[./proyectos/./AnguianoMoralesBenjamin-MartinMancillaAngelOmar/RESEÑA_SISTOP
+               .docx][RESEÑA_SISTOP .docx]]
+- Comentarios ::
+- Calificación ::
+
+* Emanuel Flores y Andrea Garcia
+- Documento :: [[./FloresEmanuel-GarciaAndrea/Proyecto1.pdf][Proyecto1.pdf]]
+- Comentarios ::
+- Calificación ::
+
+* Saúl Gabino
+- Documento :: [[./proyectos/1/GabinoSaul/Fasciculo_20.txt][Fasciculo_20.txt]]
+- Comentarios ::
+- Calificación ::
+
+* Andres Gonzalez y Karen Solis
+- Documento :: [[./GonzalezAndres-SolisKaren/Rese%C3%B1a-Fas%C3%ADculo1.md][Reseña-Fasículo1.md]]
+- Comentarios ::
+- Calificación ::
+
+* David Guerrero y Ricardo Juarez
+- Documento :: [[./GuerreroDavid-JuarezRicardo/Mi-Computer.docx][Mi-Computer.docx]]
+- Comentarios ::
+- Calificación ::
+
+* Alam Guillen y Rogelio García
+- Documento :: [[./GuillenLopez-Rogelio.pdf][GuillenLopez-Rogelio.pdf]]
+- Comentarios ::
+- Calificación ::
+
+* Luis López
+- Documento :: [[./LopezLuis/Rese%C3%B1a.pdf][Reseña.pdf]]
+- Comentarios ::
+- Calificación ::
+
+* Ulysses Lopez
+- Documento :: [[./LopezUlysses/L%C3%B3pez.L%C3%B3pez.Ulysses.pdf][López.López.Ulysses.pdf]]
+- Comentarios ::
+- Calificación ::
+
+* Cesar Lugo y Nestor Martinez
+- Documento :: [[./LugoCesar-MartinezNestor/Proyecto1_LugoC%C3%A9sar_Mart%C3%ADnezN%C3%A9stor.pdf][Proyecto1_LugoCésar_MartínezNéstor.pdf]]
+- Comentarios ::
+- Calificación ::
+
+* Franco Martinez y Dominguez Noriega
+- Documento :: [[./MartinezFranco-NoriegaDominguez/MartinezFranco-NoriegaDom%C3%ADnguez.pdf][MartinezFranco-NoriegaDomínguez.pdf]]
+- Comentarios ::
+- Calificación ::
+
+* Luis Mata
+- Documento :: [[./MataLuis/MataLuis.odt][MataLuis.odt]]
+- Comentarios ::
+- Calificación ::
+
+* Luis Moreno y Angel Ramirez
+- Documento :: [[./MorenoLuis-RamirezAngel/MICOMPUTER.docx][MICOMPUTER.docx]]
+- Comentarios ::
+- Calificación ::
+
+* Jorge Ramos y Brian Espinoza
+- Documento :: [[./RamosJorge-EspinozaBrian/proyecto_01_revisi%C3%B3n_de_micomputer.pdf][proyecto_01_revisión_de_micomputer.pdf]]
+- Comentarios ::
+- Calificación ::
+
+* Cristian Romero Andrade
+- Documentos :: [[./RomeroAndradeCristian/MiComputer20.pdf][MiComputer20.pdf]],  [[./RomeroAndradeCristian/MiComputer20.tex][MiComputer20.tex]]
+- Comentarios ::
+- Calificación ::
+
+* Ricardo Rosales
+- Documento :: [[./RosalesRicardo/proyecto1.pdf][proyecto1.pdf]],  [[./RosalesRicardo/proyecto1.tex][proyecto1.tex]]
+- Comentarios ::
+- Calificación ::
+
+* Erik Sanabria
+- Documento :: [[./SanabriaErik/SanabriaErik.pdf][SanabriaErik.pdf]]
+- Comentarios ::
+- Calificación ::
+
+* Max Serrano
+- Documento :: [[./SerranoMax/SerranoMax.txt][SerranoMax.txt]]
+- Comentarios ::
+- Calificación ::
+
+* Hector Sierra
+- Documento :: [[./SierraHector/SierraHector.txt][SierraHector.txt]]
+- Comentarios ::
+- Calificación ::
+
