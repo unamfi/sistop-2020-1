@@ -1,0 +1,16 @@
+Serrano Martínez Max Yael 
+Fasiculo 07
+#cuenta:311296428
+
+Micros en Medicina.
+
+El sistema Mickie que fue desarrollado para que los médicos tengan informacion
+sobre el estado fisico de los pacientes siendo un sistema inexperto, para 
+que ofrezca un diagnostico. Lo más interesante de este sistema es que  se podian
+responder con muy pocas palabras, por ejemplo, "si", "no", "no se" y " no comprendo"
+y el paciente no necesitaba de un teclado, si no  por medio de un mando que tenia
+4 teclas especiales para ello, siendo un sistema bastante lento, pensando en un paso
+para convrtir este sistema en un sistema experto, para que logre relacion los nuevos
+datos recopilados con el historial médico de el paciente.
+
+

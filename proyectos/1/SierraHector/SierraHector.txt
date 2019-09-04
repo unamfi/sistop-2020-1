@@ -1,0 +1,36 @@
+﻿Sierra González Héctor Alejandro 		@SIERRAREGIO		29/08/2019/JUEVES
+Fascículo 20
+
+-----Memotech MTX 512----
+El procesador z80 que fue mencionado y estudiado hasta cierto punto de su estructura en Estructuras
+ y programación de computadoras, fue descrito de forma que subestimaba las capacidades que tiene;Cargado con Basic y acompañado 
+con un video procesador, es un equipo que se asemejaba a la versión de entonces de Microsoft.
+
+Comparando la Memotech con otros ordenadores, representa un avance por el camino correcto, de la organización interna de las tarjetas y sus
+componentes, con una presentación externa agradable a la vista.
+
+Esta versión está pensada para dar un acceso fácil para un mantenimiento rápido, tomando en cuenta una política de sencillez en los componentes 
+frente al uso de ULA, por los inconvenientes que conlleva esta.
+
+Desde mi experiencia personal, nunca me he planteado leer un manual de ninguna de las pc’s o laptops que he tenido, con una leída de reojo, lo 
+que pareciera contener son cosas tan comunes relativamente obvias como el posicionamiento de los periféricos de entrada y de salida, y como 
+máximo las hojas de garantías, recomendaciones de uso etc..; Maquina abierta, como manejan ese término en el fascículo, sería difícil de aplicar
+en estos tiempos, tanto por el alto nivel de conceptualización como por temas legales, aun en equipos de sistema abierto tan comunes como lo son, equipos con Windows.
+
+En esta versión del sistema se implementaban funciones novedosas para la época como lo son la división de la pantalla en ventanas, para que el usuario 
+tuviera una opción de organizar varias tareas que tuviera que realizar, en este momento se implica sin especificar un atisbo de multiprocesamiento.
+
+-----Autor original-----
+
+En este apartado se plantea una pregunta muy interesante, y que da pie al análisis de como un programa puede corregir errores tanto en otros 
+programas como del usuario; La orden en Basic TRACE para visualizar en qué orden se están ejecutando las instrucciones de un programa, fue 
+pensado para que el usuario diese seguimiento a la ejecución del programa, pero esto mismo se puede y seguramente se implementó, en los procedimientos 
+que realiza un sistema operativo al momento de saltar de tarea en tarea.
+
+-----Informática y ficción------
+
+Muchas herramientas o invenciones actuales, se basan en las ideas, ilusiones o sueños que tuvo una persona que como un virus se fue esparciendo
+ su pensamiento hasta llegar a alguien más, que, inspirado por ello, pudo hacerlo realidad, tangible.
+
+He de recalcar, que me parece fascinante el leer algo que en el pasado era pura ficción y que hoy día ya existe o está en desarrollo, aunque ya
+ más de un siglo, dada la falta de límites para la imaginación humana aún hay cosas que no se han logrado del todo.
