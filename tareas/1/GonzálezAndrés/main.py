@@ -1,22 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from threading import Semaphore
+from threading import Semaphore, Condition
 from time import sleep
 from random import randint
 from cubiculo import Alumno, Profesor, Cubiculo
 from faker import Faker
 
-if __name__ == "__main__":
+def main():
     fake = Faker()
 
     num_alumnos = 5
     num_sillas = 2
-    num_preguntas_max = 6
 
     sem_entrada = Semaphore(num_sillas)
-
-    preguntas = ['preg'+str(i) for i in range(randint(1,num_preguntas_max))]
     
-    prof = Profesor(fake.name(), sem_entrada)
-    alumnos = [Alumno(fake.name(), preguntas, sem_entrada) for i in range(num_alumnos)]    
-    Cubiculo(sem_entrada, prof, alumnos).start()
+    prof = Profesor(fake.name(), sem_entrada) 
+    Cubiculo(sillas=num_sillas, nombre_profesor=fake.name(), num_alumnos=num_alumnos).start()
+
+if __name__ == "__main__":
+    main()
