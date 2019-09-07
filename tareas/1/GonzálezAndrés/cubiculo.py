@@ -2,84 +2,66 @@ from threading import Thread, Semaphore
 from random import randint
 from time import sleep
 from faker import Faker
+#from colorama import init, Fore, Back, Style
+
 class Alumno(Thread):
-    def __init__(self, nombre, preguntas=[], cubiculo=None):
-        self.nombre = nombre
+    #def __init__(self, name, cond_entrada, cond_pregunta, cond_resp, preguntas=[]):
+    def __init__(self, name, preguntas=[], sem_entrada = None):
+        Thread.__init__(self)
+        self.name = name
         self.preguntas = preguntas
-        self.cubiculo = cubiculo
-        self.ya_acabe = Semaphore(0)
+        self.sem_entrada = sem_entrada
+        #self.cond_entrada = cond_entrada
+        #self.cond_pregunta = cond_pregunta
+        #self.cond_resp = cond_resp
 
     def preguntar(self):
-        if not self.preguntas:
-            print("No hay mas preguntas por hacer")
-            return False
-        else:
-            #self.cubiculo.profesor.mut_pregunta.acquire()
-            pregunta = self.preguntas.pop()
-            sleep(0.5)
-            print(self.nombre + "pregunta : " + pregunta)
-            return pregunta
+        print("\t%s hace una pregunta" % self.name)
 
     def preguntar_todo(self):
-        self.cubiculo.sem_puerta.acquire()
-        print("--> Entró al salon: " + self.nombre + " con " + str(len(self.preguntas)) + " preguntas")
+        print("Hola, soy %s y tengo %i pregunta(s)" % (self.name, len(self.preguntas)))
+        self.sem_entrada.acquire()
+        print("<-- %s entró al cubículo" % self.name)
+        for pregunta in self.preguntas:
+            Thread(target=self.preguntar).start()
+        print("--> %s salió del cubículo" % self.name)
+        self.sem_entrada.release()
 
-        num_preg = len(self.preguntas)
-        for _ in range(num_preg):
-            #Thread(target=self.preguntar).start()
-            self.preguntar()
-        print("<-- Salió del salon: " + self.nombre)
-        self.cubiculo.sem_puerta.release()
-
-    def run(self):        
+    def run(self):    
         Thread(target=self.preguntar_todo).start()
         
 
 class Profesor(Thread):
-    def __init__(self, nombre):
-        self.nombre = nombre
+    def __init__(self, name='Fulano', sem_entrada=None):
+        Thread.__init__(self)
+        self.name = name
+        self.sem_entrada = sem_entrada
         self.mut_pregunta = Semaphore(1)
 
     def responder_duda(self):
-        respuesta = 1
-        print("Respondo a ")
-        return respuesta
-
-    def responer_dudas(self):
         pass
+
+    def responder_dudas(self):
+        print("Hola, soy %s e iniciaré a responder dudas..." % self.name)
 
     def run(self):
         Thread(target=self.responder_dudas).start()
 
 class Cubiculo(Thread):
-    def __init__(self, sillas, profesor, alumnos=[]):
-        self.sillas = sillas
+    def __init__(self, sem_entrada=None, profesor=Profesor('Fulano'), alumnos=[]):
+        Thread.__init__(self)
         self.profesor = profesor
-        self.lugares_disp = sillas
+        self.sem_entrada = sem_entrada
         self.alumnos = alumnos
-        self.sem_puerta = Semaphore(sillas)
-
-    def agregar_alumno(self, alumno):
-        self.alumnos.append(alumno)
-        return True
-
-    def sacar_alumno(self, alumno):
-        self.alumnos.remove(alumno)
-        return True
 
     def iniciar_operaciones(self):
-        print("Iniciando operación del salón")
-
-        fake = Faker()
-        preg_max = 6
-        for _ in range(10):
-            preguntas = ['preg'+str(i) for i in range(randint(1,preg_max))]       
-            a = Alumno(fake.name(), preguntas, self)
-            a.run()
+        print("Iniciando cubiculo...")
+        print("Iniciando al profesor...")
+        self.profesor.start()
+        print("Iniciando alumnos...")
+        for alumno in self.alumnos:
+            alumno.start()
             
     def run(self):
         t = Thread(target=self.iniciar_operaciones)
         t.run()
-
-class Monitor(Thread):
-    pass
