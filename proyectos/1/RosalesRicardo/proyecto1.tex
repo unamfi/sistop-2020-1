@@ -1,0 +1,82 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{blindtext}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{index}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{times}
+\UseRawInputEncoding
+
+\usepackage{color}
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+
+\usepackage{listings}
+
+% minimizar fragmentado de listados
+\lstnewenvironment{listing}[1][]
+{\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
+
+\lstdefinestyle{consola}
+{basicstyle=\scriptsize\bf\ttfamily,
+backgroundcolor=\color{gray75},
+}
+
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{center}
+		\line(1,0){300} \\
+		\huge{\bfseries Proyecto 1 }
+		\line(1,0){300} \\
+		Fasc\'iculo 23\\
+		\line(1,0){300} \\
+		Sistemas Operativos \\
+		{\normalsize ING. Gunnar Eyal Wolf Iszaevich }\\
+		{\normalsize Ricardo Rosales Romero }\\
+		{\small 29 Agosto 2019}
+	\end{center}
+\end{titlepage}
+
+\pagenumbering{roman}
+\setcounter{page}{2}
+\fancyhf{}
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{1pt}
+\fancyhead[LE]{\leftmark}
+\fancyhead[RO]{\nouppercase{\rightmark}}
+\fancyfoot[LE, RO]{\thepage}
+
+
+\section {Rese\~na : Fasc\'iculo 23}
+
+\subsection*{Siclair Ql}
+
+
+{\bf Introducci\'on}\\ \\
+El equipo de computo en el fasc\'iculo que me correspondi\'o fue el Sinclair QL (Quantum Leap) , la forma en la cual se redacto las caracter\'isticas de este equipo me parecieron incre\'ibles ya que el autor parec\'ia en un estado de gran felicidad al declarar que la memoria RAM podr\'ia tener un potencial de medio Megabyte , adem\'as de que el Sinclair  cuenta con un procesador de la familia de  Motorola 68000, esto me lleva a uno de los puntos m\'as interesantes de este texto con respecto a la materia , el Sinclair no existe ning\'un plan para la utilizaci\'on de discos flexibles , por consecuencia se requiere ir con fabricantes externos que los produzcan para usarlos, con la finalidad de poder ocupar el sistema operativo basado en Unix, ya que se menciona, es una de las principales razones por las cuales optar por un microprocesador Motorola. Indagando un poco en la historia y haciendo \'enfasis en la suposici\'on de que el equipo Sinclair ocupa un sistema operativo basado en Unix puedo pensar que sera un SunOs ya que el equipo cuanta con Software especializado para estaciones de trabajo estos son el Quill, Abacus , Archive y Easel. Entonces la finalidad de este ordenador ya no era para organizaciones dedicadas a la investigaci\'on , ni fines militares. Si no para que estuviera acompa\~nando a las personas y empresas en su vida diaria. En ese momento de la historia el mercado de computadoras personales estaba creciendo y con ella la cantidad de sistemas operativos. 
+\\ \\
+{\bf Tema que llama mi atenci\'on}
+\\ \\
+Sin duda el fasc\'iculo cuenta con una amplia gama de temas relacionados con la materia y es por eso que me doy la libertad de hablar del que m\'as me intereso haciendo un breve comentario de los dem\'as, todo eso para poder vincularlo y abarcar m\'as informaci\'on. El tema que me pareci\'o interesante fue \'el relacionado a criptograf\'ia que adem\'as de ense\~narnos t\'ecnicas cl\'asicas de descubrir claves, patrones , frecuencias. Nos muestra c\'odigo en BASIC de como esconder nuestro propio mensaje utilizando el cifrado cesar , esto viene acompa\~nado de un repaso a lo visto en el capitulo con respecto a fundamentos de programaci\'on en basic y partiendo de estos fundamentos se repaso como hacer c\'odigo ensamblador moviendo ,cargando ,sumando, etc. En las localidades de memoria que sean de nuestra conveniencia  o que no cuenten con informaci\'on relacionada al sistema operativo ya que esto podr\'ia causar problemas importantes al sistema. Teniendo en cuenta las localidades de memoria que se van a ocupar y dependiendo de la complejidad del programa se recomienda ocupar lenguaje ensamblador sobre basic , ya que este \'ultimo realiza los procesos de forma m\'as lenta y esto quiere decir mayor capacidad/ espacio requerido para procesar el c\'odigo que se escribi\'o. A pesar de esto los programas que se muestran en el fasc\'iculo son programados en basic. El empleo de cliclos en vez de saltos de direcci\'on de memor\'ia que se ocupan en ensamblador hacen del c\'odigo en basic sea m\'as sencillo de entender para los que no est\'an tan metidos en materia y ya que las computadoras que se usan son m\'as comerciales. 
+\\ \\
+Regresando a temas de criptograf\'ia se habla acerca de la segunda guerra mundial,  las famosas m\'aquinas enigma y el BOMBE que se ocup\'o para descifrar los mensajes de los alemanes , cabe resaltar que esto se abordo en las primeras clases de la materia y sin duda es un hecho que marco a la humanidad, atemorizo a los enemigos al ver la potencia de las m\'aquinas para procesar informaci\'on y revelar otra. Esto me lleva a la secci\'on de Guerra y Paz que es el primer tema abordado en el fasc\'iculo , los videojuegos son una de las principales razones por las cuales se empez\'o a desarrollar el computo en cualquier nivel , los juegos de estrategia y guerra que se utilizan puenden ser usados desde un comandante hasta un ni\~no que posea la computadora adecuada para el soporte del software, 
+\\ \\
+
+Finalmente y no por menos importante el apartado de reconocimiento de voz llamo mi atenci\'on por la profundidad de este, actualmente este concepto se ha popularizado con las nuevas tecnolog\'ias que han comercializado Google y Amazon. Estos son dispositivos capaces de almacenar software especializado para diferentes tipo de directivas que hace el usuario , parte de un home que es el que usualmente se ve al iniciar el proceso de encendido de una computadora. Del home se puede ir a cada una de sus programas alternos en t\'erminos vistos en clase las llamadas 'skills' de Alexa pertenecen al anillo 2 o M\'aquina Von Newman los cuales son programas de desarrollo especific\'o para cubrir cierta necesidad del usuario, hay de diferentes tipos y pueden abarcar diferentes \'areas del conocimiento humano.   \\                Por ejemplo :  
+\begin {itemize}
+	\item Educaci\'on
+	\item Estilo de vida
+	\item Noticias 
+	\item Entretenimiento
+\end{itemize}
+
+A pesar de ser una tecnolog\'ia aparentemente antigua se sigue ocupando hasta el d\'ia de hoy , partiendo de los conceptos sencillos de reconocer la frecuencia y convertirlas en lenguaje que la m\'aquina pueda reconocer desde un principio electr\'onico y el sistema operativo en cargado de ir comparando el lenguaje de ceros y unos con los respectivos correspondientes almacenados en los grandes servidores con los que cuenta Amazon o Google. 
+
+\end{document}
