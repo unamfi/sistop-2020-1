@@ -12,12 +12,19 @@ typedef struct
 	
 }Plato;
 
+typedef struct
+{
+	pthread_t id;
+	bool comiendo;
+	void* func;
+}Animal;
+
 size_t num_rand(size_t a, size_t b)
 {	
 	return ((rand() % (b - a + 1)) - 1);
 }
 
-void *comer()
+void *comer(pthread_t* m)
 {
 	const size_t tiempo = num_rand(2, 5);
 	
@@ -26,15 +33,17 @@ void *comer()
 	
 }
 
-void *gato_come(pthread_t *n)
+void *gato_come(pthread_t* n, void(*comer)(pthread_t* m))
 {
+	printf("\n\tGato comiendo en Thread ID: %d", *n); 
 	//empiezo a comer
 	//si veo raton me lo como primero
 	//si no hay ratones voy directo a comer
 }
 
-void *raton_come(pthread_t *n)
+void *raton_come(pthread_t* n, void(*comer)(pthread_t* m))
 {
+	printf("\n\tRaton comiendo en Thread ID: %d", *n); 
 	//si no hay gatos como
 	//si si huyo
 }
@@ -42,25 +51,25 @@ void *raton_come(pthread_t *n)
 int main(void)
 {
 	srand(time(0));
-	pthread_t id;
-	pthread_t id_2;
 	
 	size_t gatos = num_rand(10, 40);
 	size_t raton = num_rand(10, 40);
 	size_t platos = num_rand(10, 40); //necesitan mutex
 	
-	size_t *a_gatos = (size_t *)calloc(gatos, sizeof(gatos));
-	size_t *a_ratones = (size_t *)calloc(raton, sizeof(raton));
-	Plato *a_platos = (Plato *)calloc(platos, sizeof(Plato));
+	Animal *a_gatos = (Animal*)calloc(gatos, sizeof(Animal));
+	Animal *a_ratones = (Animal*)calloc(raton, sizeof(Animal));
+	Plato *a_platos = (Plato*)calloc(platos, sizeof(Plato));
+	
+	printf("\n\tCreando %zu gatos, %zu ratones y %zu platos.\n", gatos, raton, platos);
 	
 	for(size_t i = 0; i < gatos; ++i)
 	{
-		pthread_create(&id, NULL, gato_come, (void *)&id);
+		pthread_create(&(a_gatos[i].id), NULL, gato_come, (void*)&(a_gatos[i].id));
 	}
 	
 	for(size_t j = 0; j < raton; ++j)
 	{
-		pthread_create(&id_2, NULL, raton_come, (void *)&id);
+		pthread_create(&(a_ratones[j].id), NULL, raton_come, (void *)&(a_ratones[j].id));
 	}
 	
 	free(a_gatos);
@@ -68,6 +77,7 @@ int main(void)
 	free(a_platos);
 	
 	pthread_exit(NULL);
+	fflush(stdout);
 	printf("\n\n");
 	
 	return 0;
