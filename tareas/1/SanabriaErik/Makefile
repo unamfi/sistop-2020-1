@@ -4,11 +4,14 @@ CC = gcc
 SOURCE = source.c
 
 all:
-	${CC} ${SOURCE} -o exec -lpthread
+	${CC} ${SOURCE} -m64 -o exec -lpthread
 	
 debug:
-	${CC} ${SOURCE} -g -o exec -lpthread
+	${CC} ${SOURCE} -g -m64 -o exec -lpthread
     
 clean:
 	rm -v exec
 
+
+ass:
+	${CC} -S -masm=intel ${SOURCE}
