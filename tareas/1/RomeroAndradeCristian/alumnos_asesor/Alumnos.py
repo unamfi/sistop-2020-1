@@ -3,7 +3,9 @@
 from random import randint
 
 class Alumnos:
-    """Clase que define al alumno"""
+    """Clase que define al alumno
+    Limite de preguntas es 7
+    """
 
     __preguntas = ('¿El hombre es realmente libre?',
                    '¿Nuestro universo es real?',
@@ -11,6 +13,8 @@ class Alumnos:
                    '¿El número 42 es perfecto?',
                    'Para ir al espacio necesito una toalla',
                    '¿Qué es todo?')
+
+    __cont = 0
 
     def __init__(self, nombre: str):
         """Nace un alumno
@@ -21,6 +25,18 @@ class Alumnos:
         """
 
         self.nombre = nombre
+
+    def limite_preguntas(self):
+        """Se pregunta si ya hizo sus 7 preguntas
+
+        :rtype: bool"""
+
+        return self.__cont < 7
+
+    def __incremetar_contador(self):
+        """Incrementa el contador de peguntas"""
+
+        self.__cont += 1
 
     def __seleccionar_pregunta(self):
         """Selecciona una pregunta al azar
