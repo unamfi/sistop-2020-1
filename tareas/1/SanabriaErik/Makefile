@@ -10,7 +10,7 @@ debug:
 	${CC} ${SOURCE} -g -m64 -o exec -lpthread
     
 clean:
-	rm -v exec
+	rm -v exec core* source.s
 
 
 ass:
