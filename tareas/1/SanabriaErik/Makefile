@@ -1,7 +1,7 @@
 #https://opensource.com/article/18/8/what-how-makefile
 
 CC = gcc
-SOURCE = hello.c
+SOURCE = source.c
 
 all:
 	${CC} ${SOURCE} -o exec -lpthread
