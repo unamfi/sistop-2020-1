@@ -3,6 +3,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <stdbool.h>
 
 typedef struct
 {
@@ -50,7 +51,7 @@ int main(void)
 	
 	size_t *a_gatos = (size_t *)calloc(gatos, sizeof(gatos));
 	size_t *a_ratones = (size_t *)calloc(raton, sizeof(raton));
-	size_t *a_platos = (size_t *)calloc(Plato, sizeof(Plato));
+	Plato *a_platos = (Plato *)calloc(platos, sizeof(Plato));
 	
 	for(size_t i = 0; i < gatos; ++i)
 	{
