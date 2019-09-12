@@ -43,7 +43,9 @@ def santaClaus():
 				sleep(2)
 				elves.release()
 
-# Function that 
+# Function that makes elves work based on a barrier. 
+# The first thread will be able to enter the lines of code to determine if it has a problem. 
+# The other threads will go to sleep and wake up if then number of problems != 3. 
 def elvesWorking(id):
 	global problems
 	while True:
@@ -65,14 +67,15 @@ def elvesWorking(id):
 			elves.release()
 		sleep(2)
 	
-
+# Function that makes reindeer work based on a barrier.
+# Similar to the elvesWorking() function, this function will wake up Santa only if 9 reindeer have returned from vacation. 
+# Otherwise, they will wake up the next thread that is asleep and add the current reindeer to the array. 
 def reindeerLeaving(id):
 	global reindeer
 	while True:
 		reindeerReturning.acquire()
 		if randint(20,40) <= 30:
-			
-			print("\t\t\t\t\t\tReindeer #%d ready!" % id)	
+			print("\t\t\t\t\t\tReindeer ready!")	
 			with mutex:
 				reindeer += 1
 				if reindeer == 9:
