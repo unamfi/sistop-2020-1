@@ -34,4 +34,4 @@ Se debe ejecutar el script de python [main.py](./main.py) usando el comando
 
 Por defecto, el cubículo inicia con 3 sillas y se crean 10 alumnos, uno por segundo. Para cambiar esta configuración, podemos darle argumentos por medio de línea de comandos con la siguiente sintaxis.
 
-    $ python main.py -s <numero de sillas> -a <numero de alumnos>
+    $ python .\main.py -s <numero de sillas> -a <numero de alumnos>
