@@ -3,11 +3,12 @@
 import sys, getopt
 from faker import Faker
 from cubiculo import Alumno, Profesor, Cubiculo
+import os
 
 def main(argv):
     fake = Faker()
-    num_alumnos = 5
-    num_sillas = 2
+    num_alumnos = 10
+    num_sillas = 3
 
     try:
         opts, args = getopt.getopt(argv,"hs:a:",["n_sillas=","n_alumnos="])
@@ -23,6 +24,7 @@ def main(argv):
         elif opt in ("-a", "--n_alumnos"):
             num_alumnos = int(arg)
 
+    print("\n---- Proceso iniciado con PID %i ----\n" % os.getpid())
     Cubiculo(sillas=num_sillas, num_alumnos=num_alumnos, nombre_profesor=fake.name()).start()
 
 if __name__ == "__main__":

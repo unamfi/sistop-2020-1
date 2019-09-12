@@ -1,5 +1,6 @@
-from threading import Thread, Semaphore
-from random import randint
+from threading import Thread, Semaphore, enumerate
+#from threading import enumerate as t_enumerate
+from random import randint, random
 from time import sleep
 from faker import Faker
 #from colorama import init, Fore, Back, Style
@@ -20,12 +21,13 @@ class Alumno(Thread):
         self.preguntas_alumno = ['preg'+str(i) for i in range(randint(1,num_max_preguntas))]
 
     def preguntar(self):
+        sleep(random()*2.0)
         pregunta = self.preguntas_alumno.pop()
         with self.mutex_pregunta:
-            print("\t%s hace una pregunta: %s" % (self.name, pregunta))
-            sleep(0.1)
+            sleep(0.5)
+            print("\t\t%s hace una pregunta: %s" % (self.name, pregunta))
             self.preg_lista.release()
-            print("\t%s está esperando respuesta..." % (self.name))
+            print("\t\t%s: estoy esperando respuesta del profesor..." % (self.name))
             self.resp_lista.acquire()
 
     def preguntar_todo(self):
@@ -33,8 +35,8 @@ class Alumno(Thread):
         print("Hola, soy %s y quiero entrar al cubículo." % (self.name))
         with self.sem_entrada:
             self.alumnos_dentro.append(self.name)
-            print(("--> %s entró al cubículo y tiene %i preguntas. "+
-                    "\n    Somos %i personas en el cubiculo") % (self.name, num_preguntas ,len(self.alumnos_dentro)))
+            print(("---> %s entró al cubículo y tiene %i preguntas.\n"+
+                   "  ** Somos %i personas en el cubiculo **") % (self.name, num_preguntas ,len(self.alumnos_dentro)))
             t_list = []
             for _ in range(num_preguntas):
                 t = Thread(target=self.preguntar)
@@ -43,7 +45,10 @@ class Alumno(Thread):
             for t in t_list:
                 t.join()
             self.alumnos_dentro.remove(self.name)
-            print("<-- %s salió del cubículo. Quedan %i personas en el cubiculo" % (self.name, len(self.alumnos_dentro)))
+            print(("<--- %s ya no tiene más preguntas y salió del cubículo.\n"+
+                   "  ** Quedan %i personas en el cubiculo **") % (self.name, len(self.alumnos_dentro)))
+            #print("*--- Quedan %d hilos corriendo. --*" % (len(t_enumerate())-1))
+
 
     def run(self):    
         Thread(target=self.preguntar_todo).start()
@@ -62,9 +67,10 @@ class Profesor(Thread):
     def responder_duda(self):
         print("\tEl profesor está esperando una pregunta...")
         self.preg_lista.acquire()
-        print("\tEl profesor está respondiendo una pregunta...")
-        sleep(0.1)
+        #print("\t\tEl profesor está respondiendo una pregunta...")
+        #sleep(0.1)
         self.resp_lista.release()
+        print("\t\tEl profesor ha respondido a tu pregunta!")
 
 
     def responder_dudas(self):
@@ -110,6 +116,7 @@ class Cubiculo(Thread):
         self.profesor.start()
         print("Iniciando %i alumnos..." % self.num_alumnos)
         for alumno in self.alumnos:
+            sleep(1)
             alumno.start()
             
     def run(self):
