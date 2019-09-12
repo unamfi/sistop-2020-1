@@ -27,7 +27,7 @@ typedef struct
 
 size_t num_rand(size_t a, size_t b)
 {	
-	return ((rand() % (b - a + 1)) - 1);
+	return ((rand() % (b - a + 1)) + a);
 }
 
 bool *obtener_plato()
@@ -44,11 +44,11 @@ void *comer(pthread_t* m)
 	
 }
 
-void *gato_come(Argv* argv)
+void *gato_come(pthread_t* n)
 {
-	size_t num = argv->m_num;
-	pthread_t n = argv->m_id;
-	printf("\n\tGato %zu comiendo en Thread ID: %d", num, n);
+	size_t num = 5;//argv->m_num;
+	//pthread_t n = argv->m_id;
+	printf("\n\tGato %zu comiendo en Thread ID: %d", num, *n);
 }
 
 void *raton_come(Argv* argv)
@@ -77,7 +77,7 @@ int main(void)
 	{
 		Argv* argum = (Argv*)calloc(1, sizeof(Argv));
 		argum->m_num = i;
-		pthread_create(&(a_gatos[i].id), NULL, gato_come, (void*)&argum);
+		pthread_create(&a_gatos[i].id, NULL, gato_come, (void*)&(a_gatos[i].id));
 		argum->m_id = a_gatos[i].id;
 		free(argum);
 	}
@@ -91,11 +91,17 @@ int main(void)
 		free(argum_2);
 	}*/
 	
+
+	
+	for(size_t k = 1; k < gatos; ++k)
+	{
+		printf("\n\tUniendo hilo %zu: %d", k, a_gatos[k].id);
+		pthread_join(&a_gatos[k].id, NULL);
+	}
+	
 	free(a_gatos);
 	free(a_ratones);
 	free(a_platos);
-	
-	pthread_exit(NULL);
 	
 	printf("\n\n\n");
 	
