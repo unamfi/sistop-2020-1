@@ -1,0 +1,9 @@
+Alumno: Martínez Ostoa Néstor Iván 
+Materia: Sistemas Operativos 
+Semestre: 2020-1
+
+Problema: Santa Claus 
+Lenguaje: Python3
+Estrategia: Mutex para proteger variables compartidas. Señalización para el funcionamiento de Santa Claus. Y barreras para los elfos y los renos. 
+Refinamientos: el problema no sugiere refinamientos. 
+
