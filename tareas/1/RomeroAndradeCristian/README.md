@@ -33,7 +33,7 @@ Modelar la interacción durante este horario de modo que la espera(para todos) s
           sleep(0.15)
           if randint(0, 1) == 1:
 			  with TORNIQUETE:
-			  CUB.entra_salon(ALUMNOS[randint(0, len(ALUMNOS)-1)])
+				  CUB.entra_salon(ALUMNOS[randint(0, len(ALUMNOS)-1)])
    ```
    
    * Para evitar confundir al profesor, sólo un alumno puede presentar su duda
