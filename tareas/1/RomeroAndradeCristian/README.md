@@ -15,16 +15,16 @@ Modelar la interacción durante este horario de modo que la espera(para todos) s
    * Cuando no hay alumnos que atender, las sillas sirven como
    sofá, y el profesor se acuesta a dormir la siesta.
 	 
-	 ```python
-	 # En la clase Profesor
-	 @classmethod
-	 def dormir(cls, puede: bool):
-		
-		if puede:
-		print('Zzzzzzzzzzzzzzzzzzzz...')
-		sleep(1)
-		print('desperté')
-	 ```
+```python
+# En la clase Profesor
+@classmethod
+def dormir(cls, puede: bool):
+	
+	if puede:
+	print('Zzzzzzzzzzzzzzzzzzzz...')
+	sleep(1)
+	print('desperté')
+```
 	 
    * Los alumnos pueden tocar a su puerta en cualquier momento,pero no pueden entrar más de
    _x_ alumnos
@@ -46,7 +46,7 @@ Modelar la interacción durante este horario de modo que la espera(para todos) s
      * Los demás alumnos sentados deben esperar pacientemente su turno.
 	 
 	 * Cada alumno puede preguntar desde 1 y hasta _x_ (en este caso es hasta 7 o
-	 hasta que el alumno quiera irse) preguntas(permitiendo que los demás alumnos pregunten entre una yotra)
+	 hasta que el alumno quiera irse) preguntas(permitiendo que los demás alumnos pregunten entre una y otra)
    ```python
    # en main
    def inicia_clase():
@@ -63,5 +63,15 @@ Ubicarse donde se encuentra el archivo `main.py` y ejecutar:
 ```zsh
 > python main.py
 ```
+o bien:
 
-Para deterner usar la combinación de `C-c` en la terminal
+```zsh
+> make
+```
+
+Para detener usar la combinación de `C-c` en la terminal
+
+## Documentación
+
+Si se quiere ver una linda Documentación, se debe tener instalado doxygen
+y ejecutar en raíz del proyecto `make doc`
