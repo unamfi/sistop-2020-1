@@ -1,95 +1,104 @@
 # !/usr/bin/python
 # -*- coding: UTF-8 -*-
 
+from . import Profesor, Alumnos
+from time import sleep
+from random import randint
+from threading import Semaphore
+
+
 class Cubiculo:
     """Clase que define un cubiculo y sus interacciones"""
 
-    def __init__(self, sillas: int, profesor, capacidad_alumnos=3):
+    def __init__(self, profe: Profesor, capacidad_alumnos=3):
         """Contructor
 
-        :param silla: El números de sillas
-        :param profesor: El profesor del cubiculo
-        :param alumnos: Los alumnos que entran y salen
         :param capacidad_alumnos: La capacidad de alumnos del cubiculo
-        :type sillas: int
-        :type alumnos: list
         :type capacidad_alumnos: int
         """
 
-        self.sillas = sillas
-        self.profesor = profesor
+        self.profe = profe
         self.capacidad_alumnos = capacidad_alumnos
-        self.alumno_silla = dict()
-        for i in range(capacidad_alumnos):
-            self.alumno_silla[i] = ''
+        self.en_clase_alumno = list()
+        self.cola = list()
 
-    def ver_sillas_disponibles(self):
-        """Ve si hay lugares disponibles
+    def agrega_alumno_cola(self, alumno: Alumnos):
+        """Agrega uno más a la cola"""
 
-        :return: Retorna la silla que esta disponible, un False si no
+        self.cola.append(alumno)
+
+    def cola_vacia(self):
+        """Checa si NO hay gente afuera"""
+
+        return len(self.cola) == 0
+
+    def entra_salon(self, alumno: Alumnos):
+        """Entra al salón"""
+
+        sleep(0.333)
+        if self.checar_lleno():
+            self.cola.append(alumno)
+        else:
+            self.en_clase_alumno.append(alumno)
+        
+    def obtener_capacidad_actual(self):
+        """Devuelve la capacidad actual"""
+
+        return len(self.en_clase_alumno)
+
+    def checar_lleno(self):
+        """Checa si está lleno"""
+
+        return self.obtener_capacidad_actual() == self.capacidad_alumnos
+
+    def checar_alguien(self):
+        """Checa si está vació el salón"""
+
+        return len(self.en_clase_alumno) == 0
+
+    def sacar_alu(self, apu: int):
+        """Saca a un alumno del cubiculo
+        :param apu: en apuntador de la lista de asistencia
         """
 
-        lista_sillas = list(self.alumno_silla.values())
+        alumno = self.en_clase_alumno.pop(apu)
 
-        for index, value in enumerate(lista_sillas):
-            if value == '':
-                return index
+        print(' '*10, 'Sale:', alumno)
+        alumno.reiniciar_contador()
 
-        return False
+        if len(self.cola) > 0:
+            self.hacer_entra_alumno()
 
-    def sentarse(self, alumno, silla: int):
-        """Se sienta un alumno"""
+    def sillas_disponibles(self):
+        """Devuelve el numero de sillas disponibles"""
 
-        self.alumno_silla[silla] = alumno
+        return self.capacidad_alumnos - len(self.en_clase_alumno)
 
-    def entra_alumno(self, alumno):
-        """Entra un alumno
+    def hacer_entra_alumno(self):
+        """Hace entrar a un numero de alumnos de la cola"""
 
-        :param alumno: Entra un alumno a checar si esta libre un ligar
+        self.en_clase_alumno.append(self.cola.pop(0))
+
+    def responder(self):
+        """Responde pregunta si aún puede el alumno
+
+        :return: Devuelve False si el alumno ya no puede hacer preguntas,
+        una cadena si aun puede
         """
 
-        preguntar_lugar = self.ver_sillas_disponibles()
-        if preguntar_lugar:
-            self.sentarse(alumno, preguntar_lugar)
+        print('En espera:', [i.nombre for i in self.cola])
+        print('En el Cubiculo:', [i.nombre for i in self.en_clase_alumno])
+        if not self.checar_alguien():
+            apu_alu = randint(0, self.obtener_capacidad_actual()-1)
+            print('*'*7, 'apuntando a:', apu_alu, ':', self.en_clase_alumno[apu_alu])
+            response = self.en_clase_alumno[apu_alu].hacer_pregunta()
+            if response:
+                if randint(0, 15) == 3:
+                    self.sacar_alu(apu_alu)
+                return self.profe.responder(response)
+            self.sacar_alu(apu_alu)
+            return '...¿¿Más preguntas??'
 
-    def sale_alumno(self, lugar):
-        """Sale un alumno - Libera una silla
-
-        :param lugar: El lugar que el alumno va a liberar
-        """
-
-        self.alumno_silla[lugar] = ''
-
-    def tamanio_ocupado(self):
-        """Devuelve el tamaño ocupado"""
-
-        lista_sillas = list(self.alumno_silla.values())
-        cont = 0
-        for _, value in enumerate(lista_sillas):
-            if value != '':
-                cont += 1
-        return cont
-
-    def lista_sillas(self):
-        """Lista las sillas disponibles"""
-
-        lista_sillas = list(self.alumno_silla.values())
-        lista = list()
-
-        for index, value in enumerate(lista_sillas):
-            if value == '':
-                lista.append(index)
-        return lista
-
-    def cubiculo_vacio(self):
-        """Determina si el cubiculo esta vacio
-
-        :rtype: bool
-        """
-
-        lista_sillas = list(self.alumno_silla.values())
-
-        for _, value in enumerate(lista_sillas):
-            if value != '':
-                return False
-        return True
+        if self.checar_alguien() and self.cola_vacia():
+            return self.profe.dormir(True)
+        return 'Adelante!!!'

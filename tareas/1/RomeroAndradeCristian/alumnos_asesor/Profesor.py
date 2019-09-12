@@ -6,19 +6,19 @@ from time import sleep
 class Profesor:
     """Clase que define un profesor"""
 
-    __resp_3 = 'Si, es el sentido de la vida, el universo y todo lo demás'
-    __resp_4 = 'Es reconfortante saber que'
-    __resp_4 += 'tienes una toalla, porque si tienes una '
-    __resp_4 += 'toalla, es fácil que otros asuman que también'
-    __resp_4 += 'tienes cepillo de dientes, jabón, galletas, una'
-    __resp_4 += 'brújula, un traje espacial, etcétera, por lo que'
+    __resp_3 = '\tSi, es el sentido de la vida, el universo y todo lo demás'
+    __resp_4 = '\tEs reconfortante saber que\n\t'
+    __resp_4 += 'tienes una toalla, porque si tienes una\n\t'
+    __resp_4 += 'toalla, es fácil que otros asuman que también\n\t'
+    __resp_4 += 'tienes cepillo de dientes, jabón, galletas, una\n\t'
+    __resp_4 += 'brújula, un traje espacial, etcétera, por lo que\n\t'
     __resp_4 += 'estarán dispuestos a ayudarte en tu viaje.'
-    __respuestas = {'¿El hombre es realmente libre?': 'Si',
-                    '¿Nuestro universo es real?': 'Filosofia es alado',
-                    '¿Dios existe?': "El mio si, el tuyo no",
+    __respuestas = {'¿El hombre es realmente libre?': '\tSi',
+                    '¿Nuestro universo es real?': '\tFilosofia es alado',
+                    '¿Dios existe?': "\tEl mio si, el tuyo no",
                     '¿El número 42 es perfecto?': __resp_3,
-                    'Para necesito una toalla en la': __resp_4,
-                    '¿Qué es todo?': 'Salsa, Cilantro y cebolla'}
+                    'Para ir al espacio necesito una toalla': __resp_4,
+                    '¿Qué es todo?': '\tSalsa, Cilantro y cebolla'}
 
 
 
@@ -30,20 +30,22 @@ class Profesor:
         """
 
         self.nombre = nombre
-
-    def dormir(self, puede: bool):
+        
+    @classmethod
+    def dormir(cls, puede: bool):
         """El profesor vé si puede dormir,
         si es asi duerme
         """
 
         if puede:
             print('Zzzzzzzzzzzzzzzzzzzz...')
-            sleep(5)
+            sleep(1)
+            print('desperté')
 
     def responder(self, pregunta):
         """Responde la pregunta dada"""
 
-        return pregunta[pregunta]
+        return self.__respuestas[pregunta]
 
     
 

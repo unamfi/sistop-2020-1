@@ -16,7 +16,7 @@ class Alumnos:
 
     __cont = 0
 
-    def __init__(self, nombre: str):
+    def __init__(self, nombre: str, limite_preguntas=7):
         """Nace un alumno
 
         :param self: El apuntador
@@ -25,18 +25,23 @@ class Alumnos:
         """
 
         self.nombre = nombre
+        self.limite_preguntas = limite_preguntas
 
-    def limite_preguntas(self):
-        """Se pregunta si ya hizo sus 7 preguntas
+    def reiniciar_contador(self):
+        """Cuando se sale se vuelve otro con el mismo nombre
+        y pude hacer preguntas"""
 
-        :rtype: bool"""
-
-        return self.__cont < 7
-
+        self.__cont = 0
+        
     def __incremetar_contador(self):
         """Incrementa el contador de peguntas"""
 
         self.__cont += 1
+
+    def cont(self):
+        """obtiene el contador de sus preguntas"""
+
+        return self.__cont
 
     def __seleccionar_pregunta(self):
         """Selecciona una pregunta al azar
@@ -45,6 +50,10 @@ class Alumnos:
 
         return self.get_pregunta(randint(0, 5))
 
+    def validar_permiso_pregunta(self):
+
+        return self.cont() != self.limite_preguntas()
+    
     def get_pregunta(self, num: int):
         """Se obtiene una pregunta
         :param num: Un número del 0 al 5
@@ -59,7 +68,16 @@ class Alumnos:
         :rtype: string
         """
 
-        return self.__seleccionar_pregunta()
+        if self.cont() != self.limite_preguntas:
+            prg = self.__seleccionar_pregunta()
+            self.__incremetar_contador()
+            print(self.nombre, 'Pregunta:', prg ,'{}/{}'.
+                  format(self.cont(), self.limite_preguntas))
+            return prg
+        return False
+
+    def __str__(self):
+        return self.nombre
 
 
 if __name__ == '__main__':
