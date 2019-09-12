@@ -107,4 +107,4 @@ Ejemplos de pthreads que me han ayudado:
 
 - [Ej2](https://timmurphy.org/2010/05/04/pthreads-in-c-a-minimal-working-example/)
 
-- [Ej3](//https://www.cs.cmu.edu/afs/cs/academic/class/15492-f07/www/pthreads.html)
+- [Ej3](https://www.cs.cmu.edu/afs/cs/academic/class/15492-f07/www/pthreads.html)
