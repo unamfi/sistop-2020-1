@@ -1,5 +1,9 @@
 # Los Alumnos y el Asesor
 
+---
+Alumno: Romero Andrade Cristian
+---
+
 Un profesor de la facultad asesora a varios estudiantes, y estamos en su horario de atención.
 
 Modelar la interacción durante este horario de modo que la espera(para todos) sea tan corta como sea posible.
