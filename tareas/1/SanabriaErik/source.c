@@ -9,7 +9,6 @@ typedef struct
 {
 	pthread_t m_id;
 	size_t m_num;
-	//function pointer
 }Argv;
 
 typedef struct
@@ -75,11 +74,11 @@ int main(void)
 	for(size_t i = 0; i < gatos; ++i)
 	{
 		Argv* argum = (Argv*)calloc(1, sizeof(Argv));
-		printf("\n\ti: %zu", i);
 		argum->m_num = i;
-		pthread_create(&a_gatos[i].id, NULL, gato_come, (void*)&argum);
+		printf("\n\ti: %zu", i);
+		pthread_create(&a_gatos[i].id, NULL, gato_come, (void*)argum);
 		argum->m_id = a_gatos[i].id;
-		printf("\n\tGato: argum m_num: %zu m_id: %ld", argum->m_num, argum->m_id);
+		printf("\n\tGato: argum m_num: %zu m_id: %ld\tId real: %ld", argum->m_num, argum->m_id, a_gatos[i].id);
 		free(argum);
 	}
 	
@@ -88,14 +87,12 @@ int main(void)
 		printf("\n\tj: %zu", j);
 		Argv* argum_2 = (Argv*)calloc(1, sizeof(Argv));
 		argum_2->m_num = j;
-		pthread_create(&(a_ratones[j].id), NULL, raton_come, (void*)&argum_2);
+		pthread_create(&a_ratones[j].id, NULL, raton_come, (void*)argum_2);
 		argum_2->m_id = a_ratones[j].id;
-		printf("\n\tRaton: argum_2 m_num: %zu m_id: %ld", argum_2->m_num, argum_2->m_id);
+		printf("\n\tRaton: argum_2 m_num: %zu m_id: %ld", argum_2->m_num, a_ratones[j].id);
 		free(argum_2);
 	}
-	
 
-	
 	/*for(size_t k = 0; k < gatos; ++k)
 	{
 		printf("\n\tUniendo hilo %zu: %d", k, a_gatos[k].id);
@@ -106,7 +103,7 @@ int main(void)
 	free(a_ratones);
 	free(a_platos);
 	pthread_exit(NULL);
-	printf("\n\n\n");
+	printf("\n\n\tYa huyeron todos\n\n");
 	
 	return 0;
 }
