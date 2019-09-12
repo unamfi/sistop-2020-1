@@ -15,7 +15,6 @@ reindeerReturning = Semaphore(1)
 mutex = Semaphore(1)
 problems = 0
 problematicElves = []
-reindeer = 0
 reindeerReady = []
 
 # Function that wakes up Santa Claus once all reindeer have returned from vacations
@@ -27,19 +26,19 @@ def santaClaus():
 		santa.acquire()
 		print("\nSanta is now ready to work.")
 		with mutex:
-			if reindeer == 9:
-				print("\t\tNow leaving the North Pole to deliver gifts...")
-				reindeer = 0
+			if len(reindeerReady) == 9:
+				print("\t\tSanta leaving the North Pole to deliver gifts... (ignoring for now the elves with problems)")
+				del reindeerReady[:] 
 				sleep(randint(2,3))
-				print("Now entering the Nort Pole to sleep. Reindeer going on vacations\n")
+				print("\t\t Santa entering the North Pole and will solve the elves problems (if there are any). \n\t\t\tReindeer going on vacations\n")
 				sleep(2)
 				reindeerReturning.release()
 			elif problems == 3:
-				print("\t\t\tNow helping elves: %s" % problematicElves)
+				print("\t\tSanta helping elves: %s" % problematicElves)
 				problems = 0	
 				del problematicElves[0:3]
 				sleep(randint(2,3))
-				print("Finished helping elves.\n\tRemaining elves to help: %d\n" % len(problematicElves))
+				print("\t\tSatna finished helping elves.\n\t\tRemaining elves to help: %d\n" % len(problematicElves))
 				sleep(2)
 				elves.release()
 
@@ -49,10 +48,12 @@ def santaClaus():
 def elvesWorking(id):
 	global problems
 	while True:
-		elves.acquire()
+		# Only the first elf will be able to enter the following lines of code, all the other elves go to sleep.
+		elves.acquire() 
+		# --- 
 		print("Elf #%d working" % id)
 		sleep(1)
-		if randint(0,500) <= 250:	
+		if randint(0,500) <= 250:	# generate a random integer to determine if the current elf will have a problem. 
 			print("\t\t\t this elf has a problem.")
 			with mutex:
 				problematicElves.append(id)
@@ -74,16 +75,21 @@ def reindeerLeaving(id):
 	global reindeer
 	while True:
 		reindeerReturning.acquire()
-		if randint(20,40) <= 30:
-			print("\t\t\t\t\t\tReindeer ready!")	
+		if randint(20,40) <= 30: # generate a random integer to determine if certain raindeer will return from vacations.
 			with mutex:
-				reindeer += 1
-				if reindeer == 9:
-					print("\t\t\t\t\t\t\t\t9 reindeer ready to work!")
-					sleep(1.5)
-					santa.release()
-				else:
+				# We have to make this comparisson to make sure that all 9 reindeer are different. 
+				# Otherwise, it might me possible that Santa ends up with less than 9 reindeer thinkin that he has 9. 
+				if id in reindeerReady:
 					reindeerReturning.release()
+				else:
+					reindeerReady.append(id)
+					print("\t\t\t\t\t\tReindeer %d ready!" % id)	
+					if len(reindeerReady) == 9:
+						print("\t\t\t\t\t\t\t\t9 reindeer ready to work!")
+						sleep(1.5)
+						santa.release()
+					else:
+						reindeerReturning.release()
 		else: 
 			reindeerReturning.release()
 		sleep(3)
