@@ -3,14 +3,14 @@
 CC = gcc
 SOURCE = source.c
 
-all:
+release:
 	${CC} ${SOURCE} -m64 -o exec -lpthread
 	
-debug:
-	${CC} ${SOURCE} -g -m64 -o exec -lpthread
+all:
+	${CC} ${SOURCE} -g2 -O0 -m64 -o exec -lpthread
     
 clean:
-	rm -v exec core* source.s
+	rm -v exec core*
 
 
 ass:
