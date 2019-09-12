@@ -25,7 +25,8 @@ def main(argv):
             num_alumnos = int(arg)
 
     print("\n---- Proceso iniciado con PID %i ----\n" % os.getpid())
-    Cubiculo(sillas=num_sillas, num_alumnos=num_alumnos, nombre_profesor=fake.name()).start()
+
+    Cubiculo(sillas=num_sillas, num_alumnos=num_alumnos, nombre_profesor=fake.name()).iniciar_operaciones()
 
 if __name__ == "__main__":
     main(sys.argv[1:])

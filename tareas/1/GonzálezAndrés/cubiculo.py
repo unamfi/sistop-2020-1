@@ -81,7 +81,7 @@ class Profesor(Thread):
     def run(self):
         Thread(target=self.responder_dudas).start()
 
-class Cubiculo(Thread):
+class Cubiculo(object):
     def __init__(self, nombre_profesor='Fulano', sillas=2, num_alumnos=0):
         Thread.__init__(self)
         
@@ -119,8 +119,8 @@ class Cubiculo(Thread):
             sleep(1)
             alumno.start()
             
-    def run(self):
-        print("Iniciando cubículo con %i sillas..." % self.sillas)
-        t = Thread(target=self.iniciar_operaciones)
-        t.run()
+    # def run(self):
+    #     print("Iniciando cubículo con %i sillas..." % self.sillas)
+    #     t = Thread(target=self.iniciar_operaciones)
+    #     t.run()
         #exit(0)
