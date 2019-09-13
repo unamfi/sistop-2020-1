@@ -104,8 +104,34 @@ esperando a mí. Actualizo esto pronto.
 
 * Saúl Gabino
 - Documento :: [[./proyectos/1/GabinoSaul/Fasciculo_20.txt][Fasciculo_20.txt]]
-- Comentarios :: 
-- Calificación ::
+- Comentarios :: Curioso — ¡Yo supuse que les presentaban desde las
+                 materias de electrónica el "microprocesador" como
+                 sinónimo de CPU! (¿habrán confundido con el concepto
+                 de "microcontrolador"?)
+
+		 Buen resumen en líneas generales.
+- Calificación :: 10
+
+* Ángel Daniel García y Yak Balam Miranda
+- Documento :: [[./GarciaDaniel-MirandaBalam/proyecto1.pdf][proyecto1.pdf]]
+- Comentarios :: El ULA que te llama la atención es el precursor de
+                 los FPGAs, que hoy en día se usan ampliamente para
+                 prototipeado (pero rara vez para
+                 producción). Entiendo que en esa época era frecuente
+                 ver ULAs en computadoras en producción por el elevado
+                 costo de mandar hacer una tirada de chips dedicados,
+                 y la relativamente poca salida que incluso un modelo
+                 de computadora podía garantizarles.
+
+		 Escribiste tu texto bastante a las carreras, tienes
+                 una gran cantidad de dedazos y errores ortográficos ☹
+
+		 Me da gusto que revisaras varios artículos de la
+                 revista, pero no abordaste el que les pedí
+                 explícitamente, el que presenta a una de las
+                 computadoras de esa época.
+- Calificación :: 7
+
 
 * Andres Gonzalez y Karen Solis
 - Documento :: [[./GonzalezAndres-SolisKaren/Rese%C3%B1a-Fas%C3%ADculo1.md][Reseña-Fasículo1.md]]
@@ -255,7 +281,7 @@ esperando a mí. Actualizo esto pronto.
                  buenos símiles que hacen.
 - Calificación :: 10
 
-* Franco Martinez y Dominguez Noriega
+* Franco Martinez y Lisset Noriega
 - Documento :: [[./MartinezFranco-NoriegaDominguez/MartinezFranco-NoriegaDom%C3%ADnguez.pdf][MartinezFranco-NoriegaDomínguez.pdf]]
 - Comentarios :: Sus observaciones, muy correctas. Hago una pequeña
                  anotación — No había un sistema operativo en el
