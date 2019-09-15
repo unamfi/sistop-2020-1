@@ -13,3 +13,10 @@ limpiar
 ```zsh
 make clean
 ```
+
+## Uso
+
+```zsh
+> ./fibo.out 20
+6765
+```
