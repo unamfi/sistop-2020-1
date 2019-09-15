@@ -11,7 +11,7 @@ crear ejecutable
 limpiar 
 
 ```zsh
-make clean
+> make clean
 ```
 
 ## Uso
