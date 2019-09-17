@@ -2,8 +2,8 @@
 #+options: toc:nil num:nil
 
 #+BEGIN_SRC yaml
-Planteamiento: 2019.__.__
-Entrega: 2019.__.__
+Planteamiento: 2019.09.17
+Entrega: 2019.10.01
 #+END_SRC
 
 # Pueden [[./calificaciones.org][consultar los comentarios y calificaciones del proyecto aquí]].
