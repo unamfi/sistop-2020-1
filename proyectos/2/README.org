@@ -1,0 +1,106 @@
+#+title: Una situación cotidiana paralelizable
+#+options: toc:nil num:nil
+
+#+BEGIN_SRC yaml
+Planteamiento: 2019.__.__
+Entrega: 2019.__.__
+#+END_SRC
+
+# Pueden [[./calificaciones.org][consultar los comentarios y calificaciones del proyecto aquí]].
+
+Los eventos en el mundo en que vivimos se producen de forma
+masivamente paralela, por lo cual, la concurrencia puede presentarse
+en muchos casos, en ámbitos no necesariamente constreñidos al cómputo.
+
+Por tanto, es de esperarse que –si existieran las primitivas de
+sincronización en el mundo real– podríamos aplicar lo estudiado en
+esta unidad a muchas otras situaciones.
+
+Para este proyecto, les pido que:
+
+** Identificación y descripción del problema
+
+Identifiquen un proceso /de la vida real/ que presente características
+de concurrencia. Normalmente, cualquier proceso que presente /eventos
+realizados por múltiples actores/ (sea como sea que los queramos
+entender) será suficiente; les pido que elijan algo de suficiente
+complejidad como para que la resolución /brille/ un poco por su
+ingenio, por su elegancia 😉
+
+Describan /en un documento de texto/ la naturaleza del problema que
+eligieron:
+
+1. Describan la situación que modelarán
+2. ¿Dónde pueden verse las consecuencias nocivas de la concurrencia?
+   ¿Qué eventos pueden ocurrir que queramos controlar?
+3. ¿Hay eventos concurrentes para los cuales el ordenamiento relativo
+   /no/ resulta importante?
+
+** Implementación del modelo e introducción de mecanismos de sincronización
+
+Implementen, en el lenguaje de su preferencia, un programa que simule
+la situación descrita, _necesariamente_ empleando hilos o procesos
+simultáneos (es criterio /mínimo/ de aceptación del proyecto).
+
+Identifiquen qué puntos de sincronización son necesarios, y qué
+patrones requieren para ello. Naturalmente, impleméntenlos como parte
+del programa que entregarán. 😉
+
+Para este proyecto, importa no únicamente hacer un programa que
+resuelva la situación que ustedes planteen, sino que hacerlo de forma
+que hasta dé gusto ejecutarlo. Implementen una interfaz usuario
+profesional, que demuestre cómo la sincronización puede ser bella y
+elegante ☻
+
+** Documentación
+
+El programa debe ir acompañado de documentación que incluya, además
+de lo mencionado en la primera sección:
+
+- Descripción de los mecanismos de sincronización empleados
+- Lógica de operación
+  - Identificación del estado compartido (variables o estructuras
+    globales)
+  - Descripción algorítmica del avance de cada hilo/proceso
+  - Descripción de la interacción entre ellos (sea mediante los
+    mecanismos de sincronización o de alguna otra manera)
+- Descripción del entorno de desarrollo, suficiente para reproducir
+  una ejecución exitosa
+  - ¿Qué lenguaje emplean? ¿Qué versión?
+  - ¿Qué bibliotecas más allá de las estándar del lenguaje?
+  - ¿Bajo qué sistema operativo / distribución lo desarrollaron y/o
+    probaron?
+- Ejemplos o /pantallazos/ de una ejecución exitosa
+
+** Aspectos a evaluar
+
+Presento los siguientes aspectos en forma de /rúbrica/ para su
+calificación. Todas las secciones principales (Cumplimiento,
+Proyecto, Documentación, Entrega, Legibilidad) valen 20%, y éste
+valor se divide el número de aspectos que comprende (por ejemplo,
+cada renglón de /Proyecto/ vale ⅓ de su 20%, en tanto que el renglón
+único de /Requisitos/ vale el total del 20% correspondiente:
+
+|                        | *Excelente* (100%)                                                                                                                                                                                                                                                              | *Bueno* (75%)                                                                                                                                                             | *Suficiente* (50%)                                                                                                                                                | *Insuficiente* (0%)                                                                                                         |
+|------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------|
+| *Requisitos*           |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                           |                                                                                                                                                                   |                                                                                                                             |
+| Cumplimiento           | Los requisitos planteados se cubren al 100%, incluso exceden lo solicitado                                                                                                                                                                                                      | Los requisitos se cumplen satisfactoriamente                                                                                                                              | El proyecto se aproxima a los requisitos, sin llegar a cumplirlos por completo                                                                                    | El proyecto no tiene relación con lo solicitado                                                                             |
+|------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------|
+| *Proyecto*             |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                           |                                                                                                                                                                   |                                                                                                                             |
+| Creatividad            | El problema abordado es novedoso, o la manera en que aborda al planteamiento es notoriamente original                                                                                                                                                                           |                                                                                                                                                                           | El planteamiento de la situación resulta directo, su resolución se antoja casi obvia                                                                              |                                                                                                                             |
+| Complejidad            | Hace uso interesante / novedoso de las estructuras de sincronización, demostrando una comprensión claramente por encima del nivel abordado en clase                                                                                                                             | Presenta interacción compleja con patrones compuestos (barrera, apagador), o emplea mecanismos distintos de los mutex / semáforos                                         | Emplea únicamente los patrones más sencillos / directos presentados en clase (mutex/multiplex, señalización/rendezvous/cola)                                      |                                                                                                                             |
+| Interfaz usuario       | Logra una interfaz usuario atractiva, consistente y clara, con la explicación necesaria para un uso natural y fluido.                                                                                                                                                           | La interfaz usuario muestra trabajo, pero requiere consultar la documentación para comprender el uso.                                                                     | La interfaz usuario es suficiente para presentar y manipular los datos, pero su uso requiere comprender el código fuente.                                         | El programa es imposible de utilizar exitosamente sin conocer la implementación detalladamente                              |
+|------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------|
+| *Documentación*        |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                           |                                                                                                                                                                   |                                                                                                                             |
+| Documentación expresa  | La documentación incluye a los nombres de los participantes, describe suficientemente la situación a implementar, la lógica que implementa (cómo lo resuelve), y presenta ejemplos de invocación                                                                                | Falta uno de los elementos requeridos                                                                                                                                     | Faltan dos o más de los elementos requeridos                                                                                                                      | No se entregó documentación expresa                                                                                         |
+| Entorno y dependencias | Detalla el entorno para el cual el programa fue escrito, detallando según sea pertinente lenguaje (incluyendo la implementación y versión), principales módulos o bibliotecas que deben ser instalados (indicando sus respectivas versiones), y demás instrucciones pertinentes |                                                                                                                                                                           | Indica los principales componentes requeridos para la construcción y ejecución del proyecto, pero omite detalles importantes que dificultan su exitosa ejecución. |                                                                                                                             |
+| Comentarios            | El código está comentado donde hace falta, no repite informción obvia. Los comentarios ayudan a comprender la lógica, no detalles específicos de la implementación                                                                                                              | El código está comentado donde hace falta, pero los comentarios son excesivos. Además de la lógica general, mencionan aspectos demasiado obvios.                          | Hay algunos comentarios en el programa, pero falta mucho para que ayuden a su comprensión.                                                                        | No hay comentarios.                                                                                                         |
+|------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------|
+| *Entrega*              |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                           |                                                                                                                                                                   |                                                                                                                             |
+| Historia en Git        | El proyecto consta de un mínimo de cinco commits, con información suficientemente descriptiva para comprender el proceso de desarrollo                                                                                                                                          | Consta de un mínimo de cinco /commits/ que presentan el avance sobre del tiempo, pero no presentan un título/comentario suficiente para entender el proceso de desarrollo | La entrega consta de varios /commits/, pero no ilustran un proceso de desarrollo, sólo agregan /pedazos/ completos                                                | La entrega consta de un sólo /commit/, no permite entender el proceso de desarrollo del proyecto                            |
+| Directorio de proyecto | El trabajo entregado consta exclusivamente del código fuente y la documentación, en una estructura acorde para su construcción/compilación, evaluación y uso directo; en caso de requerirlo, un =.gitignore= mantiene limpio el directorio al compilar.                         | Sólo el código fuente y la documentación forman parte de los /commits/, pero construir / ejecutar el código /ensucia/ al repositorio (¿debería manejar =.gitignore=?)     | El trabajo entregado incluye archivos innecesarios (como archivos objeto ya compilados o subdirectorios generados por el entorno de desarrollo empleado)          | No entregó usando Git                                                                                                       |
+| Código válido          | Al ejecutar las instrucciones documentadas, el código puede ejecutarse exitosamente al primer intento.                                                                                                                                                                          | Las instrucciones que forman parte de la documentación tienen que adecuarse para poder ejecutar el código, o hay errores menores que corregir para que funcione.          | No está documentado cómo ejecutar el código, o hay errores mayores que corregir para poder ejecutarlo.                                                            | Resultó imposible probar la ejecución.                                                                                      |
+|------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------|
+| *Legibilidad*          |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                           |                                                                                                                                                                   |                                                                                                                             |
+| Estructura             | El código está bien organizado y emplea un estilo de indentación de forma consistente.                                                                                                                                                                                          | El código está mayormente indentado; hay inconsistencias menores.                                                                                                         | Falta claridad en los bloques por no emplear indentación o hacerlo de forma absolutamente inconsistente.                                                          |                                                                                                                             |
+| Nomenclatura           | Los nombres de los símbolos (variables, funciones, métodos, clases) son claros y acorde a su función; los principales elementos están documentados expresamente.                                                                                                                | Los nombres de los símbolos mencionados son claros y acorde a su función, aunque no estén documentados.                                                                   | Los nombres de los símbolos no son claros, pero su uso y significado forma parte de la documentación.                                                             | Cuesta trabajo seguir la lógica; los símbolos empleados no tienen nombres significativos, y su función no está documentada. |
