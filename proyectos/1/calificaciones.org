@@ -48,8 +48,7 @@ esperando a mí. Actualizo esto pronto.
 - Calificación :: 10
 
 * Benjamín Anguiano Morales y Ángel Omar Martín Mancilla
-- Documento :: [[./proyectos/./AnguianoMoralesBenjamin-MartinMancillaAngelOmar/RESEÑA_SISTOP
-               .docx][RESEÑA_SISTOP .docx]]
+- Documento :: [[./AnguianoMoralesBenjamin-MartinMancillaAngelOmar/RESEÑA_SISTOP .docx][RESEÑA_SISTOP.docx]]
 - Comentarios :: Me gusta la manera en que presentan la reseña,
                  separando los datos de la relación con la clase.
 
