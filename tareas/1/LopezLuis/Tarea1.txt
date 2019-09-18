@@ -1,0 +1,111 @@
+Nombre: Lopez Cruz Luis Enrique
+
+Problema a resolver
+EL problema que decidi implementar fue el del rio y los desarrolladores y los hackers, decidí implementarlo por su aparente facilidad, ya que de acuerdo a mi analisis, ya que al principio le vi un poco de parecido al resuelto en la clase.
+
+El Lenguaje en el que decidi implementar fue el de java
+Escogi llava solo por que es el lenguaje que diria que mejor manejo, pensaba en profundizar en la programacion orientada a objetos pero sinceramente no recuerdo varios conceptos para poder realizarlo adecuadamente, en cuanto a los hilos en java, ya habia tenido un acercamiento en otras clases pero nunca trate de implementar algo como la tarea, algo que me gustaria mencionar seria que empece creando varias clases, una para la balsa,una para crear una persona y otras que heredaran de esta para crear un usuario de linux o un de windows, pero conclui que no era del todo necesario hacer esto y solo me complicaria la existencia.
+
+Nota. Para correr el programa solo hay que compilar la clase y ya solo usar el comando java con el programa
+
+La estrategia de Sincronizacion
+
+Al principio no sabia cual estrategia era la adecudada pero al estar leyendo los requerimientos del problema estaba implicito en el problema, ya que la balsa no avanzara hasta que haya 4 personas, 2 y 2, 4 y 0 , 0 y 4, para esto cada persona se veria como un hilo, entonces hasta aqui es claro que se usara barrera, despues usaria mutex para operaciones atomicas.
+
+El programa no funciona correctamente, acontinuacion comentare mi programa y mi analisis que tuve de manera breve, lo hago aqui ya que considero que es mas comodo.
+
+
+
+Codigo
+
+
+import java.util.LinkedList;                             
+import java.util.concurrent.*;
+public class New extends Thread{			//Aqui lo que hago es crear una clase no representa nada en especial, extiende la clase Thread para poder usar hilos		
+	static Semaphore Mutex= new Semaphore(1);	//un semaforo para que un hilo solo pueda accedera a una seccion critica en las que pudieran haber problemas
+	static Semaphore Sleep= new Semaphore(0);	//un semaforo que hara dormir al ser adquirido 
+	static CyclicBarrier barrera = new CyclicBarrier(4); //esta barrera la visualizo directamente como la balsa cuando se cumpla es que ya avanzo, cambie la clase balsa que iba a construir por esta 									barrera
+	boolean band=false;	//Esta es una bandera, la cree para ver si las personas no se acomodaban a la primera, si no lo hacian tenia que esperar a otra	persona 	
+	static int Hackers = 0; //Variables que cuentan las personas que llegan 
+	static int Serfs = 0;	
+	static int Cuenta=0;
+	 String queEs=""; //un string para saber que es cada persona 
+	 public New(String queEs) {	//constructor de los objetos persona
+		 this.queEs=queEs;
+	 }
+	public void run() { //lo que hara cada hilo
+		 try {
+			 
+			if(queEs.equals("Hacker")) { //Si es un hacker se incrementa la variable 
+				Mutex.acquire();	//un mutex para que sola una variable modifique a la vez 
+				Hackers++;
+				Mutex.release();
+		
+			}else {
+					Mutex.acquire();
+					Serfs++;
+					Mutex.release();
+				
+				}
+				
+			System.out.println(" y Soy "+queEs);			 //esto es para ver que es cada hilo
+			System.out.println(Hackers);		//imprime el contador de cada variable 
+			System.out.println(Serfs);
+			if((Hackers==3 && Serfs==1) ||(Serfs==3 && Hackers==1)) { // si la condicion no se cumple para avanzar en la balsa se duerme el hilo para esperar la ejecucion de uno que si cumpla
+				System.out.println("Espera tu turno");//mensajes para ubicarme
+			//	System.out.println("Dormido");
+				Sleep.acquire(); //se duerme si no cumple
+			//	System.out.println("Despierto");
+				band=true;
+			}else {
+			barrera.await(); // si no se presenta la condicion de arriba entonces no hay problema 
+			//System.out.println("Barrera abierta");//espera a que 4 hilos esten listos
+			System.out.println("Avanzamos");
+			}
+			
+			if(band==false) {// restamos los hilos que se fueron al contador para realizar posteriormente otra iteracion de barrera
+			if(queEs.equals("Hacker")) {
+				Hackers--;
+			}else if(queEs.equals("Serfs")) {
+				Serfs--;
+			}
+			
+			}
+			if(band==true) {// si hay cambios  entonces se despierta al hilo, teoricamente aqui ya abria otro balsa esperando ya que los otros hilos ya se fueron mientras este dormia otro ya 												cumplia la condicion
+				Sleep.release();// se despierta el que estaba dormido
+				if(queEs.equals("Hacker")) {//y ahora se descuenta del contador 
+					Hackers--;
+				}else if(queEs.equals("Serfs")) {		
+					Serfs--;
+				}
+			//	System.out.println("Otra barrera abierta");
+				barrera.await();// se agrega a la barrera, esta esta aqui por que no se puede adquirir en la otra declaracion de arriba
+				System.out.println("Avanzamos");
+			}
+			Sleep.release();// si hay alguno dormido ya se despierta
+			Mutex.acquire();// se vuelve a poner en falso por que teoricamente ya se resolvio el problema
+			band=false;
+			Mutex.release();
+		   } catch (Exception e) {
+		      
+		   }		 
+	}
+	public static void main(String[]args) throws InterruptedException{
+		LinkedList<String> clase2 = new LinkedList<String>();		//El creador de hilos(Personas)
+		LinkedList<Thread> espera = new LinkedList<Thread>();
+		clase2.add("Hacker");
+		clase2.add("Serfs");
+		while(true) {
+		
+		 int numero = Man.generaNumeroAleatorio(0, 1) ;
+		String clase=clase2.get(numero);
+		Thread hilo = new New(clase);
+		espera.add(hilo);
+		hilo.start();
+		System.out.println("Soy el hilo "+hilo.getName());
+		TimeUnit.SECONDS.sleep(1);
+		}
+	}
+	
+}
+
