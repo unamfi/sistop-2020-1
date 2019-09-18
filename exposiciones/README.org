@@ -19,6 +19,7 @@ el que ustedes me planteen los temas de su interés.
 | 2019.09.19 | TAILS                                              | Leonel Macario                 |            |            |
 | 2019.09.24 | SPECTRE y Meltdown                                 | Andrea García y Emanuel Flores |            |            |
 | 2019.09.26 | Programación asíncrona en Web                      | Ricardo Rosales                |            |            |
+| 2019.10.03 | Sistemas basados en grid                           | Luis Enrique López Cruz        |            |            |
 | 2019.10.10 | Paginación de cinco niveles                        | Eric Sanabria                  |            |            |
 | 2019.11.12 | Desduplicación                                     | Julio César Lugo García        |            |            |
 |------------+----------------------------------------------------+--------------------------------+------------+------------|
