@@ -1,0 +1,388 @@
+#+title: Revisión de la tarea 1
+#+options toc:nil num:nil
+
+* Criterios de calificación
+
+- Documentación :: 2 puntos
+- Programa funcional :: 2 puntos
+- Aplicación de los principios vistos en clase :: 6 puntos
+
+* Revisión
+
+** Sergio Alvarez
+- Problema elegido :: De gatos y ratones
+- Documentación :: [[./AlvarezSergio/tarea1Readme.txt][tarea1Readme.txt]]
+- Código :: [[./AlvarezSergio/tarea1.py][tarea1.py]]
+- Lenguaje :: Python
+- Comentarios ::
+  - ¡Muy bien documentado! Documentar críticamente lo que /no/
+    lograste implementar es una gran señal de honestidad 😉
+  - Las que eliges implementar son correctas; el uso de un apagador
+    implementa al /acuerdo de caballeros/. ¡Ojo! En el planteamiento
+    de mi problema en ningún lugar te obliga a que puedan entrar gatos
+    y ratones al mismo tiempo — Sólo te obliga a que los unos se coman
+    a los otros /si se presenta la necesidad/.
+    - Faltaría sin embargo, aunque fuera a forma de formalismo, que el
+      gato busque e /intente comer/ a un ratón, aún a sabiendas de que
+      no va a encontrar ninguno (tu función =gato()= no implementa esa
+      lógica).
+  - Pensando que tal vez los gatos no se comían a los ratones por lo
+    rápido que era el proceso en =comer()= (sólo
+    =platos[temp].acquire()=, =print()= y =platos[temp].release()=),
+    le agregué una demora:
+    #+begin_src diff
+      @@ -1,5 +1,6 @@
+       import threading
+       from random import randrange
+      +from time import sleep
+ 
+       l = 3
+       k = 5
+      @@ -46,6 +47,8 @@ def comer(tipo, id):
+	   temp = randrange(m)
+	   platos[temp].acquire()
+	   print("Soy ",tipo," numero ",id," como de plato ",temp)
+      +    sleep(0.1)
+      +    print("%s número %d libera el plato %d" % (tipo, id, temp))
+	   platos[temp].release()
+ 
+       def raton(id):
+    #+end_src
+    ¡Esto me hizo ver que la ejecución era incorrecta!
+    #+begin_src text
+      Soy  raton  numero  0  como de plato  3
+      Soy  gato  numero  4  como de plato  1
+      Soy  raton  numero  1  como de plato  0
+      gato número 2 libera el plato 2
+      raton número 0 libera el plato 3
+      raton número 1 libera el plato 0
+      gato número 4 libera el plato 1
+    #+end_src
+    El problema resulta ser sencillo: Cuando implementamos los
+    [[http://sistop.org/codigo/lect_escr_v1_py.html][lectores y escritores]], el lector tiene la misma lógica que la que
+    implementaste — ¡Pero el escritor incondicionalmente tiene que
+    adquirir el apagador, usándolo como mutex! En este caso, como
+    ambos "prenden" y "apagan" el apagado sólo de forma condicional
+    (cuando hay cero de su propia categoría adentro), están
+    compartiendo el apagador.
+
+    Creo que una solución sería tener /dos/ apagadores: En vez de sólo
+    =cocina=, tendríamos =cocina_g= y =cocina_rs=. Los ratones usarían
+    como mutex incondicional a =cocina_g= y compartirían =cocina_r=,
+    en tanto que los gatos usarían como mutex incondicional a
+    =cocina_r= y compartirían =cocina_g=.
+- Calificación :: 8
+
+** Benjamín Anguiano y  Omar Martín
+- Problema elegido :: De gatos y ratones
+- Documentación :: [[./AnguianoMoralesBenjamin-MartinMancillaAngelOmar/README.txt][README.txt]]
+- Código :: [[./AnguianoMoralesBenjamin-MartinMancillaAngelOmar/TareaSO/Manejador.java][Manejador.java]]
+- Lenguaje :: Java
+- Comentarios ::
+  - Como les comenté en el /pull request/, Git es para entregar los
+    fuentes directamente. Me entregaron un archivo =.zip= que
+    descomprimí... Y este contenía al código fuente, pero también a
+    los archivos compilados (=*.class=) e incluso a la documentación
+    autogenerada (=Documentacion/*=). ¡Hubiera sido mejor que sólo
+    entregaran =Manejador.java=!
+  - La documentación no responde a los puntos que pedí que
+    desarrollaran, únicamente menciona el problema que encontraron al
+    realizar su implementación
+  - El único mecanismo de sincronización que implementaron un
+    multiplex: Al inicializar a =Plato= (que es un =Semaphore=) con un
+    3, indican que sólo pueden comer tres animales al mismo tiempo —
+    Pero no controla de ninguna manera qué animales tienen o no acceso
+  - La lógica que deberían resolver empleando sincronización la
+    serializan y explicitan con programación secuencial en el método
+    =run()= de =GeneradorAnimales()= ☹
+- Calificación :: 6
+
+** Emanuel Flores y Andrea García
+- Problema elegido :: De gatos y ratones
+- Documentación :: [[./FloresEmanuel-GarcíaAndrea/README.md][README.md]]
+- Código :: [[./FloresEmanuel-GarcíaAndrea/gato_raton.py][gato_raton.py]]
+- Lenguaje :: Python
+- Comentarios ::
+  - ¡Interesante implementación! (¡y correcta, además!)
+  - Me gusta que hayan trasladado al /ratón/ la responsabilidad de
+    verificar si hay gatos, en cuyo caso se suicida 😉
+- Calificación :: 10
+
+** Saúl Gabino
+- Problema elegido :: De gatos y ratones
+- Documentación :: No entregada
+- Código :: [[./GabinoSaul/Gatos_y_Ratones/gatos.py][gatos.py]]
+- Lenguaje :: Python
+- Comentarios ::
+  - Una implementación curiosa, con /tres/ tipos de hilo: Ratones,
+    gatos, y... ¡platos!
+  - La implementación sirve eternamente sobre el mismo único plato, y
+    entran repetidamente el mismo gato y el mismo ratón a comer de él
+    (hay tres hilos concurrentes, pero sólo uno de cada tipo)
+  - ¿Mecanismos de sincronización? Veo a =hay_platos()= como una
+    señalización que se emite al llenar los platos, misma que pueden
+    cachar tanto gatos como ratones. Además de ésta, sólo están
+    =mutex= y =mutex2=, que se usan como mutexes protegiendo... ¿
+    =Platos= y =comiendo=?
+  - ¿No implementa ninguna condición en que se puedan encontrar
+    ratones y gatos? No puedo decir que el problema planteado esté
+    resuelto.
+- Calificación :: 6
+
+** Andrés González
+- Problema elegido :: El asesor y los alumnos
+- Documentación :: [[./GonzálezAndrés/README.md][README.md]]
+- Código :: [[./GonzálezAndrés/main.py][main.py]], [[./GonzálezAndrés/cubiculo.py][cubiculo.py]], [[./GonzálezAndrés/__init__.py][__init__.py]]
+- Lenguaje :: Python
+- Comentarios ::
+  - Muy buena implementación. ¡Y gracias por presentarme al módulo
+    =Faker=! Seguro lo utilizaré en el futuro.
+  - Falta considerar un punto del planteamiento: El profesor /debe
+    poder dormirse/ cuando no haya ningún alumno. Así como lo tenemos,
+    el pobre va a estar aburrido sentado al escritorio cuando termine
+    de atender a los alumnos. En un caso extremo:
+    #+begin_src text
+
+      $ python3 main.py -s 3 -a 0
+
+      ---- Proceso iniciado con PID 7952 ----
+
+      Iniciando al profesor...
+      Iniciando 0 alumnos...
+      Hola, soy Travis Kane e iniciaré a responder dudas...
+	      El profesor está esperando una pregunta...
+    #+end_src
+    Probablemente podrías resolverlo con una lógica similar a la del
+    apagador; si el profesor determina primero si =alumnos_dentro > 0=
+    y, dependiendo de eso, atiende a la siguiente pregunta o se va a
+    dormir. Claro, los alumnos tendrían que estar atento a esa
+    condición... ¿Tal vez poner una =puerta()= que tuvieran que tocar
+    antes de entrar?
+  - Muy bueno que el programa sea parametrizable desde la línea de
+    comando.
+- Calificación :: 10
+
+** José Gonzalez y Alejandro Peralta
+- Problema elegido :: De gatos y ratones
+- Documentación :: No entregada
+- Código :: [[./GonzalezPastor-PeraltaEspinosa/tarea.pdf][tarea.pdf]],  [[./GonzalezPastor-PeraltaEspinosa/tarea_so.pdf][tarea_so.pdf]] (archivos idénticos)
+- Lenguaje :: Java
+- Comentarios ::
+  - La entrega es un PDF con texto/código en Java. No puedo intentar
+    compilarlo ni modificarlo (para intentar mejorar los puntos en que
+    se hayan equivocad) fácilmente ☹
+  - Extraje el texto del PDF, pero el compilador de Java me indica que
+    hay errores, desde el hecho de que hay múltiples clases públicas
+    en un sólo archivo.
+  - No alcanzo a seguirle la lógica a lo que presentaron.
+- Calificación :: 5
+
+** Alam Guillén
+- Problema elegido :: El asesor y los alumnos
+- Documentación :: [[./GuillenAlam/Readme.txt][Readme.txt]]
+- Código :: [[./GuillenAlam/Asesor_alumnos.py][Asesor_alumnos.py]]
+- Lenguaje :: Python
+- Comentarios ::
+  - Cuestión estilística: Usas mucho el siguiente estilo de
+    comentario:
+    #+begin_src python
+      def Asesor(): #Definimos al asesor
+	  global alumnos
+	  print ("El asesor duerme") #Menasje que indica que el asesor duerme
+	  while(alumnos < alumnosMaximos):
+	      semaphoreAsesor.acquire() #El asesor despierta
+	      if(alumnos != 0):
+		  print ("El asesor despierta") #Menasje que indica que el asesor  esta despierto
+    #+end_src
+    Resulta mucho más claro que los comentarios vayan en líneas
+    independientes (típicamente /antecediendo/ a la instrucción que
+    describen. Pero, más aún, un comentario tiene que ser útil,
+    explicar lo que no resulta obvio. Por ejemplo, tus comentarios
+    =Mensaje que indica que el asesor duerme= y =Mensaje que indica
+    que el asesor está despierto= no dan información adicional (y
+    hasta diría que tampoco =Definimos al asesor=). Yo dejaría este
+    fragmento únicamente como:
+    #+begin_src python
+      def Asesor():
+	  global alumnos
+	  print ("El asesor duerme")
+	  while(alumnos < alumnosMaximos):
+	      # El asesor despierta
+	      semaphoreAsesor.acquire()
+	      if(alumnos != 0):
+		  print ("El asesor despierta")
+    #+end_src
+  - Respondiendo a la duda que planteas en tu documentación: Me parece
+    que el problema aparece porque el asesor duerme /cuando no tiene
+    dudas que responder/, aunque haya alumnos en la oficina. Si mueves
+    tu =print("El asesor duerme")= hacia adentro del =while=, puedes
+    ver que el asesor se despierta cada vez que entra un alumno —
+    ¡Pero responde a las preguntas mientras duerme!
+    #+begin_src text
+      $ python3 Asesor_alumnos.py 
+      El asesor duerme
+      Alumno 0 esperando
+      Alumno 0 preguntando...
+      El asesor despierta
+      El asesor duerme
+      Alumno 1 esperando
+      El asesor despierta
+      El asesor duerme
+      Alumno 2 esperando
+      El asesor despierta
+      El asesor duerme
+      Alumno 3 esperando
+      El asesor despierta
+      El asesor duerme
+      Alumno 4 esperando
+      El asesor despierta
+      El asesor duerme
+      El profesor esta respondiendo la pregunta 1 del alumno 0
+      Alumno 0 preguntando...
+      El profesor esta respondiendo la pregunta 2 del alumno 0
+    #+end_src
+  - Usar un torniquete por sí solo como lo haces no tiene mucho
+    sentido. El torniquete es utilizado sobre todo /en conjunto/ con
+    otras construcciones, para crear barreras o semáforos. Casi casi
+    ¡lo único que le falta a tu implementación es convetir ese mutex
+    en un apagador!
+- Calificación :: 8
+
+** Luis López
+- Problema elegido :: El cruce del río
+- Documentación :: [[./LopezLuis/Tarea1.txt][Tarea1.txt]]
+- Código :: [[./LopezLuis/Tarea1.java][Tarea1.java]]
+- Lenguaje :: Java
+- Comentarios ::
+  - Tu código no puede ser compilado: Lo entregas como =Tarea1.java=,
+    pero implementas la clase =New=. Según lo requiere Java, debería
+    ser en el archivo =New.java=. Bueno, lo renombro — Tampoco
+    funciona. Usas una función no definida, =Man=:
+    #+begin_src text
+      $ javac New.java 
+      New.java:79: error: cannot find symbol
+		       int numero = Man.generaNumeroAleatorio(0, 1) ;
+				    ^
+	symbol:   variable Man
+	location: class New
+      1 error
+    #+end_src
+  - Te respondo lo mismo de los comentarios que lo que le indiqué a
+    Alam Guillén: Es muy difícil leer los comentarios así. Además,
+    comentas de más (comentas cosas obvias ante la lectura del
+    fuente), lo cual hace más difícil la comprensión.
+  - Veo que intentaste resolver con construcciones propias de Java,
+    como =CyclicBarrier=. ¡Bien!
+  - Al hacer la verificación de balance de las balsas tan tarde (con
+    los interesados ya a bordo), los estás /condenando/ a perderse el
+    congreso entero: Pasar el resto de la eternidad dormidos en sus
+    botes. Cierto, no se van a pelear... pero van a perderse de la
+    diversión ☹
+    #+begin_src java
+      if((Hackers==3 && Serfs==1) ||(Serfs==3 && Hackers==1)) {
+	  System.out.println("Espera tu turno");
+      //	System.out.println("Dormido");
+	  Sleep.acquire();
+      //	System.out.println("Despierto");
+	  band=true;
+      }else {
+    #+end_src
+    - Aunque... Tengo que reconocerlo — Es una solución
+      ingeniosa. Pero lleva a una inanición tremenda.
+- Calificación :: 7
+
+** César Lugo
+- Problema elegido :: Santa Claus
+- Documentación :: [[./LugoCesar/LugoCesar.txt][LugoCesar.txt]]
+- Código :: [[./LugoCesar/LugoCesar.py][LugoCesar.py]]
+- Lenguaje :: Python
+- Comentarios ::
+  - El código no es Python válido ☹
+    - En Python no existe =variable++=, necesariamente tienes que
+      escribir =variable = variable + 1= o =variable += 1=
+    - El código no está indentado correctamente
+    - Hay varias funciones no definidas. Particularmente, =signal()= y
+      =wait()=. ¿Qué intentaste implementar?
+  - Incluso una vez corregido el texto, tu programa no hace nada
+    - Defines funciones, pero no las mandas llamar en ningún momento
+- Calificación :: 5
+
+** César Martinez y Lisset Noriega
+- Problema elegido :: De gatos y ratones
+- Documentación :: [[./MartinezCesar-NoriegaLisset/Especificaciones.txt][Especificaciones.txt]]
+- Código :: [[./MartinezCesar-NoriegaLisset/gatos_ratones.py][gatos_ratones.py]]
+- Lenguaje :: Python
+- Comentarios :: 
+- Calificación :: 
+
+** Nestor Martinez
+- Problema elegido :: Santa Claus
+- Documentación :: [[./MartinezNestor/MartinezOstoa_tarea1.md][MartinezOstoa_tarea1.md]]
+- Código :: [[./MartinezNestor/northPole.py][northPole.py]]
+- Lenguaje :: Python
+- Comentarios :: 
+- Calificación :: 
+
+** Luis Mata
+- Problema elegido :: El asesor y los alumnos
+- Documentación :: [[./MataLuis/documentacion.txt][documentacion.txt]]
+- Código :: [[./MataLuis/tarea1.py][tarea1.py]]
+- Lenguaje :: Python
+- Comentarios :: 
+- Calificación :: 
+
+** Max Serrano
+- Problema elegido :: De gatos y ratones
+- Documentación :: [[./MaxSerrano/MaxSerrano.txt][MaxSerrano.txt]]
+- Código :: [[./MaxSerrano/pgyr.py][pgyr.py]]
+- Lenguaje :: Python
+- Comentarios :: 
+- Calificación :: 
+
+** Luis Moreno y Ángel Ramirez
+- Problema elegido :: El asesor y los alumnos
+- Documentación :: [[./MorenoLuis-RamirezAngel/Tarea1SistOp.pdf][Tarea1SistOp.pdf]]
+- Código :: [[./MorenoLuis-RamirezAngel/Tarea1SistOp.cpp][Tarea1SistOp.cpp]]
+- Lenguaje :: C++
+- Comentarios :: 
+- Calificación :: 
+
+** Ricardo Muñoz y Saúl Gabino
+- Problema elegido :: De gatos y ratones
+- Documentación :: No entregada
+- Código :: [[./MuñozRicardo-GabinoSaul/Comida_de_Gatos/comidagatos.py][comidagatos.py]]
+- Lenguaje :: Python
+- Comentarios :: 
+- Calificación :: 
+
+** Jorge Ramos y Brian Espinoza
+- Problema elegido :: Cruce de caminos
+- Documentación :: [[./RamosJorge-EspinozaBrian/readme.md][readme.md]]
+- Código :: [[./RamosJorge-EspinozaBrian/problema2.py][problema2.py]]
+- Lenguaje :: Python
+- Comentarios :: 
+- Calificación :: 
+
+** Cristian Romero
+- Problema elegido :: Los alumnos y el asesor
+- Documentación :: [[./RomeroAndradeCristian/README.md][README.md]], [[./RomeroAndradeCristian/Documentacion.html][Documentacion.html]]
+- Código :: [[./RomeroAndradeCristian/main.py][main.py]], [[./RomeroAndradeCristian/alumnos_asesor/Alumnos.py][Alumnos.py]], [[./RomeroAndradeCristian/alumnos_asesor/Cubiculo.py][Cubiculo.py]], [[./RomeroAndradeCristian/alumnos_asesor/__init__.py][__init__.py]], [[./RomeroAndradeCristian/alumnos_asesor/Profesor.py][Profesor.py]]
+- Lenguaje :: Python
+- Comentarios :: 
+- Calificación :: 
+
+** Ricardo Rosales
+- Problema elegido :: El servidor Web
+- Documentación :: [[./RosalesRicardo/tarea1.pdf][tarea1.pdf]], [[./RosalesRicardo/tarea1.tex][tarea1.tex]]
+- Código :: [[./RosalesRicardo/jefe-trabajador.py][jefe-trabajador.py]]
+- Lenguaje :: Python
+- Comentarios :: 
+- Calificación :: 
+
+** Erik Sanabria
+- Problema elegido :: De gatos y ratones
+- Documentación :: [[./SanabriaErik/Readme.md][Readme.md]]
+- Código :: [[./SanabriaErik/source.c][source.c]], [[./SanabriaErik/Makefile][Makefile]]
+- Lenguaje :: C
+- Comentarios :: 
+- Calificación :: 
