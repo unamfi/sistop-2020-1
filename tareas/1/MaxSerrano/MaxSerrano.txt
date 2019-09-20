@@ -1,0 +1,35 @@
+﻿Serrano Martinez Max Yael
+
+El problema que decidieron resolver:
+De gatos y ratones
+
+
+
+El lenguaje y entorno en que lo desarrollaron:
+python 3.7.4
+
+
+
+¿Qué tengo que saber / tener / hacer para ejecutar su programa en mi computadora?
+
+Tener instaldo python en mi computadora, se tiene que saber que tipo de sincronizacion se utilizara para
+ lograr  el mejor funcionamiento de el programa y tal vez asi poder llegar al resultado esperado
+
+ 
+La estrategia de sincronización (mecanismo / patrón) que les funcionó:
+
+Se utilizo la implementacion de semaforos bajo el patron de dos mutex.
+
+
+Los gatos y ratones no comen al mismo tiempo gracias a la utilizacion de el mutex.
+
+Aunque el programa le faltaria inicializar la situacion cuando un gato ve a un raton
+se lo debe comer (en dado caso que llegue a sucedes). 
+
+Regresando a la utilizacion de el mutex  que genera que los gatos y ratones no coman al mismo 
+tiempo como lo dice la ultima regla "Por acuerdo de caballeros, los gatos no se van a acercar a los platos mientras hay ratones comiendo.
+  
+
+
+
+

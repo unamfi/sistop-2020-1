@@ -7,4 +7,3 @@
 2. Para las unidades *3. Administración de procesos* y
    *4. Planificación de procesos*, [Proyecto 2: Una situación
    cotidiana paralelizable](./2/README.md) (2019.09.17 → 2019.10.01)
-

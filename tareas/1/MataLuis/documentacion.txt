@@ -1,0 +1,17 @@
+Problema: Asesor y Alumnos 
+
+Mata Mota Luis Valentin. 
+
+Se trato de implemntar con Python usando mutex, el ejercicio no contempla refinamientos. 
+
+Notas:
+
+En el planteamiento se, dice que el asesor puede dormir si no hay alumnos que esperen, sin embargo con el flujo que alumnos siempre es complicado que se duerma, ademas de que los alumnos preguntan demasiado y ocupan mucho tiempo de él. 
+
+La cantidad de alumnos es aleatoria porque creí que de esta manera sería más interesante, sin embargo si el profesor pasa mucho tiempo sin alumnos o si llega y no hay nadie, se va. Lo primero es a proposito, lo segundo inevitable de acuerdo a como se trato de resolver. 
+
+Para una mejor visuazliacion recomiendo verlo en pantalla completa, ya que de una lado puse la "conversacion" entre el alumno en turno y el asesor, y en el otro lado, la lista de alumnos que aun faltan. 
+
+En la lista aparecen repetidos los alumnos, y lo que significa es que tiene mas de una pregunta. Cuando han terminado simplemente se van. 
+
+
