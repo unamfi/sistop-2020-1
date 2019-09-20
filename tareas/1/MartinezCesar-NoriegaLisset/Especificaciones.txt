@@ -1,0 +1,22 @@
+Autores: Martínez Franco César Augusto
+	 Noriega Dominguez Lisset
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		PROBLEMA: DE GATOS Y RATONES
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-Lenguaje empleado: Python
+-Prerrequisitos: Python 3.x.x instalado.
+-Condiciones: El programa se interpreta y se ejecuta sin necesidad de enviar argumentos, por defecto se crean 20 hilos, y cada hilo puede ser de forma aleatoria o un gato o un raton.
+-Estrategia de sincronización:
+ Para el presente problema primero identificamos a los platos como el recurso compartido, después a los gatos y a los ratones como hilos de clases diferentes.
+ Posteriormente decidimos que los platos fueran semaforos, de forma que los gatos o ratones comieran de uno en uno. Como se disponen de l platos, 
+ es importante limitar el numero de animales que pueden acceder a estos platos, de forma que implementamos un multiplex.
+ Despues observamos que exite una exclusion de parte del raton al gato, de forma que si un raton esta comiendo, este excluye al gato. esto lo implementamos con un apagador.
+ Por otra parte, dentro de la vision del raton, tambien notamos que este no debe poder comer si hay uno o mas gatos, esto lo solucionamos abstrayendo el problema y creando
+ un cuerto donde se encuentran los platos, de forma que si entra al cuarto el raton es comido.
+ Por ultimo la vision del gato, este ve el cuarto como un torniquete donde pueden entrar muchos gatos, los ratones no pueden entrar ya que son comidos.
+
+-Refinamientos: Ninguno
+
+-Mejoras: Limpieza de codigo, contiene partes bastante redundnates. Implementación con objetos.
