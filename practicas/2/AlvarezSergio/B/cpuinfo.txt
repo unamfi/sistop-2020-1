@@ -1,0 +1,2 @@
+Sergio ha generado un substituto.
+Este archivo es un substituto porque no uso linux.

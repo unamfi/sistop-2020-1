@@ -1,0 +1,82 @@
+
+Nombre de host:                            LAPTOP-IFB7H6UG
+Nombre del sistema operativo:              Microsoft Windows 10 Home Single Language
+Versi¢n del sistema operativo:             10.0.18362 N/D Compilaci¢n 18362
+Fabricante del sistema operativo:          Microsoft Corporation
+Configuraci¢n del sistema operativo:       Estaci¢n de trabajo independiente
+Tipo de compilaci¢n del sistema operativo: Multiprocessor Free
+Propiedad de:                              Windows User
+Organizaci¢n registrada:                   
+Id. del producto:                          00342-41380-80707-AAOEM
+Fecha de instalaci¢n original:             02/07/2019, 03:39:28 p. m.
+Tiempo de arranque del sistema:            31/08/2019, 10:04:55 a. m.
+Fabricante del sistema:                    LENOVO
+Modelo el sistema:                         80VR
+Tipo de sistema:                           x64-based PC
+Procesador(es):                            1 Procesadores instalados.
+                                           [01]: Intel64 Family 6 Model 158 Stepping 9 GenuineIntel ~2801 Mhz
+Versi¢n del BIOS:                          LENOVO 4GCN38WW, 18/07/2018
+Directorio de Windows:                     C:\WINDOWS
+Directorio de sistema:                     C:\WINDOWS\system32
+Dispositivo de arranque:                   \Device\HarddiskVolume3
+Configuraci¢n regional del sistema:        es;Espa¤ol (internacional)
+Idioma de entrada:                         es-mx;Espa¤ol (M‚xico)
+Zona horaria:                              (UTC-06:00) Guadalajara, Ciudad de M‚xico, Monterrey
+Cantidad total de memoria f¡sica:          16,244 MB
+Memoria f¡sica disponible:                 7,966 MB
+Memoria virtual: tama¤o m ximo:            18,676 MB
+Memoria virtual: disponible:               6,189 MB
+Memoria virtual: en uso:                   12,487 MB
+Ubicaci¢n(es) de archivo de paginaci¢n:    C:\pagefile.sys
+Dominio:                                   WORKGROUP
+Servidor de inicio de sesi¢n:              \\LAPTOP-IFB7H6UG
+Revisi¢n(es):                              8 revisi¢n(es) instaladas.
+                                           [01]: KB4506991
+                                           [02]: KB4497165
+                                           [03]: KB4498523
+                                           [04]: KB4503308
+                                           [05]: KB4506933
+                                           [06]: KB4508433
+                                           [07]: KB4509096
+                                           [08]: KB4512508
+Tarjeta(s) de red:                         7 Tarjetas de interfaz de red instaladas.
+                                           [01]: Intel(R) Dual Band Wireless-AC 8265
+                                                 Nombre de conexi¢n: Wi-Fi 2
+                                                 DHCP habilitado:    S¡
+                                                 Servidor DHCP:      192.168.0.1
+                                                 Direcciones IP
+                                                 [01]: 192.168.0.18
+                                                 [02]: fe80::313c:a4e3:1778:102d
+                                           [02]: Bluetooth Device (Personal Area Network)
+                                                 Nombre de conexi¢n: Conexi¢n de red Bluetooth
+                                                 Estado:             Medios desconectados
+                                           [03]: Realtek PCIe GBE Family Controller
+                                                 Nombre de conexi¢n: Ethernet
+                                                 Estado:             Medios desconectados
+                                           [04]: Microsoft Wi-Fi Direct Virtual Adapter
+                                                 Nombre de conexi¢n: Conexi¢n de  rea local* 1
+                                                 DHCP habilitado:    No
+                                                 Direcciones IP
+                                                 [01]: 192.168.137.1
+                                                 [02]: fe80::7864:8676:f54a:fcbc
+                                           [05]: PdaNet Broadband Adapter
+                                                 Nombre de conexi¢n: PdaNet Broadband Connection
+                                                 Estado:             Medios desconectados
+                                           [06]: VMware Virtual Ethernet Adapter for VMnet1
+                                                 Nombre de conexi¢n: VMware Network Adapter VMnet1
+                                                 DHCP habilitado:    S¡
+                                                 Servidor DHCP:      192.168.179.254
+                                                 Direcciones IP
+                                                 [01]: 192.168.179.1
+                                                 [02]: fe80::81b2:40ba:99be:d922
+                                           [07]: VMware Virtual Ethernet Adapter for VMnet8
+                                                 Nombre de conexi¢n: VMware Network Adapter VMnet8
+                                                 DHCP habilitado:    S¡
+                                                 Servidor DHCP:      192.168.248.254
+                                                 Direcciones IP
+                                                 [01]: 192.168.248.1
+                                                 [02]: fe80::b922:ad61:14a1:6d55
+Requisitos Hyper-V:                        Extensiones de modo de monitor de VM: S¡
+                                           Se habilit¢ la virtualizaci¢n en el firmware: S¡
+                                           Traducci¢n de direcciones de segundo nivel: S¡
+                                           La prevenci¢n de ejecuci¢n de datos est  disponible: S¡
