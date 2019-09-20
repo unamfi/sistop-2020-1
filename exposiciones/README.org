@@ -20,9 +20,12 @@ el que ustedes me planteen los temas de su interés.
 | 2019.09.24 | SPECTRE y Meltdown                                 | Andrea García y Emanuel Flores |            |            |
 | 2019.09.26 | Programación asíncrona en Web                      | Ricardo Rosales                |            |            |
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 | 2019.10.03 | Sistemas basados en grid                           | Luis Enrique López Cruz        |            |            |
 >>>>>>> 398be447a0141b7027dc8f1da0a368c839fb24c4
+=======
+>>>>>>> 46e5b85026feb0354eadac527f7c26f1b84261b2
 | 2019.10.10 | Paginación de cinco niveles                        | Eric Sanabria                  |            |            |
 | 2019.11.12 | Desduplicación                                     | Julio César Lugo García        |            |            |
 |------------+----------------------------------------------------+--------------------------------+------------+------------|
