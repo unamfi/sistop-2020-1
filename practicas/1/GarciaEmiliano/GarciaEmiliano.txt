@@ -1,0 +1,2 @@
+Soy Miguel Emiliano Garcia Ramirez y mi nombre de usuario es Emiliano312 
+echo Soy Miguel Emiliano Garcia Ramirez y mi nombre de usuario es Emiliano312

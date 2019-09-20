@@ -1,0 +1,8 @@
+Decidí resolver el problema de santa claus
+
+Lenguaje que se utilizó Python3 usando el editor de texto Atom
+  -Para poder ejecutar el programa unicamente se necesita tener instalado Python3
+Según mi percepción se esta utilizando el patrón de Jefe/Trabajador
+No se implementaron los refinamientos
+
+Más que una duda no se logro realizar el ejercicio completamente se implemento la idea que se tenia en mente pero no funciona como deberia
