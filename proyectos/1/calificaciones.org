@@ -1,0 +1,440 @@
+#+title: Proyecto 1 • Calificaciones y comentarios
+#+options: toc:nil
+
+*Nota:* Hay unos pocos trabajos que no se incluyen en esta revisión,
+son los que tienen detalles pendientes por incorporar en Git. Algunos,
+requieren de ustedes para que yo los procese. Otros, sólo me están
+esperando a mí. Actualizo esto pronto.
+
+* Sergio Alvarez
+- Documento :: [[./AlvarezSergio/Proyecto1.pdf][Proyecto1.pdf]]
+- Comentarios :: Haces una muy buena revisión y reflexión de la
+                 computadora que te tocó, la RM380Z. Me permito hacer
+                 un par de comentarios.
+
+		 Por un lado, la mayor parte de computadoras
+                 contemporáneas eran estructuralmente mucho más
+                 sencillas — Una única tarjeta madre, típicamente
+                 dentro de la carcasa misma del teclado. Esta máquina,
+                 con CPU y teclado independientes, era bastante rara y
+                 de apariencia muy profesional. Una de las
+                 características que más se defendían de las
+                 compatibles con PC tempranas es que eran /muy
+                 expansibles/ — El motherboard tenía a la computadora
+                 básica, pero muchas funciones –gráficos, puertos,
+                 almacenamiento– podían ampliarse con tarjetas (y
+                 típicamente teníamos espacio para poner hasta 7
+                 tarjetas de expansión). Nos hemos alejado de ese
+                 modelo, en buena medida por el crecimiento de
+                 capacidades en buses sencillos como USB.
+
+		 Un pequeño detalle: Ningún corrector automático de
+                 ortografía hace /suficientemente/ buen trabajo,
+                 tenemos que abrir bien los ojos. Por ejemplo, /la
+                 empresa esta consiente/ (1ª página, penúltimo
+                 párrafo) → /la empresa está consciente/. La primer
+                 versión hace ver que esta empresa (en tono
+                 despectivo) no tiene problema en consentir algo.
+
+		 Respecto al artículo /El ordenador del futuro/, estoy
+                 de acuerdo con tu apreciación. Es más un
+                 divertimento, un ejercicio de futurología que otra
+                 cosa. Si bien mencionaste a los CD-ROMs,
+                 probablemente no llamo a tu atención que
+                 pronosticaban que una unidad típica tendría una
+                 capacidad de 4MB — ¡sonaba asombroso! Pero cuando
+                 aparecieron a principios de los 90, la realidad es
+                 que la capacidad de un CD era de 650MB...
+- Calificación :: 10
+
+* Benjamín Anguiano Morales y Ángel Omar Martín Mancilla
+- Documento :: [[./AnguianoMoralesBenjamin-MartinMancillaAngelOmar/RESEÑA_SISTOP .docx][RESEÑA_SISTOP.docx]]
+- Comentarios :: Me gusta la manera en que presentan la reseña,
+                 separando los datos de la relación con la clase.
+
+		 En mi opinión, no, esta computadora definitivamente
+                 no calificaría como portátil (a pesar de ser
+                 /transportable/, algo común a casi todas las
+                 computadoras de la época). La computadora no cuenta
+                 con pantalla (no se puede usar sin conectar a un
+                 monitor) ni tienen batería.
+
+		 El texto (así como el que revisaron casi todos los
+                 compañeros) no menciona al sistema operativo porque,
+                 sencillamente, no había. Estas computadoras
+                 típicamente bastaba encenderlas, y un segundo más
+                 tarde tenías un intérprete de BASIC esperando a tu
+                 interacción.
+
+		 Respecto al texto de piratería — La industria se ha
+                 encargado de satanizar el acto de copia, y de
+                 presentárnoslo siempre como si se tratara de algo
+                 ilegal y de algo equiparable con la piratería
+                 (¿a poco copiar música o programas es tan terrible
+                 como abordar barcos en altamar, robarles sus
+                 pertenencias, y matar a quien se oponga?) Pero bueno,
+                 esa discusión... no da para hacerla en este espacio ☺
+                 La copia ilícita es mala y hay que evitarla. Cuando
+                 copias texto o código, debes dar atribución (y
+                 verificar que tienes autorización de hacerlo), para
+                 no caer en /plagio/, que es algo muy distinto.
+- Calificación :: 10
+
+* Emanuel Flores y Andrea Garcia
+- Documento :: [[./FloresEmanuel-GarciaAndrea/Proyecto1.pdf][Proyecto1.pdf]]
+- Comentarios :: ¡Qué bueno que la suerte los empujó a revisar esta
+                 computadora! Tengo que incluirla cuando hablamos de
+                 cómputo móvil, porque sin duda fue uno de los
+                 importantes antecesores.
+
+		 ¿Se dieron cuenta de que muestran que esta
+                 computadora tiene /dos/ microprocesadores 6301? Me
+                 parece interesante, sobre todo dado el tema que ahora
+                 estamos viendo.
+
+		 Respecto al texto, muy adecuado, se conjunta muy bien
+                 con el artículo de la Epson HX-20. Y sí, estoy de
+                 acuerdo con los puntos que mencionan de las
+                 telecomunicaciones, a pesar de que Internet (que ya
+                 existía en ciertos ámbitos) estaba tan lejos de la
+                 consciencia incluso de especialistas como los
+                 editores del texto.
+- Calificación :: 10
+
+* Saúl Gabino
+- Documento :: [[./proyectos/1/GabinoSaul/Fasciculo_20.txt][Fasciculo_20.txt]]
+- Comentarios :: Curioso — ¡Yo supuse que les presentaban desde las
+                 materias de electrónica el "microprocesador" como
+                 sinónimo de CPU! (¿habrán confundido con el concepto
+                 de "microcontrolador"?)
+
+		 Buen resumen en líneas generales.
+- Calificación :: 10
+
+* Ángel Daniel García y Yak Balam Miranda
+- Documento :: [[./GarciaDaniel-MirandaBalam/proyecto1.pdf][proyecto1.pdf]]
+- Comentarios :: El ULA que te llama la atención es el precursor de
+                 los FPGAs, que hoy en día se usan ampliamente para
+                 prototipeado (pero rara vez para
+                 producción). Entiendo que en esa época era frecuente
+                 ver ULAs en computadoras en producción por el elevado
+                 costo de mandar hacer una tirada de chips dedicados,
+                 y la relativamente poca salida que incluso un modelo
+                 de computadora podía garantizarles.
+
+		 Escribiste tu texto bastante a las carreras, tienes
+                 una gran cantidad de dedazos y errores ortográficos ☹
+
+		 Me da gusto que revisaras varios artículos de la
+                 revista, pero no abordaste el que les pedí
+                 explícitamente, el que presenta a una de las
+                 computadoras de esa época.
+- Calificación :: 7
+
+
+* Andres Gonzalez y Karen Solis
+- Documento :: [[./GonzalezAndres-SolisKaren/Rese%C3%B1a-Fas%C3%ADculo1.md][Reseña-Fasículo1.md]]
+- Comentarios :: Veo que "transportaron" la búsqueda de este equipo al
+                 presente, a buscar más información al
+                 respecto. ¡bien! Sí, esta maquinita hizo
+                 época... Nunca vi una físicamente (el mercado europeo
+                 y americano eran muy distintos), pero son aún muy
+                 mencionadas.
+
+		 La reseña principal, sin embargo, es muy cortita —
+                 ¿Qué impresiones les deja? ¿Cómo se sentirían con las
+                 restricciones que da? ¿Cómo sería escribir con el
+                 ridículo tecladito que tenía?
+
+		 Eligen un buen tema para el otro artículo, el de los
+                 juegos, y la reseña de éste es buena. Si quieren
+                 seguir un poco sobre esa línea, me permito apuntarles
+                 a un texto que escribí en 2012 para la revista
+                 /Software Gurú/: [[http://ru.iiec.unam.mx/2212/3/1204_juegos_en_linea.html][Los juegos: Clave para el
+                 desarrollo del cómputo]].
+- Calificación :: 10
+
+* David Guerrero y Ricardo Juarez
+- Documento :: [[./GuerreroDavid-JuarezRicardo/Mi-Computer.docx][Mi-Computer.docx]]
+- Comentarios :: Buena reseña de la MTX512. Me queda mucha curiosidad
+                 respecto al lenguaje /Noddy/: Al igual que a ustedes,
+                 me llama la atención que hicieran énfasis en que /no
+                 brindaba soporte/ a operaciones aritméticas — ¡la
+                 mayor fortaleza de las computadoras! La única mención
+                 que encontré al respecto es de Wikipedia, indicando
+                 que es de cierto modo un antecesor de /HyperCard/,
+                 que fue a fin de cuentas muy relevante.
+
+		 Respecto al tema de /Informática y ficción/: Sí y
+                 no. Estoy de acuerdo (y sería tonto no estarlo) en
+                 que en los últimos 30 años se ha presentado un avance
+                 increíble. Sin embargo... Parte de mi misión es
+                 ayudar a que los medios no los engañen a ustedes, los
+                 especialistas en el campo. El "increíble" avance de
+                 la inteligencia artificial va, hasta ahora y en los
+                 ejemplos que presentas, muy relacionado con
+                 reconocimiento de patrones. ¡Pero lejísimos de lo que
+                 nos intentan proyectar todo el tiempo!
+
+		 Hay un texto excelente que leí hace varios años. Si
+                 bien es un libro con ya 30 años de edad, no pierde
+                 actualidad, y lo recomiendo fuertemente por partir de
+                 una definición muy importante: /¿Qué significa/ la
+                 cognición?  [[https://www.goodreads.com/book/show/53482.Understanding_Computers_and_Cognition][Understanding computers and cognition]], de
+                 Terry Winogard y Fernando Flores.
+- Calificación :: 10
+
+* Alam Guillen y Rogelio García
+- Documento :: [[./GuillenLopez-Rogelio.pdf][GuillenLopez-Rogelio.pdf]]
+- Comentarios :: Presentan el trabajo dos alumnos, pero redactado en
+                 singular, y sin el nombre completo de uno de ellos —
+                 Hacer un trabajo conjunto debería ser juntarse como
+                 equipo (¡aunque fuera los 20 minutos que les puede
+                 haber tomado esta tarea!) El texto presenta varios
+                 /dedazos/ y da la impresión de haber sido hecho un
+                 poquito muy a las carreras ☹
+
+		 El artículo, me parece, la presenta ya como una
+                 maquinita muy limitada, incluso dentro de lo que era
+                 común en su época.
+
+		 ¿El sistema operativo ayuda a mejorar la eficiencia
+                 del hardware? ¡Muy por el contrario! Les he dicho
+                 varias veces mi opinión — El sistema operativo es, de
+                 cierto modo, un mal necesario, un asunto
+                 burocrático. El programa menos importante de la
+                 computadora. Todo el tiempo que esté ejecutándose el
+                 sistema operativo, no está ejecutándose mi
+                 jueguito. Sería más /eficiente/ para el usuario de
+                 una sola tarea volver a los tiempos sin sistemas
+                 operativos... ¡Pero sería intolerable para los
+                 programadores no contar con la abstracción que éste
+                 nos da!
+- Calificación :: 8
+
+* Luis López
+- Documento :: [[./LopezLuis/Rese%C3%B1a.pdf][Reseña.pdf]]
+- Comentarios :: Es un buen resumen, no me dejas mucho por
+                 agregar. Llama mi atención que presentes a la
+                 descripción hecha de la MC-10 indicando que era
+                 /recomendada por sus capacidades/, porque el texto a
+                 mí me pareció que criticaba en buena medida lo
+                 limitada que era est acomputadora.
+
+		 Respecto al texto del sistema operativo — Buena
+                 elección de tema. Sí, en las computadoras personales
+                 este tema ha cambiado muchísimo desde esos días —
+                 Para muchas de las computadoras que estas revistas
+                 reseñan, a duras penas existía siquiera la necesidad
+                 de considerar un sistema operativo.
+- Calificación :: 10
+
+* Ulysses Lopez
+- Documento :: [[./LopezUlysses/L%C3%B3pez.L%C3%B3pez.Ulysses.pdf][López.López.Ulysses.pdf]]
+- Comentarios :: Me parece que el texto no menciona, pero lo que era
+                 impresionante de la serie Apple II era la calidad de
+                 su construcción. Eran gabinetes duros y pesados,
+                 capaces de aguantar cualquier cosa. Estas
+                 computadoras llegaron a estar en todo tipo de
+                 escuelas por todo el mundo. A mi nunca me gustaron —
+                 Comparada con la otra familia que fue muy popular en
+                 México (las Commodore), no eran tan amigables, o eso
+                 me parecían...
+
+		 Tu revisión es bastante buena, no tengo mucho más que
+                 agregarle. El artículo fue escrito en un momento en
+                 que la mayor parte del involucramiento de
+                 computadoras en tareas de transporte era anunciar
+                 salidas y llegadas en las terminales; la gente no
+                 estaba lista para que hubiera trenes sin conductor.
+                 Hoy en día, la realidad es muy distinta — Y opuesto a
+                 lo que el texto vaticina, ya hay coches conducidos
+                 por computadora (aún no en nuestro país... ¡pero ya
+                 llegarán!)
+- Calificación :: 10
+
+* Cesar Lugo y Nestor Martinez
+- Documento :: [[./LugoCesar-MartinezNestor/Proyecto1_LugoC%C3%A9sar_Mart%C3%ADnezN%C3%A9stor.pdf][Proyecto1_LugoCésar_MartínezNéstor.pdf]]
+- Comentarios :: Me gusta mucho el enfoque que dan a su texto,
+		 cuestionándose respecto a la situación y motivaciones
+                 de la empresa, y no únicamente resumiendo el texto
+                 que ven.
+
+		 La VIC-20 no creo que pudiera correr Visicalc, en
+                 buena medida por lo limitado de su video (23
+                 renglones, 22 columnas). Sin embargo, el video era lo
+                 que "presumía" esta máquina desde su mismo nombre (de
+                 /VIdeo Chip/ 20): A diferencia de las primeras
+                 computadoras de Commodore (las PET), la VIC 20
+                 manejaba 16 colores y un juego de caracteres
+                 programable, lo que permitía una capacidad gráfica
+                 bastante buena — para su época. Además, a 300
+                 dólares, era una computadora bastante accesible para
+                 uso doméstico.
+
+		 La Commodore 64, descendiente de la VIC 20, resultó
+                 muy superior en todo aspecto y se convirtió en una de
+                 las computadoras más exitosas de la historia.
+
+		 Respecto al otro tema elegido: Muy bueno, y muy
+                 buenos símiles que hacen.
+- Calificación :: 10
+
+* Franco Martinez y Lisset Noriega
+- Documento :: [[./MartinezFranco-NoriegaDominguez/MartinezFranco-NoriegaDom%C3%ADnguez.pdf][MartinezFranco-NoriegaDomínguez.pdf]]
+- Comentarios :: Sus observaciones, muy correctas. Hago una pequeña
+                 anotación — No había un sistema operativo en el
+                 sentido que lo comprendemos hoy, pero el sistema sí
+                 implementaba algunas bibliotecas para efectuar
+                 algunas abstracciones básicas (por ejemplo, cómo
+                 operaba el =LOAD= de cassette, o para facilitar la
+                 "programación" del hardware de audio o video).
+
+		 Por las inquietudes que presentan respecto al manejo
+                 de gráficas en esa época, les paso la liga a un
+                 material que me dieron en un curso de graficación y
+                 sonido usando el BASIC de la Commodore 64 que tomé
+                 hacia los 10 u 11 años de edad (1986), en un /Centro
+                 Galileo/: [[https://archive.org/details/C64GraficacinYSonido][C=64 Graficación y sonido]]. ¿Se parece a lo
+                 que conocemos hoy? ☺
+- Calificación :: 10
+
+* Luis Mata
+- Documento :: [[./MataLuis/MataLuis.odt][MataLuis.odt]]
+- Comentarios :: Bueno, no hay por qué endulzar las palabras: Estas
+                 computadoras son –todas– absoluta, total e
+                 irrevocablemente obsoletas. ¡Tienen todas más de 35
+                 años! :-)
+
+		 Respecto al de /Verdadero y Falso/, mencionas que
+                 forma parte del conocimiento de más de una materia de
+                 licenciatura. ¿Qué te parece que, hace 30 años, se
+                 consideraban elementos de entre lo mínimo fundamental
+                 para poder utilizar una computadora? El no requerir
+                 conocer a detalle lo que ocurre dentro de
+                 ella... Puede ser visto como un avance, ¡pero también
+                 como un retroceso!
+- Calificación :: 10
+
+* Luis Moreno y Angel Ramirez
+- Documento :: [[./MorenoLuis-RamirezAngel/MICOMPUTER.docx][MICOMPUTER.docx]]
+- Comentarios :: Es sorprendente... No me había dado cuenta de que en
+                 esta colección de computadoras viejas que les estoy
+                 mostrando había computadoras por debajo de 1MHz. Y,
+                 claro, ya es aún entonces vista como lenta.
+
+		 Respecto al /Ordenador del futuro/: La historia de la
+                 Lisa es muy interesante, aunque bastante triste. Fue
+                 un grave error de cálculo de Apple, y junto con la
+                 también fallida Apple 3 casi llevan a la compañía a
+                 la quiebra. Era una computadora impresionante, pero
+                 ridículamente cara (cerca de US$10,000).
+
+		 Creo que poco más de un año después de lanzar a
+                 /Lisa/, Apple lanzó a una computadora con
+                 características muy recortadas por debajo de las de
+                 ésta, pero mucho más barata. Originalmente iba a
+                 llamarse /Lisa Jr/, pero decidieron distanciarse por
+                 completo del nombre del producto fallido — Y se llamó
+                 Macintosh. Y, sin duda, salvó con creces a la
+                 empresa.
+
+		 Ah... Sólo un detallito más: No es necesario usar el
+                 mouse para tener copy/paste. Te invito a fijarte en
+                 cómo trabajo... Eso se hace de forma perfectamente
+                 eficiente desde principios de los 70, y a puro
+                 tecladazo 😉
+- Calificación :: 10
+
+* Jorge Ramos y Brian Espinoza
+- Documento :: [[./RamosJorge-EspinozaBrian/proyecto_01_revisi%C3%B3n_de_micomputer.pdf][proyecto_01_revisión_de_micomputer.pdf]]
+- Comentarios :: Me gusta que presenten varios temas. Eso indica que
+                 la lectura les llamó la atención. Entonces, mi
+                 trabajo está hecho 😉
+
+		 Yo discrepo de que lo describen (/Generadores de
+                 programas/) sea /claramente/ clasificable de
+                 inteligencia artificial. Pero eso es ya un debate que
+                 podemos dejar para otro momento y lugar, y basado en
+                 posiciones personales (y no necesariamente más o
+                 menos válidas).
+- Calificación :: 10
+
+* Cristian Romero Andrade
+- Documentos :: [[./RomeroAndradeCristian/MiComputer20.pdf][MiComputer20.pdf]],  [[./RomeroAndradeCristian/MiComputer20.tex][MiComputer20.tex]]
+- Comentarios :: Jé, puedes imaginarte que la salida del conector de
+                 /alta fidelidad/ que mencionas... No es que diera
+                 para reproducir MP3 o nada por el estilo. Pero, sí,
+                 varias computadoras de la época tenían sintetizadores
+                 de sonido bastante interesantes.
+
+		 Estuve buscando referencias del lenguaje Noddy, que
+                 también llamó la atención de otros compañeros tuyos,
+                 y no encontré prácticamente nada. Me intriga mucho —
+                 ¿Un lenguaje de computación que no pueda manipular
+                 números? ¿Cómo puede ser?
+- Calificación :: 10
+
+* Ricardo Rosales
+- Documento :: [[./RosalesRicardo/proyecto1.pdf][proyecto1.pdf]],  [[./RosalesRicardo/proyecto1.tex][proyecto1.tex]]
+- Comentarios :: Las computadoras Sinclair eran muy, muy populares en
+                 el Reino Unido, y se esperó con muchas ansias al
+                 QL. Técnicamente, era una maravilla comparado con sus
+                 antecesores. Sin embargo, me parece que tuvo
+                 problemas importantes de control de calidad, que
+                 llevaron a que no fuera exitoso y, a fin de cuentas,
+                 hundieron a la empresa.
+
+		 La reseña de lo que leíste de criptografía, de la
+                 implementación del cifrado César, y de reconocimiento
+                 de voz, se me hizo muy buena.
+- Calificación :: 10
+
+* Erik Sanabria
+- Documento :: [[./SanabriaErik/SanabriaErik.pdf][SanabriaErik.pdf]]
+- Comentarios :: Como le comenté a alguno de tus compañeros... Tengo
+                 que incluir los datos de la HX-20 cuando presento la
+                 exposición sobre sistemas móviles.
+
+		 Me parece interesante buscar respecto a cómo los dos
+                 procesadores de este equipo colaboraban. ¿Para qué
+                 ponerle dos CPUs a una computadora que sencillamente
+                 no puede ser multiprocesada.
+
+		 Me gusta lo que escribes sobre los juegos de aventura
+                 de la época. Si te interesa el tema en el contexto de
+                 la historia de la computación, y como le comenté a
+                 otros compañeros, me permito apuntarte a un texto que
+                 escribí en 2012 para la revista /Software Gurú/: [[http://ru.iiec.unam.mx/2212/3/1204_juegos_en_linea.html][Los
+                 juegos: Clave para el desarrollo del cómputo]].
+- Calificación :: 10
+
+* Max Serrano
+- Documento :: [[./SerranoMax/SerranoMax.txt][SerranoMax.txt]]
+- Comentarios :: Entregaste únicamente un párrafo, no las 2 a 3
+                 páginas que solicité; en general acepté sin quejarme
+                 del orden de una página. Mencionas un punto
+                 específico mencionado en la primera página del
+                 artículo a elección, y no incluiste nada sobre el
+                 equipo reseñado en el fascículo (el Lynx). No puedo
+                 darte más que esta nota.
+- Calificación :: 5
+
+* Hector Sierra
+- Documento :: [[./SierraHector/SierraHector.txt][SierraHector.txt]]
+- Comentarios :: Mencionas un punto muy interesante, y –siendo que tu
+                 trabajo es el último que reviso en la "primera
+                 ronda"– eres el único que lo nota: En todas las
+                 revisiones, le dieron mucho peso a la calidad de la
+                 documentación. Mi primera computadora fue ya una PC
+                 (en 1986), pero venía con un buen libraco por manual,
+                 detallando incluso algunos componentes a nivel lista
+                 de pines, un par de esquemas –posiblemente
+                 simplificados– de circuitos, etc. Era /absolutamente
+                 normal/ que los usuarios leyéramos la documentación,
+                 y era un importante punto de venta el que incluyera
+                 documentación de calidad.
+
+		 Buen trabajo.
+- Calificación :: 10
+
