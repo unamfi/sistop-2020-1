@@ -17,6 +17,5 @@ Comentarios:
 	1.- Se me dificulta un poco python y no lo he utilizado mucho, solo para algunas cosas, me gustaría mucho que algunas 
 	cosas o temas pueda explicarlas en un lenguaje más bajo como C, por lo general entiendo mejor cuando se hacen las cosas
 	de manera más puntuales por así decirlo.
-	2.- No sé cuál sea la posibilidad de que pueda entregar esta tarea en C en un tiempo determinado, más que nada 
-	para poder ver si tengo más dudas, claro que sólo sería para poder aprender bien los temas.
+
 	
