@@ -1,11 +1,15 @@
 #include <iostream>
 
 #include "fcfs.h"
-#include "proc.h"
 
 int main(void)
 {
-	std::cout << "\n\n\t Blasdkjh" << std::endl;
+	srand(time(NULL));
+	size_t num{ static_cast<size_t>((rand() % (8 - 4 + 1)) + 4) };
+	std::cout << std::endl;
+
+	FCFS P(num);
+	P.run();
 
 	return 0;
 }
