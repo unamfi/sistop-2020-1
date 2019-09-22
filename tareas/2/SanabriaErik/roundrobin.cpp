@@ -1,6 +1,6 @@
 #include "roundrobin.h"
 
-RoundRobin::RoundRobin()
+RoundRobin::RoundRobin(size_t n)
 {
 
 

@@ -30,6 +30,24 @@ void Proc::exec()
 			<< std::endl << std::endl;
 }
 
+void Proc::exec(size_t tn, size_t *fal)
+{
+	if(*fal == 0)
+	{
+		return;
+	}
+	else if(tn < m_t)
+	{
+		*fal = (m_t - tn);
+	}
+
+	for (size_t a{ 0 }; a < tn, a < m_t; ++a, --*fal)
+	{
+		std::cout << "\n\tProcesando por dos segundos..." << std::endl;
+		sleep(2);
+	}
+}
+
 Proc::~Proc()
 {
 
