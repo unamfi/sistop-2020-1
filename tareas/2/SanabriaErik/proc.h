@@ -4,14 +4,21 @@
 #include <iostream>
 #include <iomanip>
 
+//objeto proceso
 class Proc
 {
 public:
 	Proc();
+
+	//a: tiempo ideal
+	//n: numero de proceso
+	//m: tiempo que se ha esperado acumulado
 	Proc(size_t a, size_t n, size_t m);
 
+	//es la ejecucion del proceso como tal
 	void exec();
 
+	//destructor default
 	virtual ~Proc();
 
 private:
