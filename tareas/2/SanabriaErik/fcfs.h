@@ -11,14 +11,11 @@
 class FCFS
 {
 public:
-	//constructor estandar
-	FCFS();
-
 	//Constructor, n es numero de procesos
 	FCFS(size_t n);
 
 	//destructor default
-	virtual ~FCFS();
+	virtual ~FCFS() = default;
 
 	//Funcion principal para simular
 	void run();

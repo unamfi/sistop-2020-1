@@ -1,18 +1,8 @@
 #include "fcfs.h"
 
-FCFS::FCFS()
-{
-	m_num_proc = 0;
-}
-
 FCFS::FCFS(size_t n)
 {
 	m_num_proc = n;
-}
-
-FCFS::~FCFS()
-{
-
 }
 
 void FCFS::run()

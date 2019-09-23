@@ -9,8 +9,6 @@
 class Proc
 {
 public:
-	Proc();
-
 	//a: tiempo ideal
 	//n: numero de proceso
 	//m: tiempo que se ha esperado acumulado

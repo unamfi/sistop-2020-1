@@ -1,15 +1,5 @@
 #include "proc.h"
 
-Proc::Proc()
-{
-	m_num = 0;
-	m_e = 0;
-	m_pen = 0.0f;
-	m_res = 0.0f;
-	m_t = 0;
-	m_t2 = 1;
-}
-
 Proc::Proc(size_t a, size_t n, size_t m)
 {
 	m_t = a;
