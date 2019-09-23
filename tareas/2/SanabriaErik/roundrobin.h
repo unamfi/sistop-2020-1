@@ -26,7 +26,7 @@ private:
 	//estos van a representar los tiempos
 	size_t randomN();
 
-	const size_t m_tiem_a{ 5 };
+	const size_t m_tiem_a{ 3 };
 	size_t m_num_proc;
 
 	std::vector<Proc> m_procs;
