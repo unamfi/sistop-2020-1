@@ -61,7 +61,7 @@ void FCFS::run()
 		m_proc.pop();
 	}
 
-	std::cout << "\n\tDone\n";
+	std::cout << "\tFCFS -> Done\n";
 }
 
 size_t FCFS::randomN()

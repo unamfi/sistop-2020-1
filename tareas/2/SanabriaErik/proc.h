@@ -27,17 +27,23 @@ public:
 	void exec(size_t tn, size_t *fal);
 
 	//destructor default
-	virtual ~Proc();
+	virtual ~Proc() = default;
+
+	bool operator==(const Proc& rhs)
+	{
+		return m_num == rhs.m_num;
+	}
 
 private:
 
-	const int m_w{ 3 };	//para setw
+	int m_w{ 3 };		//para setw
 	size_t m_num;		//numero de proceso
 	size_t m_t;			//tiempo ideal
 	size_t m_t2;		//tiempo de respuesta
 	size_t m_e;			//tiempo en espera
 	float m_pen;		//proporcion de penalizacion
 	float m_res;		//proporcion de respuesta
+
 };
 
 #endif /* PROC_H_ */

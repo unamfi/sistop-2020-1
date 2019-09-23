@@ -48,8 +48,3 @@ void Proc::exec(size_t tn, size_t *fal)
 	}
 }
 
-Proc::~Proc()
-{
-
-}
-
