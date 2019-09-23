@@ -21,7 +21,6 @@ public:
 	//round robin
 	//tn: tiempo maximo asignado
 	//fal: cuanto tiempo falta
-	//int * const
 	void exec(size_t tn, size_t *fal);
 
 	//destructor default

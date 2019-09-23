@@ -33,8 +33,8 @@ void Proc::exec(size_t tn, size_t *fal)
 
 	for (size_t a{ 0 }; a < tn, a < m_t; ++a, --*fal)
 	{
-		std::cout << "\n\tProcesando por dos segundos..." << std::endl;
-		sleep(2);
+		std::cout << "\n\tProcesando por " << tn << " segundos..." << std::endl;
+		sleep(tn);
 	}
 }
 
