@@ -10,7 +10,7 @@ void FCFS::run()
 	//variable para guardar el acumulado del tiempo transcurrido
 	size_t prev{ 0 };
 
-	std::cout << "\n\tNumero de procesos: " << m_num_proc << "\n";
+	std::cout << "\n\tNumero de procesos: " << m_num_proc << std::endl << std::flush;
 
 	//creando fila de procesos
 	for (size_t v{ 0 }; v < m_num_proc; ++v)

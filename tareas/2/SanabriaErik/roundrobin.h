@@ -9,7 +9,7 @@
 class RoundRobin
 {
 public:
-	RoundRobin(size_t n, size_t nProcs);
+	RoundRobin(size_t n);
 	virtual ~RoundRobin();
 
 	void run();
@@ -29,8 +29,8 @@ private:
 	const size_t m_tiem_a{ 3 };
 	size_t m_num_proc;
 
-	std::vector<Proc> m_procs;
-	std::vector<Proc>::iterator m_it_pos;
+	std::vector<Proc> m_procs;					//vector de procesos
+	std::vector<Proc>::iterator m_it_pos;		//indices del vector
 };
 
 #endif /* ROUNDROBIN_H_ */

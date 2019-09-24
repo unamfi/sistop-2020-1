@@ -1,10 +1,10 @@
 #include "roundrobin.h"
 
-RoundRobin::RoundRobin(size_t n, size_t nProcs)
+RoundRobin::RoundRobin(size_t n)
 {
 	m_procs.reserve(n);
 	m_it_pos = std::begin(m_procs);
-	m_num_proc = nProcs;
+	m_num_proc = n;
 }
 
 void RoundRobin::run()
@@ -12,7 +12,7 @@ void RoundRobin::run()
 
 	size_t prev{ 0 };
 
-	std::cout << "\n\tNumero de procesos: " << m_num_proc << "\n";
+	std::cout << "\n\tNumero de procesos: " << m_num_proc << std::endl << std::flush;
 
 	for(size_t a{ 0 }; a < m_num_proc; ++a)
 	{
@@ -31,16 +31,25 @@ void RoundRobin::run()
 
 	size_t f{ m_tiem_a };		//cuanto falta, empieza como maximo tiempo posible
 
+	std::cout << std::endl <<"::run() f: " << f << std::endl << std::flush;
+
 	for(size_t a{ 0 }; a < m_num_proc, a < m_procs.size(); ++a)
 	{
-		Proc A = siguitente();
+		//Proc A = siguitente();
 
-		A.exec(m_tiem_a, &f);
+		//A.exec(m_tiem_a, &f);
 
 		if(f == 0)
 		{
-			remove(A);
+			remove(m_procs.at(a));
+			f = m_tiem_a;
 		}
+		else if (f > 0)
+		{
+			m_procs.at(a).exec(m_tiem_a, &f);
+		}
+
+		std::cout << std::endl << "\ta: " << a << " m_num_proc: " << m_num_proc << " size: " << m_procs.size() << " f: " << f << std::flush;
 	}
 
 }
@@ -79,6 +88,8 @@ Proc& RoundRobin::siguitente()
 void RoundRobin::remove(const Proc& proc)
 {
 	std::vector<Proc>::iterator p_it{ std::begin(m_procs) };
+
+	std::cout << std::endl << "\t::remove" << std::flush;
 
 	for(/*auto p_it = std::begin(m_procs)*/; p_it != std::end(m_procs); ++p_it)
 	{
