@@ -23,8 +23,10 @@ public:
 	//fal: cuanto tiempo falta
 	void exec(size_t tn, size_t *fal);
 
+	bool falta(void);
+
 	//destructor default
-	virtual ~Proc() = default;
+	~Proc() = default;
 
 	bool operator==(const Proc& rhs)
 	{
@@ -34,13 +36,13 @@ public:
 private:
 
 	int m_w{ 3 };		//para setw
+	size_t m_falta;		//cuanto le falta
 	size_t m_num;		//numero de proceso
 	size_t m_t;			//tiempo ideal
 	size_t m_t2;		//tiempo de respuesta
 	size_t m_e;			//tiempo en espera
 	float m_pen;		//proporcion de penalizacion
 	float m_res;		//proporcion de respuesta
-
 };
 
 #endif /* PROC_H_ */

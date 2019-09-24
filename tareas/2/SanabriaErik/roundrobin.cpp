@@ -2,8 +2,6 @@
 
 RoundRobin::RoundRobin(size_t n)
 {
-	m_procs.reserve(n);
-	m_it_pos = std::begin(m_procs);
 	m_num_proc = n;
 }
 
@@ -20,108 +18,43 @@ void RoundRobin::run()
 
 		size_t tiem{ randomN() };
 
-		Proc A(tiem, a, prev);
+		Proc A(tiem, a, 0);
 
-		prev += tiem;
+		//prev += tiem;
 
-		add(A);
+		m_procs.push(A);
 	}
 
 	prev = 0;
 
 	size_t f{ m_tiem_a };		//cuanto falta, empieza como maximo tiempo posible
+	size_t acper{ 0 };			//tiempo acumulado perdido
 
 	std::cout << std::endl <<"::run() f: " << f << std::endl << std::flush;
 
 	for(size_t a{ 0 }; a < m_num_proc, a < m_procs.size(); ++a)
 	{
-		//Proc A = siguitente();
+		Proc A = m_procs.front();
 
-		//A.exec(m_tiem_a, &f);
+		A.exec(m_tiem_a, &f);
 
-		if(f == 0)
+		//no termino de ejecutarse
+		if(f > 0)
 		{
-			remove(m_procs.at(a));
-			f = m_tiem_a;
+			//reordenalo al principio
+			m_procs.push(A);
+
+			//y
 		}
-		else if (f > 0)
+		else if(f == 0)
 		{
-			m_procs.at(a).exec(m_tiem_a, &f);
+			//si ya no le falta nada quitalo.
+			m_procs.pop();
 		}
 
 		std::cout << std::endl << "\ta: " << a << " m_num_proc: " << m_num_proc << " size: " << m_procs.size() << " f: " << f << std::flush;
 	}
 
-}
-
-void RoundRobin::add(const Proc& proc)
-{
-	size_t pos{ m_it_pos - std::begin(m_procs) };
-
-	m_procs.push_back(proc);
-
-	m_it_pos = std::begin(m_procs) + pos;
-}
-
-Proc& RoundRobin::siguitente()
-{
-	if(m_procs.empty())
-	{
-		throw std::out_of_range("No hay elementos!!!");
-	}
-	else if(!m_procs.empty())
-	{
-		//std::vector<Proc>::iterator&
-		auto& retornar = *m_it_pos;
-
-		++m_it_pos;
-
-		if(m_it_pos == std::end(m_procs))
-		{
-			m_it_pos = std::begin(m_procs);
-		}
-
-		return retornar;
-	}
-}
-
-void RoundRobin::remove(const Proc& proc)
-{
-	std::vector<Proc>::iterator p_it{ std::begin(m_procs) };
-
-	std::cout << std::endl << "\t::remove" << std::flush;
-
-	for(/*auto p_it = std::begin(m_procs)*/; p_it != std::end(m_procs); ++p_it)
-	{
-		if(*p_it == proc)
-		{
-			int n_pos{ 0 };
-
-			if((m_it_pos == (std::end(m_procs) - 1)) && (p_it == m_it_pos))
-			{
-				n_pos = 0;
-			}
-			else if(m_it_pos <= p_it)
-			{
-				n_pos = m_it_pos - std::begin(m_procs);
-			}
-			else
-			{
-				n_pos = m_it_pos - std::begin(m_procs) - 1;
-			}
-
-			m_procs.erase(p_it);
-
-			m_it_pos = std::begin(m_procs) + n_pos;
-
-			return;
-		}
-	}
-}
-
-RoundRobin::~RoundRobin()
-{
-	m_procs.clear();
 }
 
 size_t RoundRobin::randomN()

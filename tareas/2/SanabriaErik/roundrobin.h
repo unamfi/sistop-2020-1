@@ -1,7 +1,7 @@
 #ifndef ROUNDROBIN_H_
 #define ROUNDROBIN_H_
 
-#include <vector>
+#include <queue>
 #include <stdexcept>
 
 #include "proc.h"
@@ -10,15 +10,10 @@ class RoundRobin
 {
 public:
 	RoundRobin(size_t n);
-	virtual ~RoundRobin();
+
+	~RoundRobin() = default;
 
 	void run();
-
-	void add(const Proc& proc);
-
-	void remove(const Proc& proc);
-
-	Proc& siguitente();
 
 private:
 
@@ -29,8 +24,7 @@ private:
 	const size_t m_tiem_a{ 3 };
 	size_t m_num_proc;
 
-	std::vector<Proc> m_procs;					//vector de procesos
-	std::vector<Proc>::iterator m_it_pos;		//indices del vector
+	std::queue<Proc> m_procs;					//cola de procesos
 };
 
 #endif /* ROUNDROBIN_H_ */

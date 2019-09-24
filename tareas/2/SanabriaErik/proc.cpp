@@ -8,6 +8,7 @@ Proc::Proc(size_t a, size_t n, size_t m)
 	m_t2 = m + a;
 	m_pen = 0.0f;
 	m_res = 0.0f;
+	m_falta = a;
 }
 
 void Proc::exec()
@@ -22,7 +23,7 @@ void Proc::exec()
 
 void Proc::exec(size_t tn, size_t *fal)
 {
-	if(*fal == 0)
+	if(m_falta == 0)
 	{
 		std::cout << std::endl << "\tTerminando P" << m_num << std::endl << std::flush;
 
@@ -30,31 +31,29 @@ void Proc::exec(size_t tn, size_t *fal)
 	}
 	else if(tn < m_t)
 	{
-		std::cout << std::endl << "\tP" << m_num <<" tiempo requerido m_t: " << m_t << " quantum tn: " << tn << " falta: " << *fal << std::endl << std::flush;
+		std::cout << std::endl << "\tP" << m_num << "procesando por "
+				<< tn << " segundos... de un tiempo requerido: " << m_t
+				<< std::endl << std::flush;
 
-		*fal = (m_t - tn);
-
-		std::cout << std::endl << "\tP" << m_num << " fal: " << *fal << std::endl << std::flush;
-	}
-
-	for (size_t a{ 0 }; a < tn, a < m_t; ++a)
-	{
-		if(*fal >0 )
-		{
-			--*fal;
-		}
-		else
-		{
-			*fal = 0;
-			break;
-		}
-
-		std::cout << "\n\tProcesando P" << m_num << " por " << tn << " segundos... m_t: " << m_t << " falta: " << *fal << std::endl << std::flush;
 		sleep(tn);
+		m_falta -= tn;
+
+		std::cout << std::endl << "\tA P" << m_num << " le faltan: " << *fal  << " segundos y hemos perdido: "
+				<< /*m_tperd <<*/ std::endl << std::flush;
+
+		return;
 	}
+}
 
-	*fal = 0;
-
-	std::cout << std::endl << "\tTerminando P" << m_num << std::endl << std::flush;
+bool Proc::falta(void)
+{
+	if( m_falta > 0 )
+	{
+		return true;
+	}
+	else if(m_falta == 0)
+	{
+		return false;
+	}
 }
 
