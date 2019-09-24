@@ -41,3 +41,39 @@ class Queue:
 # print("----")
 # queue.empty()
 # print(queue.isEmpty())
+
+#My own implementation of a process 
+class Process: 
+
+	def __init__(self, name, arrival, ticks):
+		self.name = name 
+		#Time of arrival 
+		self.arrival = arrival 
+		#Number of ticks to complete its execution
+		self.ticks = ticks 
+		#Moment in time where the process begins its execution
+		self.beginning = 0
+		#Moment in time where the process ends its execution
+		self.end = 0
+		#Response time: T = end - arrival
+		self.T = 0 
+		#Wait time: E = T - ticks  
+		self.E = 0
+		#Response ratio: P = T / ticks 
+		self.P = 0
+
+	def show(self, e=''):
+		print("%s: %d, t=%d;" % (self.name, self.arrival, self.ticks), end=e)
+
+
+
+
+
+
+
+
+
+
+
+
+
