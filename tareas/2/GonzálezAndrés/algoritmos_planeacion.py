@@ -23,7 +23,7 @@ class Proceso(object):
 def fcfs(lista_procesos=[]):
     """First come, first serve.
     Ingresa una lista de procesos ordenados por tiempo de llegada y devuelve la cola de ejecución.
-    También devuelve tiempo de respuesta (T), tiempo de espera (E), proporción de penalización (P) y proporción de respuesta (R). 
+    También devuelve la lista de procesos de entrada con los tiempos de ejecución. 
     """
 
     t_total = 0
@@ -40,8 +40,8 @@ def fcfs(lista_procesos=[]):
                 proceso_en_ejec.t_restante -= 1
                 proceso_en_ejec.t_respuesta += 1
                 for i in range(len(lista_procesos)):
-                    if lista_procesos[i].t_llegada < t_total:
-                        lista_procesos[i].t_requerido += 1
+                    if lista_procesos[i].t_llegada <= t_total:
+                        lista_procesos[i].t_respuesta += 1
                     else:
                         break
                 t_total+=1        
@@ -50,4 +50,27 @@ def fcfs(lista_procesos=[]):
         else:
             t_total += 1
 
+    return [cola_ejec, procesos_ejecutados]
+
+def roundrobin(lista_procesos=[], quantum=1):
+    t_total = 0
+    cola_ejec = []
+    procesos_ejecutados = []
+    while lista_procesos:
+        if lista_procesos[0].t_llegada <= t_total:
+            pass
+        else:
+            t_total+=1
+    return [cola_ejec, procesos_ejecutados]
+
+def fb(lista_procesos=[],n_colas_prioridad=2, ejec_p_degrad=1, quantum=1):
+    colas_prioridad = ([] for i in range(n_colas_prioridad))
+    t_total = 0
+    cola_ejec = []
+    procesos_ejecutados = []
+    while lista_procesos:
+        if lista_procesos[0].t_llegada <= t_total:
+            pass
+        else:
+            t_total+=1
     return [cola_ejec, procesos_ejecutados]
