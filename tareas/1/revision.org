@@ -291,6 +291,46 @@
       ingeniosa. Pero lleva a una inanición tremenda.
 - Calificación :: 7
 
+** Ulysses López
+- Problema elegido :: El cruce del río
+- Documentación :: [[./LopezUlysses/informe.txt][informe.txt]]
+- Código :: [[./LopezUlysses/hackerandserf.py][hackerandserf.py]]
+- Lenguaje :: Python
+- Comentarios ::
+  - ¡Ups! El código falta a su promesa, y en mi primera ejecución tuve
+    a unos cuantos programadores mojados:
+    #+begin_src text
+      $ python3 hackerandserf.py 
+      ¿Cuántas iteraciones requiere?
+      5
+      Se está subiendo un  Serf de Microsoft a la balsa
+      Se está subiendo un  Serf de Microsoft a la balsa
+      Se está subiendo un  Hacker de Linux a la balsa
+      Se está subiendo un  Serf de Microsoft a la balsa
+      Ya somos 4 personas en la balsa
+      ,**********************************Vamos a zarpar y no habrán problemas...creo...************************************
+      Se está subiendo un  Hacker de Linux a la balsa
+      Se está subiendo un  Serf de Microsoft a la balsa
+      Se está subiendo un  Hacker de Linux a la balsa
+      Se está subiendo un  Hacker de Linux a la balsa
+      Ya somos 4 personas en la balsa
+    #+end_src
+  - Tuve que rascarme un poco la cabeza. La resolución que presentas
+    es correcta... ¿Por qué pasa esto una y otra vez? ¡Porque liberas
+    =mutex= antes de haber realizado la acción!
+    - Esto es correcto en la tercera condición de =hacker()= y de
+      =serf()=, porque la acción es simplemente pararse en la fila
+      correspondiente (no hay cuatro personas aún). Pero en ambas
+      funciones, sea que =numberhackers == 4=, =numberserfs == 4=, o
+      ambos sean =2=, primero liberas =mutex= y luego llamas a
+      =up(person)=. Me parece que por ahí das la oportunidad de que se
+      /cuele/ uno que no corresponde, abriendo una pequeña condición
+      de carrera.
+  - No encontré ningún caso en que el proceso se detuviera, no se a
+    qué pueda deberse que tú lo viste.
+  - La implementación, pese a este /bug/, es buena.
+- Calificación: 8
+
 ** César Lugo
 - Problema elegido :: Santa Claus
 - Documentación :: [[./LugoCesar/LugoCesar.txt][LugoCesar.txt]]
