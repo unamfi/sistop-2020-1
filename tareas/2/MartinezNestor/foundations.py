@@ -17,12 +17,15 @@ class Queue:
 
 	def show(self):
 		for i in range(len(self.queue)):
-			print(self.queue[i])
+			print("...%s" % (self.queue[i].name))
 
 	def empty(self):
 		t = len(self.queue)
 		for i in range(t):
 			self.dequeue()
+
+	def size(self):
+		return len(self.queue)
 
 
 #Some tests 
@@ -66,7 +69,15 @@ class Process:
 		print("%s: %d, t=%d;" % (self.name, self.arrival, self.ticks), end=e)
 
 
+#A class with some useful methods 
+class Foundation:
 
+	def printProcesses(self, procs):
+		for i in range(len(procs)):
+			e = ''
+			if i == len(procs) -1:
+				e = '\n'
+			procs[i].show(e)
 
 
 

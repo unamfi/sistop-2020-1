@@ -1,13 +1,13 @@
 from foundations import * 
+from rr1 import *
 
 #Main method
+f = Foundation()
+
 def main():
 	procs = generateTest()
-	for i in range(len(procs)):
-		e = ''
-		if i == len(procs) -1:
-			e = '\n'
-		procs[i].show(e)
+	f.printProcesses(procs)
+	rr1(procs)
 
 #generateTest() generates a hard coded data set of processes
 def generateTest():
@@ -17,6 +17,7 @@ def generateTest():
 	d = Process("D",9,5)
 	e = Process("E",12,5)
 	return [a,b,c,d,e]
+
 
 
 #---------------------------
