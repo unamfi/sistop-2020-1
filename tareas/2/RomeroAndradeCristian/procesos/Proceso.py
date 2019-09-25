@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# -*- codig: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from string import ascii_uppercase
 from random import choice, randint

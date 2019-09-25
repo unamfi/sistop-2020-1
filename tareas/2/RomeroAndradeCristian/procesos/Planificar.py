@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# -*- codig: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 class Planificar:
     def __init__(self, registro, quantum: int, proceso):
@@ -16,12 +16,12 @@ class Planificar:
     def mostrar_procesos(self):
         texto = "\t"
         suma = 0
-        for proc in self.proceso:
+        for proceso in self.proceso:
             suma += proceso.t
             texto += proceso.nombre + ": " + str(proceso.llegada) +\
                 ", t=" + str(proceso.t/self.quantum) + "[quantum];\n\t"
         self.total = suma
-        return texto + "\t(total: " + str(self.total/1000) + "[s])"
+        print(texto + "\t(total: " + str(self.total/1000) + "[s])")
 
     def promedios(self):
         prom = {"P": 0.0,

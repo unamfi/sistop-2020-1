@@ -1,5 +1,17 @@
 #!/usr/bin/python3
 # -*-coding: utf-8 -*-x
 
-A, B, C = Proceso(3), Proceso(5, 1), Proceso(2, 3)
-D, E = Proceso(5, 9), Proceso(5, 12)
+from procesos.Planificar import Planificar
+from procesos.Spn import Spn
+from procesos.Proceso import Proceso
+
+
+if __name__ == "__main__":
+    procesos = list()
+    procesos.append(Proceso([70, 600], [0, 15]))
+    procesos.append(Proceso([70, 600], [0, 15]))
+    procesos.append(Proceso([70, 600], [0, 15]))
+    procesos.append(Proceso([70, 600], [0, 15]))
+    procesos.append(Proceso([70, 600], [0, 15]))
+    spn = Spn("registro.txt", 70, procesos)
+    spn.start()
