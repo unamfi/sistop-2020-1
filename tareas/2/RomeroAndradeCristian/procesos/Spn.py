@@ -42,7 +42,7 @@ class Spn(Planificar):
                                 proceso["fin"] = total
                                 procesos_terminados.append(proceso)
                     procesos_temp.append(proceso)
-            if avant == False:
+            if not avant:
                 texto = texto  + "[  ]"
                 total = total + 1
             procesos_listos = procesos_temp
