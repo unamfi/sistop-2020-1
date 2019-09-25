@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+
 class Planificar:
-    def __init__(self, registro, quantum: int, proceso):
-        self.registro = registro
+    def __init__(self, quantum: int, proceso):
         self.quantum = quantum
         self.proceso = proceso
         self.proceso.sort(key=lambda x: x.llegada, reverse=False)
@@ -21,13 +21,13 @@ class Planificar:
             texto += proceso.nombre + ": " + str(proceso.llegada) +\
                 ", t=" + str(proceso.t/self.quantum) + "[quantum];\n\t"
         self.total = suma
-        print(texto + "\t(total: " + str(self.total/1000) + "[s])")
+        return texto + "\t(total: " + str(self.total/1000) + "[s])"
 
     def promedios(self):
         prom = {"P": 0.0,
                 "T": 0.0,
                 "R": 0.0,
-                "E":0.0}
+                "E": 0.0}
         cantidad_pro = len(self.proceso)
         for P in self.P_list:
             prom["P"] += P
@@ -37,8 +37,8 @@ class Planificar:
             prom["R"] += R
         for E in self.E_list:
             prom["E"] += E
-        prom["P"] /=   cantidad_pro
-        prom["R"] /=   cantidad_pro
-        prom["T"] /=   cantidad_pro
-        prom["E"] /=   cantidad_pro
+        prom["P"] /= cantidad_pro
+        prom["R"] /= cantidad_pro
+        prom["T"] /= cantidad_pro
+        prom["E"] /= cantidad_pro
         return prom
