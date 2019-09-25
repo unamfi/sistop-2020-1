@@ -6,7 +6,6 @@ f = Foundation()
 
 def main():
 	procs = generateTest()
-	f.printProcesses(procs)
 	rr1(procs)
 
 #generateTest() generates a hard coded data set of processes
