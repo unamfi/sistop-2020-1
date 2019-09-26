@@ -19,25 +19,30 @@ python3 main.py
 Salida
 ---
 
-```bash
-	[92m|J|[0m: 1, t = 7.89
-	[91m|X|[0m: 7, t = 2.76
-	[91m|Z|[0m: 10, t = 1.59
-	[93m|X|[0m: 11, t = 8.09
-	[36m|I|[0m: 12, t = 3.74
-		(total: 24.06)
+```zsh
+        |T|: 2, t = 4.09
+        |I|: 4, t = 4.79
+        |S|: 7, t = 5.24
+        |D|: 8, t = 4.19
+        |Y|: 15, t = 5.49
+                (total: 23.79)
 
 ----------------------------------------------------------------------------------------------------
 
-FCFS: T = 8.80 , E = 3.99 , P = 2.17
-| |[92m|J|[0m[92m|J|[0m[92m|J|[0m[92m|J|[0m[92m|J|[0m[92m|J|[0m[92m|J|[0m[92m|J|[0m[91m|X|[0m[91m|X|[0m[91m|X|[0m[91m|Z|[0m[91m|Z|[0m[93m|X|[0m[93m|X|[0m[93m|X|[0m[93m|X|[0m[93m|X|[0m[93m|X|[0m[93m|X|[0m[93m|X|[0m[93m|X|[0m[36m|I|[0m[36m|I|[0m[36m|I|[0m[36m|I|[0m
+FCFS: T = 10.60 , E = 5.84 , P = 2.23
+| || ||T||T||T||T||T||I||I||I||I||I||S||S||S||S||S||S||D||D||D||D||D||Y||Y||Y||Y||Y||Y|
 
-SPN: T = 8.40 , E = 3.20 , P = 1.38
-| |[92m|J|[0m[92m|J|[0m[92m|J|[0m[92m|J|[0m[92m|J|[0m[92m|J|[0m[91m|X|[0m[91m|X|[0m[91m|X|[0m[91m|Z|[0m[91m|Z|[0m[36m|I|[0m[36m|I|[0m[36m|I|[0m[36m|I|[0m[92m|J|[0m[92m|J|[0m[93m|X|[0m[93m|X|[0m[93m|X|[0m[93m|X|[0m[93m|X|[0m[93m|X|[0m[93m|X|[0m[93m|X|[0m[93m|X|[0m| |
+SPN: T = 10.40 , E = 5.00 , P = 1.88
+| || ||T||T||T||T||T||I||I||I||I||I||D||D||D||D||D||S||S||S||S||S||S||Y||Y||Y||Y||Y||Y|| |
 
-Round Robin: T = 12.60 , E = 7.40 , P = 2.86
-[92m|J|[0m[92m|J|[0m[92m|J|[0m[92m|J|[0m[92m|J|[0m[92m|J|[0m[91m|X|[0m[92m|J|[0m[91m|X|[0m[91m|Z|[0m[93m|X|[0m[36m|I|[0m[92m|J|[0m[91m|X|[0m[91m|Z|[0m[93m|X|[0m[36m|I|[0m[93m|X|[0m[36m|I|[0m[93m|X|[0m[36m|I|[0m[93m|X|[0m[93m|X|[0m[93m|X|[0m[93m|X|[0m[93m|X|[0m| |
+Round Robin: T = 17.20 , E = 11.80 , P = 3.21
+|T||T||I||T||I||S||D||T||I||S||D||T||I||S||D||Y||I||S||D||Y||S||D||Y||S||Y||Y||Y|| |
 
-Round Robin: T = 2.40 , E = 0.80 , P = 1.67
-[92m|J|[0m[92m|J|[0m| || || || |[91m|X|[0m| || |[91m|Z|[0m[93m|X|[0m[36m|I|[0m[93m|X|[0m[93m|X|[0m| |
+Round Robin: T = 2.80 , E = 0.80 , P = 1.40
+|T||T||I||I|| ||S||D||S||D|| || || || ||Y||Y|| |
 ```
+
+En esta ejecución vemos que el round Robin con los quantums cuadruplicados
+es el mejor caso promedio, pero entando en el esquema de los quantums
+unitarios, el SPN es el mejor que ejecuta los procesos ya que se va con el
+proceso más corto para finalizar más rápido los procesos.
