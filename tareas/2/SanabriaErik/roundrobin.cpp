@@ -43,8 +43,6 @@ void RoundRobin::run()
 		{
 			//reordenalo al principio
 			m_procs.push(A);
-
-			//y
 		}
 		else if(f == 0)
 		{
