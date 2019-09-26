@@ -1,17 +1,40 @@
+# -*- coding: utf-8 -*-
 #%%
+import sys, getopt
 import numpy as np
 import string
 import algoritmos_planeacion as ap
 
-def main():
-    np.random.seed(100)
+def main(argv):
+
+    num_procesos = 5
+    seed = None
+
+    try:
+        opts, args = getopt.getopt(argv,"hp:s:",["procesos=","seed="])
+    except getopt.GetoptError:
+        print("uso: tarea2.py -p <num de procesos> -s <seed>")
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print("uso: tarea2.py -p <num de procesos> -s <seed>")
+            print("El número de procesos debe ser entre 1 y 26")
+            sys.exit()
+        elif opt in ("-p", "--procesos"):
+            num_procesos = int(arg)
+            if num_procesos<=0 or num_procesos>26:
+                print("El número de procesos debe ser entre 1 y 26")
+                sys.exit(2)
+        elif opt in ("-s", "--seed"):
+            seed = int(arg)
+
+    np.random.seed(seed)
+
     nombre_procesos = np.array(list(string.ascii_uppercase))
     tiempos_llegadas = np.sort(np.random.randint(low='0', high='50', size=26))
-    tiempos_requeridos = np.random.randint(low='1', high='8', size=26)
+    tiempos_requeridos = np.random.randint(low='1', high='10', size=26)
 
     lista_procesos = []
-
-    num_procesos = 4
 
     for i in range(num_procesos):
         nombre = nombre_procesos[i]
@@ -64,4 +87,4 @@ def main():
     print(''.join(cola_ejecucion))
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
