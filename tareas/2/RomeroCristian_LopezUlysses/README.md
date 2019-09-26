@@ -19,7 +19,7 @@ python3 main.py
 Salida
 ---
 
-```zsh
+```bash
 	[92m|J|[0m: 1, t = 7.89
 	[91m|X|[0m: 7, t = 2.76
 	[91m|Z|[0m: 10, t = 1.59
