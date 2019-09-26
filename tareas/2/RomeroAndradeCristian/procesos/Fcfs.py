@@ -19,7 +19,7 @@ class Fcfs(Planificar):
         for proceso in self.proceso:
             while(proceso.llegada > total):
                 total = total + 1
-                texto = texto + "[  ]"
+                texto = texto + "| |"
             inicio = total
             fin = inicio + ceil(proceso.t/self.quantum)
             T = (fin - proceso.llegada)
@@ -35,6 +35,7 @@ class Fcfs(Planificar):
                 texto = texto + proceso.nombre
             total = total + ceil(proceso.t/self.quantum)
         promedios = self.promedios()
-        print("FCFS: T =", promedios['T'], ", E =", promedios['E'],
-              ", P =", promedios['P'])
+        print("FCFS: T =", "{0:.2f}".format(promedios['T']),
+              ", E =",  "{0:.2f}".format(promedios['E']),
+              ", P =",  "{0:.2f}".format(promedios['P']))
         print(texto+ '\n')

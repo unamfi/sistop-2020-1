@@ -9,6 +9,15 @@ class Spn(Planificar):
 
     def __init__(self, quantum, proceso):
         Planificar.__init__(self, quantum, proceso)
+  
+    def procesos_vivos(self, procesos, total):
+        temp_procesos = []
+        for proceso in procesos:
+            if proceso["llegada"] <= total and proceso["quantum"] > 0:
+                if proceso["llegada"] == total:
+                    proceso["inicio"] = total
+                temp_procesos.append(proceso)
+        return temp_procesos
 
     def start(self):
         # print(self.mostrar_procesos())
@@ -44,7 +53,7 @@ class Spn(Planificar):
                                 procesos_terminados.append(proceso)
                     procesos_temp.append(proceso)
             if not avant:
-                texto = texto + "[  ]"
+                texto = texto + "| |"
                 total = total + 1
             procesos_listos = procesos_temp
         for proceso in procesos_terminados:
@@ -58,16 +67,7 @@ class Spn(Planificar):
             self.E_list.append(E)
 
         promedios = self.promedios()
-        print("SPN: T={0}, E={1}, P={2}".format(promedios['T'],
-                                                promedios['E'],
-                                                promedios['P']))
-        print(texto)
-
-    def procesos_vivos(self, procesos, total):
-        temp_procesos = []
-        for proceso in procesos:
-            if proceso["llegada"] <= total and proceso["quantum"] > 0:
-                if proceso["llegada"] == total:
-                    proceso["inicio"] = total
-                temp_procesos.append(proceso)
-        return temp_procesos
+        print("SPN: T =", "{0:.2f}".format(promedios['T']),
+              ", E =", "{0:.2f}".format(promedios['E']),
+              ", P =", "{0:.2f}".format(promedios['P']))
+        print(texto + '\n')

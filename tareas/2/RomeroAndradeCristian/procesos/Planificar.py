@@ -3,7 +3,7 @@
 
 
 class Planificar:
-    def __init__(self, quantum: int, proceso):
+    def __init__(self, quantum, proceso):
         self.quantum = quantum
         self.proceso = proceso
         self.proceso.sort(key=lambda x: x.llegada, reverse=False)
@@ -17,11 +17,11 @@ class Planificar:
         texto = "\t"
         suma = 0
         for proceso in self.proceso:
-            suma += proceso.t
+            suma += proceso.t/self.quantum
             texto += proceso.nombre + ": " + str(proceso.llegada) +\
-                ", t=" + str(proceso.t/self.quantum) + "[quantum];\n\t"
+                ", t = " + "{0:.2f}".format(proceso.t/self.quantum) + "\n\t"
         self.total = suma
-        return texto + "\t(total: " + str(self.total/1000) + "[s])"
+        return texto + "\t(total: " + "{0:.2f}".format(self.total) + ")"
 
     def promedios(self):
         prom = {"P": 0.0,

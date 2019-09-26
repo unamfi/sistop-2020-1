@@ -55,7 +55,7 @@ class RRobin(Planificar):
                     proceso["fin"] = total
                     procesos_terminados.append(proceso)
             if(avant == False):
-                texto = texto + "[  ]"
+                texto = texto + "| |"
                 total = total + 1
             procesos_listos = procesos_temp
         for proceso in procesos_terminados:
@@ -69,7 +69,7 @@ class RRobin(Planificar):
             self.E_list.append(E)
 
         promedios = self.promedios()
-        print("Round Robin: T =", promedios['T'],
-              ", E =", promedios['E'],
-              ", P =", promedios['P'])
+        print("Round Robin: T =", "{0:.2f}".format(promedios['T']),
+              ", E =", "{0:.2f}".format(promedios['E']),
+              ", P =", "{0:.2f}".format(promedios['P']))
         print(texto + '\n')
