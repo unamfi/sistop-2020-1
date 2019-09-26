@@ -53,7 +53,20 @@ m_proc.pop();
 const size_t m_tiem_a{ 3 };
 ```
 
-- Si no termino guardamos la diferencia del tiempo requerido `m_t` y el quantum `m_tiem_a` y lo guardamos en `m_falta`. 
+- Si no termino guardamos la diferencia del tiempo requerido `m_t` y el quantum `m_tiem_a` y lo guardamos en `m_falta` y se vuelve a formar el proceso hasta atrás:
+
+```C
+if(f > 0)
+{
+	//reordenalo al principio
+	m_procs.push(A);
+}
+else if(f == 0)
+{
+	//si ya no le falta nada quitalo.
+	m_procs.pop();
+}
+```
 
 ## Requerimientos
 
