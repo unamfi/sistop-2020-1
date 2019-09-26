@@ -13,7 +13,7 @@ def rr4(procs,q):
 	global proc_ready, proc_waiting,c,results
 	#a: list of arrival times
 	#t: list of ticks 
-	(a,t) = f.genArrivalsTicks(procs) 
+	(a,t) = f.gen_arrivals_ticks(procs) 
 	#a_l: counter to indicate what process has arrived
 	a_l = 0 
 	#sum_t: indicates the total number of ticks the O.S. should execute
@@ -21,7 +21,7 @@ def rr4(procs,q):
 	#c: counter to indicate the current tick
 	c = 0 
 	while c <= sum_t:
-		if a_l < len(a) and c == a[a_l]:
+		if a_l < len(a) and c >= a[a_l]:
 			p = procs[a_l]
 			a_l += 1
 			if proc_ready.isEmpty() and proc_waiting.isEmpty():
