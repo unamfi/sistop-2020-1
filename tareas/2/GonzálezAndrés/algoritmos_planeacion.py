@@ -1,12 +1,16 @@
 import numpy as np
 
 class Proceso(object):
-    def __init__(self, nombre, t_llegada, t_requerido, t_respuesta=0):
+    def __init__(self, nombre : str, t_llegada : int, t_requerido : int):
         self.nombre = nombre
         self.t_llegada = t_llegada
         self.t_requerido = t_requerido
-        self.t_respuesta = t_respuesta
-        self.t_restante = self.t_requerido
+        self.t_restante = t_requerido
+        self.t_finalizacion = t_llegada + t_requerido
+
+    @property
+    def t_respuesta(self): 
+        return self.t_finalizacion - self.t_llegada
 
     @property
     def t_espera(self): 
@@ -19,48 +23,71 @@ class Proceso(object):
     @property
     def p_respuesta(self): 
         return self.t_requerido / self.t_respuesta
+    
+    def reset(self):
+        self.t_restante = self.t_requerido
+        self.t_finalizacion = self.t_llegada + self.t_requerido
 
 def fcfs(lista_procesos=[]):
     """First come, first serve.
     Ingresa una lista de procesos ordenados por tiempo de llegada y devuelve la cola de ejecución.
-    También devuelve la lista de procesos de entrada con los tiempos de ejecución. 
-    """
+    También devuelve la lista de procesos de entrada con los tiempos de ejecución.
 
+    """
     t_total = 0
     cola_ejec = []
     procesos_ejecutados = []
+    lp = lista_procesos
 
-    while lista_procesos:
-        if lista_procesos[0].t_llegada <= t_total:
-            proceso_en_ejec = lista_procesos[0]
-            lista_procesos = lista_procesos[1:]
-            
-            while proceso_en_ejec.t_restante:
-                cola_ejec.append(proceso_en_ejec.nombre)     
-                proceso_en_ejec.t_restante -= 1
-                proceso_en_ejec.t_respuesta += 1
-                for i in range(len(lista_procesos)):
-                    if lista_procesos[i].t_llegada <= t_total:
-                        lista_procesos[i].t_respuesta += 1
-                    else:
-                        break
-                t_total+=1        
+    while lp:
+        if lp[0].t_llegada <= t_total:
+            p_ejec = lp[0] # p_ejec : proceso en ejecucion
+            lp = lp[1:]
 
-            procesos_ejecutados.append(proceso_en_ejec)
+            while p_ejec.t_restante:
+                cola_ejec.append(p_ejec.nombre)     
+                p_ejec.t_restante -= 1
+                t_total+=1
+
+            p_ejec.t_finalizacion = t_total
+            procesos_ejecutados.append(p_ejec)
         else:
             t_total += 1
 
     return [cola_ejec, procesos_ejecutados]
 
 def roundrobin(lista_procesos=[], quantum=1):
-    t_total = 0
+    #t_total = 0
     cola_ejec = []
     procesos_ejecutados = []
-    while lista_procesos:
-        if lista_procesos[0].t_llegada <= t_total:
-            pass
-        else:
-            t_total+=1
+    ronda_procesos = []
+    lp = lista_procesos 
+    t_total = lp[0].t_llegada # Hacemos que inicie desde el proceso que llegó primero
+    ronda_procesos.insert(0, lp[0]) # Agregamos el primer proceso a la ronda
+    lp = lp[1:] # Removemos el primer valor de la lista
+    while lp or ronda_procesos: # Seguimos ejecutando mientras haya procesos, ya sea en ronda o aún sin iniciar
+        # p_ejec : proceso en ejecución
+        p_ejec = ronda_procesos[0] # Ejecutamos el siguiente proceso en cola para ronda
+        trq = quantum # Reiniciamos el contador para el quantum
+        while True:
+            while lp: # Validamos si algún proceso llegó mientras estabamos ejecutando otro
+                if lp[0].t_llegada <= t_total:
+                    ronda_procesos.insert(1, lp[0]) # De ser así, lo ponemos en cola de espera en la segunda posición del arreglo
+                    lp = lp[1:]
+                else:
+                    break
+            cola_ejec.append(p_ejec.nombre)
+            p_ejec.t_restante -= 1
+            trq -= 1
+            t_total += 1
+            if not p_ejec.t_restante: # Si ya ecabamos de ejecutarlo
+                p_ejec.t_finalizacion = t_total
+                procesos_ejecutados.append(p_ejec) # Lo mandamos a la lista de procesos ejecutados
+                break 
+            if not trq: # Si se acaba el tiempo en el quantum
+                ronda_procesos.append(p_ejec) # Mandamos el proceso de nuevo a la ronda
+                break
+        ronda_procesos = ronda_procesos[1:] # Removemos de la lista el proceso que acabamos de ejecutar
     return [cola_ejec, procesos_ejecutados]
 
 def fb(lista_procesos=[],n_colas_prioridad=2, ejec_p_degrad=1, quantum=1):
