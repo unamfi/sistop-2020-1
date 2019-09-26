@@ -9,10 +9,10 @@ proc_waiting = Queue()
 results = []
 #rr1(procs: [Process]): round Robin with quantum = 1
 def rr1(procs):
-	global proc_ready, proc_waiting, c
+	global proc_ready, proc_waiting, c, results
 	#a: list of arrival times
 	#t: list of ticks 
-	(a,t) = genArrivalsTicks(procs) 
+	(a,t) = f.genArrivalsTicks(procs) 
 	#a_l: counter to indicate what process has arrived
 	a_l = 0 
 	#sum_t: indicates the total number of ticks the O.S. should execute
@@ -34,7 +34,7 @@ def rr1(procs):
 				process_w(proc_waiting, proc_ready)		
 		process_r(proc_ready, proc_waiting, c)
 		c += 1 
-	handle_results(procs)
+	f.handle_results(procs,"RR1",results)
 
 #process_w(waiting: Queue, ready: Queue): move a process from the waiting queue to the ready queue
 def process_w(waiting, ready):
@@ -61,22 +61,3 @@ def eat(process, waiting, c):
 		waiting.enqueue(process)
 	else:
 		process.end = c + 1
-
-#handle_results(procs: [Process]): calculates T, E, P parameters based on the modified list of processes
-def handle_results(procs):
-	global results 
-	f.make_numbers(procs)
-	(t_a, T_a, E_a, P_a) = f.get_avgs(procs)
-	f.print_avgs("RR1",t_a, T_a, E_a, P_a)
-	for i in range(len(results)):
-		print(results[i], end=' ')
-	f.print_p_ext(procs)
-
-#genArrivalsTicks(procs: [Process]): generates a list of the processess' times of arrivals and number of ticks
-def genArrivalsTicks(procs):
-	a = [] #times of arrivals 
-	t = [] #number of ticks 
-	for i in range(len(procs)):
-		a.append(procs[i].arrival)
-		t.append(procs[i].ticks_aux)
-	return (a,t)
