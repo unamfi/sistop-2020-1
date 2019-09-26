@@ -1,4 +1,4 @@
-# Tarea 1
+# Tarea 2
 
 Tarea 2 de planificación de procesos de Erik Sanabria Betancourt (415021636).
 
