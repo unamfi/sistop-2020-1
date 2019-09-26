@@ -10,6 +10,8 @@ f = Foundation()
 
 def main():
 	procs = generateTest()
+	#First Come First Served
+	fcfs(procs)
 	#Round Robin with quantum = 1
 	rr1(procs)
 	#Round Robin with quantum = 4
