@@ -120,17 +120,17 @@ class Foundation:
 	def print_avgs(self,n,t,T,E,P):
 		print("\n%s: T=%.2f, E=%.2f, P=%.2f" % (n,T,E,P))
 
-	#handle_results(procs: [Process]): calculates T, E, P parameters based on the modified list of processes
+	#handle_results(procs: [Process]): calculates T, E, P parameters based on the modified list of processes once beginning and end parameters of each process are set
 	def handle_results(self,procs,n,results):
 		self.make_numbers(procs)
 		(t_a, T_a, E_a, P_a) = self.get_avgs(procs)
 		self.print_avgs(n,t_a, T_a, E_a, P_a)
 		for i in range(len(results)):
 			print(results[i], end=' ')
-		print()
-		self.clean_procs(procs)
 		#Uncomment the next line to see a table of all the attributes of each process
 		# self.print_p_ext(procs)
+		print()
+		self.clean_procs(procs)
 
 	#genArrivalsTicks(procs: [Process]): generates a list of the processess' times of arrivals and number of ticks
 	def genArrivalsTicks(self,procs):
