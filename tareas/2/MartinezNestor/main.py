@@ -1,35 +1,14 @@
-from foundations import * 
-from fcfs import *
-from rr1 import *
-from rr4 import *
-from spn import *
+from test import *
 
-
-#Main method
-f = Foundation()
+#helper class to set up the test environment
+t = Test()
+#number of rounds the O.S. should plan: this integer could be any number
+num_rounds = 1
 
 def main():
-	procs = generateTest()
-	#First Come First Served
-	fcfs(procs)
-	#Round Robin with quantum = 1
-	rr1(procs)
-	#Round Robin with quantum = 4
-	rr4(procs,4)
-	#Shortest Process Next 
-	spn(procs)
-
-
-#generateTest() generates a hard coded data set of processes
-def generateTest():
-	a = Process("A",0,3)
-	b = Process("B",1,5)
-	c = Process("C",3,2)
-	d = Process("D",9,5)
-	e = Process("E",12,5)
-	return [a,b,c,d,e]
-
-
+	# t.run_algorithms(t.initial_test())
+	for i in range(num_rounds):
+		t.run_algorithms(t.random_test(i))
 
 #---------------------------
 if __name__ == '__main__':
