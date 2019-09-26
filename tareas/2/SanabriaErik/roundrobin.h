@@ -21,8 +21,8 @@ private:
 	//estos van a representar los tiempos
 	size_t randomN();
 
-	const size_t m_tiem_a{ 3 };
-	size_t m_num_proc;
+	const size_t m_tiem_a{ 3 };					//tiempo permitido, el quantum
+	size_t m_num_proc;							//numero de procesos
 
 	std::queue<Proc> m_procs;					//cola de procesos
 };
