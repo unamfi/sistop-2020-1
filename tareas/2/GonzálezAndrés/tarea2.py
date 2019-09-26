@@ -31,12 +31,12 @@ def main(argv):
                 sys.exit(2)
         elif opt in ("-l", "--tiempo_llegada"):
             llegada_max = int(arg)
-            if llegada_max<=1:
+            if llegada_max<0:
                 print("El tiempo máximo de llegada debe ser un número positivo")
                 sys.exit(2)
         elif opt in ("-t", "--tiempo_requerido"):
             requerido_max = int(arg)
-            if requerido_max<=1:
+            if requerido_max<1:
                 print("El tiempo máximo requerido debe ser un número mayor a 0")
                 sys.exit(2)
         elif opt in ("-s", "--seed"):
@@ -45,7 +45,10 @@ def main(argv):
     np.random.seed(seed)
 
     nombre_procesos = np.array(list(string.ascii_uppercase))
-    tiempos_llegadas = np.sort(np.random.randint(low='0', high=llegada_max, size=num_procesos))
+    if llegada_max==0:
+        tiempos_llegadas = np.zeros(num_procesos)
+    else:
+        tiempos_llegadas = np.sort(np.random.randint(low='0', high=llegada_max, size=num_procesos))
     tiempos_requeridos = np.random.randint(low='1', high=requerido_max, size=num_procesos)
 
     lista_procesos = []
