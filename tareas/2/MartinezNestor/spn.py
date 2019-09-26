@@ -5,7 +5,9 @@ f = Foundation()
 proc_ready = Queue()
 #proc_waiting: queue of processes that are waiting to be executed
 proc_waiting = Queue()
+#q: denotes the ticks per process 
 q = 0
+#i: counter to keep track of the current tick
 i = 0
 results = []
 #spn(procs: [Process]): algorithm that planifies procesesses based on Shortest Process Next strategy
@@ -31,7 +33,7 @@ def spn(procs):
 					proc_waiting.enqueue(p)
 				else:
 					proc_waiting.enqueue(p)
-					arranged_q = determine_next_short(proc_waiting)
+					arranged_q = sort_waiting_q(proc_waiting)
 					for i in range(len(arranged_q)):
 						proc_waiting.enqueue(arranged_q[i])
 				process_w(proc_waiting, proc_ready)
@@ -53,7 +55,7 @@ def process_w(waiting, ready):
 			p = waiting.dequeue()
 			ready.enqueue(p)
 
-#process_r(ready: Queue, waiting: Queue, c: Int): works with the process in the queue of processes that are ready 
+#process_r(ready: Queue, c: Int): works with the process in the queue of processes that are ready 
 def process_r(ready,c):
 	global results,i,q
 	if ready.isEmpty():
@@ -73,8 +75,8 @@ def process_r(ready,c):
 				p.end = c + 1
 				i = 0
 				q = 0 
-
-def determine_next_short(waiting):
+#determine_next_short(waiting: Queue): when the waiting queue contains two or more processes, this function will return a list of the procesess sorted by number of ticks. 
+def sort_waiting_q(waiting):
 	if waiting.size() < 2:
 		return [waiting.dequeue()]
 	else:
@@ -83,16 +85,3 @@ def determine_next_short(waiting):
 			pcs.append(waiting.dequeue())
 		pcs.sort(key=lambda x: x.ticks)
 		return pcs 
-
-
-
-
-
-		
-
-
-
-
-
-
-
