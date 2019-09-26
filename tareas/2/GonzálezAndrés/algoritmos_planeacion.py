@@ -63,7 +63,7 @@ def roundrobin(lista_procesos=[], quantum=1):
     ronda_procesos = []
     lp = lista_procesos 
     t_total = lp[0].t_llegada # Hacemos que inicie desde el proceso que llegó primero
-    ronda_procesos.insert(0, lp[0]) # Agregamos el primer proceso a la ronda
+    ronda_procesos.append(lp[0]) # Agregamos el primer proceso a la ronda
     lp = lp[1:] # Removemos el primer valor de la lista
     while lp or ronda_procesos: # Seguimos ejecutando mientras haya procesos, ya sea en ronda o aún sin iniciar
         while not ronda_procesos: # si no hay procesos en cola para ronda...
@@ -98,6 +98,42 @@ def roundrobin(lista_procesos=[], quantum=1):
                 ronda_procesos.append(p_ejec) # Mandamos el proceso de nuevo a la ronda
                 break
         ronda_procesos = ronda_procesos[1:] # Removemos de la lista el proceso que acabamos de ejecutar
+    return [cola_ejec, procesos_ejecutados]
+
+def spn(lista_procesos=[]):
+    #t_total = 0
+    cola_ejec = []
+    procesos_ejecutados = []
+    lp_esp = [] # lista de procesos en espera
+    lp = lista_procesos 
+    t_total = lp[0].t_llegada # Hacemos que inicie desde el proceso que llegó primero
+    while lp: # Recorremos la lista para ver si encontramos otro proceso que haya llegado al mismo tiempo
+        if lp[0].t_llegada == t_total:
+            lp_esp.append(lp[0]) # De ser así, lo ponemos en cola de espera
+            lp = lp[1:]
+        else:
+            if len(lp_esp)>1:
+                lp_esp.sort(key=lambda x: x.t_requerido) # Ordenamos la lista de acuerdo al tiempo de ejecucion
+            break
+    while lp_esp:
+        p_ejec = lp_esp[0]
+        lp_esp = lp_esp[1:]
+        while True:
+            cola_ejec.append(p_ejec.nombre)
+            p_ejec.t_restante -= 1
+            t_total +=1
+            while lp: # Recorremos la lista para ver si encontramos otro proceso que haya llegado al mismo tiempo
+                if lp[0].t_llegada == t_total:
+                    lp_esp.append(lp[0]) # De ser así, lo ponemos en cola de espera
+                    lp = lp[1:]
+                else:
+                    if len(lp_esp)>1:
+                        lp_esp.sort(key=lambda x: x.t_requerido) # Ordenamos la lista de acuerdo al tiempo de ejecucion
+                    break
+            if not p_ejec.t_restante: # Si terminamos de ejecutar...
+                p_ejec.t_finalizacion = t_total
+                procesos_ejecutados.append(p_ejec)
+                break
     return [cola_ejec, procesos_ejecutados]
 
 def fb(lista_procesos=[],n_colas_prioridad=2, ejec_p_degrad=1, quantum=1):

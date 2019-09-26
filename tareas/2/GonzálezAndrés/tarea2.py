@@ -31,7 +31,7 @@ def main(argv):
     np.random.seed(seed)
 
     nombre_procesos = np.array(list(string.ascii_uppercase))
-    tiempos_llegadas = np.sort(np.random.randint(low='0', high='50', size=26))
+    tiempos_llegadas = np.sort(np.random.randint(low='0', high='35', size=26))
     tiempos_requeridos = np.random.randint(low='1', high='10', size=26)
 
     lista_procesos = []
@@ -84,6 +84,21 @@ def main(argv):
     P = np.mean(P)
 
     print('\nRR4: T=%.2f, E=%.2f, P=%.2f' % (T, E, P))
+    print(''.join(cola_ejecucion))
+
+    # SPN
+    for p in lista_procesos:
+        p.reset() # Reiniciamos los procesos a sus valores iniciales
+    [cola_ejecucion, procesos_ejecutados] = ap.spn(lista_procesos)
+
+    T = [proceso.t_respuesta for proceso in procesos_ejecutados]
+    T = np.mean(T)
+    E = [proceso.t_espera for proceso in procesos_ejecutados]
+    E = np.mean(E)
+    P = [proceso.p_penalizacion for proceso in procesos_ejecutados]
+    P = np.mean(P)
+
+    print('\nSPN: T=%.2f, E=%.2f, P=%.2f' % (T, E, P))
     print(''.join(cola_ejecucion))
 
 if __name__ == "__main__":
