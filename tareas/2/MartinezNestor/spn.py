@@ -12,7 +12,7 @@ i = 0
 results = []
 #spn(procs: [Process]): algorithm that planifies procesesses based on Shortest Process Next strategy
 def spn(procs):
-	global proc_ready, proc_waiting
+	global proc_ready, proc_waiting,results
 	#a: list of arrival times
 	#t: list of ticks 
 	(a,t) = f.gen_arrivals_ticks(procs) 
@@ -45,6 +45,7 @@ def spn(procs):
 		process_r(proc_ready,c)
 		c += 1
 	f.handle_results(procs,"SPN",results)
+	results = [] 
 
 #process_w(waiting: Queue, ready: Queue): move a process from the waiting queue to the ready queue
 def process_w(waiting, ready):

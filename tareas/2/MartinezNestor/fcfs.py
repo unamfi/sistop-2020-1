@@ -12,7 +12,7 @@ i = 0
 results = []
 #fcfs(procs: [Process]): algorithm that planifies procesesses based on First Come First Served 
 def fcfs(procs):
-	global proc_ready, proc_waiting
+	global proc_ready,proc_waiting,c,results
 	#a: list of arrival times
 	#t: list of ticks 
 	(a,t) = f.gen_arrivals_ticks(procs) 
@@ -39,6 +39,7 @@ def fcfs(procs):
 		process_r(proc_ready,c)
 		c += 1
 	f.handle_results(procs,"FCFS",results)
+	results = []
 
 #process_w(waiting: Queue, ready: Queue): move a process from the waiting queue to the ready queue
 def process_w(waiting, ready):

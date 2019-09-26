@@ -35,6 +35,7 @@ def rr1(procs):
 		process_r(proc_ready, proc_waiting, c)
 		c += 1 
 	f.handle_results(procs,"RR1",results)
+	results = []
 
 #process_w(waiting: Queue, ready: Queue): move a process from the waiting queue to the ready queue
 def process_w(waiting, ready):
