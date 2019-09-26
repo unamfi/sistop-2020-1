@@ -72,6 +72,13 @@ class Process:
 	def show_e(self):
 		print("%s-> a: %d, t: %d, beg: %d, end: %d, T: %.2f, E: %.2f, P:%.2f" % (self.name, self.arrival, self.ticks, self.beginning, self.end, self.T, self.E, self.P))
 
+	def reset(self):
+		self.ticks_aux = self.ticks
+		self.beginning = 0
+		self.end = 0
+		self.T = 0
+		self.P = 0
+		self.E = 0
 
 #A class with some useful methods 
 class Foundation:
@@ -111,7 +118,33 @@ class Foundation:
 
 	#print_avgs(name, ticks, T, E, P): prints to the console the final results for the 'name' algorithm
 	def print_avgs(self,n,t,T,E,P):
-		print("%s: T=%.2f, E=%.2f, P=%.2f" % (n,T,E,P))
+		print("\n%s: T=%.2f, E=%.2f, P=%.2f" % (n,T,E,P))
+
+	#handle_results(procs: [Process]): calculates T, E, P parameters based on the modified list of processes
+	def handle_results(self,procs,n,results):
+		self.make_numbers(procs)
+		(t_a, T_a, E_a, P_a) = self.get_avgs(procs)
+		self.print_avgs(n,t_a, T_a, E_a, P_a)
+		for i in range(len(results)):
+			print(results[i], end=' ')
+		print()
+		self.clean_procs(procs)
+		#Uncomment the next line to see a table of all the attributes of each process
+		# self.print_p_ext(procs)
+
+	#genArrivalsTicks(procs: [Process]): generates a list of the processess' times of arrivals and number of ticks
+	def genArrivalsTicks(self,procs):
+		a = [] #times of arrivals 
+		t = [] #number of ticks 
+		for i in range(len(procs)):
+			a.append(procs[i].arrival)
+			t.append(procs[i].ticks_aux)
+		return (a,t)
+
+	def clean_procs(self,procs):
+		for i in range(len(procs)):
+			procs[i].reset()
+
 
 
 
