@@ -57,7 +57,7 @@ def fcfs(lista_procesos=[]):
     return [cola_ejec, procesos_ejecutados]
 
 def roundrobin(lista_procesos=[], quantum=1):
-    #t_total = 0
+    """De las implementaciones más feas que he hecho, pero funciona :D"""
     cola_ejec = []
     procesos_ejecutados = []
     ronda_procesos = []
@@ -66,13 +66,23 @@ def roundrobin(lista_procesos=[], quantum=1):
     ronda_procesos.insert(0, lp[0]) # Agregamos el primer proceso a la ronda
     lp = lp[1:] # Removemos el primer valor de la lista
     while lp or ronda_procesos: # Seguimos ejecutando mientras haya procesos, ya sea en ronda o aún sin iniciar
+        while not ronda_procesos: # si no hay procesos en cola para ronda...
+            cola_ejec.append('-') # indicamos que en ese tiempo no se ejecutó nada
+            t_total += 1 # Aumentamos un tick
+            while lp: # Validamos si algún proceso llegó mientras estabamos ejecutando otro
+                if lp[0].t_llegada <= t_total:
+                    ronda_procesos.append(lp[0]) # De ser así, lo ponemos en cola de espera
+                    lp = lp[1:]
+                else:
+                    break
+            
         # p_ejec : proceso en ejecución
         p_ejec = ronda_procesos[0] # Ejecutamos el siguiente proceso en cola para ronda
         trq = quantum # Reiniciamos el contador para el quantum
         while True:
-            while lp: # Validamos si algún proceso llegó mientras estabamos ejecutando otro
+            while lp: # Validamos si algún proceso llegó mientras estabamos en el quantum
                 if lp[0].t_llegada <= t_total:
-                    ronda_procesos.insert(1, lp[0]) # De ser así, lo ponemos en cola de espera en la segunda posición del arreglo
+                    ronda_procesos.append(lp[0]) # De ser así, lo ponemos en cola de espera
                     lp = lp[1:]
                 else:
                     break
