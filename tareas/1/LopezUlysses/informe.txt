@@ -1,0 +1,21 @@
+Problema a resolver: Cruce de río
+
+Lenguaje: Python
+	Para poder ejecutar el programa se requiere que tenga intalado python3 y que esté en la direccion 
+	donde se encuentra el archivo y en la terminal con esa dirección ejecutar:
+
+	python3 hackerandserf.py
+
+Estrategia: La estrategia a utilizar fue el de mutex ya que para subir a la balsa debe ser persona por persona.
+
+Notas y comentarios:
+Notas del progama	
+	1.- El número de personas que suben a la balsa son las necesarias pero habrán peleas entre los desarrolladores ya que
+	en algunas iteraciones se suben 3 serfs o 3 hackers por lo que no se cumple al 100% la tarea.
+	2.- En algunas ocasiones el proceso se detiene y aún no encuentro el porqué
+Comentarios: 
+	1.- Se me dificulta un poco python y no lo he utilizado mucho, solo para algunas cosas, me gustaría mucho que algunas 
+	cosas o temas pueda explicarlas en un lenguaje más bajo como C, por lo general entiendo mejor cuando se hacen las cosas
+	de manera más puntuales por así decirlo.
+
+	

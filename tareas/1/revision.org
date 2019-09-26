@@ -108,10 +108,10 @@
     verificar si hay gatos, en cuyo caso se suicida 😉
 - Calificación :: 10
 
-** Saúl Gabino
+** Saúl Gabino y Ricardo Muñoz
 - Problema elegido :: De gatos y ratones
 - Documentación :: No entregada
-- Código :: [[./GabinoSaul/Gatos_y_Ratones/gatos.py][gatos.py]]
+- Código :: [[./Mu%C3%B1ozRicardo-GabinoSaul/Comida_de_Gatos/comidagatos.py][comidagatos.py]]
 - Lenguaje :: Python
 - Comentarios ::
   - Una implementación curiosa, con /tres/ tipos de hilo: Ratones,
@@ -291,6 +291,46 @@
       ingeniosa. Pero lleva a una inanición tremenda.
 - Calificación :: 7
 
+** Ulysses López
+- Problema elegido :: El cruce del río
+- Documentación :: [[./LopezUlysses/informe.txt][informe.txt]]
+- Código :: [[./LopezUlysses/hackerandserf.py][hackerandserf.py]]
+- Lenguaje :: Python
+- Comentarios ::
+  - ¡Ups! El código falta a su promesa, y en mi primera ejecución tuve
+    a unos cuantos programadores mojados:
+    #+begin_src text
+      $ python3 hackerandserf.py 
+      ¿Cuántas iteraciones requiere?
+      5
+      Se está subiendo un  Serf de Microsoft a la balsa
+      Se está subiendo un  Serf de Microsoft a la balsa
+      Se está subiendo un  Hacker de Linux a la balsa
+      Se está subiendo un  Serf de Microsoft a la balsa
+      Ya somos 4 personas en la balsa
+      ,**********************************Vamos a zarpar y no habrán problemas...creo...************************************
+      Se está subiendo un  Hacker de Linux a la balsa
+      Se está subiendo un  Serf de Microsoft a la balsa
+      Se está subiendo un  Hacker de Linux a la balsa
+      Se está subiendo un  Hacker de Linux a la balsa
+      Ya somos 4 personas en la balsa
+    #+end_src
+  - Tuve que rascarme un poco la cabeza. La resolución que presentas
+    es correcta... ¿Por qué pasa esto una y otra vez? ¡Porque liberas
+    =mutex= antes de haber realizado la acción!
+    - Esto es correcto en la tercera condición de =hacker()= y de
+      =serf()=, porque la acción es simplemente pararse en la fila
+      correspondiente (no hay cuatro personas aún). Pero en ambas
+      funciones, sea que =numberhackers == 4=, =numberserfs == 4=, o
+      ambos sean =2=, primero liberas =mutex= y luego llamas a
+      =up(person)=. Me parece que por ahí das la oportunidad de que se
+      /cuele/ uno que no corresponde, abriendo una pequeña condición
+      de carrera.
+  - No encontré ningún caso en que el proceso se detuviera, no se a
+    qué pueda deberse que tú lo viste.
+  - La implementación, pese a este /bug/, es buena.
+- Calificación: 8
+
 ** César Lugo
 - Problema elegido :: Santa Claus
 - Documentación :: [[./LugoCesar/LugoCesar.txt][LugoCesar.txt]]
@@ -312,77 +352,218 @@
 - Documentación :: [[./MartinezCesar-NoriegaLisset/Especificaciones.txt][Especificaciones.txt]]
 - Código :: [[./MartinezCesar-NoriegaLisset/gatos_ratones.py][gatos_ratones.py]]
 - Lenguaje :: Python
-- Comentarios :: 
-- Calificación :: 
+- Comentarios ::
+  - ¡Muy bien documentado! Corto y al grano, refiriéndose a todos los
+    puntos solicitados, y como una buena guía para comprender el código.
+  - La implementación es correcta, y está bien justificado cómo usan
+    las construcciones de sincronización
+  - Como comentario de estilo y seguridad: Me llamó l atención que en
+    todas las funciones declaran (¿por si acaso?) a todas las
+    variables globales, las usen o no. Esto es considerado una /mala
+    práctica/ de programación (y no específicamente de Python) — ¡Hay
+    que aprender a limitar el /reguero/ de nuestras variables!
+- Calificación :: 10
 
 ** Nestor Martinez
 - Problema elegido :: Santa Claus
 - Documentación :: [[./MartinezNestor/MartinezOstoa_tarea1.md][MartinezOstoa_tarea1.md]]
 - Código :: [[./MartinezNestor/northPole.py][northPole.py]]
 - Lenguaje :: Python
-- Comentarios :: 
-- Calificación :: 
+- Comentarios ::
+  - ¡Buena implementación!
+  - Comentas en los lugares adecuados para explicar la intención de tu
+    código. ¡Bien!
+  - me llaman la atención algunas construcciones, sobre todo las
+    relacionadas con la generación de aleatorios para jugar con
+    probabilidades.
+    - Por ejemplo, línea 56: =if randint(0,500) <=250= es exactamente
+      equivalente a =if random() <=0.5=
+    - Línea 78, =if randint(20,40 <=30= es exactamente lo mismo que
+      =if randint(0,20) <=10= — O a =if random() <=0.5=
+    Son usos correctos. Pero considerando que podrías estar
+    escribiendo un programa más complejo, y podría ser leído por gente
+    que no te conoce, conviene siempre usar las construcciones más
+    sencillas — Alguien podría pasar un rato buscando en el código
+    /¿por qué 500?/, /¿por qué de 20 a 40?/...
+- Calificación :: 10
 
 ** Luis Mata
 - Problema elegido :: El asesor y los alumnos
 - Documentación :: [[./MataLuis/documentacion.txt][documentacion.txt]]
 - Código :: [[./MataLuis/tarea1.py][tarea1.py]]
 - Lenguaje :: Python
-- Comentarios :: 
-- Calificación :: 
+- Comentarios ::
+  - El programa se acerca a lo solicitado, pero no lo resuelve del todo
+  - Los hilos =alumno= se limitan a agregar sus preguntas al arreglo
+    global =preguntas= y al =contador=, pero salen casi de inmediato
+  - La función =responderPregunta()= del =profesor= se manda a sí
+    mismo la señal de =tomarPalabra=, pero perfectamente podríamos
+    omitir esa señalización — No cambiaría la
+    ejecución. =responderPregunta()= dice:
+    #+begin_src python
+      def responderPregunta():
+	  global alumnos, preguntas
+	  if (len(alumnos)>0):
+	      numAlumno = alumnos[0]
+	      tomarPalabra.acquire()  ##Nos permite que solo un alumno pregunte al mismo tiempo, tome la palabra. 
+	      print (".........................Falta atender a estos alumnos:")
+	      print '.........................', alumnos
+	      print("Alumno %d: Mi  duda es:...." %numAlumno)
+	      print("Profesor: Mira, eso es muy sencillo....")
+	      # (...)
+    #+end_src
+    Cuando en realidad esto debería reflejar el intercambio de flujo
+    entre dos funciones, una que "hablara" por el profesor y la otra
+    por el alumno.
+- Calificación :: 6
 
 ** Max Serrano
 - Problema elegido :: De gatos y ratones
 - Documentación :: [[./MaxSerrano/MaxSerrano.txt][MaxSerrano.txt]]
 - Código :: [[./MaxSerrano/pgyr.py][pgyr.py]]
 - Lenguaje :: Python
-- Comentarios :: 
-- Calificación :: 
+- Comentarios ::
+  - Tu programa implementa tres hilos — Un gato, un ratón, un
+    plato. Nunca hay más de un animal de cada tipo "existente" al
+    mismo tiempo.
+  - No implementas consideración hacia el caso de que un gato y un
+    ratón se encuentren. ¡La lógica de =gato()= es idéntica a la de
+    =raton()=!
+- Calificación :: 7
 
 ** Luis Moreno y Ángel Ramirez
 - Problema elegido :: El asesor y los alumnos
 - Documentación :: [[./MorenoLuis-RamirezAngel/Tarea1SistOp.pdf][Tarea1SistOp.pdf]]
-- Código :: [[./MorenoLuis-RamirezAngel/Tarea1SistOp.cpp][Tarea1SistOp.cpp]]
+- Código :: [[./MorenoLuis-RamirezAngel/Tarea1SistOpMC.cpp][Tarea1SistOpMC.cpp]]
 - Lenguaje :: C++
-- Comentarios :: 
-- Calificación :: 
+- Comentarios ::
+  - El código es bastante decentemente portable, basta reemplazar
+    =windows.h= por =unistd.h= y modificar las llamadas a =Sleep(n)=
+    (con =n= en microsegundos) por =sleep(n)= (con =n= en segundos).
+  - ¡UGH! ¿Quién les enseñó a escribir cadenas en español en C++
+    usando interpolación de caracteres ASCII? ¡Mándenlo de vuelta a
+    los ochenta! Les dejo como referencia otro texto (nada
+    nuevo... Este tambíén es de 2003) de Joel Spolsky al respecto: [[https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/][The
+    Absolute Minimum Every Software Developer Absolutely, Positively
+    Must Know About Unicode and Character Sets (No Excuses!)]]
+    - Ojo, si quieren exponer acerca de Unicode... Lo declaro un tema
+      absolutamente válido 😉
+  - Implementan su solución usando C++, y empleando variables de
+    condición. ¡Muy bien! ¡Gente valiente y curiosa! ☺
+  - En la implementación que hacen, el asesor no existe —
+    literalmente. Los alumnos llegan, se sientan, hacen sus preguntas
+    y se van, pero no existe ningún objeto que represente al
+    asesor. ¡El meollo del programa es que el asesor de rato en rato
+    se encuentre con sus sillas vacías y pueda acostarse a dormir la
+    siesta!
+  - El programa utiliza espera activa y es vulnerable a una condición
+    de carrera. Para demostrarlo, córranlo con una única silla, y
+    verán que tarde o temprano:
+    #+begin_src text
+      (...)
+      Hola, soy 10 y tengo 1 preguntas =D
+      ± 1 hizo una pregunta
+      ± 1 hizo una pregunta
+      õ 1 sali¢ del sal¢n 
 
-** Ricardo Muñoz y Saúl Gabino
-- Problema elegido :: De gatos y ratones
-- Documentación :: No entregada
-- Código :: [[./MuñozRicardo-GabinoSaul/Comida_de_Gatos/comidagatos.py][comidagatos.py]]
-- Lenguaje :: Python
-- Comentarios :: 
-- Calificación :: 
+      Se acabo =D
+
+      Presiona ENTER para continuar...¯ 2 entr¢ al sal¢n 
+      ± 2 hizo una pregunta
+      õ 2 sali¢ del sal¢n 
+      (...)
+    #+end_src
+- Calificación :: 7
 
 ** Jorge Ramos y Brian Espinoza
 - Problema elegido :: Cruce de caminos
 - Documentación :: [[./RamosJorge-EspinozaBrian/readme.md][readme.md]]
 - Código :: [[./RamosJorge-EspinozaBrian/problema2.py][problema2.py]]
 - Lenguaje :: Python
-- Comentarios :: 
-- Calificación :: 
+- Comentarios ::
+  - _Excelente_ documentación. Hay algunos detalles de formateo con
+    Markdown que podrían mejorarse, pero la documentación es sin duda
+    la más completa de las que he visto hasta ahora.
+  - Solución original y completa. Tal vez un poquito /barroca/, pero
+    muy buena.
+  - Me queda la duda — Es posible que, como el avance de cada coche se
+    da sección por sección, este código sea vulnerable a caer en
+    bloqueo mutuo. Lo corrí varias veces y no ocurrió, pero eso no
+    /garantiza/ que no pueda ocurrir
+    - Tal vez esta situación la salve el uso de "semáforos viales" que
+      no eran parte del planteamiento original... ¿?
+    - O... ¡Ah, no! No es vulnerable. El que el ciclo de cruces esté
+      protegido con un mutex hace que sólo un auto esté cruzando a la
+      vez. Tal vez es un poco subóptimo (no permite que haya
+      concurrencia permitida no-rival), pero evita problemas
+    - ¿Se les ocurre alguna manera en que /sin peligro de bloqueo
+      mutuo/ pueda quitarse el mutex global? (sí, sí la hay)
+- Calificación :: 10
 
 ** Cristian Romero
 - Problema elegido :: Los alumnos y el asesor
 - Documentación :: [[./RomeroAndradeCristian/README.md][README.md]], [[./RomeroAndradeCristian/Documentacion.html][Documentacion.html]]
 - Código :: [[./RomeroAndradeCristian/main.py][main.py]], [[./RomeroAndradeCristian/alumnos_asesor/Alumnos.py][Alumnos.py]], [[./RomeroAndradeCristian/alumnos_asesor/Cubiculo.py][Cubiculo.py]], [[./RomeroAndradeCristian/alumnos_asesor/__init__.py][__init__.py]], [[./RomeroAndradeCristian/alumnos_asesor/Profesor.py][Profesor.py]]
 - Lenguaje :: Python
-- Comentarios :: 
-- Calificación :: 
+- Comentarios ::
+  - ¡Muy bien! Me parece que modelaste correctamente todos los
+    requisitos de este problema, incluyendo la parte más complicada
+    (que el profesor se duerma cuando puede hacerlo).
+    - Sería bueno que, en vez de dormirse "falsamente" (con un
+      =sleep(1)=), tuvieras algo como:
+      #+begin_src python
+      if puede:
+          print('Zzzzzzzzzzzzzzzzzzzz...')
+	  cubiculo.cierra_puerta()
+	  profe_dormido.acquire()
+	  print('desperté')
+      #+end_src python
+      Para esto, tendrías que implementar un =cubiculo.cierra_puerta()= que
+      determinara alguna condición del =Cubiculo= que un =Alumno=
+      pudiera verificar condicionalmente, y =cubiculo.tocar_puerta()=
+      — Lo cual despertaría al profesor mediante un
+      =profe_dormido.release()=... Pero para eso tendrías que hacer
+      algunas modificaciones a la arquitectura general ;-)
+  - Excelente documentación.
+  - Muy bienvenido que le pongas algo de humor a la implementación ;-)
+    Sólo me resta quejarme de algo: ¿Por qué duplicar la lista de
+    preguntas entre alumnos y profesor? ;-)
+- Calificación :: 10
 
 ** Ricardo Rosales
 - Problema elegido :: El servidor Web
 - Documentación :: [[./RosalesRicardo/tarea1.pdf][tarea1.pdf]], [[./RosalesRicardo/tarea1.tex][tarea1.tex]]
 - Código :: [[./RosalesRicardo/jefe-trabajador.py][jefe-trabajador.py]]
 - Lenguaje :: Python
-- Comentarios :: 
-- Calificación :: 
+- Comentarios ::
+  - El planteamiento era un poco al revés — Era considerando que tú
+    estás implementando el /servidor/ Web, no un navegador
+    - Esto responde al punto que mencionas como último párrafo de tu
+      documentación
+  - Los trabajadores que generaste (clase =Trabajor=) no son hilos
+    independientes que quedan /dormidos/ esperando algún evento, sino
+    que únicamente imprimen los resultados de forma secuencia / lineal
+  - El único uso de mecanismos de sincronización que hiciste fue para
+    un mutex =m= (que, además, resulta innecesario ☹)
+- Calificación :: 6
 
 ** Erik Sanabria
 - Problema elegido :: De gatos y ratones
 - Documentación :: [[./SanabriaErik/Readme.md][Readme.md]]
 - Código :: [[./SanabriaErik/source.c][source.c]], [[./SanabriaErik/Makefile][Makefile]]
 - Lenguaje :: C
-- Comentarios :: 
-- Calificación :: 
+- Comentarios ::
+  - Punto a favor: Te atreviste a desarrollar la solución en C, que
+    (para el tipo de problemas que estamos resolviendo) es
+    necesariamente más complejo
+    - Y el uso de OOP en C, así sea apenas un atisbo... Es muy poco
+      frecuente observarlo por aquí. ¡Bonito!
+  - Punto en contra: Te faltó implementar buena parte de la lógica ☹
+    Lanzas los hilos, pero éstos no se comunican entre sí
+  - Desafortunadamente, no puedo decir que el problema esté resuelto ☹
+  - Respecto a la documentación: ¿Hay alguna razón para /requerir/ un
+    sistema Linux >= 3.10, gcc >= 5.4 o procesador de 64 bits? No creo
+    que las versiones que presentas sean las del entorno que tú
+    empleas (porque son demasiado viejas). Pero eso no necesariamente
+    las hace requisito (sino que "probado en...")
+- Calificación :: 7
