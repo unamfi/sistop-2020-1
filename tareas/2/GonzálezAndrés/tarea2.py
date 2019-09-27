@@ -5,6 +5,86 @@ import numpy as np
 import string
 import algoritmos_planeacion as ap
 
+def crear_procesos(num_procesos = 5, llegada_max = 10, requerido_max = 10, seed = None):
+    np.random.seed(seed)    
+    nombre_procesos = np.array(list(string.ascii_uppercase))
+    if llegada_max==0:
+        tiempos_llegadas = np.zeros(num_procesos)
+    else:
+        tiempos_llegadas = np.sort(np.random.randint(low='0', high=llegada_max, size=num_procesos))
+    tiempos_requeridos = np.random.randint(low='1', high=requerido_max, size=num_procesos)
+    lista_procesos = []
+    for i in range(num_procesos):
+        nombre = nombre_procesos[i]
+        tiempo_llegada = tiempos_llegadas[i]
+        tiempo_requerido = tiempos_requeridos[i]
+        lista_procesos.append(ap.Proceso(nombre, tiempo_llegada, tiempo_requerido))
+        print("%s: t_llegada=%d, t_requerido=%d." % (nombre, tiempo_llegada, tiempo_requerido))
+    return lista_procesos
+
+def test_fcfs(lista_procesos):
+    [cola_ejecucion, procesos_ejecutados] = ap.fcfs(lista_procesos)
+
+    T = [proceso.t_respuesta for proceso in procesos_ejecutados]
+    T = np.mean(T)
+    E = [proceso.t_espera for proceso in procesos_ejecutados]
+    E = np.mean(E)
+    P = [proceso.p_penalizacion for proceso in procesos_ejecutados]
+    P = np.mean(P)
+
+    print('\nFCFS: T=%.2f, E=%.2f, P=%.2f' % (T, E, P))
+    print(''.join(cola_ejecucion))
+
+def test_roundrobin(lista_procesos, quantum):
+    for p in lista_procesos:
+        p.reset() # Reiniciamos los procesos a sus valores iniciales
+    [cola_ejecucion, procesos_ejecutados] = ap.roundrobin(lista_procesos, quantum)
+
+    T = [proceso.t_respuesta for proceso in procesos_ejecutados]
+    T = np.mean(T)
+    E = [proceso.t_espera for proceso in procesos_ejecutados]
+    E = np.mean(E)
+    P = [proceso.p_penalizacion for proceso in procesos_ejecutados]
+    P = np.mean(P)
+
+    print('\nRR%d: T=%.2f, E=%.2f, P=%.2f' % (quantum, T, E, P))
+    print(''.join(cola_ejecucion))
+
+def test_spn(lista_procesos):
+    for p in lista_procesos:
+        p.reset() # Reiniciamos los procesos a sus valores iniciales
+    [cola_ejecucion, procesos_ejecutados] = ap.spn(lista_procesos)
+
+    T = [proceso.t_respuesta for proceso in procesos_ejecutados]
+    #print(T)
+    T = np.mean(T)
+    E = [proceso.t_espera for proceso in procesos_ejecutados]
+    #print(E)
+    E = np.mean(E)
+    P = [proceso.p_penalizacion for proceso in procesos_ejecutados]
+    #print(P)
+    P = np.mean(P)
+
+    print('\nSPN: T=%.2f, E=%.2f, P=%.2f' % (T, E, P))
+    print(''.join(cola_ejecucion))
+
+def test_fb(lista_procesos, n_cp, ej_d, quantum):
+    for p in lista_procesos:
+        p.reset() # Reiniciamos los procesos a sus valores iniciales
+    [cola_ejecucion, procesos_ejecutados] = ap.fb(lista_procesos, n_cp, ej_d, quantum)
+
+    T = [proceso.t_respuesta for proceso in procesos_ejecutados]
+    T = np.mean(T)
+    E = [proceso.t_espera for proceso in procesos_ejecutados]
+    E = np.mean(E)
+    P = [proceso.p_penalizacion for proceso in procesos_ejecutados]
+    P = np.mean(P)
+
+    print(('\nFB: T=%.2f, E=%.2f, P=%.2f, '+
+            '(n_colas_prioridad = %d, ejec_para_degradado = %d, quantum = %d)')
+                % (T, E, P, n_cp, ej_d, quantum))
+    print(''.join(cola_ejecucion))
+
 def main(argv):
 
     num_procesos = 5
@@ -42,129 +122,28 @@ def main(argv):
         elif opt in ("-s", "--seed"):
             seed = int(arg)
 
-    np.random.seed(seed)
+    lista_procesos = crear_procesos(num_procesos, llegada_max, requerido_max, seed)
 
-    nombre_procesos = np.array(list(string.ascii_uppercase))
-    if llegada_max==0:
-        tiempos_llegadas = np.zeros(num_procesos)
-    else:
-        tiempos_llegadas = np.sort(np.random.randint(low='0', high=llegada_max, size=num_procesos))
-    tiempos_requeridos = np.random.randint(low='1', high=requerido_max, size=num_procesos)
-
-    lista_procesos = []
-
-    for i in range(num_procesos):
-        nombre = nombre_procesos[i]
-        tiempo_llegada = tiempos_llegadas[i]
-        tiempo_requerido = tiempos_requeridos[i]
-        lista_procesos.append(ap.Proceso(nombre, tiempo_llegada, tiempo_requerido))
-        print("%s: t_llegada=%d, t_requerido=%d." % (nombre, tiempo_llegada, tiempo_requerido))
-
-    # FIFO
-    [cola_ejecucion, procesos_ejecutados] = ap.fcfs(lista_procesos)
-
-    T = [proceso.t_respuesta for proceso in procesos_ejecutados]
-    T = np.mean(T)
-    E = [proceso.t_espera for proceso in procesos_ejecutados]
-    E = np.mean(E)
-    P = [proceso.p_penalizacion for proceso in procesos_ejecutados]
-    P = np.mean(P)
-
-    print('\nFCFS: T=%.2f, E=%.2f, P=%.2f' % (T, E, P))
-    print(''.join(cola_ejecucion))
+    test_fcfs(lista_procesos) # FIFO
     
-    # Round Robin 1
-    for p in lista_procesos:
-        p.reset() # Reiniciamos los procesos a sus valores iniciales
-    [cola_ejecucion, procesos_ejecutados] = ap.roundrobin(lista_procesos, 1)
+    test_roundrobin(lista_procesos, 1) # Round Robin 1
+    
+    test_roundrobin(lista_procesos, 2) # Round Robin 2
+    
+    test_roundrobin(lista_procesos, 4) # Round Robin 4
 
-    T = [proceso.t_respuesta for proceso in procesos_ejecutados]
-    T = np.mean(T)
-    E = [proceso.t_espera for proceso in procesos_ejecutados]
-    E = np.mean(E)
-    P = [proceso.p_penalizacion for proceso in procesos_ejecutados]
-    P = np.mean(P)
+    test_spn(lista_procesos) # SPN
 
-    print('\nRR1: T=%.2f, E=%.2f, P=%.2f' % (T, E, P))
-    print(''.join(cola_ejecucion))
+    test_fb(lista_procesos, 4, 1, 1) # Multilevel Feedback n=4, e=1, q=1
 
-    # Round Robin 4
-    for p in lista_procesos:
-        p.reset() # Reiniciamos los procesos a sus valores iniciales
-    [cola_ejecucion, procesos_ejecutados] = ap.roundrobin(lista_procesos, 4)
+    test_fb(lista_procesos, 4, 2, 2) # Multilevel Feedback n=4, e=2, q=2
 
-    T = [proceso.t_respuesta for proceso in procesos_ejecutados]
-    T = np.mean(T)
-    E = [proceso.t_espera for proceso in procesos_ejecutados]
-    E = np.mean(E)
-    P = [proceso.p_penalizacion for proceso in procesos_ejecutados]
-    P = np.mean(P)
+    test_fb(lista_procesos, 4, 4, 1) # Multilevel Feedback n=4, e=3, q=1
 
-    print('\nRR4: T=%.2f, E=%.2f, P=%.2f' % (T, E, P))
-    print(''.join(cola_ejecucion))
-
-    # SPN
-    for p in lista_procesos:
-        p.reset() # Reiniciamos los procesos a sus valores iniciales
-    [cola_ejecucion, procesos_ejecutados] = ap.spn(lista_procesos)
-
-    T = [proceso.t_respuesta for proceso in procesos_ejecutados]
-    #print(T)
-    T = np.mean(T)
-    E = [proceso.t_espera for proceso in procesos_ejecutados]
-    #print(E)
-    E = np.mean(E)
-    P = [proceso.p_penalizacion for proceso in procesos_ejecutados]
-    #print(P)
-    P = np.mean(P)
-
-    print('\nSPN: T=%.2f, E=%.2f, P=%.2f' % (T, E, P))
-    print(''.join(cola_ejecucion))
-
-    # Multilevel Feedback n=4, e=1, q=2
-    for p in lista_procesos:
-        p.reset() # Reiniciamos los procesos a sus valores iniciales
-    [cola_ejecucion, procesos_ejecutados] = ap.fb(lista_procesos, 4, 1, 2)
-
-    T = [proceso.t_respuesta for proceso in procesos_ejecutados]
-    T = np.mean(T)
-    E = [proceso.t_espera for proceso in procesos_ejecutados]
-    E = np.mean(E)
-    P = [proceso.p_penalizacion for proceso in procesos_ejecutados]
-    P = np.mean(P)
-
-    print('\nFB: T=%.2f, E=%.2f, P=%.2f, (n_colas_prioridad = 4, ejec_para_degradado = 1, quantum = 2)' % (T, E, P))
-    print(''.join(cola_ejecucion))
-
-    # Multilevel Feedback n=4, e=2, q=2
-    for p in lista_procesos:
-        p.reset() # Reiniciamos los procesos a sus valores iniciales
-    [cola_ejecucion, procesos_ejecutados] = ap.fb(lista_procesos, 4, 2, 2)
-
-    T = [proceso.t_respuesta for proceso in procesos_ejecutados]
-    T = np.mean(T)
-    E = [proceso.t_espera for proceso in procesos_ejecutados]
-    E = np.mean(E)
-    P = [proceso.p_penalizacion for proceso in procesos_ejecutados]
-    P = np.mean(P)
-
-    print('\nFB: T=%.2f, E=%.2f, P=%.2f, (n_colas_prioridad = 4, ejec_para_degradado = 2, quantum = 2)' % (T, E, P))
-    print(''.join(cola_ejecucion))
-
-    # Multilevel Feedback n=4, e=3, q=1
-    for p in lista_procesos:
-        p.reset() # Reiniciamos los procesos a sus valores iniciales
-    [cola_ejecucion, procesos_ejecutados] = ap.fb(lista_procesos, 4, 3, 1)
-
-    T = [proceso.t_respuesta for proceso in procesos_ejecutados]
-    T = np.mean(T)
-    E = [proceso.t_espera for proceso in procesos_ejecutados]
-    E = np.mean(E)
-    P = [proceso.p_penalizacion for proceso in procesos_ejecutados]
-    P = np.mean(P)
-
-    print('\nFB: T=%.2f, E=%.2f, P=%.2f, (n_colas_prioridad = 4, ejec_para_degradado = 3, quantum = 1)' % (T, E, P))
-    print(''.join(cola_ejecucion))
+    test_fb(lista_procesos, 4, 1, 4) # Multilevel Feedback n=4, e=3, q=1
 
 if __name__ == "__main__":
+    # for i in range(5):
+    #     print('\n\n---- Ronda %i ----\n' % (i+1))
+    #     main([])
     main(sys.argv[1:])
