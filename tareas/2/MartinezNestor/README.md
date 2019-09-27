@@ -38,7 +38,7 @@ La salida para la configuración de tablas en las imágenes anteriores es la sig
 
 1. Abre una terminal
 2. Asegúrate de tener instalado **Python 3**
-3. Ejecuta **main.py**:
+3. Ejecuta **main.py** :
 4. Por defecto, la ronda 0 es la que se muestra en la tablas y solo hay dos rondas con datos aleatorios. Si quieres agregar más rondas basta con que modifiques, dentro de **main.py** , la variable ```num_rounds```. 
 
 
