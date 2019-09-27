@@ -1,0 +1,176 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{blindtext}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{index}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{times}
+\usepackage{url}
+\UseRawInputEncoding
+
+\usepackage{color}
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+
+\usepackage{listings}
+\lstset{ frame=Ltb,
+framerule=0pt,
+aboveskip=0.5cm,
+framextopmargin=3pt,
+framexbottommargin=3pt,
+framexleftmargin=0.4cm,
+framesep=0pt,
+rulesep=.4pt,
+backgroundcolor=\color{gray97},
+rulesepcolor=\color{black},
+%
+stringstyle=\ttfamily,
+showstringspaces = false,
+basicstyle=\small\ttfamily,
+commentstyle=\color{gray45},
+keywordstyle=\bfseries,
+%
+numbers=left,
+numbersep=15pt,
+numberstyle=\tiny,
+numberfirstline = false,
+breaklines=true,
+}
+
+% minimizar fragmentado de listados
+\lstnewenvironment{listing}[1][]
+{\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
+
+\lstdefinestyle{consola}
+{basicstyle=\scriptsize\bf\ttfamily,
+backgroundcolor=\color{gray75},
+}
+
+\lstdefinestyle{JS}
+{language=javascript,
+}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{center}
+		\line(1,0){300} \\
+		\huge{\bfseries Exposici\'on : Asincron\'ia  Web}
+		\line(1,0){300} \\
+		Sistemas Operativos\\
+		{\normalsize Ing. Gunnar Eyal Wolf Iszaevich }\\
+		{\normalsize Ricardo Rosales Romero }\\
+		{\small 26 Septiembre 2019}
+	\end{center}
+\end{titlepage}
+
+\pagenumbering{roman}
+\setcounter{page}{2}
+\fancyhf{}
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{1pt}
+\fancyhead[LE]{\leftmark}
+\fancyhead[RO]{\nouppercase{\rightmark}}
+\fancyfoot[LE, RO]{\thepage}
+
+
+\section*{Introducci\'on}
+
+
+{\bf Asincron\'ia en Javascript}\\ \\
+Al desarrollar aplicaciones web nuestro c\'odigo Front-End se ejecuta bajo un solo Thread(ThreadUI) y las peticiones que tengamos que hacer a servidor o procesos que llevan un largo tiempo de ejecuci\'on a menudo tienen unos tiempos de respuesta que podr\'ian bloquear el Thread, inhabilitando as\'i la aplicaci\'on durante el proceso y por ende mostrando al usuario final un comportamiento fuera del esperado.
+
+La \'unica forma que hasta el momento se,  es liberar ese Thread principal es creando c\'odigo as\'incrono para nuestras llamadas y hasta el momento nos hemos servido de diferentes actores para desempe\~nar este papel tales como callbacks o bien de forma m\'as \'optima encapsulando las respuestas en objetos Promise.\\
+
+
+\section*{Desarrollo}
+
+
+\subsection*{Callbacks}
+{\bf Definici\'on}\\ \\
+Los callbacks son la pieza clave para que la web pueda funcionar de forma as\'incrona. Es decir que el  resto de patrones as\'incronos en Javascript est\'a basado en callbacks de alg\'un modo, simplemente a\~naden az\'ucar sint\'actico para trabajar con ellos de una forma m\'as comoda.
+
+Un callback no es m\'as que una funci\'on que se pasa como argumento de otra funci\'on, y que ser\'a invocada para completar alg\'un tipo de acci\'on. En nuestro contexto as\'incrono, un callback representa el 'Qu\'e quieres hacer una vez que tu operaci\'on as\'incrona termine?'. Por tanto, es la parte de c\'odigo que ser\'a ejecutada una vez que una operaci\'on as\'incrona notifique que ha terminado. Esta ejecuci\'on se har\'a en alg\'un momento futuro, gracias al mecanismo que implementa el bucle de eventos.  \\
+
+{\bf Ejemplo
+
+\begin{lstlisting} [language = PHP]
+console.log("Yo estoy siendo impreso");
+
+setTimeout( () => {
+	console.log("Hola como estan ?");
+	} }, 2000)
+
+console.log("Hola desde B205");
+
+\end{lstlisting}
+
+\subsection*{Promesas}
+{\bf Definici\'on}\\ \\
+Las Promemas vienen, para hacer legibles los c\'odigos fren\'eticos  de flujos de callbacks anidados en una estructura m\'as robusta y as\'i manejar nuestras callbacks de una manera m\'as eficiente. Adem\'as cumple con un concepto similar a la de una m\'aquina de estados porque est\'a preparada para responder a un eventual valor en el futuro, bajo una relaci\'on de estados cuya representaci\'on con los datos entrantes es poco predecible. En definitiva una Promesa es un objeto que sirve para encapsultar una eventual 'tarea'. \\
+
+\begin{itemize}
+	\item Pendiente
+	\item Resuelta 
+	\item Rechazada 
+\end{itemize} 
+
+{\bf Ejemplo }
+
+\begin{lstlisting} [language = PHP]
+const delay = tiempo => new Promise(resolve => setTimeout(resolve, tiempo));
+
+delay(4000)
+  .then(() => console.log(`Este es un retardo de al menos 4 segundos`))
+  .catch(() => console.log(`Retardo fallido`));
+
+\end{lstlisting} 
+
+\subsection*{Async- await}
+{\bf Definici\'on}\\ \\
+Las promesas supusieron un gran salto en Javascript al introducir una mejora sustancial sobre los callbacks y un manejo elegante de la asincron\'ia. Sin embargo, tambi\'en pueden llegar a ser tediosas y verbosas a medida que se requieren m\'as y m\'as .then(). Las palabras clave async y await surgieron para simplificar el manejo de las promesas. Son el puro az\'ucar para hacer las promesas m\'as amigables, escribir c\'odigo  sencillo, reducir el anidamiento y mejorar la trazabilidad al depurar. Pero recuerda, async \ await y las promesas son lo mismo.
+
+La etiqueta async declara una funci\'on como as\'incrona e indica que una promesa ser\'a autom\'aticamente devuelta. Podemos declarar como async tanto funciones con nombre, an\'onimas, o funciones flecha. Por otro lado, await debe ser usado siempre dentro de una funci\'on declarada como async y va a esperar de forma autom\'atica (de forma as\'incrona y no bloqueante) a que una promesa se resuelva.\\
+
+
+{\bf Ejemplo}
+
+\begin{lstlisting} [language = PHP]
+async function wait() {
+  await delay(1500);
+  await delay(1500);
+  return "Ha transcurrido, como minimo, 3 segundos.";
+};
+\end{lstlisting}
+
+{\bf Event Loop }\\ \\
+El event loop se encarga de implementar las operaciones as\'incronas o el non-blocking. El event loop corre en el \'unico hilo que existe en Node y como mencionamos anteriormente, al bloquear el \'unico hilo de node, estamos bloqueando el event loop.
+El event loop es el que se encarga de revisar que el call stack este vac\'io para a\~nadir lo que est\'a dentro del callback queue y ejecutarlo.  \\
+
+{\bf Callback Queue}\\ \\
+Aqu\'i se agregan los callback o funciones que se ejecutan una vez las operaciones as\'incronas hayan terminado. Se utiliza el m\'etodo FIFO (first input, first output), traducido, primero en entrar, primero en salir , aunque no siempre aplica.
+
+Cada vez que nuestro programa recibe una notificaci\'on del exterior o de otro contexto distinto al de la aplicaci\'on (como es el caso de operaciones as\'incronas), el mensaje se inserta en una cola de mensajes pendientes y se registra su callback correspondiente. Recordemos que un callback era la funci\'on que se ejecutar\'a como respuesta. \\
+
+\subsection*{Conclusiones}
+{\bf Asincron\'ia}\\ \\
+Cuando se abordan temas de control de flujo de cualquier sistemas se tiene que hablar con cautela ya que muchas veces se suelen mezclar definiciones similares,  lo que se vio en clase acerca de c\'omo los programadores resolvieron problemas que se presentaron a a la hora de implementar sistemas operativos que en esencia deben de ser capaces de administrar de forma correcta la forma en la cual se llevan acabo los procesos dentro de un equipo de uso personal o empresarial. Algo as\'i propuls\'o mi idea de mostrar frente al grupo las formas de resolver esa clase de problemas  que tambi\'en son presentados en esa herramienta indispensable para cada uno de nosotros llamada web . 
+Pasando por varios conceptos patrones y ejemplos , conclu\'i que efectivamente no hay mucho en com\'un y algunos conceptos distan, a\'un as\'i siempre habr\'a algo en com\'un por tratarse de una computadora y procesos que deben ejecutarse de forma simult\'anea o casi simult\'anea dentro de su entorno.\\
+
+
+\section*{Referencias }
+
+{\bf Bibliogr\'aficas}\\
+\begin{itemize}
+	\item Javascript As\'incrono: La gu\'ia definitiva,  Obtenido de : \url{https://lemoncode.net/lemoncode-blog/2018/1/29/javascript-asincrono}
+         \item Asincron\'ia en JavaScript , Obtenido de : \url{https://itblogsogeti.com/2016/07/27/asincronia-en-javascript/}
+	\item Node Js y el Event Loop , Obtenido de : \url{https://medium.com/@_ferh97/nodejs-y-el-event-loop-21b33fea6b03}
+\end{itemize}  
+
+
+\end{document}

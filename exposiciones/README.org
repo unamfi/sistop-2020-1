@@ -11,21 +11,22 @@ del curso]]. Les reitero, sin embargo, que resulta más enriquecedor (y
 como lo refleja la rúbrica, obtiene una calificación un poco más alta)
 el que ustedes me planteen los temas de su interés.
 
-|------------+------------------------------------------------------+---------------------------------+------------+------------|
-|      Fecha | Tema                                                 | Integrantes                     | Documentos | Evaluación |
-|------------+------------------------------------------------------+---------------------------------+------------+------------|
-| 2019.09.05 | +Algoritmo de Dekker / Solución de Peterson+         | +Adán Yareth Guevara Mendoza+   |            |            |
-| 2019.09.17 | +Otros mecanismos (¿o problemas?) de sincronización+ | +Andrés González+               |            |            |
-| 2019.09.19 | +TAILS+                                              | +Leonel Macario+                |            |            |
-| 2019.09.24 | SPECTRE y Meltdown                                   | Andrea García y Emanuel Flores  |            |            |
-| 2019.09.26 | Programación asíncrona en Web                        | Ricardo Rosales                 |            |            |
-| 2019.10.01 | Virus que afectan al sistema operativo               | Max Serrano                     |            |            |
-| 2019.10.03 | Sistemas basados en grid                             | Luis Enrique López Cruz         |            |            |
-| 2019.10.08 | TAILS / máquinas virtuales                           | Leonel Macario y Rogelio García |            |            |
-| 2019.10.10 | Paginación de cinco niveles                          | Eric Sanabria                   |            |            |
-| 2019.10.15 | (algo de memoria..¿?)                                | Andrés González                 |            |            |
-| 2019.11.12 | Desduplicación                                       | Julio César Lugo García         |            |            |
-|------------+------------------------------------------------------+---------------------------------+------------+------------|
+|------------+------------------------------------------------------+----------------------------------+--------------------------------------------------------------------+------------|
+|      Fecha | Tema                                                 | Integrantes                      | Documentos                                                         | Evaluación |
+|------------+------------------------------------------------------+----------------------------------+--------------------------------------------------------------------+------------|
+| 2019.09.05 | +Algoritmo de Dekker / Solución de Peterson+         | +Adán Yareth Guevara Mendoza+    |                                                                    |            |
+| 2019.09.17 | +Otros mecanismos (¿o problemas?) de sincronización+ | +Andrés González+                |                                                                    |            |
+| 2019.09.19 | +TAILS+                                              | +Leonel Macario+                 |                                                                    |            |
+| 2019.09.26 | Programación asíncrona en Web                        | Ricardo Rosales                  | [[./RosalesRicardo/asincroniaWeb.pdf][Documento (PDF)]], [[./RosalesRicardo/asincroniaWeb.tex][Fuentes del documento (LaTeX)]], [[./RosalesRicardo/Presentacion.pdf][Presentación (PDF)]] |            |
+| 2019.10.01 | Virus que afectan al sistema operativo               | Max Serrano                      |                                                                    |            |
+| 2019.10.03 | Sistemas basados en grid                             | Luis Enrique López Cruz          |                                                                    |            |
+| 2019.10.08 | TAILS / máquinas virtuales                           | Leonel Macario y Rogelio García  |                                                                    |            |
+| 2019.10.10 | Paginación de cinco niveles                          | Eric Sanabria                    |                                                                    |            |
+| 2019.10.15 | Sistema de archivos Extended (Linux)                 | Andrés González                  |                                                                    |            |
+| 2019.10.15 | Sistema de archivos NTFS                             | Lisset Noriega y Franco Martínez |                                                                    |            |
+| 2019.10.17 | Desduplicación                                       | Julio César Lugo García          |                                                                    |            |
+|------------+------------------------------------------------------+----------------------------------+--------------------------------------------------------------------+------------|
+
 
 
 * Rúbrica de evaluación
