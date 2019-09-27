@@ -109,13 +109,61 @@ def main(argv):
     [cola_ejecucion, procesos_ejecutados] = ap.spn(lista_procesos)
 
     T = [proceso.t_respuesta for proceso in procesos_ejecutados]
+    #print(T)
+    T = np.mean(T)
+    E = [proceso.t_espera for proceso in procesos_ejecutados]
+    #print(E)
+    E = np.mean(E)
+    P = [proceso.p_penalizacion for proceso in procesos_ejecutados]
+    #print(P)
+    P = np.mean(P)
+
+    print('\nSPN: T=%.2f, E=%.2f, P=%.2f' % (T, E, P))
+    print(''.join(cola_ejecucion))
+
+    # Multilevel Feedback n=4, e=1, q=2
+    for p in lista_procesos:
+        p.reset() # Reiniciamos los procesos a sus valores iniciales
+    [cola_ejecucion, procesos_ejecutados] = ap.fb(lista_procesos, 4, 1, 2)
+
+    T = [proceso.t_respuesta for proceso in procesos_ejecutados]
     T = np.mean(T)
     E = [proceso.t_espera for proceso in procesos_ejecutados]
     E = np.mean(E)
     P = [proceso.p_penalizacion for proceso in procesos_ejecutados]
     P = np.mean(P)
 
-    print('\nSPN: T=%.2f, E=%.2f, P=%.2f' % (T, E, P))
+    print('\nFB: T=%.2f, E=%.2f, P=%.2f, (n_colas_prioridad = 4, ejec_para_degradado = 1, quantum = 2)' % (T, E, P))
+    print(''.join(cola_ejecucion))
+
+    # Multilevel Feedback n=4, e=2, q=2
+    for p in lista_procesos:
+        p.reset() # Reiniciamos los procesos a sus valores iniciales
+    [cola_ejecucion, procesos_ejecutados] = ap.fb(lista_procesos, 4, 2, 2)
+
+    T = [proceso.t_respuesta for proceso in procesos_ejecutados]
+    T = np.mean(T)
+    E = [proceso.t_espera for proceso in procesos_ejecutados]
+    E = np.mean(E)
+    P = [proceso.p_penalizacion for proceso in procesos_ejecutados]
+    P = np.mean(P)
+
+    print('\nFB: T=%.2f, E=%.2f, P=%.2f, (n_colas_prioridad = 4, ejec_para_degradado = 2, quantum = 2)' % (T, E, P))
+    print(''.join(cola_ejecucion))
+
+    # Multilevel Feedback n=4, e=3, q=1
+    for p in lista_procesos:
+        p.reset() # Reiniciamos los procesos a sus valores iniciales
+    [cola_ejecucion, procesos_ejecutados] = ap.fb(lista_procesos, 4, 3, 1)
+
+    T = [proceso.t_respuesta for proceso in procesos_ejecutados]
+    T = np.mean(T)
+    E = [proceso.t_espera for proceso in procesos_ejecutados]
+    E = np.mean(E)
+    P = [proceso.p_penalizacion for proceso in procesos_ejecutados]
+    P = np.mean(P)
+
+    print('\nFB: T=%.2f, E=%.2f, P=%.2f, (n_colas_prioridad = 4, ejec_para_degradado = 3, quantum = 1)' % (T, E, P))
     print(''.join(cola_ejecucion))
 
 if __name__ == "__main__":
