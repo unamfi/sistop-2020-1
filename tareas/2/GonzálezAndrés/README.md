@@ -57,9 +57,9 @@ Por defecto, el programa inicia con 5 procesos y sin semilla. La semilla es un n
 
 ## P.D.
 
-Dejé hardcodeado una función que genera una carga de procesos con una distribución diferente. Los tiempos de ejecución de procesos solo toman dos valores, esto me sirvió para ver el comportamiento de los algoritmos cuando había muchos procesos largos con pocos cortos y viceversa.
+Dejé hardcodeada una función que genera una carga de procesos con una distribución diferente. Los tiempos de ejecución de procesos solo toman dos valores, esto me sirvió para ver el comportamiento de los algoritmos cuando había muchos procesos largos con pocos cortos y viceversa.
 
-Para usarla, hay que usar la función `crear_procesos_ch_g` en lugar de `crear_procesos_aleatorios`. Se encuentra por ahí de la línea 143.
+Para usarla, hay que usar la función `crear_procesos_ch_g` en lugar de `crear_procesos_aleatorios`. Se encuentra por ahí de la línea 143 del archivo [tarea2.py](./tarea2.py).
 
 ````python
 # lista_procesos = crear_procesos_aleatorios(num_procesos, llegada_max, requerido_max, seed)
