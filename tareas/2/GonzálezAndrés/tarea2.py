@@ -5,7 +5,7 @@ import numpy as np
 import string
 import algoritmos_planeacion as ap
 
-def crear_procesos(num_procesos = 5, llegada_max = 10, requerido_max = 10, seed = None):
+def crear_procesos_aleatorios(num_procesos = 5, llegada_max = 10, requerido_max = 10, seed = None):
     np.random.seed(seed)    
     nombre_procesos = np.array(list(string.ascii_uppercase))
     if llegada_max==0:
@@ -13,6 +13,23 @@ def crear_procesos(num_procesos = 5, llegada_max = 10, requerido_max = 10, seed 
     else:
         tiempos_llegadas = np.sort(np.random.randint(low='0', high=llegada_max, size=num_procesos))
     tiempos_requeridos = np.random.randint(low='1', high=requerido_max, size=num_procesos)
+    lista_procesos = []
+    for i in range(num_procesos):
+        nombre = nombre_procesos[i]
+        tiempo_llegada = tiempos_llegadas[i]
+        tiempo_requerido = tiempos_requeridos[i]
+        lista_procesos.append(ap.Proceso(nombre, tiempo_llegada, tiempo_requerido))
+        print("%s: t_llegada=%d, t_requerido=%d." % (nombre, tiempo_llegada, tiempo_requerido))
+    return lista_procesos
+
+def crear_procesos_ch_g(num_procesos = 5, llegada_max = 10, requerido_ch = 1, requerido_g = 10, prob_ch=0.5, seed = None):
+    np.random.seed(seed)    
+    nombre_procesos = np.array(list(string.ascii_uppercase))
+    if llegada_max==0:
+        tiempos_llegadas = np.zeros(num_procesos)
+    else:
+        tiempos_llegadas = np.sort(np.random.randint(low='0', high=llegada_max, size=num_procesos))
+    tiempos_requeridos = np.random.choice([requerido_ch, requerido_g], size=num_procesos, p=[prob_ch, 1-prob_ch])
     lista_procesos = []
     for i in range(num_procesos):
         nombre = nombre_procesos[i]
@@ -122,7 +139,12 @@ def main(argv):
         elif opt in ("-s", "--seed"):
             seed = int(arg)
 
-    lista_procesos = crear_procesos(num_procesos, llegada_max, requerido_max, seed)
+    lista_procesos = crear_procesos_aleatorios(num_procesos, llegada_max, requerido_max, seed)
+    # lista_procesos = crear_procesos_ch_g(num_procesos, llegada_max, 
+    #                                                     requerido_ch=1, 
+    #                                                     requerido_g=requerido_max, 
+    #                                                     prob_ch=0.8,
+    #                                                     seed = seed)
 
     test_fcfs(lista_procesos) # FIFO
     
