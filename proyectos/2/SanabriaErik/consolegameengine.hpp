@@ -28,6 +28,12 @@
 #define UNICODE
 #define _UNICODE
 
+struct CHAR_INFO
+{
+	unsigned short glyph;
+	short color;
+};
+
 class ConsoleGameEngine
 {
 public:
@@ -35,10 +41,26 @@ public:
 
 	virtual ~ConsoleGameEngine() {}
 
+	virtual bool OnUserCreate() = 0;
+
+	virtual bool OnUserUpdate(unsigned float tiem = 0);
+
+	bool CreaConsola(size_t w, size_t h, size_t fonh, size_t fonw);
+
+	size_t getWidth();
+
+	size_t getHeight();
+
+
 protected:
 
 
+	size_t m_sw;		//ancho de pantalla
+	size_t m_sh;		//alto de pantalla
+
+
 private:
+
 
 };
 
