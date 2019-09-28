@@ -43,9 +43,18 @@ public:
 
 	virtual bool OnUserCreate() = 0;
 
-	virtual bool OnUserUpdate(unsigned float tiem = 0);
+	virtual bool OnUserUpdate(float tiem = 0) = 0;
 
 	bool CreaConsola(size_t w, size_t h, size_t fonh, size_t fonw);
+
+	virtual void Dibuja(size_t x, size_t y, wchar_t c = 0x2588, unsigned short col = 0x000F)
+	{
+		if((x >= 0) && (x < m_sw) && (y >= 0) && (y < m_sh))
+		{
+			m_buffer[m_buffactual][(y * m_sw) + x].glyph = c;
+			m_buffer[m_buffactual][(y * m_sw) + x].color = col;
+		}
+	}
 
 	size_t getWidth();
 
