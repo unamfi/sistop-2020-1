@@ -47,7 +47,7 @@ public:
 
 	bool CreaConsola(size_t w, size_t h, size_t fonh, size_t fonw);
 
-	virtual void Dibuja(int x, int y, wchar_t c = 0x2588, unsigned short col = 0x000F)
+	virtual void Dibuja(int x, int y, unsigned short c = 0x2588, unsigned short col = 0x000F)
 	{
 		if((x >= 0) && (x < m_sw) && (y >= 0) && (y < m_sh))
 		{
@@ -56,7 +56,9 @@ public:
 		}
 	}
 
-	void DibujaLinea(int x1, int y1, int x2, int y2, wchar_t c = 0x2588, unsigned short col = 0x000F);
+	void DibujaLinea(int x1, int y1, int x2, int y2);
+
+	void DibujaTriangulo(int x1, int y1, int x2, int y2, int x3, int y3);
 
 	size_t getWidth();
 

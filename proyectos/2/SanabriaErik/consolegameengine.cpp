@@ -33,7 +33,7 @@ bool ConsoleGameEngine::CreaConsola(size_t w, size_t h, size_t fonh, size_t fonw
 	return true;
 }
 
-void ConsoleGameEngine::DibujaLinea(int x1, int y1, int x2, int y2, wchar_t c, unsigned short col)
+void ConsoleGameEngine::DibujaLinea(int x1, int y1, int x2, int y2)
 {
 	int x{ 0 };
 	int y{ 0 };
@@ -61,7 +61,7 @@ void ConsoleGameEngine::DibujaLinea(int x1, int y1, int x2, int y2, wchar_t c, u
 			xe = x1;
 		}
 
-		Dibuja(x, y, c, col);
+		Dibuja(x, y);
 
 		while(x < xe)
 		{
@@ -85,7 +85,7 @@ void ConsoleGameEngine::DibujaLinea(int x1, int y1, int x2, int y2, wchar_t c, u
 				px = px + 2 * (dy1 - dx1);
 			}
 
-			Dibuja(x, y, c, col);
+			Dibuja(x, y);
 		}
 	}
 	else
@@ -103,7 +103,7 @@ void ConsoleGameEngine::DibujaLinea(int x1, int y1, int x2, int y2, wchar_t c, u
 			ye = y1;
 		}
 
-		Dibuja(x, y, c, col);
+		Dibuja(x, y);
 
 		while(y < ye)
 		{
@@ -127,9 +127,16 @@ void ConsoleGameEngine::DibujaLinea(int x1, int y1, int x2, int y2, wchar_t c, u
 				py = py + 2 * (dx1 - dy1);
 			}
 
-			Dibuja(x, y, c, col);
+			Dibuja(x, y);
 		}
 	}
+}
+
+void ConsoleGameEngine::DibujaTriangulo(int x1, int y1, int x2, int y2, int x3, int y3)
+{
+	DibujaLinea(x1, y1, x2, y2);
+	DibujaLinea(x2, y2, x3, y3);
+	DibujaLinea(x3, y3, x1, y1);
 }
 
 size_t ConsoleGameEngine::getWidth()
