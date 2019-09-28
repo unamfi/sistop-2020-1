@@ -55,13 +55,28 @@ public:
 protected:
 
 
-	size_t m_sw;		//ancho de pantalla
-	size_t m_sh;		//alto de pantalla
+	std::wstring m_appnom;	//nombre de applicacion
+	size_t m_sw;			//ancho de pantalla
+	size_t m_sh;			//alto de pantalla
+	size_t m_fw;			//ancho de font
+	size_t m_fh;			//altura de font
 
+	CHAR_INFO *m_buffer[2];		//buffer de pantalla
+	size_t m_buffactual{ 0 };	//buffer actual
+
+	static std::atomic<bool> m_batom;
+	static std::condition_variable m_gamefin;
+	static std::mutex m_muxgame;
 
 private:
 
 
+
+
+	SDL_Window *m_window;		//ventana de SDL
+	SDL_Renderer *m_render;		//Renderer de SDL
+	SDL_Texture *m_screen;		//Colores de SDL
+	SDL_Texture *m_fontf;		//Colores de fonts
 };
 
 #endif /* CONSOLEGAMEENGINE_HPP_ */
