@@ -13,8 +13,6 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
-#include <vector>
-#include <list>
 #include <thread>
 #include <atomic>
 #include <condition_variable>
@@ -34,6 +32,25 @@ struct CHAR_INFO
 	short color;
 };
 
+constexpr SDL_Color color_T[] = {
+	SDL_Color{ 0,0,0,255 },      // 0
+	SDL_Color{ 0,0,127,255 },    // 1
+	SDL_Color{ 0,127,0,255 },    // 2
+	SDL_Color{ 0,127,127,255 },  // 3
+	SDL_Color{ 127,0,0,255 },    // 4
+	SDL_Color{ 127,0,127,255 },  // 5
+	SDL_Color{ 127,127,0,255 },  // 6
+	SDL_Color{ 192,192,192,255 },// 7
+	SDL_Color{ 127,127,127,255 },// 8
+	SDL_Color{ 0,0,255,255 },    // 9
+	SDL_Color{ 0,255,0,255 },    // A
+	SDL_Color{ 0,255,255,255 },  // B
+	SDL_Color{ 255,0,0,255 },    // C
+	SDL_Color{ 255,0,255,255 },  // D
+	SDL_Color{ 255,255,0,255 },  // E
+	SDL_Color{ 255,255,255,255 },// F
+};
+
 class ConsoleGameEngine
 {
 public:
@@ -41,9 +58,18 @@ public:
 
 	virtual ~ConsoleGameEngine() {}
 
+	void exec();
+
 	virtual bool OnUserCreate() = 0;
 
 	virtual bool OnUserUpdate(float tiem = 0) = 0;
+
+	virtual bool OnUserDestroy()
+	{
+		return true;
+	}
+
+	void Game();
 
 	bool CreaConsola(size_t w, size_t h, size_t fonh, size_t fonw);
 
@@ -67,6 +93,24 @@ public:
 
 protected:
 
+	void CargaFonts(const std::string& file)
+	{
+		SDL_Surface *tmp = SDL_LoadBMP(file.c_str());
+
+		if(tmp == nullptr)
+		{
+			std::wcout << L"No se encontro el archivo!" << std::endl;
+
+			throw 1;
+		}
+
+		SDL_SetColorKey(tmp, SDL_TRUE, SDL_MapRGB(tmp->format, 255, 0, 255));
+
+		m_ff = SDL_CreateTextureFromSurface(m_render, tmp);
+
+		SDL_FreeSurface(tmp);
+	}
+
 
 	std::wstring m_appnom;	//nombre de applicacion
 	size_t m_sw;			//ancho de pantalla
@@ -77,24 +121,22 @@ protected:
 	CHAR_INFO *m_buffer[2];		//buffer de pantalla
 	size_t m_buffactual{ 0 };	//buffer actual
 
-	static std::atomic<bool> m_batom;			//variable atomica
+	static std::atomic<bool> m_batom;			//variable atomica, esta activo?
 	static std::condition_variable m_gamefin;	//variable de condicion
-	static std::mutex m_muxgame;				//mutex
+	//static std::mutex m_muxgame;				//mutex
 
 private:
-
-
-
 
 	SDL_Window *m_window;		//ventana de SDL
 	SDL_Renderer *m_render;		//Renderer de SDL
 	SDL_Texture *m_screen;		//Colores de SDL
 	SDL_Texture *m_fontf;		//Colores de fonts
+	SDL_Texture *m_ff;			//archivo con los fonts
 };
 
 //inicializando las variables static
-std::atomic<bool> ConsoleGameEngine::m_batom(false);
-std::condition_variable ConsoleGameEngine::m_gamefin;
-std::mutex ConsoleGameEngine::m_muxgame;
+/*std::atomic<bool> ConsoleGameEngine::m_batom(false);
+std::condition_variable ConsoleGameEngine::m_gamefin;*/
+//std::mutex ConsoleGameEngine::m_muxgame;
 
 #endif /* CONSOLEGAMEENGINE_HPP_ */
