@@ -64,9 +64,9 @@ protected:
 	CHAR_INFO *m_buffer[2];		//buffer de pantalla
 	size_t m_buffactual{ 0 };	//buffer actual
 
-	static std::atomic<bool> m_batom;
-	static std::condition_variable m_gamefin;
-	static std::mutex m_muxgame;
+	static std::atomic<bool> m_batom;			//variable atomica
+	static std::condition_variable m_gamefin;	//variable de condicion
+	static std::mutex m_muxgame;				//mutex
 
 private:
 
@@ -78,5 +78,10 @@ private:
 	SDL_Texture *m_screen;		//Colores de SDL
 	SDL_Texture *m_fontf;		//Colores de fonts
 };
+
+//inicializando las variables static
+std::atomic<bool> ConsoleGameEngine::m_batom(false);
+std::condition_variable ConsoleGameEngine::m_gamefin;
+std::mutex ConsoleGameEngine::m_muxgame;
 
 #endif /* CONSOLEGAMEENGINE_HPP_ */
