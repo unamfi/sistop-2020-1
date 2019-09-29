@@ -85,6 +85,8 @@ void ConsoleGameEngine::Game()
 
 			snprintf(titulo, 256, "Erik Sanabria - %s - FPS: %3.2f", buffnom, 1.0f / tiemp);
 
+			//std::cout << 1.0f / tiemp << std::endl;
+
 			SDL_SetWindowTitle(m_window, titulo);
 
 			CHAR_INFO *buff_v;		//buffer viejo
@@ -95,11 +97,11 @@ void ConsoleGameEngine::Game()
 
 			SDL_SetRenderTarget(m_render, m_screen);
 
-			for(size_t cx{ 0 }; cx < m_sw; ++cx)
+			for(int cx{ 0 }; cx < m_sw; ++cx)
 			{
-				for(size_t cy{ 0 }; cy < m_sh; ++cy)
+				for(int cy{ 0 }; cy < m_sh; ++cy)
 				{
-					size_t k{ cy * m_sw + cx };
+					int k{ cy * m_sw + cx };
 
 					if((buff_n[k].color != buff_v[k].color) || (buff_n[k].glyph != buff_v[k].glyph))
 					{
@@ -161,7 +163,7 @@ void ConsoleGameEngine::Game()
 	}
 }
 
-bool ConsoleGameEngine::CreaConsola(size_t w, size_t h, size_t fonh, size_t fonw)
+bool ConsoleGameEngine::CreaConsola(int w, int h, int fonh, int fonw)
 {
 	m_sw = w;
 	m_sh = h;
@@ -287,12 +289,49 @@ void ConsoleGameEngine::DibujaTriangulo(int x1, int y1, int x2, int y2, int x3, 
 	DibujaLinea(x3, y3, x1, y1);
 }
 
-size_t ConsoleGameEngine::getWidth()
+void ConsoleGameEngine::Llena(int x1, int y1, int x2, int y2, unsigned short c, unsigned short col)
+{
+	Clip(x1, y1);
+	Clip(x2, y2);
+
+	for(int x{ x1 }; x < x2; ++x)
+	{
+		for(int y{ y1 }; y < y2; ++y)
+		{
+			Dibuja(x, y, c, col);
+		}
+	}
+}
+
+void ConsoleGameEngine::Clip(int& x, int& y)
+{
+	if(x < 0)
+	{
+		x = 0;
+	}
+
+	if(x >= m_sw)
+	{
+		x = m_sw;
+	}
+
+	if(y < 0)
+	{
+		y = 0;
+	}
+
+	if(y >= m_sh)
+	{
+		y = m_sh;
+	}
+}
+
+int ConsoleGameEngine::getWidth()
 {
 	return m_sw;
 }
 
-size_t ConsoleGameEngine::getHeight()
+int ConsoleGameEngine::getHeight()
 {
 	return m_sh;
 }

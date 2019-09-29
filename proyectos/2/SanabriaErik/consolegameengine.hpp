@@ -71,7 +71,7 @@ public:
 
 	void Game();
 
-	bool CreaConsola(size_t w, size_t h, size_t fonh, size_t fonw);
+	bool CreaConsola(int w, int h, int fonh, int fonw);
 
 	virtual void Dibuja(int x, int y, unsigned short c = 0x2588, unsigned short col = 0x000F)
 	{
@@ -86,9 +86,13 @@ public:
 
 	void DibujaTriangulo(int x1, int y1, int x2, int y2, int x3, int y3);
 
-	size_t getWidth();
+	void Llena(int x1, int y1, int x2, int y2, unsigned short c, unsigned short col);
 
-	size_t getHeight();
+	void Clip(int& x, int& y);
+
+	int getWidth();
+
+	int getHeight();
 
 
 protected:
@@ -113,13 +117,13 @@ protected:
 
 
 	std::wstring m_appnom;	//nombre de applicacion
-	size_t m_sw;			//ancho de pantalla
-	size_t m_sh;			//alto de pantalla
-	size_t m_fw;			//ancho de font
-	size_t m_fh;			//altura de font
+	int m_sw;			//ancho de pantalla
+	int m_sh;			//alto de pantalla
+	int m_fw;			//ancho de font
+	int m_fh;			//altura de font
 
 	CHAR_INFO *m_buffer[2];		//buffer de pantalla
-	size_t m_buffactual{ 0 };	//buffer actual
+	int m_buffactual{ 0 };	//buffer actual
 
 	static std::atomic<bool> m_batom;			//variable atomica, esta activo?
 	static std::condition_variable m_gamefin;	//variable de condicion
