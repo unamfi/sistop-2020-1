@@ -3,9 +3,20 @@
 ## El problema: Un restaurante
 En un restaurante tenemos *n* clientes pidiendo órdenes, *m* meseros atendiendo dichos clientes y *p* cocineros preparando platillos. El problema lo describo a continuación:
 
+- El cliente tiene la tarea de pedir platillos y comerlos
+- Sólo puede pedir un platillo a la vez a algún mesero desocupado.
+- Mientras el cliente espera su órden, el cliente duerme.
+- Cuando termina de comer, el cliente se retira del restaurante.
+
+- El mesero tiene 3 tareas: 
+  - Recibir órdenes de clientes.
+  - Anotar órdenes en una lista para que los cocineros preparen los platillos en ella.
+  - Entregar órdenes al cliente.
+- Estas tareas se pueden hacer sin un órden en específico.
 - Un mesero sólo puede atender a un cliente a la vez.
-- El cliente puede pedir varios platillos en su orden.
-- Cuando el cliente termina su orden el mesero debe ponerla en la lista de ordenes pendientes en la cocina. Sólo un mesero puede agregar órdenes en la lista a la vez.
-- Hay n cocineros que toman órdenes de la lista y las preparan. Al estar listas, los cocineros 
-- Después de anotar una órden el mesero verifica que no haya platillos preparados para ser entregados.
-- Si hay platillos, 
+- Los meseros solo duermen cuando no hay clientes en el restaurante.
+
+- Los cocineros tienen la tarea de preparar los platillos que el mesero puso en la lista.
+- El cocinero debe preparar un platillo a la vez y no puede haber más de un cocinero preparando el mismo platillo.
+- Cuando terminen de prepararlos, deben ponerlos en lista de órdenes listas y avisarle al mesero.
+- UN cocinero duerme cada que no tiene platillos que cocinar.
