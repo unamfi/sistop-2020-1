@@ -11,7 +11,7 @@ int main()
 {
 	Engine3D A;
 
-	if(A.CreaConsola(200, 150, 4, 4))
+	if(A.CreaConsola(256, 240, 4, 4))
 	{
 		A.exec();
 	}

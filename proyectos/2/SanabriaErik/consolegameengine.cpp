@@ -85,8 +85,6 @@ void ConsoleGameEngine::Game()
 
 			snprintf(titulo, 256, "Erik Sanabria - %s - FPS: %3.2f", buffnom, 1.0f / tiemp);
 
-			//std::cout << 1.0f / tiemp << std::endl;
-
 			SDL_SetWindowTitle(m_window, titulo);
 
 			CHAR_INFO *buff_v;		//buffer viejo

@@ -32,6 +32,7 @@ struct CHAR_INFO
 	short color;
 };
 
+//tabla de colores
 constexpr SDL_Color color_T[] = {
 	SDL_Color{ 0,0,0,255 },      // 0
 	SDL_Color{ 0,0,127,255 },    // 1
@@ -54,14 +55,22 @@ constexpr SDL_Color color_T[] = {
 class ConsoleGameEngine
 {
 public:
+	//constructor
 	ConsoleGameEngine();
 
+	//destructor
 	virtual ~ConsoleGameEngine() {}
 
+	//metodo padre
 	void exec();
 
+	//para ser implementada en la herencia
+	//funcion que crea y asigna variables
 	virtual bool OnUserCreate() = 0;
 
+	//para ser implementada en la herencia
+	//fundion para actualizar las matrizes
+	//float tiem: tiempo que llevamos corriendo
 	virtual bool OnUserUpdate(float tiem = 0) = 0;
 
 	virtual bool OnUserDestroy()
@@ -69,12 +78,24 @@ public:
 		return true;
 	}
 
+	//hilo principal
 	void Game();
 
+	//asigna la memoria para los buffers de pantalla
+	//w: ancho de pantalla
+	//h: altura de pantalla
+	//fonh: altura de fonts
+	//fonw: ancho de fonts
 	bool CreaConsola(int w, int h, int fonh, int fonw);
 
+	//dibuja un punto en el buffer de la pantalla
+	//x: coordenada x
+	//y: coordenada y
+	//c: color
+	//col: color
 	virtual void Dibuja(int x, int y, unsigned short c = 0x2588, unsigned short col = 0x000F)
 	{
+		//si esta dentro de la ventana dibujalo
 		if((x >= 0) && (x < m_sw) && (y >= 0) && (y < m_sh))
 		{
 			m_buffer[m_buffactual][(y * m_sw) + x].glyph = c;
@@ -82,16 +103,35 @@ public:
 		}
 	}
 
+	//dibujar una linea en base a dos puntos
+	//x1: coordenada x del primer punto
+	//y1: coordenada y del primer punto
+	//x2: coordenada x del segundo punto
+	//y2: coordenada y del segundo punto
 	void DibujaLinea(int x1, int y1, int x2, int y2);
 
+	//dibujar triangulo en base a tres puntos
+	//x1: coordenada x del primer punto
+	//y1: coordenada y del primer punto
+	//x2: coordenada x del segundo punto
+	//y2: coordenada y del segundo punto
+	//x3: coordenada x del tercer punto
+	//y3: coordenada y del tercer punto
 	void DibujaTriangulo(int x1, int y1, int x2, int y2, int x3, int y3);
 
+	//llena la ventana
 	void Llena(int x1, int y1, int x2, int y2, unsigned short c, unsigned short col);
 
+	//si un punto x, y esta fuera de la ventana
+	//regresalo al rango de la ventana
+	//x: referencia a coordenada x
+	//y: referencia a coordenada y
 	void Clip(int& x, int& y);
 
+	//obtener ancho de ventana
 	int getWidth();
 
+	//obtener altura de ventana
 	int getHeight();
 
 

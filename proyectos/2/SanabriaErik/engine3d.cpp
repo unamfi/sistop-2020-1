@@ -37,12 +37,18 @@ bool Engine3D::OnUserCreate()
 		{1.0f, 0.0f, 1.0f, 		0.0f, 0.0f, 0.0f,		1.0f, 0.0f, 0.0f}
 	};
 
-	float fNear{ 0.0f };
-	float fFar{ 1000.0f };
-	float fFOV{ 90.0f };
+	//los ejes x, y son la pantalla, para que sea tridimensional agregamos la z
+	//la z entra a la pantalla
+	float fNear{ 0.0f };			//el plano en z cercano
+	float fFar{ 1000.0f };			//el plano en z lejano
+	float fFOV{ 90.0f };			//el angulo de field of view
+	//el tamaño de la pantalla
 	float fAspectRatio{ static_cast<float>(getHeight()) / static_cast<float>(getWidth()) };
+
+	//tamaño del plano lejano
 	float fFovRad{ 1.0f / tanf(fFOV * 0.5f / 180.0f * 3.14159f) };	//convirtiendo a radianes
 
+	//definiendo la matriz de proyeccion
 	m_matProj.m[0][0] = fAspectRatio * fFovRad;
 	m_matProj.m[1][1] = fFovRad;
 	m_matProj.m[2][2] = fFar / (fFar - fNear);
@@ -55,13 +61,15 @@ bool Engine3D::OnUserCreate()
 
 bool Engine3D::OnUserUpdate(float tiem)
 {
-	Llena(0, 0, getWidth(), getHeight(), 0x2588, 0x0000);
+	//llenar la ventana con el color 0x2222
+	Llena(0, 0, getWidth(), getHeight(), 0x2588, 0x2222);
 
-	mat4 matRotZ;
-	mat4 matRotX;
+	mat4 matRotZ;		//matriz de rotacion en el eje z
+	mat4 matRotX;		//matriz de rotacion en el eje x
 
-	m_theta += 1.0f * tiem;
+	m_theta += 1.0f * tiem;		//el angulo de rotacion cambiara con el tiempo
 
+	//definiendo la matriz de rotacion z
 	matRotZ.m[0][0] = cosf(m_theta);
 	matRotZ.m[0][1] = sinf(m_theta);
 	matRotZ.m[1][0] = -sinf(m_theta);
@@ -69,6 +77,7 @@ bool Engine3D::OnUserUpdate(float tiem)
 	matRotZ.m[2][2] = 1;
 	matRotZ.m[3][3] = 1;
 
+	//definiendo la matriz de rotacion x
 	matRotX.m[0][0] = 1;
 	matRotX.m[1][1] = cosf(m_theta * 0.5f);
 	matRotX.m[1][2] = sinf(m_theta * 0.5f);
@@ -79,11 +88,13 @@ bool Engine3D::OnUserUpdate(float tiem)
 	//rendering loop
 	for(auto i : m_meshCube.tris)
 	{
-		triangulo triProj;		//Pojection
-		triangulo triTran;		//Translation
-		triangulo triRotZ;		//Rotacion Z
-		triangulo triRotZX; 	//Rotacion
+		triangulo triProj;		//triangulos ya proyectados
+		triangulo triTran;		//triangulos trasladados
+		triangulo triRotZ;		//triangulos rotados en z
+		triangulo triRotZX; 	//triangulos rotados en x y z
 
+
+		//primero rotamos el cubo
 		multMatrizVector(i.p[0], triRotZ.p[0], matRotZ);
 		multMatrizVector(i.p[1], triRotZ.p[1], matRotZ);
 		multMatrizVector(i.p[2], triRotZ.p[2], matRotZ);
@@ -92,17 +103,20 @@ bool Engine3D::OnUserUpdate(float tiem)
 		multMatrizVector(triRotZ.p[1], triRotZX.p[1], matRotX);
 		multMatrizVector(triRotZ.p[2], triRotZX.p[2], matRotX);
 
+		//ahora vamos a transladar el cubo
 		triTran = triRotZX;
 
 		triTran.p[0].z = triRotZX.p[0].z + 3.0f;
 		triTran.p[1].z = triRotZX.p[1].z + 3.0f;
 		triTran.p[2].z = triRotZX.p[2].z + 3.0f;
 
+		//aplicamos la proyeccion para crear un espacio tridimensional
+		//en una pantalla bidimensional
 		multMatrizVector(triTran.p[0], triProj.p[0], m_matProj);
 		multMatrizVector(triTran.p[1], triProj.p[1], m_matProj);
 		multMatrizVector(triTran.p[2], triProj.p[2], m_matProj);
 
-		//scale into view
+		//redimensionar el cubo
 		triProj.p[0].x += 1.0f;
 		triProj.p[0].y += 1.0f;
 		triProj.p[1].x += 1.0f;
@@ -110,7 +124,6 @@ bool Engine3D::OnUserUpdate(float tiem)
 		triProj.p[2].x += 1.0f;
 		triProj.p[2].y += 1.0f;
 
-		//
 		triProj.p[0].x *= 0.5f * static_cast<float>(getWidth());
 		triProj.p[0].y *= 0.5f * static_cast<float>(getWidth());
 		triProj.p[1].x *= 0.5f * static_cast<float>(getWidth());
@@ -118,6 +131,7 @@ bool Engine3D::OnUserUpdate(float tiem)
 		triProj.p[2].x *= 0.5f * static_cast<float>(getWidth());
 		triProj.p[2].y *= 0.5f * static_cast<float>(getWidth());
 
+		//ahora si podemos dibujarlo
 		DibujaTriangulo(triProj.p[0].x, triProj.p[0].y, triProj.p[1].x, triProj.p[1].y, triProj.p[2].x, triProj.p[2].y);
 	}
 
