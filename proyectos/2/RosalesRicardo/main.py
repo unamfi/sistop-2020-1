@@ -15,6 +15,7 @@ pista = Semaphore(3)
 pista_Cola = []
 salida_entrada = Semaphore(1)
 
+#Funcion que compara que el usuario y contraseña ingresados sean los correctos
 def validar(user , password):
     global window
     dic = cargarDatos()
@@ -29,6 +30,7 @@ def validar(user , password):
     else:
         tkMessageBox.showinfo("Password incorrect", "Password incorrect")
 
+#Decora a la página principal con todos los atributos que esta tenga
 def inicia(window):
     password = StringVar()
     user = StringVar()
@@ -71,7 +73,7 @@ def inicia(window):
     boton2 = Button(frame , text = "Log in" ,fg = "black" , width = 6 , command = validate)
     boton2.place(x=100, y=200)
     
-
+#Muestra la hora en la cual se inicia el programa 
 def muestraHora(window):
     #while True:
     x = datetime.datetime.now()
@@ -127,7 +129,7 @@ def signIn(window):
     boton1 = Button(win, bg = "black",text = "Sign in" , width = 6 , command = inicio)
     boton1.place(x=5, y=250)
 
-
+#Regresa al inicio guardando la información
 def muestraInicio(win, name, lastname , email , password , password1):
     print(password.get())
     print(password1.get())
@@ -139,10 +141,12 @@ def muestraInicio(win, name, lastname , email , password , password1):
     else : 
         tkMessageBox.showinfo("Error","Las contrasenas no coinciden" )
 
+#llama a un archivo .dat para guardar un directorio 
 def guardarDatos(dic):
     with open("usuarios.dat", "wb") as f:
         pickle.dump(dic, f)
 
+#Retorna un diccionario , el cual contiene el unico usuario que permite el sistema 
 def cargarDatos():
     try:
         with open("usuarios.dat", "rb") as f:
@@ -183,7 +187,8 @@ def monitor(window):
     Label (frame , text = "Estado " , width = 20,  fg = "black", font="none 12 ") .grid(row= 1, column = 7 , sticky = W)
     
     monitorGeneral(frame)
-    
+
+#Modifica los labels que contien el estado actual de los vuelos   
 def cambiaEstadoVuelos(win , vuelos):
     for n in range(len(vuelos)):
         
@@ -201,13 +206,14 @@ def cambiaEstadoVuelos(win , vuelos):
    
         Label (win , text = vuelos[n].estado, width = 12,  fg = "black", font="none 10 ") .grid(row= n+2, column = 7 , sticky = W)
 
+#La magia del paralelismo con los multi threads que se crean en esta funcion
 def monitorGeneral(win):
     vuelos = generaVuelos()
     cambiaEstadoVuelos(win , vuelos)
     for i in range(len(vuelos)):
         Thread(target=control, args=[vuelos[i], vuelos , win]).start()
 
-
+#Se utilizan los semaforos para permitir el acceso a solo 1 avion por pista 
 def control(vuelo, vuelos , win):
     global salida_entrada, pista, window, pista_Cola
     
@@ -246,6 +252,7 @@ class Avion:
         self.horaLlegada = "********"
         self.horaSalida = "*********"
 
+    #Cambia el estado actual del avión si esta aterrizando o termino 
     def modificandoEstado(self, accion):
         self.estado = accion
         sleep(randint(3,10))
@@ -257,7 +264,7 @@ class Avion:
             self.horaSalida = "%s:%s:%s" % (x.hour, x.minute, x.second)
 
 
-
+#Aleatoriamente se general los ov¡bjetos de los vuelos 
 def generaVuelos():
     vuelos = []
     localidad = ["Mexico" , "China" , "EUA", "Cuba", "Argentina" , "Colombia ", "Espana"]
