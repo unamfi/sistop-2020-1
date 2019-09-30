@@ -1,6 +1,11 @@
 Tarea 2 - Comparación de planificadores
 ---
 
+* Romero Andrade Cristian
+* López López Ulysses 
+
+---
+
 Se comparan los siguientes algoritmos:
 
 * FCFS
