@@ -7,7 +7,7 @@ Proyecto 2 de Erik Sanabria Betancourt (415021636).
 ## Documentación
 
 - [Documentación](https://docs.google.com/document/d/1d_4FKo_zNpxnDSwCBcXSQYZYe-6ZIZT-JwtrXpVZeWE/edit?usp=sharing)
-- UML con [Umbrello](https://umbrello.kde.org/) úbicado en `Docs/`
+- UML con [Umbrello](https://umbrello.kde.org/) ubicado en `Docs/`
 
 **Planteamiento:**
 
