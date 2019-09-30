@@ -2,12 +2,12 @@
 
 Proyecto 2 de Erik Sanabria Betancourt (415021636).
 
-- El lenguaje utilizado es `C++`.
+- El lenguaje utilizado es `C++ 2017`.
 
 ## Documentación
 
-- [Documentación](https://docs.google.com/document/d/1d_4FKo_zNpxnDSwCBcXSQYZYe-6ZIZT-JwtrXpVZeWE/edit?usp=sharing)
-- UML con [Umbrello](https://umbrello.kde.org/) ubicado en `Docs/`
+- [Documentación](https://docs.google.com/document/d/1d_4FKo_zNpxnDSwCBcXSQYZYe-6ZIZT-JwtrXpVZeWE/edit?usp=sharing).
+- UML con [Umbrello](https://umbrello.kde.org/) ubicado en `Docs/`.
 
 **Planteamiento:**
 
@@ -28,7 +28,11 @@ libsdl2-dev
 ```
 ## Compilación
 
-- Se necesita [Eclipse CDT](https://www.eclipse.org/downloads/packages/release/2019-09/r/eclipse-ide-cc-developers) para compilar
+- Se necesita [Eclipse CDT](https://www.eclipse.org/downloads/packages/release/2019-09/r/eclipse-ide-cc-developers) para compilar.
+
+- Asegurarse de tener `libsdl2-dev` instalado y se asume que los includes estan en `/usr/include/SDL2`.
+
+- `C++ 2017` es indispensable, se compila con `-std=c++17` desde Eclipse y esto implica tener un `gcc` relativamente nuevo. 
 
 - Por default se compila con simbolos de depuración.
 
