@@ -11,7 +11,7 @@ Sobre el aeropuerto Internacional Benito Juárez circulan miles de personas cada
 	1. El tránsito de aviones coordinados por operadores dentro de la torre de control. 
  	2. El tránsito de pasajeros desde que bajan del avión hasta que llegan a la terminal de salida. 
 
-** **Nota importante**: el aeropuerto solo cuenta con una puerta por cada terminal. 
+** **Nota importante**: el aeropuerto solo cuenta con una puerta para cada terminal y el gobierno solo requiere considerar que los aviones que llegan descargan pasajeros y no se llevan pasajeros con ellos. 
 
 
 
@@ -36,6 +36,40 @@ Para realizar este sistema de manera exitosa hay que considerar las siguientes r
 
 
 ## Actores dentro del problema 
+
+Estos son los actores (junto con su diagrama de clase) más importantes que juegan un papel fundamental en el desarrollo del sistema : 
+
+1. **Aeropuerto**: el aeropuerto estará encargado de mantener un control del número de pasajeros, número de pistas de aterrizaje, número de camiones, número de scooters y número de aviones dentro de él. 
+
+   ![icon](images/airport.png)
+
+2. **Torre de Control**: su papel fundamental será el de detectar aviones en el aire de la Ciudad de México y asignar éstos a los operadores disponibles. 
+
+   ![icon](images/control_tower.png)
+
+3. **Operador**: dentro de la torre de control trabajan 3 operadores. Los cuales son encargados de trabajar con los aviones asignados por la torre de control. Cada operador se encarga de asignar una pista de aterrizaje a un avión o redirigirlo si no hay pistas disponibles (en la sección de mecanismo de sincronización se da una descripción de los tipos de redireccionamiento).
+
+   ![icon](images/operator.png)
+
+4. **Avión**: cada avión transporta entre 1-10 pasajeros. Cada avión tiene la responsabilidad de contactar a la torre de control y un operador le dirá qué hacer. Una vez que le es indicado la pista de aterrizaje, el avión calculará el tiempo que tardarán sus pasajeros en salir de él. Este tiempo se lo comunica a la pista de aterrizaje. Una vez que sus pasajeros hayn bajado, el avión tiene que despegar para liberar la pista. 
+
+   ![icon](images/airplane.png)
+
+5. **Pista de aterrizaje**: cada pista de aterrizaje recibirá un avión y posteriormente pedirá un camión para transportar a los pasajeros hacía la terminal de salida del aeropuerto. Aunado a lo anterior, cada pista de aterrizaje recibirá un tiempo para estar disponible de nuevo. Este tiempo se lo notifica el avión que va a aterrizar. 
+
+   ![icon](images/landing_track.png)
+
+6. **Pasajero**: cada pasajero se encuentra inicialmente dentro de un avión. Una vez que el avión aterrizó, estos tienen que bajar de él y tomar un camión que los lleve a la terminal de salida. En caso de estar en la Ciudad de México, tienen la opción de tomar un scooter para llegar a la terminal. 
+
+   ![icon](images/passenger.png)
+
+7. **Camión**: cada camión espera en la terminal de camiones hasta que una pista de aterrizaje le notifica que tiene que ir a recoger pasajeros. Sin embargo, una vez que este en la pista de aterrizaje, este camión tiene que esperar a que haya 30 pasajeros dentro de él. 
+
+   ![icon](images/bus.png)
+
+8. **Scooter**: cada scooter espera en la terminal de scooters hasta que un pasajero le notifica que quiere usarlo. Una vez que llega a la pista de aterrizaje correcta, éste lleva al pasajero hasta la terminal de salida. Cada scooter solo puede llevar a un pasajero y su equipaje. 
+
+   ![icon](images/scooter.png)
 
 
 
