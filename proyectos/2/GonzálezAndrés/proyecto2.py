@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+import restaurante
 
 def main():
-    pass
+    restaurante.iniciar(10,2,2)
 
 if __name__ == "__main__":
     main()

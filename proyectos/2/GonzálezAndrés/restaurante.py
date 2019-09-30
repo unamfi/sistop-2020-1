@@ -37,7 +37,8 @@ semOrdenes = th.Semaphore(0) # Semáforo que los clientes levantarán para indic
 
 class Mesero(th.Thread):
     def __init__(self, name : str):
-        pass
+        th.Thread.__init__(self)
+        self.name = name
 
     def recibirOrden(self):
         pass
@@ -52,7 +53,7 @@ class Mesero(th.Thread):
         pass
 
     def run(self):
-        pass
+        apagadorClientes.acquire()
 
 class Cliente(th.Thread):
     def __init__(self, name : str, orden=[]):
@@ -71,8 +72,8 @@ class Cliente(th.Thread):
         pass
 
     def run(self):
-        print('Hola, soy %s y voy a entrar al restaurante.' % self.name)
-        print('Voy a ordenar %i platillos.' % len(self.orden))
+        print('Hola, soy %s y voy a entrar al restaurante.' % self.name, end=' ')
+        print('Voy a ordenar %i platillo(s).' % len(self.orden))
         with lClientes:
             clientes.append(self)
             print('%s: Estoy dentro, somos %i en el restaurante.' % (self.name, len(clientes)))
@@ -111,13 +112,13 @@ def iniciar(n_clientes, n_meseros, n_cocineros):
 
     for i in range(n_meseros):
         orden = random.sample(menu, random.randint(1,3))
-        Mesero(fake.name(), orden).start()
-        sleep(1)
+        Mesero(fake.name()).start()
+        #sleep(1)
 
     for i in range(n_cocineros):
         orden = random.sample(menu, random.randint(1,3))
-        Cliente(fake.name(), orden).start()
-        sleep(1)
+        Cocinero(fake.name()).start()
+        #sleep(1)
 
     for i in range(n_clientes):
         orden = random.sample(menu, random.randint(1,3))
