@@ -21,6 +21,7 @@ class LandingTrack(Thread):
 	def receive_plane(self,plane):
 		if self.plane == None:
 			self.plane = plane
+		print("receivin plane")
 
 	def time_to_become_available(self):
 		if self.plane != None:
