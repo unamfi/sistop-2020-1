@@ -6,6 +6,7 @@ from os import getcwd, remove
 from os.path import basename
 from time import sleep
 
+
 class SplitFile:
 
     def __init__(self, archivo: str, dest_dir=getcwd()):
@@ -38,27 +39,28 @@ class SplitFile:
         print('Semaforo Arriba', mutex)
         mutex.release()
 
-
     def split(self, rango: tuple, num_split: int):
         """
         :param rango: Recibe el rango de corte del archivo (inicio, fin)
         """
         ext = ".{}.part".format(num_split)
-        self.list_gen.append("{}{}".format(self.dest_dir+'/.'+basename(self.nombre), ext))
+        self.list_gen.append("{}{}".format(
+            self.dest_dir+'/.'+basename(self.nombre), ext))
         print("{}{}".format(self.dest_dir+'/.'+basename(self.nombre), ext))
-        archivo_p = open("{}{}".format(self.dest_dir+'/.'+basename(self.nombre), ext), "wb+")
+        archivo_p = open("{}{}".format(self.dest_dir+'/.' +
+                                       basename(self.nombre), ext), "wb+")
 
         bina = self.archivo
         archivo_p.write(bina[rango[0]:rango[1]])
         print(archivo_p)
         archivo_p.close()
 
-
     def clean_part(self, mutex: Semaphore):
         with mutex:
             [remove(i) for i in self.list_gen]
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
 
     mut = Semaphore(1)
     sp = SplitFile('UNAM_INGENIERIA-eps-converted-to.pdf', mut)

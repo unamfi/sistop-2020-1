@@ -20,7 +20,7 @@ class UISendFiles(wx.Frame):
         kwds["style"] = kwds.get("style", 0) | wx.DEFAULT_FRAME_STYLE
         wx.Frame.__init__(self, *args, **kwds)
         self.mutex = Semaphore(1)
-        
+
         self.SetSize((400, 300))
         self.archivo_in = wx.FilePickerCtrl(self, wx.ID_ANY, "Archivo Entrada")
         self.dir_out = wx.DirPickerCtrl(self, wx.ID_ANY, "button_1")
@@ -42,8 +42,10 @@ class UISendFiles(wx.Frame):
 
     def get_path(self, event):
 
-        s = SplitFile(self.archivo_in.GetPath(), dest_dir=self.dir_out.GetPath())
-        t = Thread(target=s.start_split, args=(self.mutex, int(self.num_split.GetValue())))
+        s = SplitFile(self.archivo_in.GetPath(),
+                      dest_dir=self.dir_out.GetPath())
+        t = Thread(target=s.start_split, args=(
+            self.mutex, int(self.num_split.GetValue())))
         t.start()
         self.status.SetLabel(str(self.num_split.GetValue()))
         j = JoinParts(self.archivo_in.GetPath(), self.dir_out.GetPath(),
@@ -52,23 +54,22 @@ class UISendFiles(wx.Frame):
         t2 = Thread(target=j.join, args=(self.mutex,))
         t2.start()
         s.clean_part(self.mutex)
-        
 
     def __do_layout(self):
         # begin wxGlade: UISendFiles.__do_layout
         Menu = wx.BoxSizer(wx.VERTICAL)
         sizer_1 = wx.BoxSizer(wx.HORIZONTAL)
-        Menu.Add(wx.StaticText(self, wx.ID_ANY,'Seleccione el archivo:'),
+        Menu.Add(wx.StaticText(self, wx.ID_ANY, 'Seleccione el archivo:'),
                  0, wx.EXPAND, 0)
         Menu.Add(self.archivo_in, 0, wx.EXPAND, 0)
-        Menu.Add(wx.StaticText(self, wx.ID_ANY,'Seleccione la ruta:'),
+        Menu.Add(wx.StaticText(self, wx.ID_ANY, 'Seleccione la ruta:'),
                  0, wx.EXPAND, 0)
         Menu.Add(self.dir_out, 0, wx.EXPAND, 0)
 
-        Menu.Add(wx.StaticText(self, wx.ID_ANY,'Seleccione el número a dividir:'),
+        Menu.Add(wx.StaticText(self, wx.ID_ANY, 'Seleccione el número a dividir:'),
                  0, wx.EXPAND, 0)
         Menu.Add(self.num_split, 0, 0, 0)
-        Menu.Add(self.text_ctrl_1, 0, 0, 0)
+        #Menu.Add(self.text_ctrl_1, 0, 0, 0)
         sizer_1.Add(self.status, 0, 0, 0)
         sizer_1.Add(self.send, 0, 0, 0)
         Menu.Add(sizer_1, 1, wx.ALIGN_CENTER, 0)
@@ -78,6 +79,7 @@ class UISendFiles(wx.Frame):
 
 # end of class UISendFiles
 
+
 class MyApp(wx.App):
     def OnInit(self):
         self.frame = UISendFiles(None, wx.ID_ANY, "")
@@ -86,6 +88,7 @@ class MyApp(wx.App):
         return True
 
 # end of class MyApp
+
 
 if __name__ == "__main__":
     app = MyApp(0)

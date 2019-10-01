@@ -14,7 +14,6 @@ class JoinParts:
         self.list_dir = list()
         self.nombre = basename(nombre_archivo)
         self.ruta_destino = ruta_destino
-        
 
     def __expresion_r_lista(self):
         swap_list = list()
@@ -26,7 +25,7 @@ class JoinParts:
 
     def to_list(self):
         tmp_list = list()
-        if self.tamanio%2 == 0:
+        if self.tamanio % 2 == 0:
             for i in range(1, self.tamanio, 2):
                 tmp_list.append([self.list_dir[i-1], self.list_dir[i]])
         else:
@@ -45,21 +44,21 @@ class JoinParts:
     def join(self, mutex: Semaphore):
 
         mutex.acquire()
-        print('Semaforo abajo J', mutex, listdir(self.ruta_destino))    
+        print('Semaforo abajo J', mutex, listdir(self.ruta_destino))
         self.list_dir = listdir(self.ruta_destino)
         print(self.list_dir)
         self.__expresion_r_lista()
         self.tamanio = len(self.list_dir)
         list_w = self.to_list()
         if isfile(self.nombre):
-            self.nombre = '2\ '+ self.nombre
+            self.nombre = '2\ ' + self.nombre
         print(self.ruta_destino+'/'+self.nombre)
         out = open(self.ruta_destino+'/'+self.nombre, 'ab+')
 
         for i in list_w:
 
             if len(i) == 2:
-                print('uniendo', i[0], '+', i[1]) 
+                print('uniendo', i[0], '+', i[1])
                 f1, f2 = open(i[0], 'rb'), open(i[1], 'rb')
                 out.write(f1.read())
                 out.write(f2.read())
@@ -75,8 +74,8 @@ class JoinParts:
         print('Semaforo Arriba J', mutex)
 #        return self.ruta_destino+'/'+self.nombre
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     mut = Semaphore(1)
     j = JoinParts('UNAM_INGENIERIA-eps-converted-to.pdf', mut, '../')
     print(j.join())
-        
