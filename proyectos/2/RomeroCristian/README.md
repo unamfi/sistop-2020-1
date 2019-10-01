@@ -62,6 +62,8 @@ Derivados de Arch Linux, Debian RR y CentOS 7
 
 ## Ejecución
 
+En `src`
+
 ```zsh
 python main.py
 ```
