@@ -2,27 +2,34 @@ from time import sleep
 from os import system, name
 from threading import Thread,Semaphore
 from aicm.airplane import Airplane
+from aicm.airport_generator import AirportGenerator
 from aicm.control_tower import ControlTower
 from aicm.landing_track import LandingTrack,LandingPriority
 from aicm.scooter import Scooter
 from aicm.bus import Bus
 
-planes = []
-passengers = []
-landing_tracks = []
-buses = []
-scooters = []
 
+
+g = AirportGenerator()
 mutex = Semaphore(1)
 
 class Airport(Thread): 
+
+	planes = []
+	passengers = []
+	landing_tracks = []
+	buses = []
+	scooters = []
+
 	def __init__(self,name,city,n_tracks,n_buses,n_scooters,num_planes,num_operators):
-		global planes,passengers
+		global landing_tracks, buses, scooters
 		Thread.__init__(self)
 		self.name = name
 		self.city = city		
 		self.tower = ControlTower(num_planes,num_operators)
-		
+		self.landing_tracks = g.generate_landing_tracks(n_tracks)
+		self.buses = g.generate_buses(n_buses)
+		self.scooters = g.generate_scooters(n_scooters)
 
 	def run(self):
 		global planes 
@@ -39,7 +46,7 @@ class Airport(Thread):
 					sleep(1)
 					print("\n\t\t\tAssigning airplanes to operators...")
 					sleep(2)
-					self.tower.assign_planes(self.planes)
+					self.tower.assign_planes(self.planes,self.landing_tracks)
 				sleep(5)
 
 			
