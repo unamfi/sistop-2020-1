@@ -17,6 +17,14 @@ class SplitFile:
         self.list_gen = list()
 
     def start_split(self, mutex: Semaphore, split_max):
+        """
+        Comienza la divición del archivo
+
+        :param mutex: Es el semaforo que sincroniza la ejecución
+          de esta parte
+        :param split_max: El número máximo de diviciones qeu se quiere
+          hacer
+        """
 
         mutex.acquire()
         if split_max == 0:
@@ -56,6 +64,9 @@ class SplitFile:
         archivo_p.close()
 
     def clean_part(self, mutex: Semaphore):
+        """
+        Limpia los archivos divididos generados en disco
+        """
         with mutex:
             [remove(i) for i in self.list_gen]
 

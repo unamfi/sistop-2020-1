@@ -16,6 +16,11 @@ class JoinParts:
         self.ruta_destino = ruta_destino
 
     def __expresion_r_lista(self):
+        """
+        Mediante una expreción regular, lista los archivos
+        generados a unir
+        """
+
         swap_list = list()
         for archivo in self.list_dir:
             if match('.+\.[0-9]+\.part', '.'+archivo):
@@ -42,6 +47,11 @@ class JoinParts:
         return tmp_list
 
     def join(self, mutex: Semaphore):
+        """
+        Une los archivos partidos, se añade 2\\ para identificar el nuevo
+        :param mutex: El semaforo que da via abierta cuando los archivos
+          esten generados
+        """
 
         mutex.acquire()
         print('Semaforo abajo J', mutex, listdir(self.ruta_destino))

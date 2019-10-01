@@ -16,6 +16,10 @@ from os.path import dirname
 
 class UISendFiles(wx.Frame):
     def __init__(self, *args, **kwds):
+        """
+        Objetos utilizados en la GUI
+        """
+
         # begin wxGlade: UISendFiles.__init__
         kwds["style"] = kwds.get("style", 0) | wx.DEFAULT_FRAME_STYLE
         wx.Frame.__init__(self, *args, **kwds)
@@ -41,6 +45,9 @@ class UISendFiles(wx.Frame):
         # end wxGlade
 
     def get_path(self, event):
+        """
+        Aqui se inica la ejecución de las clases
+        """
 
         s = SplitFile(self.archivo_in.GetPath(),
                       dest_dir=self.dir_out.GetPath())
@@ -56,6 +63,9 @@ class UISendFiles(wx.Frame):
         s.clean_part(self.mutex)
 
     def __do_layout(self):
+        """
+        El 'lienzo' de la GUI
+        """
         # begin wxGlade: UISendFiles.__do_layout
         Menu = wx.BoxSizer(wx.VERTICAL)
         sizer_1 = wx.BoxSizer(wx.HORIZONTAL)
