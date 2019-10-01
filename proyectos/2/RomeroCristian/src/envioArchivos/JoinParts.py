@@ -31,12 +31,15 @@ class JoinParts:
                 tmp_list.append([self.list_dir[i-1], self.list_dir[i]])
         else:
             i = 0
-            while i <= self.tamanio:
-                if i == self.tamanio:
+            print(len(self.list_dir))
+            while i < len(self.list_dir):
+                print(i, self.list_dir[i])
+                if i == len(self.list_dir)-1:
                     tmp_list.append([self.list_dir[i]])
                 else:
                     tmp_list.append([self.list_dir[i], self.list_dir[i+1]])
                 i += 2
+        print(tmp_list)
         return tmp_list
 
     def join(self, mutex: Semaphore):
@@ -56,13 +59,14 @@ class JoinParts:
         for i in list_w:
 
             if len(i) == 2:
-                print('uniendo', i[0], '+', i[1])
+                print('uniendo', i[0], '+', i[1]) 
                 f1, f2 = open(i[0], 'rb'), open(i[1], 'rb')
                 out.write(f1.read())
                 out.write(f2.read())
                 f1.close()
                 f2.close()
             else:
+                print('uniendo', i[0])
                 f1 = open(i[0], 'rb')
                 out.write(f1.read())
                 f1.close()

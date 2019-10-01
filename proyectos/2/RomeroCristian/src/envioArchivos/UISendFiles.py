@@ -43,9 +43,9 @@ class UISendFiles(wx.Frame):
     def get_path(self, event):
 
         s = SplitFile(self.archivo_in.GetPath(), dest_dir=self.dir_out.GetPath())
-        t = Thread(target=s.start_split, args=(self.mutex, self.num_split.GetDigits()))
+        t = Thread(target=s.start_split, args=(self.mutex, int(self.num_split.GetValue())))
         t.start()
-        
+        self.status.SetLabel(str(self.num_split.GetValue()))
         j = JoinParts(self.archivo_in.GetPath(), self.dir_out.GetPath(),
                       work_dir=dirname(self.archivo_in.GetPath()))
 

@@ -8,18 +8,19 @@ from time import sleep
 
 class SplitFile:
 
-    def __init__(self, archivo: str, num_splits=4, dest_dir=getcwd()):
+    def __init__(self, archivo: str, dest_dir=getcwd()):
         self.archivo = open(archivo, "rb").read()
         self.nombre = archivo
-        self.num_splits = num_splits
         self.dest_dir = dest_dir
         print(self.dest_dir)
         self.list_gen = list()
 
-    def start_split(self, mutex: Semaphore, num_s, split_max=4):
+    def start_split(self, mutex: Semaphore, split_max):
 
         mutex.acquire()
-        self.num_splits = num_s
+        if split_max == 0:
+            split_max = 4
+        print(split_max)
         print('Semaforo abajo S', mutex)
         sleep(0.1)
         tamanio = len(self.archivo)
@@ -28,6 +29,7 @@ class SplitFile:
             splits.append(tamanio//split_max)
             split_max -= 1
         ini = cont = 0
+        print(len(splits))
         while splits:
             popper = splits.pop(0)
             self.split((ini, popper), cont)
@@ -60,4 +62,4 @@ if __name__=='__main__':
 
     mut = Semaphore(1)
     sp = SplitFile('UNAM_INGENIERIA-eps-converted-to.pdf', mut)
-    sp.start_split(mut)
+    sp.start_split(mut, 6)
