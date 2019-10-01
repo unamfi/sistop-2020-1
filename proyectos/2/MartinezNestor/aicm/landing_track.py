@@ -26,8 +26,8 @@ class LandingTrack(Thread):
 		if self.plane != None:
 			return self.plane.time_to_download()
 
-	def __str__():
-		return "Landing track #" + self.id
+	def __str__(self):
+		return "Landing track #" + str(self.id+1) + " ready."
 
 
 class LandingPriority(Enum):

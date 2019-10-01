@@ -1,8 +1,10 @@
 import random
 from aicm.airplane import Airplane
-from aicm.landing_track import LandingPriority
+from aicm.landing_track import LandingTrack,LandingPriority
 from aicm.operator import Operator
 from aicm.passenger import Passenger, PassengerType
+from aicm.bus import Bus 
+from aicm.scooter import Scooter
 
 origin_cities = ["BUD","WSW","PRH","KRW"]
 airlines = ["AeroMexico","AirCanada","Lufthansa"]
@@ -61,3 +63,26 @@ class AirportGenerator():
 			return PassengerType.adult
 		else:
 			return PassengerType.old
+
+	def generate_landing_tracks(self,n):
+		tracks = []
+		for i in range(n):
+			t = LandingTrack(id=i)
+			t.start()
+			tracks.append(t)
+		return tracks 
+
+	def generate_buses(self,n):
+		buses = []
+		for i in range(n):
+			b = Bus(id=i)
+			buses.append(b)
+		return buses 
+
+	def generate_scooters(self,n):
+		scooters = []
+		for i in range(n):
+			s = Scooter(id=i)
+			scooters.append(s)
+		return scooters 
+

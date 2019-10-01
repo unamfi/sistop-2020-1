@@ -38,17 +38,18 @@ class ControlTower(Thread):
 		for o in self.operators:
 			wake_up.release()
 
-	def assign_planes(self,planes):
+	def assign_planes(self,planes,landing_tracks):
 		for o in self.operators:
 			if o.with_plane():
 				print("\t\t\tOperator %d is busy with airplane %d" % (o.id, o.plane.id))
 			else:
-				if len(planes) > 0:
-					self.assign_plane(planes,o)
+				if o.landing_tracks_available(landing_tracks) and len(planes) > 0:
+					self.assign_plane(o,planes,landing_tracks)
 
-	def assign_plane(self,planes,operator):
+	def assign_plane(self,operator,planes,landing_tracks):
 		with mutex:
 			p = planes.pop()
 			sleep(1.5)
-			operator.receive_plane(p)
+			operator.receive_plane(p,landing_tracks)
 			print("\t\t\t\tRemaining planes in the air: %d" % len(planes))
+	
