@@ -1,0 +1,4 @@
+#Agregando gitignore
+*.o
+*.out
+*.exe
