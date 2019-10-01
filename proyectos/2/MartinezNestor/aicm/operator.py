@@ -21,7 +21,6 @@ class Operator(Thread):
 
 	def work_with_airplane(self,plane):
 		print("waiting: %d seconds" % plane.time_to_download())
-		sleep(plane.time_to_download())
 		self.plane = None
 
 	def with_plane(self):

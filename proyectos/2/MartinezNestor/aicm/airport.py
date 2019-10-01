@@ -22,7 +22,7 @@ class Airport(Thread):
 		self.name = name
 		self.city = city		
 		self.tower = ControlTower(num_planes,num_operators)
-
+		
 
 	def run(self):
 		global planes 
