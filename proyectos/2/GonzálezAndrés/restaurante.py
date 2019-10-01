@@ -32,13 +32,14 @@ lOrdenesListas = th.Lock()
 lOrdenesSinAtender = th.Lock()
 lOrdenesSinCocinar = th.Lock()
 apagadorClientes = th.Semaphore(0) # Apagador para que el mesero duerma si no hay clientes
-semOrdenes = th.Semaphore(0) # Semáforo que los clientes levantarán para indicar que hay una orden que atender
+semOrdenesSinAtender = th.Semaphore(0) # Semáforo que los clientes levantarán para indicar que hay una orden que atender
 
 
 class Mesero(th.Thread):
     def __init__(self, name : str):
         th.Thread.__init__(self)
         self.name = name
+        self.lock = th.Lock()
 
     def recibirOrden(self):
         pass
@@ -56,16 +57,15 @@ class Mesero(th.Thread):
         apagadorClientes.acquire()
 
 class Cliente(th.Thread):
-    def __init__(self, name : str, orden=[]):
+    def __init__(self, name : str, orden):
         th.Thread.__init__(self)
         self.name = name
         self.orden = orden
-        self.lOrden = th.Lock()
+        #self.lOrden = th.Lock()
 
     def ordenarPlatillos(self):
         while self.orden:
             platillo = self.orden.pop(0)
-            semOrdenes.release() # Aviso a los meseros que hay órdenes por atender
             print('%s: Quiero ordenar %s' % (self.name, platillo))
 
     def comerPlatillo(self):
@@ -80,6 +80,10 @@ class Cliente(th.Thread):
         
         apagadorClientes.release() # Aviso que hay un cliente por ser atendido
 
+        with lOrdenesSinAtender:
+            ordenesSinAtender.append(self.orden)
+        semOrdenesSinAtender.release() # Aviso a los meseros que hay órdenes por atender
+        self.orden.mesero.lock.acquire() # Aviso a los meseros que hay órdenes por atender
         self.ordenarPlatillos()
 
         self.comerPlatillo()
@@ -99,28 +103,37 @@ class Cocinero(th.Thread):
     def run(self):
         pass
 
-class Platillo(th.Thread):
-    def __init__(self, nombre : str, cliente : Cliente):
+class Orden(object):
+    def __init__(self, id, platillos, cliente, mesero):
+        self.id = id
+        self.platillos = platillos
         self.cliente = cliente
-        self.nombre = nombre
-    def __str__(self, parameter_list):
-        return self.nombre
+        self.mesero = mesero
+        self.atendida = False
 
+class Platillo(object):
+    def __init__(self, nombre, orden):
+        self.nombre = nombre
+        self.orden = orden
+        self.preparado = False
+    def __str__(self):
+        return self.nombre
 
 def iniciar(n_clientes, n_meseros, n_cocineros):
     fake = Faker(locale='es_mx')
 
     for i in range(n_meseros):
-        orden = random.sample(menu, random.randint(1,3))
         Mesero(fake.name()).start()
         #sleep(1)
 
     for i in range(n_cocineros):
-        orden = random.sample(menu, random.randint(1,3))
         Cocinero(fake.name()).start()
         #sleep(1)
 
     for i in range(n_clientes):
-        orden = random.sample(menu, random.randint(1,3))
-        Cliente(fake.name(), orden).start()
+        l_platillos = random.sample(menu, random.randint(1,3))
+        orden = Orden(i, l_platillos)
+        c = Cliente(fake.name(), orden)
+        c.orden.cliente = c
+        c.start()
         sleep(0.1)
