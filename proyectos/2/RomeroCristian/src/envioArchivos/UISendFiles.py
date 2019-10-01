@@ -24,7 +24,7 @@ class UISendFiles(wx.Frame):
         self.SetSize((400, 300))
         self.archivo_in = wx.FilePickerCtrl(self, wx.ID_ANY, "Archivo Entrada")
         self.dir_out = wx.DirPickerCtrl(self, wx.ID_ANY, "button_1")
-        self.text_ctrl_1 = wx.TextCtrl(self, wx.ID_ANY, "")
+        #self.text_ctrl_1 = wx.TextCtrl(self, wx.ID_ANY, "")
         self.send = wx.Button(self, wx.ID_ANY, "Iniciar")
         self.send.Bind(wx.EVT_BUTTON, self.get_path)
         self.num_split = wx.SpinCtrlDouble(self, wx.ID_ANY, '4')
