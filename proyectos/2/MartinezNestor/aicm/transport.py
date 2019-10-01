@@ -2,8 +2,9 @@ from enum import Enum
 
 class Transport(): 
 	def __init__(self,t_id, transport_type):
+		Thread.__init__()
 		self.id = t_id
-		self.transport_type = transport_type
+		self.transport_type = transport_type	
 
 	def to_landing_track(self,landing_track):
 		self.landing_track = landing_track

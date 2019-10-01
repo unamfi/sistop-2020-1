@@ -76,6 +76,7 @@ class AirportGenerator():
 		buses = []
 		for i in range(n):
 			b = Bus(id=i)
+			b.start()
 			buses.append(b)
 		return buses 
 
@@ -84,5 +85,6 @@ class AirportGenerator():
 		for i in range(n):
 			s = Scooter(id=i)
 			scooters.append(s)
+			s.start()
 		return scooters 
 

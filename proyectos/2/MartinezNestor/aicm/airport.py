@@ -9,7 +9,6 @@ from aicm.scooter import Scooter
 from aicm.bus import Bus
 
 
-
 g = AirportGenerator()
 mutex = Semaphore(1)
 
