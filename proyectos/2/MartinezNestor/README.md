@@ -75,7 +75,7 @@ Estos son los actores (junto con su diagrama de clase) más importantes que jueg
 
 ## Mecanismos de sincronización
 
-Al iniciar el programa, se genera una cantidad inicial ```n``` de aviones. Estos aviones son detectados por la torre de control y agregados a una lista global de aviones detectados. La torre de control asigna un avión a un operador cuando el operador esté disponible. Cuando el operador decide qué hacer con el avión, éste quita al avión de la lista. Para este punto necesitamos dos mecanismos: 
+Al iniciar el programa, la torre de control detecta una cantidad ```n``` de aviones. La torre de control asigna un avión a un operador cuando el operador esté disponible. Cuando el operador decide qué hacer con el avión, éste quita al avión de la lista. Para este punto necesitamos dos mecanismos: 
 
 * Una **señalización** para avisarle a cada operador que hay un avión en la lista. 
 * Un **mutex** para proteger el acceso a la lista de aviones detectados pues es compartida entre los diferentes operadores. 
