@@ -1,0 +1,388 @@
+#+title: Revisión de la tarea #2
+#+options: toc:nil num:nil
+
+* Criterios de calificación
+
+- Toda entrega que muestre trabajo y se acerque al planteamiento,
+  aunque no funcione, tiene asegurada una calificación mínima de 6
+- Si replica exitosamente el primer ejemplo (sólo tabla de
+  resultados), 7.5
+- Si presenta el esquema visual, 9
+- Si desarrollan un algoritmo de colas múltiples (retroalimentación
+  multinivel/FB, ronda egoísta/SRR), 9
+- Si presenta el esquema visual y además desarrollan un algoritmo de
+  colas múltiples, 10
+
+* Revisión
+
+** Benjamín Anguiano y Omar Martín
+- Documentación :: [[./AnguianoBenjamin-martinOmar/Documentacion.txt][Documentacion.txt]]
+- Archivos :: [[./AnguianoBenjamin-martinOmar/RoundRobin.java][RoundRobin.java]]
+- Lenguaje de implementación :: Java
+- Se acerca al planteamiento :: Sí
+- Algoritmos base completos :: No
+- Tabla de resultados :: No
+- Esquema visual :: Sí
+- Algún algoritmo de colas múltiples :: No
+- Comentarios ::
+  - Implementan únicamente uno de los algoritmos (RR con quantum fijo
+    a 2). Doy por implementado el planteamiento base (FIFO, RR1, RR4,
+    SPN) porque, si bien hicieron de menos, hicieron el mecanismo más
+    complicado.
+  - No presentan (ni calculan) la tabla de ejecución de cada vuelta
+  - ¡Ojo! Hicieron una entrega con fuentes en Java. ¡Hay que proveer
+    un =.gitignore= para ignorar a los =*.class=!
+- Calificación :: 7
+
+** Emanuel Flores y Andrea García
+- Documentación :: [[./FloresEmanuel-GarciaAndrea/README.md][README.md]]
+- Archivos :: [[./FloresEmanuel-GarciaAndrea/bf.py][bf.py]]
+- Lenguaje de implementación :: Python
+- Se acerca al planteamiento :: Sí
+- Algoritmos base completos :: No
+- Tabla de resultados :: Sí
+- Esquema visual :: Sí
+- Algún algoritmo de colas múltiples :: Sí (retroalimentación multinivel)
+- Comentarios ::
+  - Al igual que en el caso anterior, implementaron únicamente uno de
+    los algoritmos — Aunque el más complicado de todos. Les doy
+    parcial el punto de "replica exitosamente el primer ejemplo".
+  - Línea 108, mencionan como comentario =Duración del quantum=, pero
+    no asignan nada.
+  - Manejan tres variables separadas, una para cada cola, y la función
+    =despachador()= (líneas 31–42) está escrita específicamente para
+    este caso. Si tuvieran que ajustar el código para manejar más
+    colas, se vuelve un dolorcito de cabeza... ¡La respuesta está en
+    parametrizar desde el principio! Si en la inicialización de =FB=
+    declaran un =self.numcolas=, y =self.colas = [ [] for i in
+    range(numcolas) ]=, despachador podría simplificarse por:
+    #+begin_src python
+    def despachador(self):
+      for cola in self.colas:
+        if len(cola) >= 1:
+          return cola
+      return None
+    #+end_src
+    ¿No es más fácil y bonito? 😉
+- Calificación :: 8.5
+
+** Andrés González
+- Documentación :: [[./GonzálezAndrés/README.md][README.md]]
+- Archivos :: [[./GonzálezAndrés/__init__.py][__init__.py]], [[./GonzálezAndrés/algoritmos_planeacion.py][algoritmos_planeacion.py]], [[./GonzálezAndrés/tarea2.py][tarea2.py]]
+- Lenguaje de implementación :: Python
+- Se acerca al planteamiento :: Sí
+- Algoritmos base completos :: Sí
+- Tabla de resultados :: Sí
+- Esquema visual :: Sí
+- Algún algoritmo de colas múltiples :: Sí (Retroalimentación multinivel)
+- Comentarios ::
+  - ¡Muy buena implementación!
+  - Y muy bueno que tuvieras la curiosidad de jugar con la
+    distribución, como lo presentas en la documentación. ¿Ves la
+    flexibilidad que te da haber implementado un par de casos? El
+    esfuerzo para hacer refinamientos baja drásticamente.
+  - Te sugiero un refinamiento: Tus funciones =test_*()= (una para
+    cada mecanismo) se parecen mucho, /muchísimo/ entre sí. ¿Te has
+    metido a hacer /programación funcional/? Si hicieras una
+    abstracción, en que tuvieras una única función =test()=, y que
+    recibiera como uno de sus parámetros a /una función/, podrías
+    reducir en mucho las líneas de código repetido en tu programa.
+- Calificación :: 10
+
+** José González y Alejandro Peralta
+- Documentación :: [[./GonzalezPastor-PeraltaEspinosa/algoritmos.pdf][algoritmos.pdf]]
+- Archivos :: [[./GonzalezPastor-PeraltaEspinosa/main.cpp][main.cpp]]
+- Lenguaje de implementación :: C++
+- Se acerca al planteamiento :: Sí
+- Algoritmos base completos :: No
+- Tabla de resultados :: Parcial
+- Esquema visual :: No
+- Algún algoritmo de colas múltiples :: No
+- Comentarios ::
+  - ¿Para qué incluir el código copiado como un PDF? No, eso no es
+    documentación ☺
+  - ¿Por qué únicamente tres procesos? Además, todos llegan en
+    =t=0=... Eso es un poquito aburrido ☹
+  - Desarrollaron FCFS y RR. ¡Les resultaba trivial agregar SPN! (la
+    diferencia con FCFS es únicamente hacer una comparación al momento
+    de planificar).
+  - Reportan únicamente los valores resultantes para T y E, no para P
+    o R (que serían triviales de obtener, ¡y mucho más útiles!)
+  - La función =quantum()= (líneas 41 a 51) me dejó rascándome la
+    cabeza. Para RR, ¿el quantum lo definen como el promedio
+    aproximado de duración de los procesos? ¿Por qué tan largo? ¿qué
+    efecto creen que este quantum tenga en un algoritmo como RR?
+- Calificación :: 7
+
+** Luis López
+- Documentación :: [[./LopezLuis/Tarea2.txt][Tarea2.txt]]
+- Archivos :: [[./LopezLuis/Algoritmos.java][Algoritmos.java]], [[./LopezLuis/Inicio.java][Inicio.java]]
+- Lenguaje de implementación :: Java
+- Se acerca al planteamiento :: Sí
+- Algoritmos base completos :: Parcial (implementados, no todos
+     funcionales)
+- Tabla de resultados :: Parcial (sólo para FCFS)
+- Esquema visual :: Parcial (sólo para RR)
+- Algún algoritmo de colas múltiples :: No
+- Comentarios ::
+  - ¡Epa! ¡Un poquito de parrafeo por favor! Escribir documentación es
+    parte importantísima de la formación profesional. Y escribir
+    documentación no es únicamente volcar palabras a texto — Si no
+    separas tus ideas en frases y párrafos, resulta casi imposible
+    leerlas.
+
+    Sigo juntando valor para enfrentarme a tu documentación ;-)
+    - Ortografía (incluyendo acentuación)
+  - Comprendo la frustración que describes, y no lo tomo como carencia
+    tuya, sino que de la Facultad. Me parece que el problema principal
+    es que no has aprendido a hacer la abstracción que requiere la
+    solución de problemas mediante la programación. Te sugiero que, a
+    modo de práctica, te pongas como objetivo implementar como un
+    programa /todos/ los procedimientos que te cueste trabajo
+    comprender, de esta materia o de cualquier otra. Así vas a ir
+    dominando debilidades como lo que describes en tu texto.
+    - Importante: Lee código de terceros. Vas a ir aprendiendo
+      cuestiones de estilo. Tu código es difícil de leer (porque le
+      faltan comentarios, está indentado inconsistentemente, tiene
+      mucha repetición...) y seguro se beneficiaría de ello.
+- Calificación :: 7
+
+** César Martínez y Lisset Noriega
+- Documentación :: /No entregada/
+- Archivos :: [[./MartinezCesar-NoriegaLisset/FCFS.py][FCFS.py]], [[./MartinezCesar-NoriegaLisset/PlanifProcesos.py][PlanifProcesos.py]], [[./MartinezCesar-NoriegaLisset/Proceso.py][Proceso.py]], [[./MartinezCesar-NoriegaLisset/RoundRobin.py][RoundRobin.py]], [[./MartinezCesar-NoriegaLisset/SPN.py][SPN.py]]
+- Lenguaje de implementación :: Python
+- Se acerca al planteamiento :: Sí
+- Algoritmos base completos :: Sí
+- Tabla de resultados :: Sí
+- Esquema visual :: Sí
+- Algún algoritmo de colas múltiples :: No
+- Comentarios ::
+  - Cuando Python se encuentra con programas que incluyen múltiples
+    archivos fuente, los deja pre-compilados en el directorio
+    =__pycache__=. ¡Recuerden agregar dicho directorio a su =.gitignore=!
+  - ¡Buena implementación y fácil de leer!
+- Calificación :: 9
+
+** Néstor Martínez
+- Documentación :: [[./MartinezNestor/README.md][README.md]]
+- Archivos ::  [[./MartinezNestor/fcfs.py][fcfs.py]], [[./MartinezNestor/foundations.py][foundations.py]], [[./MartinezNestor/main.py][main.py]], [[./MartinezNestor/rr1.py][rr1.py]], [[./MartinezNestor/rr4.py][rr4.py]],
+              [[./MartinezNestor/spn.py][spn.py]], [[./MartinezNestor/test.py][test.py]], [[./MartinezNestor/images/fcs_table.png][fcs_table.png]], [[./MartinezNestor/images/results.png][results.png]], [[./MartinezNestor/images/rr1.png][rr1.png]],
+              [[./MartinezNestor/images/rr4.png][rr1_table.png]], [[./MartinezNestor/images/spn.png][rr4.png]], [[./MartinezNestor/images/rr1_table.png][spn.png]]
+- Lenguaje de implementación :: Python
+- Se acerca al planteamiento :: Sí
+- Algoritmos base completos :: Sí
+- Tabla de resultados :: Sí
+- Esquema visual :: Sí
+- Algún algoritmo de colas múltiples :: No
+- Comentarios ::
+  - Buena implementación. ¡Muy buen uso de las estructuras que te
+    provee =Foundation()=! Te ayudan a que el código sea mucho más
+    claro
+    - Aunque me hizo esperar un poco más en cuestión de estilo. Hay
+      mucha repetición de código; particularmente RR1 y RR4, podrían
+      ser dos implementaciones muy cercanas, parametrizadas.
+- Calificación :: 9
+
+** Luis Mata
+- Documentación :: /No entregada/
+- Archivos :: [[./MataLuis/alea.py][alea.py]], [[./MataLuis/fifo.py][fifo.py]], [[./MataLuis/main.py][main.py]], [[./MataLuis/rond.py][rond.py]]
+- Lenguaje de implementación :: Python
+- Se acerca al planteamiento :: Sí
+- Algoritmos base completos :: No (falta SPN)
+- Tabla de resultados :: Sí
+- Esquema visual :: No
+- Algún algoritmo de colas múltiples :: No
+- Comentarios ::
+  - No implementas SPN (que, al ser cooperativo, es /muy/
+    simple... ¡Apenas un FCFS con una comparación más!)
+  - Para los valores P y R de las tablas, sería mucho más adecuado
+    utilizar aritmética de punto flotante (no entera). En Python, para
+    convertir un entero en flotante basta con multiplicarlo por =1.0=,
+    o usar la función =float()=: =float(5)= te da =5.0=.
+- Calificación :: 7
+
+** Max Serrano
+- Documentación :: /No entregada/
+- Archivos :: [[./MaxSerrano/t2.py][t2.py]]
+- Lenguaje de implementación :: Python
+- Se acerca al planteamiento :: Sí
+- Algoritmos base completos :: No
+- Tabla de resultados :: No
+- Esquema visual :: No
+- Algún algoritmo de colas múltiples :: No
+- Comentarios ::
+  - Únicamente implementas FIFO, y no funciona ☹
+  - Sin documentación ni comentarios... Ni cómo ayudarte ☹
+- Calificación :: 6
+
+** Luis Moreno y Ángel Ramírez
+- Documentación :: [[./MorenoLuis-RamirezAngel/Tarea2SistOp.pdf][Tarea2SistOp.pdf]]
+- Archivos :: [[./MorenoLuis-RamirezAngel/Tarea2SistOp.c][Tarea2SistOp.c]]
+- Lenguaje de implementación :: C
+- Se acerca al planteamiento :: Sí
+- Algoritmos base completos :: Sí
+- Tabla de resultados :: Sí
+- Esquema visual :: Sí
+- Algún algoritmo de colas múltiples :: No
+- Comentarios ::
+  - Agradezco que lo documentaran — La función =time()= es provista en
+    Linux por =time.h=.
+  - Buena implementación, bastante fácil de leer. Los comentarios
+    ayudan a la comprensión.
+  - al igual que a otros compañeros, les comento: A veces suena más
+    difícil planificar hacer las cosas /bonito/... Pero si se hubieran
+    ahorrado la repetición de código, el código les habría resultado
+    probablemente más fácil, y seguramente más mantenible (y, claro,
+    más legible).
+- Calificación :: 9
+
+** Ricardo Muñoz y Saúl Gabino
+- Documentación :: /No entregada/
+- Archivos :: [[./Mu%C3%B1ozRicardo-GabinoSaul/round_robin/roundrobin.py][roundrobin.py]]
+- Lenguaje de implementación :: Python
+- Se acerca al planteamiento :: Sí
+- Algoritmos base completos :: No (sólo RR)
+- Tabla de resultados :: No
+- Esquema visual :: Sí
+- Algún algoritmo de colas múltiples :: No
+- Comentarios ::
+  - Implementaron correctamente RR parametrizable, pero no incluyeron
+    a ningún otro algoritmo
+  - Tuve que meterme a hacerle cirugía al programa para que
+    funcionara. Sin documentación, sin instrucciones, esperando
+    entrada de teclado... Y con un error de datos (tuve que comentar
+    las líneas 47 y 48 para que funcionara.
+- Calificación :: 7.5
+
+** Jorge Ramos y Brian Espinoza
+- Documentación :: [[./RamosJorge-EspinozaBrian/readme.md][readme.md]]
+- Archivos :: [[./RamosJorge-EspinozaBrian/tarea2.py][tarea2.py]]
+- Lenguaje de implementación :: Python
+- Se acerca al planteamiento :: Sí
+- Algoritmos base completos :: No (falta SPN)
+- Tabla de resultados :: Sí
+- Esquema visual :: Sí
+- Algún algoritmo de colas múltiples :: No
+- Comentarios ::
+  - Los nombres que usan para las variables (p.ej. =t, L, i, CC= en
+    =RoundRobin()=) dificultan poder entender y comentar acerca del
+    programa ☹
+  - ¡La implementación de SPN debería ser trivial una vez que tienen
+    FCFS lista!
+- Calificación :: 8.5
+
+** Cristian Romero y Ulysses López
+- Documentación :: [[./RomeroCristian_LopezUlysses/README.md][README.md]]
+- Archivos :: [[./RomeroCristian_LopezUlysses/main.py][main.py]], [[./RomeroCristian_LopezUlysses/procesos/Fcfs.py][Fcfs.py]], [[./RomeroCristian_LopezUlysses/procesos/Planificar.py][Planificar.py]], [[./RomeroCristian_LopezUlysses/procesos/Proceso.py][Proceso.py]], [[./RomeroCristian_LopezUlysses/procesos/RRobin.py][RRobin.py]], [[./RomeroCristian_LopezUlysses/procesos/Spn.py][Spn.py]]
+- Lenguaje de implementación :: Python
+- Se acerca al planteamiento :: Sí
+- Algoritmos base completos :: Sí
+- Tabla de resultados :: Sí
+- Esquema visual :: Sí
+- Algún algoritmo de colas múltiples :: No
+- Comentarios ::
+  - ¡Buena presentación! :-]
+  - El programa muestra resultados un poco confusos por no saber como
+    manejar el "no hay nada que hacer". Dado que aleatorizan la
+    llegada, para evaluar las ejecuciones agregué esta línea en
+    =main.py=, línea 12, forzando a que éste comience en cero:
+    #+begin_src python
+    procesos.append(Proceso([70,600], [0,0]))
+    #+end_src
+  - Aún así, sigue habiendo algunos resultados de la ejecución que no
+    comprendo:
+    #+begin_src text
+      Round Robin: T = 13.83 , E = 9.67 , P = 3.29
+      |Z||J||W||Z||J||W||Z||W||Z||W||L||Z||W||L||U||Q||Z||W||L||U||Q||L||U||Q||U|| |
+
+      Round Robin: T = 2.33 , E = 1.00 , P = 1.67
+      |Z||J||W||Z||W|| || || || ||L|| || || ||U|| ||Q|| |
+    #+end_src
+    ¿Por qué hay esos espacios a medio camino? Implementaron RR4
+    multiplicando el total de tiempos — ¡Pero no hicieron lo mismo para
+    considerar el tiempo de llegadas!
+  - Recuerden que SPN es un algoritmo /cooperativo/, no
+    apropiativo. Esto es, no puede tomar decisiones de planificación
+    durante el tiempo de ejecución de algún proceso. El programa me
+    muestra:
+    #+begin_src text
+      SPN: T = 7.83 , E = 3.67 , P = 1.65
+      |Z||J||J||Z||Z||Z||Z||Z||W||L||L||L||L||U||U||Q||Q||Q||U||U||W||W||W||W||W|| |
+    #+end_src
+    =J= únicamente debería planificarse cuando =Z= termine su ejecución.
+- Calificación :: 8.5
+
+** Ricardo Rosales
+- Documentación :: [[./RosalesRicardo/README.md][README.md]]
+- Archivos ::  [[./RosalesRicardo/index.html][index.html]], [[./RosalesRicardo/js/index.js][index.js]]
+- Lenguaje de implementación :: Javascript
+- Se acerca al planteamiento :: Sí
+- Algoritmos base completos :: No (sólo FCFS)
+- Tabla de resultados :: Sí
+- Esquema visual :: No
+- Algún algoritmo de colas múltiples :: Sí (FB)
+- Comentarios ::
+  - ¡Por fin algo nuevo! ☺ Me da gusto revisar la lógica de alguien
+    que tiene "callo" a implementar sus ideas desde un paradigma
+    distinto — Javascript, sacando HTML
+  - Te sugiero separar la presentación de la lógica. En tu función
+    =generaTablaBase= generas una tabla HTML, con sus atributos de
+    despliegue (CSS), y le vas dando el contenido. Tus programas
+    resultarán mucho más mantenibles si separas la parte de despliegue
+    y estética de la parte de funcionalidad.
+    - En el caso específico de HTML / Javascript / CSS, te sugiero el
+      uso de clases, y la definición (aunque sea en línea) de un
+      estilo CSS que aplique a todos los elementos, en vez de irles
+      dando estilo al irlos creando
+  - Tu implementación de retroalimentación multinivel es bastante
+    rara, al considerar al elemento con /un tiempo de inicio menor/
+    (=encuentraMenor()=) — ¡Esa información no debería ser relevante
+    para este planificador!
+    - No hay manejo de quantums, tiempo restante, ... — Si bien veo
+      que comenzaste a implementar retroalimentación multinivel... Lo
+      que tienes es otra cosa ☹ ¡Revisa los conceptos!
+- Calificación :: 8
+
+** Eric Sanabria
+- Documentación :: [[./SanabriaErik/Readme.md][Readme.md]]
+- Archivos :: [[./SanabriaErik/fcfs.cpp][fcfs.cpp]], [[./SanabriaErik/fcfs.h][fcfs.h]], [[./SanabriaErik/main.cpp][main.cpp]], [[./SanabriaErik/proc.cpp][proc.cpp]], [[./SanabriaErik/proc.h][proc.h]], [[./SanabriaErik/roundrobin.cpp][roundrobin.cpp]], [[./SanabriaErik/roundrobin.h][roundrobin.h]]
+- Lenguaje de implementación :: C++
+- Se acerca al planteamiento :: Sí
+- Algoritmos base completos :: No (falta SPN)
+- Tabla de resultados :: Sí (FCFS)
+- Esquema visual :: No
+- Algún algoritmo de colas múltiples :: No
+- Comentarios ::
+  - Respecto a tu documentación: Te sugiero distinguir
+    /requerimientos/ (no funciona sin eso) de /entorno de
+    desarrollo/. Para el programa que presentas, nada te requiere ni
+    una versión específica de Linux, ni un tipo específico de
+    procesador — Esos no son /requerimientos/.
+    - Eclipse... podría ser, porque requiere picarle un poquito
+      compilarlo /a pelo/ desde línea de comando con gcc ;-)
+  - Hay alguna falla lógica en tu implementación de Round Robin:
+    Después de ejecutar un quantum, sigue marcando el mismo tiempo
+    pendiente.
+    #+begin_src text
+      (...)
+      a: 4 m_num_proc: 4 size: 9 f: 3
+      P0procesando por 3 segundos... de un tiempo requerido: 11
+
+      A P0 le faltan: 3 segundos y hemos perdido: 
+
+      a: 5 m_num_proc: 4 size: 10 f: 3
+      P0procesando por 3 segundos... de un tiempo requerido: 11
+
+      A P0 le faltan: 3 segundos y hemos perdido: 
+
+      a: 6 m_num_proc: 4 size: 11 f: 3
+      P0procesando por 3 segundos... de un tiempo requerido: 11
+
+      A P0 le faltan: 3 segundos y hemos perdido: 
+
+      a: 7 m_num_proc: 4 size: 12 f: 3
+      P0procesando por 3 segundos... de un tiempo requerido: 11
+
+      A P0 le faltan: 3 segundos y hemos perdido: 
+    #+end_src
+- Calificación :: 7
