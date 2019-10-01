@@ -1,9 +1,33 @@
+from threading import Thread
 from enum import Enum
 
-class LandingTrack():
+class LandingTrack(Thread):
+
+	plane = None
 
 	def __init__(self,id):
+		Thread.__init__(self)
 		self.id = id 
+
+	def run(self):
+		print(self)
+
+	def is_available(self):
+		if self.plane == None:
+			return True 
+		else:
+			return False 
+
+	def receive_plane(self,plane):
+		if self.plane == None:
+			self.plane = plane
+
+	def time_to_become_available(self):
+		if self.plane != None:
+			return self.plane.time_to_download()
+
+	def __str__():
+		return "Landing track #" + self.id
 
 
 class LandingPriority(Enum):
