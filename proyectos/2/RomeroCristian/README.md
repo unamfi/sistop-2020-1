@@ -4,6 +4,7 @@ Proyecto 2 - Simulación de envió de archivos (máquina local)
 ## Integrante:
 * Romero Andrade Cristian
 
+
 Introducción
 ---
 
@@ -59,6 +60,13 @@ wxPython==4.0.6
 
 Derivados de Arch Linux, Debian RR y CentOS 7
 
+## Ejecución
+
+```zsh
+python main.py
+```
+
+
 ### Capturas
 
 ![](img/1.png)
@@ -69,3 +77,17 @@ Derivados de Arch Linux, Debian RR y CentOS 7
 
 ![](img/4.png)
  
+## Notas
+
+### wxWidgets
+
+```zsh
+pip install -U wxPython
+```
+
+```zsh
+pip install -U \
+    -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-16.04 \
+    wxPython
+```
+
