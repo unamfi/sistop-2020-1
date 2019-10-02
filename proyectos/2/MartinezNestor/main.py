@@ -34,20 +34,18 @@ class Plane():
 	g = Generator()
 	def __init__(self,id):
 		self.id = id 
-		self.passengers = self.g.generatePassengers(randint(1,5))
+		self.passengers = self.g.generatePassengers(randint(1,8))
 		self.fly()
 	def fly(self):
-		global planes
+		global planes_landed,planes
 		while True:
 			airplane.acquire()
 			print(self)
-			sleep(1)
+			sleep(5)
 			with mutex:
-				if len(planes) < 5:
+				if planes_landed < 5:
 					planes.append(self)
-					ops.release()
-				else:
-					airplane.release()
+					ops.release()				
 		sleep(2)
 	def time_to_download(self):
 		time = 0 
@@ -56,7 +54,7 @@ class Plane():
 			time += (0.2 + time_of_p)
 		return time
 	def __str__(self):
-		return "Plane #" + str(self.id) + " with " + str(len(self.passengers)) + " passengers."
+		return "Plane #" + str(self.id) + " is arriving with " + str(len(self.passengers)) + " passengers."
 class Operator():
 	def __init__(self,id):
 		self.id = id 
@@ -69,28 +67,18 @@ class Operator():
 			ops.acquire()
 			with mutex:
 				planes_landed += 1
-			p = planes[planes_landed]
+				p = planes[planes_landed]
 			if planes_landed < 4:
-				print("\tOperator is now attending plane #%d" % p.id)
+				print("Operator is now attending plane #%d" % p.id)
+				sleep(2)
 				landingTrack.release()
 			else:
-				print("\tPlane %d must wait until a landing track is available..." % plane.id)
+				print("\tPlane %d must wait until a landing track is available..." % p.id)
 				with mutex:
 					planes_landed -= 1
 			with mutex:
 				if planes_landed < 5:
 					airplane.release()
-class Bus():
-	def __init__(self):
-		self.leaveWithPassengers()
-	def leaveWithPassengers(self):
-		global passengersDownloaded
-		while True:
-			bus.acquire()
-			print("\t\t\tBus is now leaving. We have %d passengers" % passengersDownloaded)
-			passengersDownloaded = 0
-			sleep(5)
-			print("\t\t\tArriving at terminal")
 class Track():
 	def __init__(self,id):
 		self.id = id 
@@ -99,24 +87,33 @@ class Track():
 		global planes,planes_landed
 		while True:
 			landingTrack.acquire()
+			sleep(2)
 			with mutex:
 				plane = planes[planes_landed]
-			print("\t\t\tLanding track %d ready for plane %d's landing" % (self.id,plane.id))
+			print("\tLanding track %d ready for plane %d's landing" % (self.id,plane.id))
 			self.attendPlane(plane)
-			planes_landed -= 1
 	def attendPlane(self,plane):
-		global passengersDownloaded
-		print("Passengers are now dowloading from plane %d" % plane.id)
+		global planes_landed,passengersDownloaded
+		print("\t\t\t\tPassengers are now dowloading from plane %d" % plane.id)
 		for i in plane.passengers:
-			print("\tPassenger %d is dowloading from plane %d" % (i.id,plane.id))
-			# plane.passengers.remove(i)
-			sleep(0.4)
+			print("\t\t\t\tPassenger %d is dowloading from plane %d" % (i.id,plane.id))
+			sleep(1)
 			with mutex:
 				passengersDownloaded += 1
-			if passengersDownloaded == 30:
-				print("\t\t\tasfasdfasd")
+			if passengersDownloaded == 10:
 				bus.release()
 
+class Bus():
+	def __init__(self):
+		self.leaveWithPassengers()
+	def leaveWithPassengers(self):
+		global passengersDownloaded
+		while True:
+			bus.acquire()
+			print("\t\tBus is now leaving. We have %d passengers" % passengersDownloaded)
+			sleep(5)
+			print("\t\tArriving at terminal. %d passengers are going home." % passengersDownloaded)
+			passengersDownloaded = 0
 
 
 
