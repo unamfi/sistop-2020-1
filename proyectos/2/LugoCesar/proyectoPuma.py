@@ -27,27 +27,31 @@ def start():
 
     print(">> Comienza el viaje ¬¬ << ")
     time.sleep(4)
-    print ("7w7")
-    print ("7w7")
-    print ("7w7")
-    print ("7w7")
+    print ("Llegando a parada de Ciencias 7w7")
+    print ("Llegando a parada de Ingenieria 7w7")
+    print ("Llegando a parada de Contaduria 7w7")
+    print ("Llegando a a parada Trabajo Social 7w7")
+    print ("Llegando a parada de MetroBus 7w7")
+    print ("Llegando a parada de Ciencias 7w7")
     print(">> Termina el vieje ñuñ <<")
 
 
 #aquí comienza la definicion de los elementos de la solucion del problema
-def person():
+def Person():
 
     global persons
     mutex.acquire()
 
     if random.random() <= 0.5: #Añadimos la llegada aleatorea de la cual solo la mitad de las personas se formaran
         persons += 1
-
-    if persons == 20: #Si se llena la fila con 20 personas comienza el viaje del puma
+        print("Llega una persona")
+        print("Perosonas formadas y enojadas ¬¬ : %d" %(persons))
+    if persons == 10: #Si se llena la fila con 10 personas comienza el viaje del puma
+    #Para fines de rapidez y porque me aburri de esperar cambie el contador a 10 personas
         pumaBus.release()
     mutex.release()
 
-def pumaBus():
+def Puma():
 
     global timeMin
     global persons
@@ -60,9 +64,9 @@ def pumaBus():
             start()
             timeMin -= 25 #Vaciamos el contador de minutos
             persons -= persons
-        elif persons >= 20:
+        elif persons >= 10:
             start()
-            personas -= 20 #Vaciamos la fila
+            persons -= 10 #Vaciamos la fila
         mutex.release()
 
 
@@ -74,6 +78,7 @@ def timeInMin():
 
     timeMin += 1
 
+
     if timeMin == 25:
 
         pumaBus.release()
@@ -81,9 +86,9 @@ def timeInMin():
     mutex.release()
 
 #Ahora ponemos el tiempo que va a durar cada uno de nuestros hilos
-threading.Thread(target = pumaBus, args = []).start()
+threading.Thread(target = Puma, args = []).start()
 while True:
-	threading.Thread(target = person, args = []).start()
-	time.sleep(0.8)
+	threading.Thread(target = Person, args = []).start()
+	time.sleep(0.5)
 	threading.Thread(target = timeInMin, args = []).start()
-	time.sleep(0.8)
+	time.sleep(0.5)
