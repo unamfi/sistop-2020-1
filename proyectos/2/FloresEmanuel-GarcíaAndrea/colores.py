@@ -15,4 +15,6 @@ class Colores:
     F_PURPURA = '\033[45m'
     F_CIAN = '\033[46m'
     F_BLANCO = '\033[47m'
+    FIN = '\033[0m'
+    
     
