@@ -4,8 +4,8 @@ import sys
 import random
 from colores import Colores
 #-------------------------------------------Datos generales, se recuperan de los argumentos
-num_mesas = 6
-num_meseros = 3
+num_mesas = int(sys.argv[3])
+num_meseros = int(sys.argv[2])
 #------------------------------------------------------------------------------------------
 #Multiplex con los que se garantiza que no se ocupen más mesas o meseros de los que tenemos
 mesas = threading.Semaphore(num_mesas)
@@ -55,10 +55,6 @@ class Mesa:
         def llamarMesero(self, accion):
             global meserosDisp, meseros
             esperarMesero = True
-<<<<<<< HEAD
-            print(meserosDisp) 
-=======
->>>>>>> f3a737d79a69ddf959c07233a998d11ec9af8565
             print(Colores.F_NEGRO + Colores.T_BLANCO + "La mesa del cliente %d esta buscando un mesero" % (self.num_cliente) + Colores.FIN)
             #-----------Revisar si hay meseros disponibles
             while esperarMesero:
@@ -73,9 +69,6 @@ class Mesa:
             #---------------------------------------------
             #Se despierta al mesero que se saco de la lista de meseros disponibles
             mesero.despertar(accion,self.num_cliente)
-<<<<<<< HEAD
-            #Después de realizar la acción vuelve a estar disponible para otras mesas     
-=======
             #Después de realizar la acción vuelve a estar disponible para otras mesas
             #meseros.release()
             #---------------------------------------------
@@ -83,7 +76,6 @@ class Mesa:
             #print("Se desocupo el mesero %d" % (self.num_cliente))            
             #meserosDisp.append(mesero)             
             #mutexmd.release()               
->>>>>>> f3a737d79a69ddf959c07233a998d11ec9af8565
         #------------------------------------------------------------------------------------
 
         def conseguirMesa(self):
@@ -149,7 +141,6 @@ class Mesero:
         global meserosDisp
         mutexmd.acquire()
         meserosDisp.append(self)
-        print(meserosDisp)
         mutexmd.release()
         #self.dormirSiesta()
    
@@ -168,15 +159,7 @@ class Mesero:
         elif accion == "cuenta":
              self.traerCuenta(num_cliente)
         print(Colores.F_AMARILLO + Colores.T_NEGRO + "Se desocupo el mesero %d" % (self.num_mesero) + Colores.FIN)
-<<<<<<< HEAD
-        
-        mutexmd.acquire()
-        meserosDisp.append(self)        
-        mutexmd.release()
-        #self.iniciar()
-=======
         self.iniciar()
->>>>>>> f3a737d79a69ddf959c07233a998d11ec9af8565
         
     def llevarMesa(self, num_cliente):
         print(Colores.F_BLANCO + Colores.T_NEGRO + "El mesero número %d esta llevando al cliente %d a su mesa" % (self.num_mesero,num_cliente) + Colores.FIN)
@@ -211,6 +194,6 @@ class Restaurante:
 
 if __name__ == '__main__':
     # Recupera el valor de los argumentos
-    num_clientes = 3
+    num_clientes = int(sys.argv[1])
     restaurante = Restaurante(num_meseros,num_clientes)
     restaurante.recepcion()
