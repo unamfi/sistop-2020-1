@@ -39,9 +39,11 @@ def person():
 
     global persons
     mutex.acquire()
-    timeMin =+ 1
 
-    if persons == 20:
+    if random.random() <= 0.5: #Añadimos la llegada aleatorea de la cual solo la mitad de las personas se formaran
+        persons += 1
+
+    if persons == 20: #Si se llena la fila con 20 personas comienza el viaje del puma
         pumaBus.release()
     mutex.release()
 
@@ -74,7 +76,7 @@ def timeInMin():
 		pumaBus.release()
 	mutex.release()
 
-
+#Ahora ponemos el tiempo que va a durar cada uno de nuestros hilos 
 threading.Thread(target = pumaBus, args = []).start()
 while True:
 	threading.Thread(target = Person, args = []).start()
