@@ -12,7 +12,7 @@ from aicm.bus import Bus
 g = AirportGenerator()
 mutex = Semaphore(1)
 
-class Airport(Thread): 
+class Airport(): 
 
 	planes = []
 	passengers = []
@@ -21,8 +21,7 @@ class Airport(Thread):
 	scooters = []
 
 	def __init__(self,name,city,n_tracks,n_buses,n_scooters,num_planes,num_operators):
-		global landing_tracks, buses, scooters
-		Thread.__init__(self)
+		global landing_tracks, buses, scooters		
 		self.name = name
 		self.city = city		
 		self.tower = ControlTower(num_planes,num_operators)
@@ -30,7 +29,7 @@ class Airport(Thread):
 		self.buses = g.generate_buses(n_buses)
 		self.scooters = g.generate_scooters(n_scooters)
 
-	def run(self):
+	def simulate(self):
 		global planes 
 		# self.start_simulation()
 		self.tower.start()

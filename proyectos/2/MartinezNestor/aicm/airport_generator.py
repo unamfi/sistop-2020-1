@@ -1,5 +1,6 @@
 import random
-from aicm.airplane import Airplane
+from time import sleep
+# from aicm.airplane import Airplane
 from aicm.landing_track import LandingTrack,LandingPriority
 from aicm.operator import Operator
 from aicm.passenger import Passenger, PassengerType
@@ -85,6 +86,14 @@ class AirportGenerator():
 		for i in range(n):
 			s = Scooter(id=i)
 			scooters.append(s)
+			sleep(1)
 			s.start()
 		return scooters 
 
+	def generate_origin(self):
+		global origin_cities 
+		return origin_cities[random.randint(0,len(origin_cities)-1)]
+
+	def generate_fuel_percentage(self):
+		global percentages
+		return percentages[random.randint(0,len(origin_cities)-1)]

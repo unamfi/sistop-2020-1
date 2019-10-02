@@ -1,24 +1,52 @@
 from threading import Thread,Semaphore
 from time import sleep
 from random import randint
+from aicm.general import planes,landing_tracks
+from aicm.landing_track import LandingTrack
 
 mutex = Semaphore(1)
 
-class Operator(Thread):
-
+class Operator(Thread):	
+	
+	is_busy = False
 	plane = None
 
 	def __init__(self,id):
 		Thread.__init__(self)
 		self.id = id 
 
-	def run(self):
-		print(self)
+	def run(self):	
+		while len(planes) > 0:
+			if self.is_busy:
+				self.is_busy = False
+				sleep(2)
+			else:
+				self.is_busy = True
+				with mutex:
+					self.plane = planes.pop()
+				print("\t\t\tOperator #%d working with plane #%d. [%d] planes in air." % (self.id,self.plane.id,len(planes)))
+				if len(planes) == 0:
+					self.is_busy = False
+		# print("\t\t\t[%d] planes in air." % (len(planes)))
+		# print("\t\t\tOperator #%d working with plane #%d. [%d] planes in air." % (self.id,self.plane.id,len(planes)))
+		# print("\t\t\tOperator #%d has finished working..." % self.id)
+	
+
+	def assign_plane(self,plane,d):
+		self.is_busy = True
+		self.plane = plane
+		print("\t\t\tOperator #%d working with plane #%d. [%d] planes in air." % (self.id,self.plane.id,len(planes)))
+		sleep(d)
+		self.plane = None
+
+	def busy(self):
+		self.is_busy = False
+		print("\t\tOperator #%d busy..." % self.id)
 
 	def receive_plane(self,plane,tracks):
 		self.plane = plane
 		sleep(0.5)
-		print("\t\t\tOperator #%d now with airplane %d" % (self.id, self.plane.id))
+		print("\n\t\t\tOperator #%d now with airplane %d" % (self.id, self.plane.id))
 		with mutex:			
 			self.work_with_airplane(plane,tracks)
 
@@ -27,6 +55,7 @@ class Operator(Thread):
 		print("\t\t\tAirplane #%d is landing on track #%d" % (plane.id,track.id))
 		track.receive_plane(plane)
 		self.plane = None
+		tracks.append(track)		
 
 	def with_plane(self):
 		if self.plane == None:
@@ -39,6 +68,9 @@ class Operator(Thread):
 			if len(landing_tracks) > 0:
 				return True 
 			return False 
+
+	def redirect(self,plane):
+		print("Redirecting plane")
 
 	def __str__(self):
 		return "\t\t\tHello, I'm Operator #" + str(self.id)

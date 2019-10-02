@@ -8,16 +8,15 @@ wake_up = Semaphore(0)
 mutex = Semaphore(1)
 
 
-class ControlTower(Thread):
+class ControlTower():
 
 	operators = []
 
 	def __init__(self,num_planes,num_ops):
-		Thread.__init__(self)
 		self.num_planes = num_planes
 		self.num_ops = num_ops	
 
-	def run(self):
+	def start(self):
 		self.initialize_operators()	
 
 	def detect_airplanes(self):
@@ -43,13 +42,13 @@ class ControlTower(Thread):
 			if o.with_plane():
 				print("\t\t\tOperator %d is busy with airplane %d" % (o.id, o.plane.id))
 			else:
-				if o.landing_tracks_available(landing_tracks) and len(planes) > 0:
-					self.assign_plane(o,planes,landing_tracks)
-
-	def assign_plane(self,operator,planes,landing_tracks):
-		with mutex:
-			p = planes.pop()
-			sleep(1.5)
-			operator.receive_plane(p,landing_tracks)
-			print("\t\t\t\tRemaining planes in the air: %d" % len(planes))
-	
+				p = planes.pop()
+				sleep(1.5)
+				if o.landing_tracks_available(landing_tracks):
+					if len(planes) > 0:
+						o.receive_plane(p,landing_tracks)
+						print("\t\t\t\tRemaining planes in the air: %d" % len(planes))
+				else:
+					if len(planes) > 0:
+						print("\t\t\tNo landing tracks available...")
+						# o.redirect(p)
