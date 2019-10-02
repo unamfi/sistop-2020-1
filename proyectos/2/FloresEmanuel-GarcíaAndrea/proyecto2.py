@@ -1,7 +1,6 @@
 import threading
 import sys
 import random
-
 #-------------------------------------------Datos generales, se recuperan de los argumentos
 num_mesas = 6
 num_meseros = 3
