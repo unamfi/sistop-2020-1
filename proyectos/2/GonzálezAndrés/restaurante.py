@@ -274,9 +274,9 @@ def iniciar(n_clientes, n_meseros, n_cocineros):
         Mesero(fake.name()).start()
         #sleep(1)
 
-    for i in range(n_cocineros):
-        Cocinero(fake.name()).start()
-        #sleep(1)
+    # for i in range(n_cocineros):
+    #     Cocinero(fake.name()).start()
+    #     #sleep(1)
 
     for i in range(n_clientes):
         l_platillos = random.sample(menu, random.randint(1,3))
