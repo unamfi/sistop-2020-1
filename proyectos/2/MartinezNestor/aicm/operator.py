@@ -1,10 +1,12 @@
 from threading import Thread,Semaphore
 from time import sleep
 from random import randint
-from aicm.general import planes,landing_tracks
+from aicm.general import planes,landing_tracks,track
 from aicm.landing_track import LandingTrack
 
 mutex = Semaphore(1)
+
+active_landing_tracks = -1
 
 class Operator(Thread):	
 	
@@ -16,17 +18,27 @@ class Operator(Thread):
 		self.id = id 
 
 	def run(self):	
+		global active_landing_tracks
 		while len(planes) > 0:
 			if self.is_busy:
 				self.is_busy = False
-				sleep(2)
 			else:
 				self.is_busy = True
 				with mutex:
 					self.plane = planes.pop()
-				print("\t\t\tOperator #%d working with plane #%d. [%d] planes in air." % (self.id,self.plane.id,len(planes)))
+				print("\t\t\tOperator #%d working with plane #%d. [%d] planes in air." % (self.id,self.plane.id,len(planes)+1))
+				with mutex:
+					if active_landing_tracks < 4:
+						active_landing_tracks += 1
+					if active_landing_tracks == 4:
+						print("Landing tracks are busy, wait...")
+						planes.append(self.plane)
+					else:
+						track.release()
+				sleep(2)
 				if len(planes) == 0:
-					self.is_busy = False
+					self.is_busy = True
+
 		# print("\t\t\t[%d] planes in air." % (len(planes)))
 		# print("\t\t\tOperator #%d working with plane #%d. [%d] planes in air." % (self.id,self.plane.id,len(planes)))
 		# print("\t\t\tOperator #%d has finished working..." % self.id)

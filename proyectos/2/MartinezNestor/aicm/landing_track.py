@@ -16,7 +16,7 @@ class LandingTrack(Thread):
 		track.acquire()
 		print("LR %d" % self.id)
 		sleep(1)
-
+		track.acquire()
 
 	def is_available(self):
 		if self.plane == None:
