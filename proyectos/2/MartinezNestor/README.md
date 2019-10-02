@@ -119,10 +119,9 @@ Cuando un pasajero llega a la terminal, es necesario actualizar las siguientes l
 
 * **Estado compartido**:
   * Pistas de aterrizaje disponibles. 
-* **Avance de cada hilo**: 
-  * Aliquam erat volutpat. Integer rutrum at mauris ac hendrerit. Duis bibendum tristique neque, et pellentesque purus gravida in. Duis 
-* **Interacción entre hilos**:
-  * Aliquam erat volutpat. Integer rutrum at mauris ac hendrerit. Duis bibendum tristique neque, et pellentesque purus gravida in. Duis 
+  * Lista de aviones 
+  * Aviones que aterrizaron 
+  * Pasajeros que bajaron del avión
 
 ## Entorno de Desarrollo
 
@@ -135,9 +134,11 @@ Cuando un pasajero llega a la terminal, es necesario actualizar las siguientes l
 
 ## Para ejecutar el programa
 
-
-
-
+```python3 main.py```
 
 ## Screenshots
+
+![icon](images/work.png)
+
+![Screen Shot 2019-10-01 at 23.51.32](images/Screen Shot 2019-10-01 at 23.51.32.png)
 
