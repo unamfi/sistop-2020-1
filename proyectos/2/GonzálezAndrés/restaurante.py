@@ -27,22 +27,30 @@ menu = [
 
 clientes = []
 meseros = []
-ordenesListas = []
-ordenesSinAtender = []
-ordenesSinCocinar = []
+ordenesSinAtender = [] # Órdenes que aún no tienen mesero asignado
+ordenesAtendiendose = [] # Órdenes que están siendo escuchadas por un mesero
+ordenesSinCocinar = [] # Órdenes en lista de espera para ser cocinadas
+ordenesCocinadas = []
+ordenesPorEntregar = []
 platillos = []
 
 # Candados, semáforos y variables de condición necesarios para sincronización
 lClientes = th.Lock()
 lMeseros = th.Lock()
 lMenu = th.Lock()
-lOrdenesListas = th.Lock()
+lOrdenesCocinadas = th.Lock()
 lOrdenesSinAtender = th.Lock()
+lOrdenesAtendiendose = th.Lock()
 lOrdenesSinCocinar = th.Lock()
+lOrdenesPorEntregar = th.Lock()
 
 cvClientes = th.Condition() #Variable de condición para que los meseros esperen si no hay clientes
 cvOrdenesSinAtender = th.Condition() #Variable de condición para que los meseros no hagan su hilo de recibir ordenes si no hay órdenes en espera
+cvOrdenesAtendiendose = th.Condition() #Variable de condición para que los clientes puedan revisar si ya pueden empezar a pedirle su órden al mesero
 cvOrdenesSinCocinar = th.Condition() #Variable de condición para avisar a los cocineros que tienen que iniciar a cocinar las órdenes
+cvOrdenesSinEntregar = th.Condition() #Variable de condición para avisar a los cocineros que tienen que iniciar a cocinar las órdenes
+cvOrdenesCocinadas = th.Condition() #Variable de condición para avisar a los meseros que tienen ordenes listas para ser entregadas
+cvOrdenesPorEntregar = th.Condition() #Variable de condición para avisar a los clientes que tienen ordenes listas para ser comidas
 
 def hayClientes():
     global clientes
@@ -56,6 +64,18 @@ def hayOrdenesSinAtender():
         lasHay = True if ordenesSinAtender else False
     return lasHay
 
+def hayOrdenesAtendiendose():
+    global ordenesAtendiendose
+    with lOrdenesAtendiendose:
+        lasHay = True if ordenesAtendiendose else False
+    return lasHay
+
+def hayOrdenesPorEntregar():
+    global ordenesPorEntregar
+    with lOrdenesPorEntregar:
+        lasHay = True if ordenesPorEntregar else False
+    return lasHay
+
 class Mesero(th.Thread):
     _ids = count(0)
     def __init__(self, name : str):
@@ -65,16 +85,25 @@ class Mesero(th.Thread):
         self.lock = th.Lock()
 
     def recibirOrdenes(self):
-        global ordenesSinAtender
-        with cvOrdenesSinAtender:
-            while not hayOrdenesSinAtender():
-                print("No hay ordenes por atender.")
-                cvOrdenesSinAtender.wait()
-            ordenPorAtender = ordenesSinAtender.pop(0)
-        ordenPorAtender['idMesero'] = self.id
-        with cvOrdenesSinCocinar:
-            ordenesSinCocinar.append(ordenPorAtender)
-            cvOrdenesSinCocinar.notifyAll() # Notificamos a los cocineros para que hagan su trabajo
+        global ordenesSinAtender, clientes
+        while True:
+            with cvOrdenesSinAtender:
+                while not hayOrdenesSinAtender():
+                    #print("No hay ordenes por atender.")
+                    cvOrdenesSinAtender.wait()
+                ordenPorAtender = ordenesSinAtender.pop(0)
+            ordenPorAtender['mesero'] = {
+                'id' : self.id,
+                'name' : self.name
+            }
+            with cvOrdenesAtendiendose:
+                ordenesAtendiendose.append(ordenPorAtender)
+                print("%s: Atenderé la órden de %s." % (self.name, ordenPorAtender['cliente']['name']))
+                cvOrdenesAtendiendose.notifyAll() # Le aviso a los clientes que el mesero tomó una de sus órdenes
+
+            with cvOrdenesSinCocinar:
+                ordenesSinCocinar.append(ordenPorAtender)
+                cvOrdenesSinCocinar.notifyAll() # Notificamos a los cocineros para que hagan su trabajo
 
     def anotarOrdenesSinCocinar(self):
         pass
@@ -123,19 +152,35 @@ class Cliente(th.Thread):
     def ponerOrdenEnEspera(self):
         with cvOrdenesSinAtender:
             ordenesSinAtender.append({
-                'idCliente' : self.id,
-                'orden' : self.orden
+                'orden' : self.orden,
+                'cliente' : {
+                        'id' : self.id,
+                        'name' : self.name,
+                    },
             })
-            print('%s: Mando señal de que necesito un mesero.' % self.name)
+            print('%s: Agito la mano para llamar la atención de un un mesero.' % self.name)
             cvOrdenesSinAtender.notify() # Aviso a los meseros que hay órdenes por atender
     
     def ordenarPlatillos(self):
+        global ordenesAtendiendose
+        with cvOrdenesAtendiendose:
+            miOrden = list(filter(lambda x : x['cliente']['id'] == self.id, ordenesAtendiendose)) # veo si es mia la orden
+            while not miOrden:
+                cvOrdenesAtendiendose.wait()
+                miOrden = list(filter(lambda x : x['cliente']['id']== self.id, ordenesAtendiendose))
         while self.orden:
             platillo = self.orden.pop(0)
             print('%s: Quiero ordenar %s' % (self.name, platillo))
 
     def comerPlatillo(self):
-        pass
+        global ordenesPorEntregar
+        with cvOrdenesPorEntregar:
+            miOrden = list(filter(lambda x : x['cliente']['id'] == self.id, ordenesPorEntregar))
+            while not miOrden:
+                cvOrdenesPorEntregar.wait()
+                miOrden = list(filter(lambda x : x['cliente']['id'] == self.id, ordenesPorEntregar))
+
+
             
     def run(self):
         global clientes, cvClientes
@@ -167,24 +212,24 @@ class Cocinero(th.Thread):
     def run(self):
         pass
 
-class Orden(object):
-    _ids = count(0)
-    def __init__(self, mesero=None):
-        self.id = next(self._ids)
-        self.cliente = cliente
-        self.mesero = mesero
-        self.atendida = False
-        self.cocinada = False
-        self.servida = False
+# class Orden(object):
+#     _ids = count(0)
+#     def __init__(self, mesero=None):
+#         self.id = next(self._ids)
+#         self.cliente = cliente
+#         self.mesero = mesero
+#         self.atendida = False
+#         self.cocinada = False
+#         self.servida = False
 
-class Platillo(object):
-    _ids = count(0)
-    def __init__(self, nombre, orden):
-        self.id = next(self._ids)
-        self.nombre = nombre
-        self.cocinado = False
-    def __str__(self):
-        return self.nombre
+# class Platillo(object):
+#     _ids = count(0)
+#     def __init__(self, nombre, orden):
+#         self.id = next(self._ids)
+#         self.nombre = nombre
+#         self.cocinado = False
+#     def __str__(self):
+#         return self.nombre
 
 def iniciar(n_clientes, n_meseros, n_cocineros):
     fake = Faker(locale='es_mx')
@@ -199,8 +244,9 @@ def iniciar(n_clientes, n_meseros, n_cocineros):
 
     for i in range(n_clientes):
         l_platillos = random.sample(menu, random.randint(1,3))
-        orden = Orden(i, l_platillos)
-        c = Cliente(fake.name(), orden)
+        #orden = Orden(i, l_platillos)
+        #c = Cliente(fake.name(), orden)
+        c = Cliente(fake.name(), l_platillos)
         c.orden.cliente = c
         c.start()
         sleep(0.1)
