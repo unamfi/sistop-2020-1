@@ -20,4 +20,64 @@ pumaBus = threading.Semaphore(0)
 #La del tiempo es la que va calculando cunto tiempo ha pasado en minutos si la espera es muy grande se libera el puma
 #La de las personas es el caso de la fila enorme, a ojo de buen cubero propuse que las personas dentro de la fila enorme eran 30 aprox
 #pero esperar a que lleguen 30 personas me causo demasiada flojera al esperar x.x asi que mejor lo baje a 20 ñwñ
-#Finalmente la que creo es la principal la del puma que es la que conjunta los problemas y da la solucion 
+#Finalmente la que creo es la principal la del puma que es la que conjunta los problemas y da la solucion
+
+#definimos una funcion para la impresion de la simulacion del recorrido del PumaBus
+def start():
+
+    print(">> Comienza el viaje ¬¬ << ")
+    time.sleep(4)
+    print ("7w7")
+    print ("7w7")
+    print ("7w7")
+    print ("7w7")
+    print(">> Termina el vieje ñuñ <<")
+
+
+#aquí comienza la definicion de los elementos de la solucion del problema
+def person():
+
+    global persons
+    mutex.acquire()
+    timeMin =+ 1
+
+    if persons == 20:
+        pumaBus.release()
+    mutex.release()
+
+def pumaBus():
+
+	global minutos
+	global personas
+	while True:
+		pumaBus.acquire()
+		mutex.acquire()
+
+		if minutos == 25:
+			start()
+			minutos -= 25 #Vacia el contador de minutos
+			personas -= personas
+		elif personas >= 15:
+			start()
+			personas -= 15
+		#print (pumaInactivo)
+		mutex.release()
+
+
+def timeInMin():
+
+    global timeMin
+	mutex.acquire()
+	timeMin += 1
+	print  ('Ha trasncurrido un minuto' + '\n' + (total) + 'Minutos = %d' %(timeMin))
+    if timeMin == 25:
+		pumaBus.release()
+	mutex.release()
+
+
+threading.Thread(target = pumaBus, args = []).start()
+while True:
+	threading.Thread(target = Person, args = []).start()
+	time.sleep(0.8)
+	threading.Thread(target = timeInMin, args = []).start()
+	time.sleep(0.8)
