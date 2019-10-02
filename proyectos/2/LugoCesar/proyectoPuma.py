@@ -49,37 +49,41 @@ def person():
 
 def pumaBus():
 
-	global minutos
-	global personas
-	while True:
-		pumaBus.acquire()
-		mutex.acquire()
+    global timeMin
+    global persons
+    while True:
 
-		if minutos == 25:
-			start()
-			minutos -= 25 #Vacia el contador de minutos
-			personas -= personas
-		elif personas >= 15:
-			start()
-			personas -= 15
-		#print (pumaInactivo)
-		mutex.release()
+        pumaBus.acquire()
+        mutex.acquire()
+
+        if timeMin == 25:
+            start()
+            timeMin -= 25 #Vaciamos el contador de minutos
+            persons -= persons
+        elif persons >= 20:
+            start()
+            personas -= 20 #Vaciamos la fila
+        mutex.release()
 
 
 def timeInMin():
 
     global timeMin
-	mutex.acquire()
-	timeMin += 1
-	print  ('Ha trasncurrido un minuto' + '\n' + (total) + 'Minutos = %d' %(timeMin))
-    if timeMin == 25:
-		pumaBus.release()
-	mutex.release()
 
-#Ahora ponemos el tiempo que va a durar cada uno de nuestros hilos 
+    mutex.acquire()
+
+    timeMin += 1
+
+    if timeMin == 25:
+
+        pumaBus.release()
+
+    mutex.release()
+
+#Ahora ponemos el tiempo que va a durar cada uno de nuestros hilos
 threading.Thread(target = pumaBus, args = []).start()
 while True:
-	threading.Thread(target = Person, args = []).start()
+	threading.Thread(target = person, args = []).start()
 	time.sleep(0.8)
 	threading.Thread(target = timeInMin, args = []).start()
 	time.sleep(0.8)
