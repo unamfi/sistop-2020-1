@@ -29,7 +29,7 @@ Para realizar este sistema de manera exitosa hay que considerar las siguientes r
 
 * Una pista de aterrizaje será liberada solo si todos los viajeros han bajado del avión. 
 
-* Una vez que los viajeros bajen del avión, habrá un camión que los llevará a la terminal deseada. El camión solo arrancará si tiene 30 personas dentro de él. Para cada pista de aterrizaje habrá un camión. 
+* Una vez que los viajeros bajen del avión, habrá un camión que los llevará a la terminal deseada. El camión solo arrancará si tiene 10 personas dentro de él. Para cada pista de aterrizaje habrá un camión. 
 
 * Los viajeros, en caso de desesperarse, podrán tomar un scooter para llegar a su terminal deseada. 
 
@@ -142,3 +142,6 @@ Cuando un pasajero llega a la terminal, es necesario actualizar las siguientes l
 
 ![Screen Shot 2019-10-01 at 23.51.32](images/Screen Shot 2019-10-01 at 23.51.32.png)
 
+## Notas
+
+Por cuestiones de tiempo no logré implementar el funcionamiento complejo al que aspiraba y se denota en el documento. Para prueba de ello dejé los archivos dentro de **aicm** y el **main_copy.py** que son implementaciones fallidas del proyecto inicial. Al ver que el tiempo me comía, opté por hacer la solución directa dentro de **main.py**. 
