@@ -10,7 +10,7 @@ Espinoza Ceron Brian Arian*
 * python V3  
 * linea de comandos
 * bibliotecas: `rand` `math` `threading` `time`
-#### instrucciones
+#### Instrucciones
 colocarse en el directorio `proyectos/2/RamosJorge-EspinozaBrian` y ejecutar el siguiente comando
 
 ```
@@ -30,12 +30,14 @@ Hilos  y semaforos
 
 
 #### Lógica de operación
-los hilos son los clientes y los semaforos son las personas que se encargan de despachar a los clientes(hilos) generamos aleatoriamente un numero en el intervalo de 1 a 5 y tambien clasificamos a los hilos en pares e impares, si el numero de hilo es un hilo par nuestra funcion para estimar el tiempo que se va a dormir el hilo va a estar dada por `n=random*2` en cambio si el numero de hilo es impar la funcion sera la siguiente `n=random` Si el número está entre 1 y 3 suponemos que el cliente pidió unos tacos, si el número está entre 3 y 7 suponemos que pidió tortas, finalmente, si el número está entre 7 y 10 suponemos que pidió Gorditas todo esto para darle valores mas reales.
+los hilos son los clientes y los semaforos son las personas que se encargan de despachar a los clientes(hilos) generamos aleatoriamente un numero en el intervalo de 1 a 5 y tambien clasificamos a los hilos en pares e impares, si el numero de hilo es un hilo par nuestra funcion para estimar el tiempo que se va a dormir el hilo va a estar dada por `n=random*2` en cambio si el numero de hilo es impar la funcion sera la siguiente `n=random+2` Si el número está entre 1 y 3 suponemos que el cliente pidió unos tacos, si el número está entre 3 y 7 suponemos que pidió tortas, finalmente, si el número está entre 7 y 10 suponemos que pidió Gorditas todo esto para darle valores mas reales.
 
-### ejecución
+### Ejecución
 
 ![ejecucion del programa](./ejecucion.png)
 
 
-##### interfaz
-CLI
+> Interfaz CLI
+
+
+[ link de recurso de apoyo para la realizacion del proyecto](https://python-para-impacientes.blogspot.com/2016/12/threading-programacion-con-hilos-y-ii.html)
