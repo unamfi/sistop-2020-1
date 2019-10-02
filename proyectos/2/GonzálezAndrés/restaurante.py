@@ -32,20 +32,29 @@ ordenesSinAtender = []
 ordenesSinCocinar = []
 platillos = []
 
-# Candados, semáforos, apagadores, necesarios para sincronización
+# Candados, semáforos y variables de condición necesarios para sincronización
 lClientes = th.Lock()
 lMeseros = th.Lock()
 lMenu = th.Lock()
 lOrdenesListas = th.Lock()
 lOrdenesSinAtender = th.Lock()
 lOrdenesSinCocinar = th.Lock()
+
 cvClientes = th.Condition() #Variable de condición para que los meseros esperen si no hay clientes
-semOrdenesSinAtender = th.Semaphore(0) # Semáforo que los clientes levantarán para indicar que hay una orden que atender
+cvOrdenesSinAtender = th.Condition() #Variable de condición para que los meseros no hagan su hilo de recibir ordenes si no hay órdenes en espera
+cvOrdenesSinCocinar = th.Condition() #Variable de condición para avisar a los cocineros que tienen que iniciar a cocinar las órdenes
 
 def hayClientes():
+    global clientes
     with lClientes:
         losHay = True if clientes else False
     return losHay
+
+def hayOrdenesSinAtender():
+    global ordenesSinAtender
+    with lOrdenesSinAtender:
+        lasHay = True if ordenesSinAtender else False
+    return lasHay
 
 class Mesero(th.Thread):
     _ids = count(0)
@@ -55,16 +64,25 @@ class Mesero(th.Thread):
         self.name = name
         self.lock = th.Lock()
 
-    def recibirOrden(self):
+    def recibirOrdenes(self):
+        global ordenesSinAtender
+        with cvOrdenesSinAtender:
+            while not hayOrdenesSinAtender():
+                print("No hay ordenes por atender.")
+                cvOrdenesSinAtender.wait()
+            ordenPorAtender = ordenesSinAtender.pop(0)
+        ordenPorAtender['idMesero'] = self.id
+        with cvOrdenesSinCocinar:
+            ordenesSinCocinar.append(ordenPorAtender)
+            cvOrdenesSinCocinar.notifyAll() # Notificamos a los cocineros para que hagan su trabajo
+
+    def anotarOrdenesSinCocinar(self):
         pass
 
-    def anotarOrden(self):
+    def obtenerOrdenesCocinadas(self):
         pass
 
-    def obtenerPlatillo(self):
-        pass
-
-    def entregarPlatillo(self):
+    def entregarOrdenes(self):
         pass
 
     def run(self):
@@ -72,16 +90,17 @@ class Mesero(th.Thread):
         print('Hola, soy %s y voy a atender clientes.' % self.name)
         with lMeseros:
             meseros.append(self)
-        print('%s: Somos %i meseros en el restaurante.' % (self.name, self._ids))
-        cvClientes.acquire()
-        while not clientes:
-            print("No hay clientes, me wa dormir. Zzzz")
-            cvClientes.wait()
-        with lClientes:
-            clientePorAtender = clientes.pop(0)
-        cvClientes.release()
-        print('%s: atendiendo a cliente: %s' % (self.name, clientePorAtender.name))
-        self.recibirOrden()
+            print('%s: Somos %i meseros en el restaurante.' % (self.name, len(meseros)))
+        with cvClientes:
+            while not hayClientes():
+                print("No hay clientes, me wa dormir. Zzzz")
+                cvClientes.wait()
+        #     with lClientes:
+        #         clientePorAtender = clientes.pop(0)
+        # print('%s: atendiendo a cliente: %s' % (self.name, clientePorAtender.name))
+        print("%s: Llegaron clientes y me despertaron :c" % self.name)
+        th.Thread(target=self.recibirOrdenes).start()
+        th.Thread(target=self.entregarOrdenes).start()
         
 
 class Cliente(th.Thread):
@@ -95,6 +114,21 @@ class Cliente(th.Thread):
         self.comio = False
         #self.lOrden = th.Lock()
 
+    def entraralRestaurante(self):
+        with cvClientes:
+            clientes.append(self)
+            print('%s: Estoy dentro, somos %i en el restaurante.' % (self.name, len(clientes)))
+            cvClientes.notify() # Aviso a los meseros que hay clientes
+
+    def ponerOrdenEnEspera(self):
+        with cvOrdenesSinAtender:
+            ordenesSinAtender.append({
+                'idCliente' : self.id,
+                'orden' : self.orden
+            })
+            print('%s: Mando señal de que necesito un mesero.' % self.name)
+            cvOrdenesSinAtender.notify() # Aviso a los meseros que hay órdenes por atender
+    
     def ordenarPlatillos(self):
         while self.orden:
             platillo = self.orden.pop(0)
@@ -102,12 +136,6 @@ class Cliente(th.Thread):
 
     def comerPlatillo(self):
         pass
-
-    def entraralRestaurante(self):
-        with cvClientes:
-            clientes.append(self)
-            print('%s: Estoy dentro, somos %i en el restaurante.' % (self.name, len(clientes)))
-            cvClientes.notify() # Aviso a los meseros que hay clientes
             
     def run(self):
         global clientes, cvClientes
@@ -116,9 +144,7 @@ class Cliente(th.Thread):
         
         self.entraralRestaurante()
 
-        with lOrdenesSinAtender:
-            ordenesSinAtender.append(self.orden)
-            # Aviso a los meseros que hay órdenes por atender
+        self.ponerOrdenEnEspera()
         
         self.ordenarPlatillos()
 
