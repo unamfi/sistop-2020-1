@@ -11,7 +11,7 @@ Espinoza Ceron Brian Arian*
 colocarse en el directorio `proyectos/2/RamosJorge-EspinozaBrian` y ejecutar el siguiente comando
 
 ```
-python3 problema2.py
+python3 proyecto2.py
 ```
 listo deberia verse la ejecucion del programa
 
@@ -19,7 +19,7 @@ listo deberia verse la ejecucion del programa
 
 #### problema
 
-En un evento donde asisten muchas personas nos encontramos con la problematica que solo trajeron 4 baños para hombres y 4 baños para mujeres, las mujeres tardan el doble de tiempo en ir al baño que los hombres por lo que la fila de las mujeres es mas grande que la de los hombres para agilizar el flujo  y reducir la fila las mujeres pueden hacer uso del baño de los hombres siempre y cuando este este desocupado 
 
-#### estrategia
+
+La problemática se centra en un puesto de garnachas, pues una tía de uno de nosotros labora en un puesto de garnachas, y nos parece interesante el flujo de personas que hay en el transcurso del día. En este negocio se preparan principalmente 3 tipos de alimentos diferentes los cuales son tacos, gorditas y tortas, cada uno de estos alimentos tiene un tiempo de preparacion diferente, mediante el uso de hilos y semaforos nos planteamos simular como es el proceso de servicio a los clientes en un dia normal en el cual acuden un promedio de 100 personas al dia y regularmente son atendidos por 5 personas que laboran en el puesto de garnachas las cuales solamente atienden la orden de una persona y no atienden a otra hasta que este libre 
 

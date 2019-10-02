@@ -3,17 +3,17 @@ import time
 import random
 import math 
 
-def descargando(semaforo):
+def preparando(semaforo):
     global activasTacos
     global activasTortas
     global activasGorditas
     nombre = threading.current_thread().getName()
-    # print('Esperando para ser atendido:', nombre)
     with semaforo:
-        ###para generar los numeros aleatorios
+        #para generar los numeros aleatorios
         ran=random.randint(1,10)
+        #convierte de string a int 
         nombreint=int(nombre) 
-        print("*"*50,'llego el hilo: ',nombreint) 
+        print("*"*20,'llego el la persona: ',nombreint,"*"*20) 
         if(nombreint%2==0):
             n=ran*2
             print('Esperando para ser atendido:', nombreint)
@@ -62,21 +62,15 @@ def descargando(semaforo):
                     time.sleep(n)
                     activasGorditas.remove(nombre)
                     print('orden de la persona', nombre,' entregada')
-        # activas.append(nombre)
-        # print('personas en espera de su orden', activas)
-        # print('...Preparando orden de persona:', nombre)
-        # time.sleep(n)
-        # activas.remove(nombre)
-        # print('orden de la persona', nombre,' entregada')
-
-NUM_DESCARGAS_SIM = 4
-#activas = []
+#numero de semaforos
+chefs = 5
 activasTacos = []
 activasTortas = []
 activasGorditas = []
-semaforo = threading.Semaphore(NUM_DESCARGAS_SIM)
+semaforo = threading.Semaphore(chefs)
+# numero de hilos 
 for indice in range(1,10):
-    hilo = threading.Thread(target=descargando,
+    hilo = threading.Thread(target=preparando,
                             name=indice,
                             args=(semaforo,),)
     hilo.start()
