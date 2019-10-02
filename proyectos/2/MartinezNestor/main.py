@@ -5,7 +5,6 @@ from time import sleep
 #global array to denote the airplanes in the air
 planes = []
 tracks = []
-operators = []
 
 planes_landed = -1
 passengersDownloaded = 0
