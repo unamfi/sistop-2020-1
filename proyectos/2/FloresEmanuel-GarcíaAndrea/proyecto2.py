@@ -1,6 +1,7 @@
 import threading
 import sys
 import random
+
 #-------------------------------------------Datos generales, se recuperan de los argumentos
 num_mesas = 6
 num_meseros = 3
@@ -11,9 +12,9 @@ meseros = threading.Semaphore(num_meseros)
 #------------------------------------------------------------------------------------------
 #-------------------------------------------------------Para saber que meseros están libres
 meserosDisp = []
-meserosBuss = []
+#meserosBuss = []
 mutexmd = threading.Semaphore(1)
-mutexmo = threading.Semaphore(1)
+#mutexmo = threading.Semaphore(1)
 #------------------------------------------------------------------------------------------
 #Para saber cuando cierra el restaurante
 clientes_res = 0
@@ -48,9 +49,9 @@ class Mesa:
             self.llamarMesero("comida")
             #En teoría deberían comer
             self.llamarMesero("cuenta")
-            mutex_cr.acquire()
-            clientes_res += 1
-            mutex_cr.release()
+            #mutex_cr.acquire()
+            #clientes_res += 1
+            #mutex_cr.release()
             mesas.release()
         #---------------------------------------------------------------
 
@@ -58,8 +59,7 @@ class Mesa:
         def llamarMesero(self, accion):
             global meserosDisp, meseros
             print(meserosDisp)
-            posicion = 0
-            meseros.acquire()
+            #meseros.acquire()
             esperarMesero = True
             print("La mesa del cliente %d esta buscando un mesero" % (self.num_cliente))
             #-----------Revisar si hay meseros disponibles
@@ -67,33 +67,29 @@ class Mesa:
                 mutexmd.acquire()
                 if len(meserosDisp) > 0:
                     mesero = meserosDisp.pop(0)
-                    meserosBuss.append(mesero)
                     esperarMesero = False
                 mutexmd.release()
             #---------------------------------------------
             #Se despierta al mesero que se saco de la lista de meseros disponibles
-            mesero.despertar(accion)
+            mesero.despertar(accion,self.num_cliente)
             #Después de realizar la acción vuelve a estar disponible para otras mesas
-            meseros.release()
-            for m in meseroBuss:
-                if m == mesero:
-                    break
-                posicion += 1
+            #meseros.release()
+            #---------------------------------------------
             mutexmd.acquire()
-            meserosDisp.append(meserosBuss.pop(posicion))
-            mutexmd.release()     
-            
+            print("Se desocupo el mesero %d" % (self.num_cliente))            
+            meserosDisp.append(mesero)             
+            mutexmd.release()               
         #------------------------------------------------------------------------------------
 
         def conseguirMesa(self):
-            print("El cliente %d ha conseguido una mesa para %d personas" % (num_cliente, num_invitados+1))
+            print("El cliente %d ha conseguido una mesa para %d personas" % (self.num_cliente, self.num_invitados+1))
 
         def revisaCarta(self):
-            print("El cliente número %d está revisando la carta" % (num_cliente))
+            print("El cliente número %d está revisando la carta" % (self.num_cliente))
 
         def decidirOrden(self):        
             Mesa.mutex.acquire()
-            print("El cliente número %d está listo para ordenar" % (num_cliente))        
+            print("El cliente número %d está listo para ordenar" % (self.num_cliente))        
             Mesa.cuenta += 1       
             Mesa.mutex.release()
 
@@ -103,7 +99,7 @@ class Mesa:
             salir = True
             num_hilos = self.num_invitados + 1
             #-------------------------------------------------------------Crea los hilos de sus acompañantes
-            for i in range (num_invitados):
+            for i in range (self.num_invitados):
                 threading.Thread(target = Mesa.Invitado, args= [num_cliente,i]).start()
                             
             #-----------------------------------------------------------------------------------------------
@@ -142,6 +138,13 @@ class Mesero:
     def __init__(self, num_mesero):
         self.num_mesero = num_mesero
         self.dormir = threading.Semaphore(0)
+        self.iniciar()
+
+    def iniciar(self):
+        global meserosDisp
+        mutexmd.acquire()
+        meserosDisp.append(self)
+        mutexmd.release()
         self.dormirSiesta()
    
     def dormirSiesta(self):
@@ -183,10 +186,8 @@ class Restaurante:
     def recepcion(self):
         #Creamos los hilos de meseros y se agregan a la lista de meseros disponibles
         for i in range(self.num_meseros):
-            hilo = threading.Thread(target = Mesero, args= [i])
-            meserosDisp.append(hilo)
-            #meserosDisp[len(meserosDisp)-1].start()
-
+            threading.Thread(target = Mesero, args= [i]).start()
+       
         #Creamos los hilos de clientes
         for i in range(self.num_clientes):
             #Generamos el número de acompañantes de manera aleatoria
