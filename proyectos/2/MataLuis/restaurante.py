@@ -63,6 +63,37 @@ def capitan(numCliente):
     print("\033[1;31mCapitan: Listo, tome asiento, elija cualquier mesa o la barra.")
     return nombre
 
+def sentarse(numCliente, nombre):
+    mesa = aleatorios(5)
+    if(mesa == 0):
+        print("\033[1;37m%s se quiere sentar en la barra" %persona[nombre])
+    else:
+        print("\033[1;37m%s se quiere sentar en la mesa %d" %(persona[nombre],mesa))
+    if(len(barra) < 12 and mesa == 0):
+        barra.append(colaGeneral.pop(buscarCliente(colaGeneral, numCliente)))
+        estancia(nombre)
+        barra.pop(buscarCliente(barra, numCliente))
+    elif(len(mesa1) < 4 and mesa == 1):
+        mesa1.append(colaGeneral.pop(buscarCliente(colaGeneral, numCliente)))
+        estancia(nombre)
+        mesa1.pop(buscarCliente(mesa1, numCliente))
+    elif(len(mesa2) < 4 and mesa == 2):
+        mesa2.append(colaGeneral.pop(buscarCliente(colaGeneral, numCliente)))
+        estancia(nombre)
+        mesa2.pop(buscarCliente(mesa2, numCliente))
+    elif(len(mesa3) < 4 and mesa == 3):
+        mesa3.append(colaGeneral.pop(buscarCliente(colaGeneral, numCliente)))
+        estancia(nombre)
+        mesa3.pop(buscarCliente(mesa3, numCliente))
+    elif(len(mesa4) < 4 and mesa == 4):
+        mesa4.append(colaGeneral.pop(buscarCliente(colaGeneral, numCliente)))
+        estancia(nombre)
+        mesa4.pop(buscarCliente(mesa4, numCliente))
+    else:        
+        print("\033[1;31mCapitan: Esa mesa esta llena, quisiera esperar o seleccionar otra mesa?")
+        time.sleep(1)
+        sentarse(numCliente, nombre)
+
 #Parte de la conversacion de ordenar por parte del cliente
 def ordenar(nombre):
     mutexOrden.release()
