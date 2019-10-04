@@ -34,6 +34,23 @@ def imprimir():
     print(colaGeneral)
     mutexPrint.release()
 
+
+def introduccion(): 
+    i = 10
+    while(i>0):
+        print("Este programa simula un restaurante.\nAl llegar, cada cliente lo recibe el Capitan.\nEl Capitan debe preguntarle su nombre para que todos lo conozcan")
+        print("Ademas debe preguntarle en que lugar le gustaria sentarse\nSi la mesa que elige esta llena, se le indicara al cliente y podra esperar o elegir otra mesa")
+        print("Al sentarse un mesero le dira el menu y le tomara su orden\nEl mesero pasara la orden al chef quien por cada platillo tiene un tiempo diferente")
+        print("Comenzamos en %d" %i)
+        i -= 1
+        time.sleep(1)
+        os.system("clear")
+    lanzaHilos()
+
+def aleatorios(num):        #Esta funcion genera numeros aleatorios para determinar la cantidad de hilos y el tiempo de duraran comiendo cada cliente
+    return random.randrange(num)
+
+
 def cliente(numCliente):    #Cliente es la funcion que manda a cada hilo, aqui se anuncia que el cliente llego y se agrega a la cola general de espera 
     time.sleep(aleatorios(30))   #Espera para llegada de cada cliente 
     colaGeneral.append(numCliente)
