@@ -141,3 +141,5 @@ def buscarCliente(lista, cliente):
 def lanzaHilos():
     for i in range(aleatorios(50)):
         threading.Thread(target=cliente, args=[i]).start()
+
+introduccion()
