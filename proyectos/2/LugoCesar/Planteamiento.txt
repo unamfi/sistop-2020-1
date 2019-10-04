@@ -1,0 +1,10 @@
+Planteamiento:
+
+El Pumabús suele ser un buen medio de transporte pero en muchas ocasiones caótico. El caso particular que trataré es el de las rutas 4 y 2 ya que son las rutas que yo utilizo para llegar a la facultad.
+La problemática que veo es el mal manejo de la logística de los pumabuses, estas rutas las frecuento a diferentes horas durante la semana y el problema es el mismo, las filas son enormes en ambas rutas. También
+se toma en cuenta las personas que llegan para tomar los taxis que están situados a un lado de la parada de las rutas o bien las que utilizan el cruce peatonal.
+Cuándo la fila es muy larga normalmente llegan algunas unidades al mismo tiempo para poder reducir la cantidad de usuarios en algunos casos llegan de la mismo ruta y en ocasiones llegan las 2 rutas al mismo tiempo.
+En esta ocasión implementaré primitivas de sincronización tomando coma base la ruta 2 ya que es la más usada de las dos por su corto recorrido ya sea para llegar a alguna de sus paradas o de regreso al metro.
+
+Si no llegase a existir una solución para este problema, las consecuencias pueden ser que los usuarios lleguen tarde a sus destinos ya sea porque decidieron no esperar y caminar o en la espera se les hizo tarde;
+otra seria que tomen un taxi, ya sea colectivo o no pero tendrán que gastar dinero para poder llegar a tiempo a sus destinos y todo esto ligado a que no habría un momento en el que la fila fuera pequeña y siempre se mantuviera a tope.
