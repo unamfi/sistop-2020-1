@@ -17,6 +17,23 @@ mesa2 = []
 mesa3 = []
 mesa4 = []
 
+def imprimir():
+    mutexPrint.acquire()
+    print("\033[1;33mDistribucion de mesas y personas sentadas identificadas con el numero que se les asigno al llegar")
+    print("Barra:")
+    print(barra)
+    print("Mesa 1:")
+    print(mesa1)
+    print("mesa 2:")
+    print(mesa2)
+    print("Mesa 3:")
+    print(mesa3)
+    print("Mesa 4:")
+    print(mesa4)
+    print("En espera de lugar:")
+    print(colaGeneral)
+    mutexPrint.release()
+
 def cliente(numCliente):    #Cliente es la funcion que manda a cada hilo, aqui se anuncia que el cliente llego y se agrega a la cola general de espera 
     time.sleep(aleatorios(30))   #Espera para llegada de cada cliente 
     colaGeneral.append(numCliente)
