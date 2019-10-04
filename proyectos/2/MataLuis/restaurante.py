@@ -3,6 +3,7 @@ import time
 import random 
 import os 
 
+#Diccionarios para el menu y para un nombre de cada cliente. 
 menu = {'0':'Pollo', '1':'Carne', '2':'Pescado', '3':'Sopa', '4':'Ensalada'}
 persona = {'0': 'Luis', '1': 'Jorge', '2':'Daniel', '3':'Diana', '4':'Paola', '5':'Laura', '6': 'Saul', '7':'Sarah', '8': 'Alberto', '9': 'Pedro', '10': 'Monse', '11':'Gunnar', '12': 'Beto', '13': 'Carlos', '14': 'Eduardo', '15':'Fabiola', '16':'Hugo', '17': 'Irma', '18': 'Julia', '19': 'Karina', '20': 'Marcos', '21':'Nora', '22':'Omar', '23': 'Quique', '24': 'Roberto', '25':'Tania', '26':'Uriel', '27':'Ander', '28':'Blanca', '29':'Carmen', '30':'Diego', '31':'Eber','32':'Francisca'}
 
@@ -17,6 +18,7 @@ mesa2 = []
 mesa3 = []
 mesa4 = []
 
+#Imprime mesas, barra y cola de espera, se manda a llamar cada que un cliente se sienta. 
 def imprimir():
     mutexPrint.acquire()
     print("\033[1;33mDistribucion de mesas y personas sentadas identificadas con el numero que se les asigno al llegar")
@@ -34,9 +36,9 @@ def imprimir():
     print(colaGeneral)
     mutexPrint.release()
 
-
+#Introduccion para dar a conocer una pequeña parte del programa. 
 def introduccion(): 
-    i = 10
+    i = 25
     while(i>0):
         print("Este programa simula un restaurante.\nAl llegar, cada cliente lo recibe el Capitan.\nEl Capitan debe preguntarle su nombre para que todos lo conozcan")
         print("Ademas debe preguntarle en que lugar le gustaria sentarse\nSi la mesa que elige esta llena, se le indicara al cliente y podra esperar o elegir otra mesa")
@@ -57,6 +59,7 @@ def cliente(numCliente):    #Cliente es la funcion que manda a cada hilo, aqui s
     nombre=capitan(numCliente)
     sentarse(numCliente, nombre)  #Cambiar nombre de esta funcion   #Sentarse es la funcion que define el comportamiento de cada hilo 
 
+#Desarrollo real del cliente en el restaurante.
 def estancia(nombre):
     imprimir()
     #time.sleep(aleatorios(5))
@@ -66,23 +69,25 @@ def estancia(nombre):
     time.sleep(aleatorios(20))
     print("\033[1;37m%s se ah ido" %persona[nombre])
 
+#El chef recibe la orden del mesero de preparar la comida. 
 def chef(orden, nombre):
     print("\033[1;34mChef: Anotado y preparando!.. ")
     time.sleep(aleatorios(5))
     print("\033[1;34mChef: Sale %s para %s" %(menu[orden], persona[nombre]))
 
+#El capitan le da la bienvenida a cada cliente. 
 def capitan(numCliente):
-    mutexCapitan.acquire()
+    mutexCapitan.acquire() #Mutex que sirve como torniquete para que los clientes llegen de uno a uno. 
     mutexCapitan.release()
     nombre = str(aleatorios(33))
     print("\033[1;31mCapitan: Bienvenido, Cual es su nombre")
     print("\033[1;32mCliente %d: %s" %(numCliente,persona[nombre]))
     print("\033[1;31mCapitan: Listo, tome asiento, elija cualquier mesa o la barra.")
     return nombre
-
+#Esta funcion se utiliza para asignarle asiento a cada cliente.
 def sentarse(numCliente, nombre):
-    mesa = aleatorios(5)
-    if(mesa == 0):
+    mesa = aleatorios(5) #Cada cliente decide donde sentarse.
+    if(mesa == 0): #Se revisa que el cliente quepa en la mesa que selecciono 
         print("\033[1;37m%s se quiere sentar en la barra" %persona[nombre])
     else:
         print("\033[1;37m%s se quiere sentar en la mesa %d" %(persona[nombre],mesa))
@@ -106,7 +111,7 @@ def sentarse(numCliente, nombre):
         mesa4.append(colaGeneral.pop(buscarCliente(colaGeneral, numCliente)))
         estancia(nombre)
         mesa4.pop(buscarCliente(mesa4, numCliente))
-    else:        
+    else:        #En caso de que no quepa en las mesas, esperara, y podra elegir otra mesa. 
         print("\033[1;31mCapitan: Esa mesa esta llena, quisiera esperar o seleccionar otra mesa?")
         time.sleep(1)
         sentarse(numCliente, nombre)
