@@ -23,6 +23,29 @@ def cliente(numCliente):    #Cliente es la funcion que manda a cada hilo, aqui s
     nombre=capitan(numCliente)
     sentarse(numCliente, nombre)  #Cambiar nombre de esta funcion   #Sentarse es la funcion que define el comportamiento de cada hilo 
 
+def estancia(nombre):
+    imprimir()
+    #time.sleep(aleatorios(5))
+    mutexMesero.acquire()
+    recibirOrden(nombre)
+    mutexMesero.release()
+    time.sleep(aleatorios(20))
+    print("\033[1;37m%s se ah ido" %persona[nombre])
+
+def chef(orden, nombre):
+    print("\033[1;34mChef: Anotado y preparando!.. ")
+    time.sleep(aleatorios(5))
+    print("\033[1;34mChef: Sale %s para %s" %(menu[orden], persona[nombre]))
+
+def capitan(numCliente):
+    mutexCapitan.acquire()
+    mutexCapitan.release()
+    nombre = str(aleatorios(33))
+    print("\033[1;31mCapitan: Bienvenido, Cual es su nombre")
+    print("\033[1;32mCliente %d: %s" %(numCliente,persona[nombre]))
+    print("\033[1;31mCapitan: Listo, tome asiento, elija cualquier mesa o la barra.")
+    return nombre
+
 #Esta funcion busca un elemento en la lista dada 
 def buscarCliente(lista, cliente):
     for i in range(len(lista)):
