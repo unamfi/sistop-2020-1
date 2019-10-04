@@ -46,6 +46,26 @@ def capitan(numCliente):
     print("\033[1;31mCapitan: Listo, tome asiento, elija cualquier mesa o la barra.")
     return nombre
 
+#Parte de la conversacion de ordenar por parte del cliente
+def ordenar(nombre):
+    mutexOrden.release()
+    orden = str(aleatorios(5))
+    print("\033[1;32m%s: Quisiera ordenar %s" %(persona[nombre], menu[orden]))
+    return orden   
+    
+#Parte de la conversacion de ordenar por parte del mesero 
+def recibirOrden(nombre):
+    mutexOrden.acquire()
+    print("\033[1;35mMesero: En nuestro menu se encuentra: Pollo, Carne, Pescado, Ensalada o Sopa. Desea Ordenar?")
+    orden = ordenar(nombre)
+    print("\033[1;35mMesero: En seguida y bienvenido")
+    preparar(orden, nombre)
+
+#El mesero solicita al chef la preparacion del alimento 
+def preparar(orden, nombre):
+    print("\033[1;35mMesero: %s para %s" %(menu[orden], persona[nombre]))
+    chef(orden, nombre)
+
 #Esta funcion busca un elemento en la lista dada 
 def buscarCliente(lista, cliente):
     for i in range(len(lista)):
