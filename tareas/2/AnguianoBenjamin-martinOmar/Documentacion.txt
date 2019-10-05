@@ -1,0 +1,22 @@
+Problema a resolver. Round Robin
+
+Lenguaje y entorno de desarrollo. 
+	Java. Basta con compilar desde la terminal usando javac nombreDelArchivo.java
+	
+
+Explicación de la implementación.
+
+Métodos más importantes.
+	Método "nuevaRonda" en clase RoundRobin
+		En este ejercicio se crearán 3 procesos de nombre A,B,C, con ráfaga definida (de manera aleatoria entre 0 y 10 en cada ronda), los 			cuales se guardan en un ArrayList llamado "listaProcesos". Se crea un objeto de tipo Quantum, que recibe por parámetro la duración 			del en segundos (Para observar el comportamiento del algoritmo), y llama a un método llamado "recorreProcesos" perteneciente a la 			clase quantum y que recibe por parámetro a la "listaProcesos" 
+	
+
+	Método "recorrerProcesos" en clase Quantum.
+		Accedemos mediante un while a la lista, en donde verificamos si la lista está vacía (porque se irá vaciando conforme se vayan 				terminando los proceso). Dentro de un bucle for recorremos la lista y checamos si 
+		la diferencia entre la ráfaga del proceso y un comparador (que va aumentando en tiempo cada que el proceso trabaja) es menor que la 			duración de un quantum. Si es así, no durará un quantum completo, sino la diferencia entre la ráfaga y lo que lleva el proceso de 			completitud.
+		Caso contrario, sí durará un quantum y se actualizará el comparador sumándole un quantum al comparador. 
+		Al final verifica si el comparador es igual a su ráfaga (estaría terminado el proceso), si es así, se saca al proceso de la lista y 			continúa checando los demás procesos.
+
+
+
+ 
