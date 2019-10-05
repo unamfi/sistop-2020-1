@@ -1,0 +1,1 @@
+Para arrancar el Programa es necesario que este en una carpeta llamada poryecto2 luego entramos en ella y usamos el comando javac *.java   posteriormente para arrancar usamos el comando java proyecto2.NewJFrame y se disparara la interfaz
