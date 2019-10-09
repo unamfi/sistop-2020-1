@@ -23,16 +23,9 @@ Se utilizaron varios mecanismos para la resolución del problema ya que al momen
 
 Por otro lado se utilizó el mecanismo de barrera cuando los clientes van a pedir una orden, ya que al momento de cada cliente y sus acompañantes saben que ordenar es cuando deben pedir la cuenta, por lo que los procesos se esperan entre sí.
 
-Se tuvo un problema al implementar, ya que aunque funciona de manera decente el programa al momento de atender a los últimos clientes los meseros los ignoran :(.
+Se lograró implementar de manera correcta, auque al principio había un deadlock, se solucionó, y el programa se ejecuta correctamente, los clientes que estan definidos por el usuario no son en realidad los que van a atender los meseros, ya que los invitados se generan de manera aleatorio, pero los clientes definidos por el usuario son los que pedirán una mesa y se formarán para obtener una.
 
-Para identificar más rapido los procesos se utilizaron los siguientes colores:
-- Clientes -> Cian
-- Acompañantes -> Morado, Rojo
-- Mesero -> Blanco
-- Se desocupa mesero -> Amarillo
-- Mesa -> Negro
-- Platillo listo -> Azul
-- Orden lista -> Verde
+Los colores se generan de manera aleatoria, lo que hace que más dinámico el programa en ejecución.
 
 ## Entorno de Desarrollo
 Este programa se desarrolló en una sistema operativo tipo *UNIX* por lo que se recomienda ampliamente utilizarlo en un sistema similar. Está escrito en el lenguaje de programación *Python 3*, en específico la versión *3.7* sin embargo si se cuenta con la versión *3.6* no causa ningun conflicto.
@@ -41,20 +34,20 @@ Este programa se desarrolló en una sistema operativo tipo *UNIX* por lo que se 
 Para ejecutar el programa se utiliza el siguiente comando:
 
 ~~~
-python proyecto2.py <clientes> <meseros> <mesas>
+python proyecto2.py <mesas> <meseros> <clientes>
 ~~~
 
 o bien
 
 ~~~
-python3 proyecto2.py <clientes> <meseros> <meses> 
+python3 proyecto2.py <mesas> <meseros> <clientes> 
 ~~~
 
 en donde:
 
-- *clientes* hace referencia a la cantidad de clientes que visitarán el restaurante.
-- *meseros* hace referencia a la cantidad de meseros que trabajan en el restaurante.
 - *mesas* hace referencia a la cantidad de mesas que trabajan en el restaurante.
+- *meseros* hace referencia a la cantidad de meseros que trabajan en el restaurante.
+- *clientes* hace referencia a la cantidad de clientes que visitarán el restaurante.
 
 ### Ejemplo de Ejecución
 
