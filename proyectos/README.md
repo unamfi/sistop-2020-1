@@ -9,5 +9,5 @@
    cotidiana paralelizable](./2/README.org) (2019.09.17 → 2019.10.01)
 
 3. Para la unidad *6. Sistemas de archivos*,
-   [Proyecto 3: (Micro) sistema de archivos](./3/README.md)
+   [Proyecto 3: (Micro) sistema de archivos](./3/README.org)
    (2019.10.08 → 2019.10.29)
