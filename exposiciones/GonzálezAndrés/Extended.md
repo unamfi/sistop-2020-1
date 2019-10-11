@@ -15,6 +15,52 @@ Este sistema fue el primero en utilizar el API del Sistema Virtual de Archivos (
 
 Este sistema fue desarrolló en enero de 1993 para el Kernel de Linux 0.99. Surgió como una solución a tres problemas que tenía ext, modificación de inodo, modificación de datos y no soportaba marcas de tiempo (timestamps) para acceso de archivo.
 
+### Estructura en disco
+
+EXT2 está hecho bajo la prmisa que toda la información que exista en los archivos debe ser mantenida en bloques de datos. Estos bloques son todos de la misma longitud y están agrupados en grupos de bloques. Cada grupo contiene una copia del super bloque y su tabla de descriptor de grupo. Todos los bloques contienen un bitmap de bloque, un inodo de bloque, una tabla de inodos y por último los bloques de datos.
+
+
+<figure>
+  <img src="./img/DiagramaExt2.gif" alt="Fig.2 - Estructura de un bloque en ext2.">
+  <figcaption>Fig.2 - Estructura de un bloque en ext2.</figcaption>
+</figure>
+
+#### INodo
+
+Los inodos son el bloque de construcción básico; cada archivo y directorio en el sistema de archivos es descrito por un y sólo un inodo. El inodo incluye información acerca del tamaño, permiso, dueño y localización en disco de un archivo o directorio. Los inodos de cada Grupo de Bloque están puestos en la tabla de inodos junto con un bitmap que permite al sistema mantener registro de los nodos asignados y sin asignar.
+
+<figure>
+  <img src="./img/inodo_ext2.gif" alt="Fig. 3 - Estructura de un inodo en ext2">
+  <figcaption>Fig. 3 - Estructura de un inodo en ext2.</figcaption>
+</figure>
+
+## Comparación
+
+<table>
+    <thead>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
 ## Referencias
 
 [1] RUSLING, D. A. (S.F.). THE SECOND EXTENDED FILE SYSTEM (EXT2). RECUPERADO 11 OCTUBRE, 2019, DE HTTP://WWW.SCIENCE.UNITN.IT/%7EFIORELLA/GUIDELINUX/TLK/NODE95.HTML
