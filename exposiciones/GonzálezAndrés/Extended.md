@@ -17,7 +17,7 @@ Este sistema fue desarrolló en enero de 1993 para el Kernel de Linux 0.99. Surg
 
 ### Estructura en disco
 
-EXT2 está hecho bajo la prmisa que toda la información que exista en los archivos debe ser mantenida en bloques de datos. Estos bloques son todos de la misma longitud y están agrupados en grupos de bloques. Cada grupo contiene una copia del super bloque y su tabla de descriptor de grupo. Todos los bloques contienen un bitmap de bloque, un inodo de bloque, una tabla de inodos y por último los bloques de datos.
+EXT2 está hecho bajo la prmisa que toda la información que exista en los archivos debe ser mantenida en bloques de datos. Estos bloques son todos de la misma longitud y están agrupados en grupos de bloques. Cada grupo contiene una copia del super bloque y su tabla de descriptor de grupo. Todos los bloques contienen un bitmap de bloque, un bitmap de inodos, una tabla de inodos y por último los bloques de datos.
 
 <figure>
   <img src="./img/DiagramaExt2.gif" alt="Fig.2 - Estructura de un bloque en ext2.">
@@ -52,16 +52,22 @@ Cada Descriptor de Grupo contiene, entre otra información, lo siguiente:
 
 Es una estructura que representa el estado actual de un Bloque dentro de un Grupo de Bloques. Cada bit representa dicho estado, un 1 significa “en uso” y un 0 significa “libre/disponible”.
 
-#### INodo
+#### Bitmap de inodos
 
-Los inodos son el bloque de construcción básico; cada archivo y directorio en el sistema de archivos es descrito por un y sólo un inodo. El inodo incluye información acerca del tamaño, permiso, dueño y localización en disco de un archivo o directorio. Los inodos de cada Grupo de Bloque están puestos en la tabla de inodos junto con un bitmap que permite al sistema mantener registro de los nodos asignados y sin asignar.
+El Bitmap de inodos funciona de manera similar al Bitmap de Bloque, con la diferencia de que cada bit representa un inodo en la Tabla de Inodos en lugar de un bloque. 
+
+#### Tabla de inodos
+
+La tabla de inodos es usada para mantener registro de cada directorio, archivo regular, enlace simbólico o archivo especial.
+
+#### Inodos
+
+Los inodos son el bloque de construcción básico; cada archivo y directorio en el sistema de archivos es descrito por un y sólo un inodo. El inodo incluye información acerca del tamaño, permiso, dueño y localización en disco de un archivo o directorio. Los inodos no guardan la información del nombre del archivo, esta información se guarda en los directorios.
 
 <figure>
   <img src="./img/inodo_ext2.gif" alt="Fig. 3 - Estructura de un inodo en ext2">
   <figcaption>Fig. 3 - Estructura de un inodo en ext2.</figcaption>
 </figure>
-
-
 
 ## Comparación
 
