@@ -1,0 +1,36 @@
+------------------------------------------
+#INTEGRANTES 
+	Gabino Saul
+	Muñoz ricardo
+---------------------------------------------
+	PLANTEAMIENTO DEL PROBLEMA 
+
+En la actualidad existen demasiados problemas de concurrencia en las  actividades humanas que normalmente
+pasamos por alto y no nos preguntamos que pasa en realidad o como son manejadas por los sistemas. 
+Nuestra actividad para analizar es intentar recrear la concurrencia que sucede al intentar consultar la
+pagina de registro de extraodinarios tres etapas e intentar guardar la solicitud,considerando que el servidor posee 
+cierto número de clientes que puede atender y solicitudes que puede generar desde el momento en que se ingresa al portal
+para consultar y guardar solicitudes sea incierto. 
+A partir de esta situación es frecuente que exista una concurrencia en que dos o mas usuarios intenten consultar al mismo tiempo.
+
+Considerando un servidor en donde existen diversos usuarios.Los alumnos saben que el servidor se satura demasiado por lo que
+la mayoria de las veces abren multiples pestañas esperando que en alguna de sea aceptada su consulta y puedan guardar la solicitud.  
+De manera hipotética los usuarios solo pueden realizar dos acciones. 
+La consulta al portal y la de guardar la solicitud.Además no todos los usuarios realizan la misma accion por lo que su decisión 
+de que accion tomar tambien sera definida por la presencia de otro usuario.
+
+De tal manera que existe una "compatibilidad" entre los usuarios. Para este caso el usuario revisa su status 
+cada 5 segundos, enfrentandose a la decisión de seguir realizando la acción en la que ya estaban o cambiar.
+Para evitar que la solicitud no sea completada al momento de hacer el cambio de accion que desea realizar, los usuarios deberán de dejar de realizar
+la acción, donde nuevamente deberán esperar 5 segundos antes de decidir que realizarán, ya que nuevamente.
+
+Los usuarios deben evaluar dos situaciones antes de seguir navegando:
+1. No puede haber la misma cantidad de usuarios realizando acciones distintas. Por ejemplo, esto quiere decir que si se encuentran 
+6 usuarios en el portal, no pueden haber 3 usuarios consultando el portal y 3 guardando la solicitud para evitar choques.
+En consecuencia, si un usuario se halla sin hacer nada en el portal, y hay 3 usuarios consultando la pagina y 2 intentando guardar,
+no puede intentar guardar su solicitud. 
+2. No puede haber más de 5 usuarios realizando la misma acción. 
+
+Si no se cumple alguna de las condiciones anteriores el usuario/s  deben de esperar hasta que se den las condiciones óptimas 
+para que sigan navegando.
+-------------------------------------------------------------------------------------------------------

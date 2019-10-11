@@ -1,0 +1,24 @@
+Desarrollado por: Ulysses López López
+Materia: Sistemas Operativos (0840)
+Grupo: 04
+Semestre: 2020-1
+
+#La situación que se encontró a solucionar es sobre los cajeros de banco  en el cuál llegan clientes a retirar y estos a su vez, llegan guardias con dinero a depositarle para
+que siga trabajando el cajero. 
+#Tras el primer planteamiento, podemos notar que el banco tiene cierto número de cajeros y los guardias depositaran el dinero a cada
+cajero y si alguien se acerca o se quiere pasar de listo, se sabe que serán arrestados por los guardias. 
+#Tras esto, cada cliente pasará a retirar y se irá cuando ya tenga su dinero. 
+#En un cajero no deben de haber más de 1 cliente por lo que el problema a solucionar es que si hay un guardia nadie se debe de acercar
+y si hay un cliente en un cajero, otro cliente no puede ocuparlo.
+#Un cliente puede pasar hasta 3 veces a usar el cajeropara retirar.
+
+$Para solucionar este problema, se empleó el método de semáforos en cada cajero, ya que indicará si está disponible o no el cajero y se utilizó el 
+$método mutex con semáforo para poder saber si el que está en el cajero es un guardia o un cliente.
+
+%El probelma fue solucionado en un sistema operativo de distribución Linux (Fedora 28 Mate).Se utilizó el lenguaje Python para desarrollar la solución, 
+$se importaron las bibliotecas de threading, time y random.
+%Para poder ejecutar la solución es necesario tener Python3 instalado en la computadora y el archivo a ejecutar es: CajerosdeBanco.py,
+%el cuál se ejecuta de la siguiente manera:
+
+																			python3 CajerodeBanco.py
+
