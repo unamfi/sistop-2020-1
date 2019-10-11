@@ -19,11 +19,38 @@ Este sistema fue desarrolló en enero de 1993 para el Kernel de Linux 0.99. Surg
 
 EXT2 está hecho bajo la prmisa que toda la información que exista en los archivos debe ser mantenida en bloques de datos. Estos bloques son todos de la misma longitud y están agrupados en grupos de bloques. Cada grupo contiene una copia del super bloque y su tabla de descriptor de grupo. Todos los bloques contienen un bitmap de bloque, un inodo de bloque, una tabla de inodos y por último los bloques de datos.
 
-
 <figure>
   <img src="./img/DiagramaExt2.gif" alt="Fig.2 - Estructura de un bloque en ext2.">
   <figcaption>Fig.2 - Estructura de un bloque en ext2.</figcaption>
 </figure>
+
+#### Superbloque
+
+El superbloque contiene una descripción del tamaño básico y la forma de este sistema de archivos. Normalmente este archivo se lee del Grupo de Bloques 0 cuando el sistema es montado. Cada Bloque de Grupo contiene una copia duplicada en caso de corrupción.
+
+El superbloque contiene, entre otra información, lo siguiente:
+
+- Número Mágico
+- Numero de Bloques de Grupo
+- Tamaño de bloque
+- Bloques por Grupo
+- Bloques libres
+- Inodos libres
+- Primer inodo
+
+#### Descriptor de Grupo
+
+Cada Grupo contiene una estructura de datos que lo describe. Como el superbloque, todos los descriptores de grupos para todos los Grupos de Bloque están duplicados en cada Grupo en caso de corrupción de sistema.
+
+Cada Descriptor de Grupo contiene, entre otra información, lo siguiente:
+
+•	Dirección de inicio del Bitmap del Bloque
+•	Dirección de inicio del Bitmap de Inodo
+•	Dirección de inicio de Tabla de Inodos
+
+#### Bitmap de bloque
+
+Es una estructura que representa el estado actual de un Bloque dentro de un Grupo de Bloques. Cada bit representa dicho estado, un 1 significa “en uso” y un 0 significa “libre/disponible”.
 
 #### INodo
 
@@ -33,6 +60,8 @@ Los inodos son el bloque de construcción básico; cada archivo y directorio en 
   <img src="./img/inodo_ext2.gif" alt="Fig. 3 - Estructura de un inodo en ext2">
   <figcaption>Fig. 3 - Estructura de un inodo en ext2.</figcaption>
 </figure>
+
+
 
 ## Comparación
 
@@ -68,3 +97,5 @@ Los inodos son el bloque de construcción básico; cada archivo y directorio en 
 [2] POIRIER, D. (2002). SECOND EXTENDED FILE SYSTEM.
 
 [3] WIKIPEDIA CONTRIBUTORS. (2019B, 20 SEPTIEMBRE). FILE SYSTEM FOR THE LINUX KERNEL. RECUPERADO 11 OCTUBRE, 2019, DE HTTPS://EN.WIKIPEDIA.ORG/WIKI/EXT2
+
+[4] CARRIER, B. (2005). FILE SYSTEM FORENSIC ANALYSIS. BOSTON, USA: ADDISON-WESLEY.
