@@ -69,6 +69,18 @@ Los inodos son el bloque de construcción básico; cada archivo y directorio en 
   <figcaption>Fig. 3 - Estructura de un inodo en ext2.</figcaption>
 </figure>
 
+#### Directorios
+
+Los directorios son archivos especiales que son usados para crear y guardar rutas de acceso a los archivos en el sistema de archivos. Se utilizan para ordenar jerárquicamente archivos. Cada directorio puede contener otros directorios, archivos regulares y archivos especiales.
+
+Cada directorio contiene la siguiente información:
+
+- El inodo de esta entrada de directorio.
+- La longitud de esta entrada del directorio en bytes
+- El nombre de esta entrada del directorio.
+
+Las primeras dos entradas para cada directorio siempre son el estándar “.” y “..” (“este directorio” y el “directorio padre”, respectivamente).
+
 ## Comparación
 
 <table>
