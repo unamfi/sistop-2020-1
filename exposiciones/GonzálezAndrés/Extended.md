@@ -127,6 +127,15 @@ El número máximo de bloques para ext3 es 2<sup>32</sup>. El tamaño del bloque
     </tbody>
 </table>
 
+### Niveles del Journaling
+- **Journal**. Los metadatos y los ficheros de contenido son copiados al diario antes de ser llevados al sistema de archivos principal. Es el modo más lento y seguro.
+- **Ordered**. Este modo solo registra los cambios en los metadatos del sistema de archivos, pero vacía las actualizaciones de datos de archivos en el disco antes de realizar cambios en los metadatos del sistema de archivos asociado. Es el modo por defecto en ext3.
+- **Writeback**. Este modo solo registra los cambios en los metadatos del sistema de archivos. Este modo depende de que el proceso de escritura del sistema de archivos escriba los cambios de datos de archivos en el disco. Es el modo más rápido y riesgoso.
+
+## Fourth Extended File System (ext4)
+
+
+
 ## Comparación
 
 <table>
