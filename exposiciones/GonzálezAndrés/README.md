@@ -4,5 +4,5 @@ González Flores Andrés
 
 ## Archivos
 
-- Presentación: [Extended.pptx](./Extended.pptx), [Extended.pdf](./Extended.pdf)
-- Reporte: [Extended.md](./Extended.md)
+- Presentación: [Extended.pptx](./Extended.pptx), [Extended.pdf](./Extended.pdf).
+- Reporte: [Extended.md](./Extended.md), [Extended.docx](./Extended.docx).
