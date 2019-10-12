@@ -170,12 +170,12 @@ El número máximo de bloques para ext3 es 2<sup>32</sup>. El tamaño del bloque
 
 ## Referencias
 
-[1] RUSLING, D. A. (S.F.). THE SECOND EXTENDED FILE SYSTEM (EXT2). RECUPERADO 11 OCTUBRE, 2019, DE HTTP://WWW.SCIENCE.UNITN.IT/%7EFIORELLA/GUIDELINUX/TLK/NODE95.HTML
+[1] Rusling, D. A. (S.F.). The Second Extended File System (EXT2). Recuperado 11 octubre, 2019, de http://www.science.unitn.it/%7efiorella/guidelinux/tlk/node95.html
 
-[2] POIRIER, D. (2002). SECOND EXTENDED FILE SYSTEM.
+[2] Poirier, D. (2002). Second Extended File System.
 
-[3] WIKIPEDIA CONTRIBUTORS. (2019B, 20 SEPTIEMBRE). FILE SYSTEM FOR THE LINUX KERNEL. RECUPERADO 11 OCTUBRE, 2019, DE HTTPS://EN.WIKIPEDIA.ORG/WIKI/EXT2
+[3] Wikipedia Contributors. (2019B, 20 de septiembre). File System for the Linux Kernel. Recuperado 11 octubre, 2019, de https://en.wikipedia.org/wiki/Ext2
 
-[4] CARRIER, B. (2005). FILE SYSTEM FORENSIC ANALYSIS. BOSTON, USA: ADDISON-WESLEY.
+[4] Carrier, B. (2005). File System Forensic Analysis. Boston, USA: Addison-Wesley.
 
-[5] SHANGYOU ZENG. LINUX JOURNALING FILE SYSTEM: EXT3.
+[5] Shangyou Zeng. Linux Journaling File System: EXT3.
