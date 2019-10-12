@@ -81,6 +81,11 @@ Cada directorio contiene la siguiente información:
 
 Las primeras dos entradas para cada directorio siempre son el estándar “.” y “..” (“este directorio” y el “directorio padre”, respectivamente).
 
+<figure>
+  <img src="./img/ext2directory.gif" alt="Fig 4. - Estructura de un directorio ext2">
+  <figcaption>Fig 4. - Estructura de un directorio ext2</figcaption>
+</figure>
+
 ## Third Extended File System (ext3)
 
 Ext3 es un sistema de archivos con registro por diario (journaled file system). Este sistema se unió al kernel principal de Linux en noviembre de 2001. Fue desarrollado por Stephen Tweedie. Tiene la ventaja de que los usuarios pueden actualizar desde ext2 sin tener que realizar copias de seguridad ni restaurar datos.
