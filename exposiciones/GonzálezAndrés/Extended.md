@@ -165,6 +165,10 @@ Los extents fueron introducidos para remplacar al esquema de bloques usado por l
 
 Esta función permite prealocar memoria en el disco, esto garantiza que el espacio reservado para un fichero estará disponible y, con mucha probabilidad, será contiguo.
 
+#### Asignación retrasada de espacio en el disco
+
+Ext4 hace uso de una técnica de mejora de rendimiento llamada Allocate-on-flush, también conocida como reserva de memoria retrasada. Consiste en retrasar la reserva de bloques de memoria hasta que la información esté a punto de ser escrita en el disco, a diferencia de otros sistemas de archivos, los cuales reservan los bloques necesarios antes de ese paso. Esto mejora el rendimiento y reduce la fragmentación al mejorar las decisiones de reserva de memoria basada en el tamaño real del fichero, pero aumenta el riesgo de pérdida de datos en sistemas antiguos.
+
 #### Checksum en el journal
 
 Tener checksums en el journal permite al sistema de archivos darse cuenta de que algunas de sus entradas no son válidas o están fuera de orden en el primer montaje después de un crasheo. Esto evita el error de deshacer entradas de diario parciales o fuera de orden y dañar aún más el sistema de archivos.
@@ -173,34 +177,19 @@ Tener checksums en el journal permite al sistema de archivos darse cuenta de que
 
 Esta característica permite desfragmentar la unidad mientras esta esté montada.
 
+#### Comprobación del sistema de ficheros más rápido
 
+En ext4, los grupos de bloques no asignados y secciones de la tabla de inodos están marcados como tales. Esto permite a e2fsck (la herramienta para comprobar errores en ext2) saltárselos completamente en las comprobaciones y en gran medida reduce el tiempo requerido para comprobar un sistema de archivos del tamaño para el que ext4 está preparado.
 
-## Comparación
+#### Asignador multibloque
 
-<table>
-    <thead>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </tbody>
-</table>
+Ext4 asigna múltiples bloques para un fichero en una sola operación, lo cual reduce la fragmentación al intentar elegir bloques contiguos en el disco.
+
+#### Timestamps mejorados
+
+Ext3 ofrecía marcas de tiempo granulares a un segundo. Si bien es suficiente para la mayoría de los usos, las aplicaciones de misión crítica con frecuencia buscan un control de tiempo mucho más estricto. Ext4 se pone a disposición de esas aplicaciones empresariales, científicas y de misión crítica al ofrecer marcas de tiempo en los nanosegundos.
+
+Los sistemas de archivos Ext3 tampoco proporcionaron suficientes bits para almacenar fechas posteriores al 18 de enero de 2038. Ext4 agrega dos bits adicionales aquí, extendiendo la época de Unix otros 408 años. 
 
 ## Referencias
 
@@ -215,3 +204,5 @@ Esta característica permite desfragmentar la unidad mientras esta esté montada
 [5] Shangyou Zeng. Linux Journaling File System: EXT3.
 
 [6] Jim Salter, J. S. (2018, 2 de marzo). Understanding Linux filesystems: ext4 and beyond. Recuperado 12 octubre, 2019, de https://opensource.com/article/18/4/ext4-filesystem
+
+[7] Colaboradores de Wikipedia. (2019, 7 octubre). sistema de archivos usual en sistemas Linux. Recuperado 12 octubre, 2019, de https://es.wikipedia.org/wiki/Ext4
