@@ -92,7 +92,7 @@ Ext3 es un sistema de archivos con registro por diario (journaled file system). 
 
 El sistema ext3, añade las siguientes características ext2.
 - Un registro de diario (journal).
-- Estructura de Arbol HTree para indexar grandes directorios.
+- Estructura de Arbol Hash para indexar grandes directorios.
 - Crecimiento en línea del sistema de archivos.
 
 ### Journaled File System (JFS)
@@ -139,6 +139,40 @@ El número máximo de bloques para ext3 es 2<sup>32</sup>. El tamaño del bloque
 
 ## Fourth Extended File System (ext4)
 
+Este sistema se desarrolló como el sucesor de ext3. Ext4 fue inicialmente una serie de extensiones retrocompatibles con ext3, muchos de ellos originalmente hechos por Cluuster File Systems para el sistema de archivos Lustre. Algunos desarrolladores propusieron bifurcar ext3 y renombrarlo ext4, y desarrollar todos los cambios ahí, esto con el fin de obtener mejor estabilidad. La propuesta fue aceptada y, el 26 de junio de 2006, Theodore Ts’o anunció el nuevo plan de desarrollo para ext4. El sistema de archivos ext4 fue lanzado el 25 de diciembre de 2008.
+
+Este sistema de archivos principalmente mejora el rendimiento, la confiabilidad y la capacidad. 
+
+### Tamaños máximos
+
+<figure>
+  <img src="./img/ext4max32.png" alt="Tabla 1 - Tamaños máximos en ext4 para un sitema de 32 bits">
+  <figcaption>Tabla 1 - Tamaños máximos en ext4 para un sitema de 32 bits</figcaption>
+</figure>
+
+<figure>
+  <img src="./img/ext4max64.png" alt="Tabla 2 - Tamaños máximos en ext4 para un sitema de 64 bits">
+  <figcaption>Tabla 2 - Tamaños máximos en ext4 para un sitema de 64 bits</figcaption>
+</figure>
+
+### Características 
+
+#### Extents
+
+Los extents fueron introducidos para remplacar al esquema de bloques usado por los sistemas de archivos ext2 y ext3. Un extent es un conjunto de bloques físicos contiguos. Esto mejora el rendimiento al trabajar con ficheros de gran tamaño y reduce la fragmentación. 
+
+#### Asignación persistente de espacio en el disco
+
+Esta función permite prealocar memoria en el disco, esto garantiza que el espacio reservado para un fichero estará disponible y, con mucha probabilidad, será contiguo.
+
+#### Checksum en el journal
+
+Tener checksums en el journal permite al sistema de archivos darse cuenta de que algunas de sus entradas no son válidas o están fuera de orden en el primer montaje después de un crasheo. Esto evita el error de deshacer entradas de diario parciales o fuera de orden y dañar aún más el sistema de archivos.
+
+#### Desfragmentación en línea
+
+Esta característica permite desfragmentar la unidad mientras esta esté montada.
+
 
 
 ## Comparación
@@ -179,3 +213,5 @@ El número máximo de bloques para ext3 es 2<sup>32</sup>. El tamaño del bloque
 [4] Carrier, B. (2005). File System Forensic Analysis. Boston, USA: Addison-Wesley.
 
 [5] Shangyou Zeng. Linux Journaling File System: EXT3.
+
+[6] Jim Salter, J. S. (2018, 2 de marzo). Understanding Linux filesystems: ext4 and beyond. Recuperado 12 octubre, 2019, de https://opensource.com/article/18/4/ext4-filesystem
