@@ -44,9 +44,9 @@ Cada Grupo contiene una estructura de datos que lo describe. Como el superbloque
 
 Cada Descriptor de Grupo contiene, entre otra información, lo siguiente:
 
-•	Dirección de inicio del Bitmap del Bloque
-•	Dirección de inicio del Bitmap de Inodo
-•	Dirección de inicio de Tabla de Inodos
+- Dirección de inicio del Bitmap del Bloque
+- Dirección de inicio del Bitmap de Inodo
+- Dirección de inicio de Tabla de Inodos
 
 #### Bitmap de bloque
 
@@ -80,6 +80,52 @@ Cada directorio contiene la siguiente información:
 - El nombre de esta entrada del directorio.
 
 Las primeras dos entradas para cada directorio siempre son el estándar “.” y “..” (“este directorio” y el “directorio padre”, respectivamente).
+
+## Third Extended File System (ext3)
+
+Ext3 es un sistema de archivos con registro por diario (journaled file system). Este sistema se unió al kernel principal de Linux en noviembre de 2001. Fue desarrollado por Stephen Tweedie. Tiene la ventaja de que los usuarios pueden actualizar desde ext2 sin tener que realizar copias de seguridad ni restaurar datos.
+
+El sistema ext3, añade las siguientes características ext2.
+- Un registro de diario (journal).
+- Estructura de Arbol HTree para indexar grandes directorios.
+- Crecimiento en línea del sistema de archivos.
+
+### Journaled File System (JFS)
+
+Los JFSs son sistemas que mantienen registro de los cambios que aún no han sido entregados a la parte principal del sistema de archivos. Consisten un registro de diario en el que se almacena la información necesaria para restablecer los datos afectados por la transacción en caso de que esta falle.
+
+Como los registros en el diario son escritos antes de que los cambios al sistema de archivos estén hechos, y como el sistema de archivos mantiene estos registros hasta que los cambios han sido aplicados al sistema de archivos, los sistemas con registro por diario maximizan la consistencia y minimizan el tiempo de reinicio en caso de un apagado de sistema inapropado.
+
+### Límites en tamaño de ext3
+
+El número máximo de bloques para ext3 es 2<sup>32</sup>. El tamaño del bloque puede variar, afectando máximo de archivos y al tamaño máximo del sistema de archivos.
+
+<table>
+    <thead>
+        <tr>
+            <td>Tamaño del bloque</td>
+            <td>Tanmaño máximo de archivo</td>
+            <td>Tamaño máximo del sistema de archivos</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1 KB</td>
+            <td>16 GB</td>
+            <td>2 TB</td>
+        </tr>
+        <tr>
+            <td>2 KB</td>
+            <td>256 GB</td>
+            <td>8 TB</td>
+        </tr>
+        <tr>
+            <td>4 KB</td>
+            <td>2 TB</td>
+            <td>16 TB</td>
+        </tr>
+    </tbody>
+</table>
 
 ## Comparación
 
@@ -117,3 +163,5 @@ Las primeras dos entradas para cada directorio siempre son el estándar “.” 
 [3] WIKIPEDIA CONTRIBUTORS. (2019B, 20 SEPTIEMBRE). FILE SYSTEM FOR THE LINUX KERNEL. RECUPERADO 11 OCTUBRE, 2019, DE HTTPS://EN.WIKIPEDIA.ORG/WIKI/EXT2
 
 [4] CARRIER, B. (2005). FILE SYSTEM FORENSIC ANALYSIS. BOSTON, USA: ADDISON-WESLEY.
+
+[5] SHANGYOU ZENG. LINUX JOURNALING FILE SYSTEM: EXT3.
