@@ -13,7 +13,7 @@ Este sistema fue el primero en utilizar el API del Sistema Virtual de Archivos (
 
 ## Second Extended File System (ext2)
 
-Este sistema fue desarrolló en enero de 1993 para el Kernel de Linux 0.99. Surgió como una solución a tres problemas que tenía ext, modificación de inodo, modificación de datos y no soportaba marcas de tiempo (timestamps) para acceso de archivo.
+Este sistema fue desarrollado en enero de 1993 para el Kernel de Linux 0.99. Surgió como una solución a tres problemas que tenía ext, modificación de inodo, modificación de datos y no soportaba marcas de tiempo (timestamps) para acceso de archivo.
 
 ### Estructura en disco
 
