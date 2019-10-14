@@ -60,16 +60,16 @@ El Bitmap de inodos funciona de manera similar al Bitmap de Bloque, con la difer
 
 La tabla de inodos es usada para mantener registro de cada directorio, archivo regular, enlace simbólico o archivo especial.
 
-Contiene, entre otra información, lo siguiente:
+#### Inodos
+
+Los inodos son el bloque de construcción básico; cada archivo y directorio en el sistema de archivos es descrito por un y sólo un inodo. El inodo incluye información acerca del tamaño, permiso, dueño y localización en disco de un archivo o directorio. Los inodos no guardan la información del nombre del archivo, esta información se guarda en los directorios.
+
+Contienen, entre otra información, lo siguiente:
 
 - Modo. Describe el archivo y sus derechos de acceso.
 - Tamaño en bytes del archivo.
 - Marcas de tiempo.
 - Número de bloques que ocupa.
-
-#### Inodos
-
-Los inodos son el bloque de construcción básico; cada archivo y directorio en el sistema de archivos es descrito por un y sólo un inodo. El inodo incluye información acerca del tamaño, permiso, dueño y localización en disco de un archivo o directorio. Los inodos no guardan la información del nombre del archivo, esta información se guarda en los directorios.
 
 <figure>
   <img src="./img/inodo_ext2.gif" alt="Fig. 3 - Estructura de un inodo en ext2">
