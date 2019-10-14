@@ -40,7 +40,7 @@ El superbloque contiene, entre otra información, lo siguiente:
 
 #### Descriptor de Grupo
 
-Cada Grupo contiene una estructura de datos que lo describe. Como el superbloque, todos los descriptores de grupos para todos los Grupos de Bloque están duplicados en cada Grupo en caso de corrupción de sistema.
+Cada grupo contiene una estructura de datos que lo describe. Como el superbloque, todos los descriptores de grupos (para todos los Grupos de Bloque) están duplicados en cada grupo en caso de corrupción de sistema.
 
 Cada Descriptor de Grupo contiene, entre otra información, lo siguiente:
 
@@ -59,6 +59,13 @@ El Bitmap de inodos funciona de manera similar al Bitmap de Bloque, con la difer
 #### Tabla de inodos
 
 La tabla de inodos es usada para mantener registro de cada directorio, archivo regular, enlace simbólico o archivo especial.
+
+Contiene, entre otra información, lo siguiente:
+
+- Modo. Describe el archivo y sus derechos de acceso.
+- Tamaño en bytes del archivo.
+- Marcas de tiempo.
+- Número de bloques que ocupa.
 
 #### Inodos
 
