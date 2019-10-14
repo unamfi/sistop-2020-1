@@ -1,4 +1,4 @@
-# Sistems de archivos Extended (ext, ext2, ext3, ext4)
+# Sistemas de archivos Extended (ext, ext2, ext3, ext4)
 
 ## Extended File System (ext)
 El Sistema de Archivos Extendido (Extended File System) fue implementado en abril de 1992. Fue el primero de una serie de sistemas de archivos creados exclusivamente para Linux. Fue diseñado por Rémy Card para superar ciertas limitaciones del sistema de archivos de MINIX (el primer sistema de archivos de Linux). Dos de ellas fueron el tamaño máximo de partición y de nombre de archivos. Este sistema permitía 2GB de datos y nombres de archivos de 255 caracteres.
