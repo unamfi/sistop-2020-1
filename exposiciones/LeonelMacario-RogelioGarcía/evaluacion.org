@@ -1,7 +1,7 @@
 #+title: Evaluación de exposición: Tails / Máquinas virtuales
 #+author: Gunnar Wolf
 
-- Tema presentado por :: Luis López
+- Tema presentado por :: Leonel Macario y Rogelio García
 - Calificación global ::  8.29 * 0.3 + 6.88 * 0.7 = *7.30*
 
 * Comentarios
