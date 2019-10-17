@@ -332,10 +332,10 @@
 | Complejidad            |        10 |        |     0.67 |
 | Interfaz usuario       |       7.5 |        |     0.50 |
 |------------------------+-----------+--------+----------|
-| *Documentación*        |           |    0.2 |     1.17 |
+| *Documentación*        |           |    0.2 |     1.84 |
 | Documentación expresa  |       7.5 |        |     0.50 |
 | Entorno y dependencias |        10 |        |     0.67 |
-| Comentarios            |           |        |     0.00 |
+| Comentarios            |        10 |        |     0.67 |
 |------------------------+-----------+--------+----------|
 | *Entrega*              |           |    0.2 |     2.01 |
 | Historial en Git       |        10 |        |     0.67 |
@@ -346,9 +346,67 @@
 | Estructura             |        10 |        |     1.00 |
 | Nomenclatura           |        10 |        |     1.00 |
 |------------------------+-----------+--------+----------|
-| *TOTAL*                |           |        |     9.02 |
+| *TOTAL*                |           |        |     9.69 |
 |------------------------+-----------+--------+----------|
 #+TBLFM: @2$4=@3::@3$4=@3$2*@2$3 ; f-2::@4$4=@5+@6+@7::@5$4=$2*@4$3/3 ; f-2::@6$4=$2*@4$3/3 ; f-2::@7$4=$2*@4$3/3 ; f-2::@8$4=@9+@10+@11::@9$4=$2*@8$3/3 ; f-2::@10$4=$2*@8$3/3 ; f-2::@11$4=$2*@8$3/3 ; f-2::@12$4=@13+@14+@15::@13$4=$2*@12$3/3 ; f-2::@14$4=$2*@12$3/3 ; f-2::@15$4=$2*@12$3/3 ; f-2::@16$4=@17+@18::@17$4=$2*@16$3/2 ; f-2::@18$4=$2*@16$3/2 ; f-2::@19$4=@2+@4+@8+@12+@16
+
+* Luis Mata
+- Situación implementada :: Restaurante
+- Interfaz :: Los eventos se van registrando e imprimiendo a la línea
+              de comandos; cada estructura / tipo de actor se presenta
+              con un color diferente
+- Documentación :: [[./MataLuis/documentacion.txt][documentacion.txt]]
+- Código :: [[.//MataLuis/restaurante.py][restaurante.py]]
+- Otros archivos en la entrega :: 
+- Lenguaje de desarrollo :: Python
+- Uso de multitarea / sincronización ::
+  - Mutex resguardando que las impresiones multi-línea no se interrumpan
+  - Torniquete al reportar la bienvenida del =capitan=
+  - Mutex asegurando que el mesero atienda únicamente a un cliente a
+    la vez
+  - Una rara señalización empleando =mutexOrden= de =ordenar()= a
+    =recibirOrden()=
+    - Aunque =ordenar()= /es llamado desde/ =recibirOrden()=... Y como
+      =mutexOrden= está inicializado en 1, no tiene efecto
+- Obsevaciones ::
+  - El planteamiento es divertido, pero para que la implementación
+    fuera buena, requeriría de que los hilos realizaran diversos
+    papeles. Todos los hilos entran a la función =cliente()=, por lo
+    que el mesero y el cocinero están necesariamente serializados
+    - No costaría mucho trabajo alterar la lógica de tu programa
+      reemplazando =recibirOrden()= y =preparar()= por señalización a
+      uno (o más) hilos =mesero= y =cocinero= respectivamente, y
+      estarías verdaderamente orquestando un programa multiprocesado
+      con sincronización /útil/.
+
+| *Rubro*                | *Parcial* | *Peso* | *Puntos* |
+|------------------------+-----------+--------+----------|
+| *Requisitos*           |           |    0.2 |       0. |
+| Cumplimiento           |           |        |     0.00 |
+|------------------------+-----------+--------+----------|
+| *Proyecto*             |           |    0.2 |     1.33 |
+| Creatividad            |         5 |        |     0.33 |
+| Complejidad            |         5 |        |     0.33 |
+| Interfaz usuario       |        10 |        |     0.67 |
+|------------------------+-----------+--------+----------|
+| *Documentación*        |           |    0.2 |     1.33 |
+| Documentación expresa  |         5 |        |     0.33 |
+| Entorno y dependencias |         5 |        |     0.33 |
+| Comentarios            |        10 |        |     0.67 |
+|------------------------+-----------+--------+----------|
+| *Entrega*              |           |    0.2 |     2.01 |
+| Historial en Git       |        10 |        |     0.67 |
+| Directorio de proyecto |        10 |        |     0.67 |
+| Código válido          |        10 |        |     0.67 |
+|------------------------+-----------+--------+----------|
+| *Legibilidad*          |           |    0.2 |      1.5 |
+| Estructura             |        10 |        |     1.00 |
+| Nomenclatura           |         5 |        |     0.50 |
+|------------------------+-----------+--------+----------|
+| *TOTAL*                |           |        |     6.17 |
+|------------------------+-----------+--------+----------|
+#+TBLFM: @2$4=@3::@3$4=@3$2*@2$3 ; f-2::@4$4=@5+@6+@7::@5$4=$2*@4$3/3 ; f-2::@6$4=$2*@4$3/3 ; f-2::@7$4=$2*@4$3/3 ; f-2::@8$4=@9+@10+@11::@9$4=$2*@8$3/3 ; f-2::@10$4=$2*@8$3/3 ; f-2::@11$4=$2*@8$3/3 ; f-2::@12$4=@13+@14+@15::@13$4=$2*@12$3/3 ; f-2::@14$4=$2*@12$3/3 ; f-2::@15$4=$2*@12$3/3 ; f-2::@16$4=@17+@18::@17$4=$2*@16$3/2 ; f-2::@18$4=$2*@16$3/2 ; f-2::@19$4=@2+@4+@8+@12+@16
+
 
 * Néstor Martínez
 - Situación implementada :: Aeropuerto Internacional Benito Juárez
