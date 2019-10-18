@@ -2,7 +2,7 @@
 #+author: Gunnar Wolf
 
 - Tema presentado por :: JulioCésar Lugo
-- [-] Calificación global ::  8.75 * 0.3 + 6.75  * 0.7 = *7.35*
+- Calificación global ::  8.75 * 0.3 + 6.75  * 0.7 = *7.35*
 
 * Comentarios
 
