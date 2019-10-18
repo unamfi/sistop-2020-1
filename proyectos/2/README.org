@@ -6,7 +6,7 @@ Planteamiento: 2019.09.17
 Entrega: 2019.10.01
 #+END_SRC
 
-# Pueden [[./calificaciones.org][consultar los comentarios y calificaciones del proyecto aquí]].
+Pueden [[./calificaciones.org][consultar los comentarios y calificaciones del proyecto aquí]].
 
 Los eventos en el mundo en que vivimos se producen de forma
 masivamente paralela, por lo cual, la concurrencia puede presentarse

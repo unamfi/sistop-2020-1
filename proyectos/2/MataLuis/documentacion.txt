@@ -1,0 +1,19 @@
+Introduccion:
+
+Este programa simula un restaurante. 
+Al llegar, a cada cliente lo recibe el Capitan. 
+El Capitan debe preguntarle su nombre para que todos lo conozcan. 
+Ademas debe preguntarle en que lugar le gustaria sentarse.
+
+Si la mesa que elige esta llena, se le indicara al cliente y podra esperar o elegir otra mesa.
+Al sentarse un mesero le dira el menu y le tomara su orden. 
+El mesero pasara la orden al chef quien por cada platillo tiene un tiempo diferente
+
+Desarrollo:
+
+Lo primero que hace el programa es mandar una la introduccion para que conozcamos de que trata el programa. 
+Despues de esto se lanzan lo hilos, quien llama a la funcion cliente. 
+El Capitan recibe al cliente y le pregunta su nombre. Sera tratado con por su nombre a partir de ahora. Se utiliza un torniqute para que los clientes lleguen uno por uno.
+Se sentara y ordedenara. Estas dos funciones se comunican entre ellas mediante una señalizacion. 
+
+
