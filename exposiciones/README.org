@@ -30,6 +30,8 @@ el que ustedes me planteen los temas de su interés.
 | 2019.11.05 | – Por definir –                                      | Benjamín Anguiano y Omar Martín  |                                                                                       |            |
 | 2019.11.07 | Malware (por especificar)                            | Arián Espinosa y Jorge Ramos     |                                                                                       |            |
 | 2019.11.12 | Paginación de cinco niveles                          | Eric Sanabria                    |                                                                                       |            |
+| 2019.11.14 | Rootkits                                             | Saúl Gabino                      |                                                                                       |            |
+| 2019.11.19 | De RAID en adelante                                  | Luis Mata                        |                                                                                       |            |
 |------------+------------------------------------------------------+----------------------------------+---------------------------------------------------------------------------------------+------------|
 #+TBLFM: 
 
