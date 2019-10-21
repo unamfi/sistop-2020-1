@@ -47,7 +47,7 @@ Aterrizando las ideas anteriores a conceptos físicos que requieren cada vehícu
 
 ### Interpretación de sensores
 
-El problema principal a la hora de interpretar la información de los sensores es hacer la conexión entre la señal de salida del sensore y las propiedades del mundo tridimensional. Lo que se hace con los vehículos autónomos actuales es lograr que primero se identifiquen un conjunto de características in la información medida que puedan corresponder con las características del mundo. El otro enfoque que se le puede dar a este problema es fusionar los sensores, es decir, combinar la salida de múltiples sensores operando sobre el mismo objeto que se quiere caracterizar. 
+El problema principal a la hora de interpretar la información de los sensores es hacer la conexión entre la señal de salida del sensor y las propiedades del mundo tridimensional. Lo que se hace con los vehículos autónomos actuales es lograr que primero se identifiquen un conjunto de características in la información medida que puedan corresponder con las características del mundo. El otro enfoque que se le puede dar a este problema es fusionar los sensores, es decir, combinar la salida de múltiples sensores operando sobre el mismo objeto que se quiere caracterizar. 
 
 ### Razonamiento
 
