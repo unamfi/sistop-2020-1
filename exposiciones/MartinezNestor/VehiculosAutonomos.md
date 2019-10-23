@@ -110,15 +110,15 @@ Este algoritmo de planificación puede usarse para procesos que cumplan con las 
 
 RMS asigna a cada proceso una prioridad fija dependiendo de la frecuencia de ocurrencia de su evento. Por ejemplo, para un proceso que debe correr cada 30 ms (33 veces por segundo) asigna una prioridad de 33. RMS siempre ejecuta el proceso con prioridad más alta. 
 
-#### Funcionamiento
+#### Earliest Deadline First Scheduling (EDF)
+
+Este algoritmo es dinámico por lo que permite que sea usado en eventos aperiódicos. Cuando un procesa necesita tiempo de CPU anuncia cuando llegará y el tiempo límite. El planificador guarda una lista de procesos ejecutables ordenados según su tiempo límite. Cuando un proceso anuncia que está listo, el sistema revisa si su tiempo límite ocurre antes de algún proceso que esté actualmente ejecutándose, si es el caso, el nuevo proceso reemplaza al que está corriendo. 
+
+#### RMS vs EDF
 
 Los procesos A,B,C tienen prioridad 33, 25 y 20 respectivamente: 
 
 ![icon](images/rms.png)
-
-#### Earliest Deadline First Scheduling (EDF)
-
-Este algoritmo es dinámico por lo que permite que sea usado en eventos aperiódicos. Cuando un procesa necesita tiempo de CPU anuncia cuando llegará y el tiempo límite. El planificador guarda una lista de procesos ejecutables ordenados según su tiempo límite. Cuando un proceso anuncia que está listo, el sistema revisa si su tiempo límite ocurre antes de algún proceso que esté actualmente ejecutándose, si es el caso, el nuevo proceso reemplaza al que está corriendo. 
 
 ### Distribuciones
 
