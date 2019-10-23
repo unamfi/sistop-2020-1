@@ -41,6 +41,10 @@ archivos ejemplo]] que cumple con el planteamiento. Verifiquen que
 pueden realizar todas las tareas que les solicité con éste. Indíquenme
 — ¿Cuáles son los contenidos del /disco/?
 
+*Ojo:* Como lo reportó Omar en clase, el sistema de archivos ejemplo
+que les dí tenía un error. Ya lo corregí; por ello, pasamos de la
+versión =0.5= a la versión =0.6=.
+
 ** Especificación de =FiUnamFS=
 
 - El sistema de archivos cabe en un /diskette/ tradicional. Claro, no
@@ -65,7 +69,7 @@ pueden realizar todas las tareas que les solicité con éste. Indíquenme
             archivos. ¡Debes validar nunca modificar un sistema de
             archivos que no sea el correcto! Debe ser la cadena =FiUnamFS=.
   - 10--13 :: Versión de la implementación. Estamos implementando la
-              versión =0.5=
+              versión =0.6=
   - 20--35 :: Etiqueta del volumen
   - 40--45 :: Tamaño del cluster en bytes
   - 47--49 :: Número de clusters que mide el directorio
