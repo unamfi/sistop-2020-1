@@ -47,23 +47,80 @@ Aterrizando las ideas anteriores a conceptos físicos que requieren cada vehícu
 
 ### Interpretación de sensores
 
-El problema principal a la hora de interpretar la información de los sensores es hacer la conexión entre la señal de salida del sensor y las propiedades del mundo tridimensional. Lo que se hace con los vehículos autónomos actuales es lograr que primero se identifiquen un conjunto de características in la información medida que puedan corresponder con las características del mundo. El otro enfoque que se le puede dar a este problema es fusionar los sensores, es decir, combinar la salida de múltiples sensores operando sobre el mismo objeto que se quiere caracterizar. 
+El problema principal a la hora de interpretar la información de los sensores es deducir las propiedades del mundo tridimensional a partir de las señales de salida de los sensores. Lo que se hace con los vehículos autónomos actuales es lograr que primero se identifiquen un conjunto de características in la información medida que puedan corresponder con las características del mundo. El otro enfoque que se le puede dar a este problema es fusionar los sensores, es decir, combinar la salida de múltiples sensores operando sobre el mismo objeto que se quiere caracterizar. 
 
-### Razonamiento
+### Toma de decisones
 
 La idea central de este punto es diseñar algoritmos para que los vehículos realicen efectivamente sus tareas a pesar de encontrarse en un ambiente lleno de incertidumbre. Es por esto, o debería resultar natural pensar, que el tipo de programación se vuelve extremadamente difícil si quisieramos usar un paradigmo imperativo de programación. Los programas basados en este paradigma no están pensados para manejar la interacción por lo que se opta por paradigmas orientados a eventos. 
 
 ## Relación con los sistemas operativos 
 
-Actualmente, un vehículo autónomo cuenta con múltiples computadoras y aproximadamente 300 billones de líneas de código que lo hacen funcionar casi a la perfección. Es por esta razón que vale la pena hablar sobre el sistema operativo detrás de alguna de estas computadores y éstes es RTOS o Real-Time Operating System que es una arquitectura que permite que los procesos pasen de manera determinística o en un intervalo de tiempo sin atrazos. Esto es de suma importancia pues la latencia puede ser la diferencia entre ejecutar una acción para salvar o no una vida. Recordemos que por tiempo real nos referimos a una garantía en tiempo de respuesta mas no que un sistema por ser de tiempo real sea más rápido.  
+### Argo 
 
-Un RTOS realiza las tareas generales de un sistema operativo, como manejar los recursos de hardware de una computadora y el manejo de aplicaciones, pero aunado a esto, está diseñado específicamente para correr aplicaciones con un timing muy preciso y un gran grado de confianza. Para ser considerado un sistema de tiempo real, éste debe tener un tiempo máximo de ejecución para cada proceso. 
+Vehículo prototipo desarrollado por la Universidad de Parma en 1998 que manejo por su cuenta 2000 km en carreteras italianas. Toda la información en tiempo real fue procesada por un procesador Pentium MMX (200MHz, 23 MB RAM) en una computadora corriendo Debian 1.2. 
+
+Al finalizar el viaje, el sistema de Argo registró cerca de 1.2 GB de información (velocidad, posiciones del volante, cambios de carril, internvenciones del piloto) y cerca de 1,500,000 imágenes o 330 GB de información. 
+
+![icon](images/argo.png)
+
+
+
+### Real-Time Operating Systems 
+
+Actualmente, un vehículo autónomo cuenta con múltiples computadoras y aproximadamente 300 billones de líneas de código que lo hacen funcionar casi a la perfección. Es por esta razón que vale la pena hablar sobre el sistema operativo detrás de alguna de estas computadores y éstes debe ser RTOS o Real-Time Operating System que es un sistema que permite que nos garantiza que uan cierta acción ocurrirá de manera determinística, es decir, en un cierto intervalo de tiempo. Esto es de suma importancia pues la latencia puede ser la diferencia entre tomar una decisión para salvar una vida. Recordemos que por tiempo real nos referimos a una garantía en tiempo de respuesta mas no que un sistema por ser de tiempo real sea más rápido.  
+
+Los RTOS pueden dividirse de acuerdo a dos categorías: 
+
+1. **Basados en eventos**: alternan tareas únicamente cuando un proceso de mayor prioridad necesita atención. 
+2. **De tiempo compartido**: alternan tareas basados en las interrupciones de reloj y en eventos. 
 
 Este tipo de sistemas operativos fueron diseñados para dos tipos de aplicaciones: aplicaciones basadas en eventos y aplicaciones de lazo cerrado. En el caso de los vehículos autónomos se emplea para aplicaciones de lazo cerrado pues los sistemas de navegación y posicionamiento constantemente procesan información retroalimentada para ajustar su salida. 
 
-En comparación con los sistemas operativos de propósito general, los sistemas operativos de tiempo real siguen las prioridades del programador de manera más estricta. Es decir, si un proceso de alta prioridad está usando el 100% del procesador, no podrá ser interrumpido por un proceso de menor prioridad. Por ejemplo, código con relación a manejo de eventos exteriores o control del sistema tendrán una prioridad más alta que código que haga referencia a guardar en memoria la información. 
+En comparación con los sistemas operativos de propósito general, los sistemas operativos de tiempo real siguen las prioridades del programador de manera más estricta. Es decir, si un proceso de alta prioridad está usando el 100% del procesador, no podrá ser interrumpido por un proceso de menor prioridad. 
 
-![icon](images/m-2.png)
+```Por ejemplo, código con relación a manejo de eventos exteriores o control del sistema tendrán una prioridad más alta que código que haga referencia a guardar en memoria la información. ```
+
+### Planificación de procesos 
+
+La precisión del sistema no depende únicamente de la respuesta correcta a los eventos externos, sino del tiempo en cuanto estos resultados son producidos. Pensemos que para los vehículos autónomos necesitamos respuestas en un determinado momento y si las tenemos más tarde, a pesar de que sean correctas, éstas no nos servirán. Para la planificación de procesos, la característica más importante es que cada uno de los procesos compitiendo por tiempo de ejecución tienen una determinada prioridad y un tiempo límite de ejecución. 
+
+El comportamiento de tiempo real se logra al dividir el programa en un número de procesos donde el comportamiento de cada uno de ellos es predecible y sabido con anticipación. Cuando un evento externo se detecta, el planificador debe agendar a los procesos de tal manera que todas los **deadlines** se cumplan. Los eventos a los cuales el sistema debe reaccionar pueden ser periódicos o aperiódicos (ocurren sin poder predecirlos). 
+
+Entonces, la cuestión se torna a lo siguiente: supongamos que tenemos tres procesos A,B,C que necesitan ser atendidos y para esto debemos determinar cómo agendarlos para que cada uno se termine de ejecutar en el tiempo límite. Antes de pensar en un algoritmo debemos asegurar que los procesos puedan ser agendados y para esto hay que considerar lo siguiente: 
+
+Dados $$m$$ eventos periódicos (tres procesos), el evento $$i$$ ocurre con periodo $$P_i$$ y requiere $$C_i $$ segundos de ejecución, entonces la carga de trabajo solo podrá ser agendada si y solo si: 
+$$
+\sum_{i=1}^{m}\frac{C_i}{P_i}\leq 1
+$$
+Una vez que determinamos que, en efecto, el planificador podrá agendar a los $$m$$ procesos, pasamos a determinar el algoritmo de planificación. Los algoritmos de planificación en tiempo real pueden ser:
+
+1. **Estáticos**: asignan a cada proceso una prioridad con anticipación y después usan *prioritized preemptive scheduling*  usando esas propiedades. 
+2. **Dinámicos**: no tienen prioridades fijas. 
+
+Es importante mencionar que los procesos son reemplazables (*preemtable*) lo que significa que a un proceso que esté en riesgo de no cumplir su límite de tiempo se le permite interrumpir a los procesos que estén corriendo para que éste cumpla su límite de tiempo. 
+
+#### Rate Monotonic Scheduling (RMS)
+
+Este algoritmo de planificación puede usarse para procesos que cumplan con las siguientes condiciones: 
+
+1. Cada proceso es periódico y debe completarse dentro de su periodo. 
+2. Ningún proceso depende de otro proceso. 
+3. Cada proceso necesita el mismo tiempo de CPU 
+4. Cualquier proceso aperiódico no tiene límite. 
+
+RMS asigna a cada proceso una prioridad fija dependiendo de la frecuencia de ocurrencia de su evento. Por ejemplo, para un proceso que debe correr cada 30 ms (33 veces por segundo) asigna una prioridad de 33. RMS siempre ejecuta el proceso con prioridad más alta. 
+
+#### Earliest Deadline First Scheduling (EDF)
+
+Este algoritmo es dinámico por lo que permite que sea usado en eventos aperiódicos. Cuando un procesa necesita tiempo de CPU anuncia cuando llegará y el tiempo límite. El planificador guarda una lista de procesos ejecutables ordenados según su tiempo límite. Cuando un proceso anuncia que está listo, el sistema revisa si su tiempo límite ocurre antes de algún proceso que esté actualmente ejecutándose, si es el caso, el nuevo proceso reemplaza al que está corriendo. 
+
+#### RMS vs EDF
+
+Los procesos A,B,C tienen prioridad 33, 25 y 20 respectivamente: 
+
+![icon](images/rms.png)
+
+### Distribuciones
 
 Una de las distribuciones de Linux más usadas en sistemas embebidos es **FreeRTOS**. 
 
@@ -75,11 +132,13 @@ Finalmente es indispensable hablar sobre la memoria pues no debería ser difíci
 
 Uno de estos esquemas es RAID (Redundant Array of Independent Disks) que permite incrementar la rapidez para escribir y leer grandes bloques de memoria y crea redundancia de datos en memoria. Este necesario implementar este esquema para evitar que haya problemas a la hora de leer o escribir. 
 
-Uno de los conceptos básicos de RAID es el copiado de información de un disco a otro y el propósito general de usar RAID es incrementar la confianza a la hora de proteger información crítica- 
+Uno de los conceptos básicos de RAID es el copiado de información de un disco a otro y el propósito general de usar RAID es incrementar la confianza a la hora de proteger información crítica. 
 
 ## Bibliografía 
 
 Awad, E., Dsouza, S., Kim, R., Schulz, J., Henrich, J., Shariff, A., … Rahwan, I. (2018). The Moral Machine experiment. *Nature*, *563*(59). Retrieved from https://www.nature.com/articles/s41586-018-0637-6
+
+Bertozzi, M. (1999, March 1). Autonomous Vehicles. Retrieved October 22, 2019, from https://www.linuxjournal.com/article/3282.
 
 Cox, I. J., & Wilfong, G. T. (1990). *Autonomous Robot Vehicles*. Springer-Verlag.
 
@@ -90,6 +149,10 @@ Henry Ford's First Car. (n.d.). Retrieved October 18, 2019, from https://www.the
 Maxmen, A. (2018). Self-driving car dilemmas reveal that moral choices are not universal. *Nature*. Retrieved from https://www.nature.com/articles/d41586-018-07135-0
 
 National Instruments. (2019, March 5). What is a Real-Time Operating System (RTOS)? Retrieved October 20, 2019, from https://www.ni.com/es-mx/innovations/white-papers/07/what-is-a-real-time-operating-system--rtos--.html.
+
+Tanenbaum, A. S. (2006). *Modern Operating Systems*. Upper Saddle River: Prentice Hall.
+
+The University of South Wales. (n.d.). Real-time scheduling . Retrieved October 22, 2019, from http://www.cse.unsw.edu.au/~cs3231/05s1/lectures/lect21x6.pdf.
 
 Rusmana, D. (2018, June 9). What is RAID Technology (Data Storage Virtualization) ? Retrieved October 19, 2019, from https://medium.com/@DalihRusmana/what-is-raid-technology-data-storage-virtualization-8eeb5efae386.
 
