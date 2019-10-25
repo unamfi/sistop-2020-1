@@ -25,9 +25,16 @@ for entDir in lEntDir:
     ])
 print(tabulate(tabla, encabezados))
 
-fs.descargar('README.org', os.path.join('ArchivosDescargados', 'README.org'))
-fs.descargar('logo.png', os.path.join('ArchivosDescargados', 'logo.png'))
-fs.descargar('mensajes.png', os.path.join('ArchivosDescargados', 'mensajes.png'))
+# fs.descargar('README.org', os.path.join('ArchivosDescargados', 'README.org'))
+# fs.descargar('logo.png', os.path.join('ArchivosDescargados', 'logo.png'))
+# fs.descargar('mensajes.png', os.path.join('ArchivosDescargados', 'mensajes.png'))
+
+fs.subir('README.org', 'OtroMas')
+fs.subir('README.org', 'OtroMas\na')
+fs.subir('README.org', '')
+fs.subir('README.org', 'OtroMás')
+fs.subir('README.org', 'Otro Más  ')
+fs.subir('README.org', 'Otro mass largo........  ')
 
 fs.desmontar()
 fs.desmontar()
