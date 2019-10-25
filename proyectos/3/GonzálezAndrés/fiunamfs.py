@@ -37,6 +37,8 @@ class FIUNAMFS(object):
                 self.tam_unidad = int(self.__mmfs[52:60].decode('ascii').strip())
                 print('Tamaño de la unidad: %i clusters' % self.tam_unidad)
 
+                self.tam_entradadir = 64
+
                 print('Sistema de archivos montado')
             else:
                 print('No se reconoce el sistema de archivos')
@@ -51,5 +53,25 @@ class FIUNAMFS(object):
         else:
             print('No se ha montado el sistema de archivos')
     
-    def dir(self):
+    def listdir(self):
+        ldir = []
+        if self.montado:
+            inicio = self.tam_cluster
+            fin = self.tam_cluster*self.tam_dir+self.tam_cluster
+            paso = self.tam_entradadir
+            cluster_actual = 1
+            for i in range(inicio,fin,paso):
+                entdir = self.__mmfs[i:i+paso]
+                nombre = entdir[0:15].decode('ascii')
+                if (i % self.tam_cluster) == 0:
+                    print('Cluster actual: %i' % cluster_actual)
+                    cluster_actual+=1
+                if nombre != 'Xx.xXx.xXx.xXx.':
+                    print(nombre)
+                    ldir.append(nombre)
+        else: 
+            print('No se ha montado el sistema de archivos')
+        return ldir
+class EntradaDir(object):
+    def __init__(self, nombre_arch, tam_archivo, cluster_i, f_creacion, f_modif):
         pass
