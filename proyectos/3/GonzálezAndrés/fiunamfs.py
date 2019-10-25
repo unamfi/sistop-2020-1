@@ -13,13 +13,13 @@ class FIUNAMFS(object):
     def montar(self):
         if not self.montado:                
             try:
-                f = open(self.ruta_img, 'r+b')
+                self.__f = open(self.ruta_img, 'r+b')
             except OSError:
                 print('No se puede abrir %s' % self.ruta_img)
             except IOError as e:
                 print('IOError %s' % e)
             else:
-                self.__mmfs = mmap(f.fileno(), 0)
+                self.__mmfs = mmap(self.__f.fileno(), 0)
                 nombrefs = self.__mmfs[0:8].decode('ascii')
                 # print(nombrefs)
                 if nombrefs == 'FiUnamFS':
@@ -61,6 +61,7 @@ class FIUNAMFS(object):
     def desmontar(self):
         if self.montado:
             self.__mmfs.close()
+            self.__f.close()
             self.montado = False
             print('Sistema de archivos desmontado')
         else:
@@ -84,6 +85,10 @@ class FIUNAMFS(object):
             for i in range(inicio,fin,paso):
                 entdir = self.__mmfs[i:i+paso]
                 nombre = entdir[0:15].decode('ascii').strip()
+                # if nombre == 'README.org':                    
+                #     print(len(('\0'*3+'24527').encode('ascii')), ('\0'*8+'24527').encode('ascii'))
+                #     print(len(self.__mmfs[i+16:i+24]), self.__mmfs[i+16:i+24])
+                #     self.__mmfs[i+16:i+24] = ('00029718').encode('ascii')
                 if nombre != 'Xx.xXx.xXx.xXx.':
                     tam_archivo = int(entdir[16:24].decode('ascii').strip())
                     cluster_inicial = int(entdir[25:30].decode('ascii').strip())
@@ -122,6 +127,9 @@ class FIUNAMFS(object):
         else:
             print(MSGERR_NO_MONTADO)
         return False
+    
+    def subir(self, origen, destino):
+        pass
 
 class EntradaDir(object):
     def __init__(self, nombre, tam_archivo, cluster_inicial, f_creacion, f_modif):
