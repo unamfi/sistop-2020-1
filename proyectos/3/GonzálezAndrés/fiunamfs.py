@@ -59,15 +59,15 @@ class FIUNAMFS(object):
             inicio = self.tam_cluster
             fin = self.tam_cluster*self.tam_dir+self.tam_cluster
             paso = self.tam_entradadir
-            cluster_actual = 1
+            # cluster_actual = 1
             for i in range(inicio,fin,paso):
                 entdir = self.__mmfs[i:i+paso]
-                nombre = entdir[0:15].decode('ascii')
-                if (i % self.tam_cluster) == 0:
-                    print('Cluster actual: %i' % cluster_actual)
-                    cluster_actual+=1
-                if nombre != 'Xx.xXx.xXx.xXx.':
-                    print(nombre)
+                nombre = entdir[0:15].decode('ascii').strip()
+                # if (i % self.tam_cluster) == 0:
+                #     print('Cluster actual: %i' % cluster_actual)
+                #     cluster_actual+=1
+                if nombre not in('Xx.xXx.xXx.xXx.', '\0'*15):
+                    #print(nombre)
                     ldir.append(nombre)
         else: 
             print('No se ha montado el sistema de archivos')
