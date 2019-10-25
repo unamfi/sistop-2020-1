@@ -4,11 +4,6 @@
 - Tema presentado por :: Andrés González
   - Calificación global :: 8.88  * 0.3 + 9.38 * 0.7 = *9.23*
 
-* Comentarios
-
-- No es una exposición en equipo, fueron dos exposiciones
-  independientes, con muy poca relación entre ellas ☹
-
 * Evaluación grupal
 
 [[./evaluacion_alumnos.pdf][Evaluaciones individuales de los alumnos]]
