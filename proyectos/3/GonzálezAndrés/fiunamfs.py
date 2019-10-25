@@ -63,7 +63,7 @@ class FIUNAMFS(object):
             for i in range(inicio,fin,paso):
                 entdir = self.__mmfs[i:i+paso]
                 nombre = entdir[0:15].decode('ascii').strip()
-                
+
                 # if (i % self.tam_cluster) == 0:
                 #     print('Cluster actual: %i' % cluster_actual)
                 #     cluster_actual+=1
@@ -77,7 +77,7 @@ class FIUNAMFS(object):
                 #     except IndexError as ierr:
                 #         print('indexerror')
                     
-                if nombre not in('Xx.xXx.xXx.xXx.', '\0'*15):
+                if nombre != 'Xx.xXx.xXx.xXx.':
                     #print(nombre)
                     ldir.append(nombre)
         else: 
