@@ -1,7 +1,7 @@
 # Asignación de memoria
 
-	Tarea creada el 2019.10.24
-	Entrega: 2019.10.31
+	Tarea creada el 2019.10.29
+	Entrega: 2019.11.05
 
 ## ¿Qué hay que hacer?
 
