@@ -63,9 +63,20 @@ class FIUNAMFS(object):
             for i in range(inicio,fin,paso):
                 entdir = self.__mmfs[i:i+paso]
                 nombre = entdir[0:15].decode('ascii').strip()
+                
                 # if (i % self.tam_cluster) == 0:
                 #     print('Cluster actual: %i' % cluster_actual)
                 #     cluster_actual+=1
+
+                # if nombre == '\0'*15:
+                #     cadena = 'Xx.xXx.xXx.xXx.'.encode('ascii')
+                #     print(len(cadena), cadena)
+                #     print(len(self.__mmfs[i:i+15]), self.__mmfs[i:i+paso])
+                #     try:
+                #         self.__mmfs[i:i+15] = cadena
+                #     except IndexError as ierr:
+                #         print('indexerror')
+                    
                 if nombre not in('Xx.xXx.xXx.xXx.', '\0'*15):
                     #print(nombre)
                     ldir.append(nombre)
