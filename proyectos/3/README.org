@@ -47,6 +47,15 @@ versión =0.5= a la versión =0.6=. Otro error que me indicó Andrés me
 llevó a pasasr a la versión =0.7=. ¿A qué jugamos? ¡Tengo que darles
 un ejercicio /confiable/! 😉
 
+*Actualización:* Dado que /metí la pata/ dos veces, y les dí para que
+trabajen un archivo ejemplo de implementación con fallas, lo menos que
+puedo hacer es darles mi programita generador de =miunamfs= como
+referencia. Aquí está: [[./crea_fiunamfs.py]]
+
+Además de esto, daré un punto adicional en la calificación del
+proyecto a los dos alumnos que me reportaron los problemas con mi
+archivo.
+
 ** Especificación de =FiUnamFS=
 
 - El sistema de archivos cabe en un /diskette/ tradicional. Claro, no
@@ -71,7 +80,7 @@ un ejercicio /confiable/! 😉
             archivos. ¡Debes validar nunca modificar un sistema de
             archivos que no sea el correcto! Debe ser la cadena =FiUnamFS=.
   - 10--13 :: Versión de la implementación. Estamos implementando la
-              versión =0.6=
+              versión =0.7=
   - 20--35 :: Etiqueta del volumen
   - 40--45 :: Tamaño del cluster en bytes
   - 47--49 :: Número de clusters que mide el directorio
@@ -99,7 +108,6 @@ un ejercicio /confiable/! 😉
 - Es un sistema de archivos plano — No maneja subdirectorios.
 - Después del directorio, todo el espacio restante es espacio de
   datos.
-
 
 
 ** Calificación del proyecto
