@@ -1,9 +1,5 @@
 #+title: Proyecto 3: (Micro) sistema de archivos
 
-
-*OJO* Revisar la generaciÃ³n del sistema de archivos; no todo estÃ¡
-alineado a 0x800 (2048 bytes)
-
 #+BEGIN_SRC yaml
 Planteamiento: 2019.10.08
 Entrega: 2019.10.29
@@ -44,6 +40,12 @@ Para verificar su implementaciÃ³n, pueden [[./fiunamfs.img][descargar un sistema
 archivos ejemplo]] que cumple con el planteamiento. Verifiquen que
 pueden realizar todas las tareas que les solicitÃ© con Ã©ste. IndÃ­quenme
 â€” Â¿CuÃ¡les son los contenidos del /disco/?
+
+*Ojo:* Como lo reportÃ³ Omar en clase, el sistema de archivos ejemplo
+que les dÃ­ tenÃ­a un error. Ya lo corregÃ­; por ello, pasamos de la
+versiÃ³n =0.5= a la versiÃ³n =0.6=. Otro error que me indicÃ³ AndrÃ©s me
+llevÃ³ a pasasr a la versiÃ³n =0.7=. Â¿A quÃ© jugamos? Â¡Tengo que darles
+un ejercicio /confiable/! ğŸ˜‰
 
 ** EspecificaciÃ³n de =FiUnamFS=
 
@@ -128,7 +130,7 @@ pueden realizar todas las tareas que les solicitÃ© con Ã©ste. IndÃ­quenme
 | Nomenclatura             | Los nombres de los sÃ­mbolos (variables, funciones, mÃ©todos, clases) son claros y acorde a su funciÃ³n; los principales elementos estÃ¡n documentados expresamente                                                                                                    | Los nombres de los sÃ­mbolos mencionados son claros y acorde a su funciÃ³n, aunque no estÃ©n documentados                                                          | Los nombres de los sÃ­mbolos no son claros, pero su uso y significado forma parte de la documentaciÃ³n                                                             | Cuesta trabajo seguir la lÃ³gica; los sÃ­mbolos empleados no tienen nombres significativos, y su funciÃ³n no estÃ¡ documentada |        |
 |--------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------+--------|
 | *Entrega*                |                                                                                                                                                                                                                                                                    |                                                                                                                                                                 |                                                                                                                                                                  |                                                                                                                            |    20% |
-|--------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------‰PNG
+|--------------------------+---------------------------------------------------------------------------------------------------------------------‰PNG
 
    IHDR   ş  ,   ãÁ   sRGB ®Îé   gAMA  ±üa   	pHYs  Ã  ÃÇo¨d  ÿ¥IDATx^ì½˜Õ™.,ïz× 4İ=#ïµ×ëõİûïŞµw÷.Ş]g°	š®ªnIÈ0ÑÛØ€e0Áäœ$ÍtUu÷Œ"D9™ŒÈ ‚È¡€ò£ÿ}ßsª§º§»§{‚$l}Ïs™®:UuÂ—Ïw¾3llf0~æßŒÈ\ju:şa›Lğ/#œop}§Õó”tr·8Áo’nxJÊ	&']*şŞtƒ’N0/å‹R¿ÿ/o3}CëèiôwÌŒ
 ë›gø<Şó^ÊõßÃ»ŸÁ{Äß;?;“nşÔ„‡z«]éĞK¥ßîş¯ÚİŞÙ:,}ÑßÚm-ğ—_ØmÆV‰ŒÿF8á7AD»¦ÜÂ/®¸+éæîL:á“IÇ_ ‚û¸5Û½¡m×«6´›r5ş¿rCë®³6´½ÂhÊI¤b÷_ÀßçQ#‘’!€`ïH8ÁxÿŒ>‹\‹ïŞ!Fâwáïƒøıß‹ûõ7XÓš
@@ -142,4 +144,5 @@ pueden realizar todas las tareas que les solicitÃ© con Ã©ste. IndÃ­quenme
 }şˆÂ$ì%©ü2YºV2’ÎŞ4CøÔğ—(!ÅH¼à{«*ğ~ÄxX0.â/WLîÄÿ9ŒÅ‰zÉ¿3Ğ˜†T&ÜSÄK›·³,ææCü>úÆí×şYöö €|LÙpßT&ÿ°"KÅˆósÒm«üy€6Hxù‰Ä\ûÄDÏkñ‚Ÿ÷gr‰	'7¾=Y0ùE!‘ŞË¯`6{kHá¦%„'"JBZ­Èe|¸ş&ÁCÕÔ_^òq·™}eUè‹ğ	ÜÏ’”±*¿ÌKİf¿m—KşLìmÕ§éä„§Ù[UÚ‹!&ÕıxÁÜ8l¿lr%ê½<¹§pÙ0åuíÓh&u"ßIF/ÉŸ-ü£½ÕĞÃo/‰†6)=ßÈÉ¦ÚŒIxù?Ñ¯¥Ğr/›–?ÉÀNLäl³îZ Tñ‰„Wüq½%¥ZÀ%“'˜“àJnz±·úÚÈ@€·5‘@xüßçn·ÁŒÁ1BB+é²[i.â‡––aß1ÍM¸şÕ@òKÁ¬ƒ–´wjìßã†#ûÊªĞá ù@å§£·—¿Âéş/¾³Ü¨ÓÓ!ñÃcì­*°Äø¤ÚgÆa5ˆ	Ï§§
 Ç„ŒãC-Bã„ßºÏñ"ÓÎohó
 õ¶LÜÓÑóÃ?Ù;Múo˜¾‰~®jtİŸË½ÉÌÔÑÃ¶;¨)m’^†›Lê1†ynnÍÂú$ÓSµzáµ8ªôI/ÿãÇ_@P½Âf2Q€˜ĞËì­>HÇ½êFÒ7{kÈj¦Şz´Ñ–ğı«üç+d÷™ÔƒD&iÖÏ$™>™ T~zâeúV·´•?åuŒi”ğÉxi«s\É¼À¸jÆ7pû-Ú´Hï–Ô'w;ş/“tb,Âœñ¸ß|áU0fe6„O¢§F •{Y_›•è0ƒª¾Zíà™Sì­¦ æØéü¶ß7°½öVM ¦€~¬0Œlêã0'ëîV¬LQŞêåï4  ˜AjTn{{{ó+$İB''ÍÚğ/CÍ?ìÌú:@‚Ñd1ƒ÷•˜²hqs¿÷–ê|œ'"Sd·xÅo$3ÅCë…ª2ÊLÈ#¦3’ÑßİŞTh”ğ	ÊÏ9R›0I/x˜×S^gºQÂ§-nŞó¡ÍÍıĞŞêhÛvxß#Í'ÿK{«1Ñ£¶ÿ 0‚3Áf$³İ<3àÚ¾ü2hæÚ,ûÑâäú%5¡]ipM8³$Š‹¨¿ŸGZ‚‚xœğ·öVÓÀùD_‘¦Œv´º…"ööæ\+†Mt
-:¼‚^zLğG` ;±$¤~Ú ,le ¸yİÄ@¢üAgÆ»2Œ8˜¼où¯§<ÿWĞ`ºA\/abÖ+TÓñk#2TD|s¥‘@şñûõ Â'@XRù©A9ÁÑèÇw¥~7@ø ÂlDø"'·“½ÕTššˆ1Ë8ıÎ>—O«˜­ı¯&€H§‹øhRà{ÀËg˜“‚U×[œÉÿÍ¥7µWŠÿPß¹dÎÜ%-…šÆ	VìÍşÁ¸Å½)­ #]­qÖÆJ`RÈ•Ñ —´<!D(LŒøùª€Á=.‡×gÿ©a_9±Oó„p‘øBèw†§gÔµ—	$tºp/6¾3ş‚¹/U¹¸ÄtünûX/Á	^“êJ;µ¥¥ş@³„ÏŒ´)/x^>0%ÌR´í|ÿª†
+:¼‚^zLğG` ;±$¤~Ú ,le ¸yİÄ@¢üAgÆ»2Œ8˜¼où¯§<ÿWĞ`ºA\/abÖ+TÓñk#2TD|s¥‘@şñûõ Â'@XRù©A9ÁÑèÇw¥~7@ø ÂlDø"'·“½ÕTššˆ1Ë8ıÎ>—O«˜­ı¯&€H§‹øhRà{ÀËg˜“‚U×[œÉÿÍ¥7µWŠÿPß¹dÎÜ%-…šÆ	VìÍşÁ¸Å½)­ #]­qÖÆJ`RÈ•Ñ —´<!D(LŒøùª€Á=.‡×gÿ©a_9±Oó„p‘øBèw†§gÔµ—	$tºp/6¾3ş‚¹/U¹¸ÄtünûX/Á	^“êJ;µ¥¥ş@³„ÏŒ´)/x^>0%ÌR´í|ÿª†ßõ÷3Ïm&Ñ^{g^*íÿÊØè0·M³™.‹¢]Š›ˆŸcÂo³­˜‡åÉLá.h8gR¨æ7¡™Šç^ÖXZ?æ÷H{»&Ğ… XkpbMÑ¢½5`P0œˆ¹]&Áš)¾ÎMA¸5xg'4
+-ÿpÅ£<èà¬wc€†4(ƒÀ]x†£9&:coÕ„R—$SğQ_»ÈI/wX‰ÈEè†¨Ätø›HÏå4úıÂ°Z§Á€YçF‘aø~İ@—şB³„O ±ï"²¢Ö0×rœ
