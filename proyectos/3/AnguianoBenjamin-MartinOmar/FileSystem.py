@@ -1,5 +1,6 @@
 
 
+
 ficheros = []
 tamanio = []
 ubicacion = []
@@ -12,7 +13,7 @@ def getFileSystem():
 		fileSystem.seek(posicion)
 		consulta = fileSystem.read(15)
 		if(consulta != 'Xx.xXx.xXx.xXx.'):
-			ficheros.append(consulta.replace(" "," "))
+			ficheros.append(consulta.replace(" ",""))
 			fileSystem.seek(posicion+16)
 			tamanio.append(fileSystem.read(8))
 			fileSystem.seek(posicion+25)
@@ -26,7 +27,6 @@ def getFileSystem():
 		
 def infoFileSystem():
 	fileSystem = open('fiunamfs.img', 'r')
-
 	anadirInfo(0,fileSystem,8)
 	anadirInfo(10,fileSystem,3)
 	anadirInfo(20,fileSystem,15)
@@ -34,7 +34,6 @@ def infoFileSystem():
 	anadirInfo(47,fileSystem,2)
 	anadirInfo(52,fileSystem,8)
 	print(informacion)
-
 	fileSystem.close()
 
 def anadirInfo(posicion,fileSystem, duracion):
@@ -59,14 +58,33 @@ def eliminarArchivo(nombre):
 				print('No existe el archivo ' + nombre + ' en el directorio')
 	fileSystem.close()
 	
-		
+def copiarAPC(nombre):
+	fileSystem = open('fiunamfs.img', 'r')
+	posicion = buscarArchivo(nombre)
+	copia = open(nombre, 'w')
+	print("ubicacion "+ ubicacion[posicion])
+	fileSystem.seek(int(ubicacion[posicion]))
+	#print(fileSystem.read(int(tamanio[posicion])))
+	copia.write(fileSystem.read(int(tamanio[posicion])))
+	fileSystem.close()
+	copia.close()
+	print("El archivo "+ nombre + " ha sido copiado con exito")
 
-		
-
+def buscarArchivo(nombre):
+	posicion = 0
+	for i in ficheros:
+		if i == nombre:
+			print(posicion)
+			return posicion
+		else:
+			posicion = posicion+1
+	return -1
 
 def main():
 	getFileSystem()
-	infoFileSystem()
-	archivoAEliminar = raw_input()
-	eliminarArchivo(archivoAEliminar)
+	#infoFileSystem()
+	#archivoAEliminar = raw_input()
+	#eliminarArchivo(archivoAEliminar)
+	#buscarArchivo('logo.png')
+	copiarAPC("logo.png")
 main()
