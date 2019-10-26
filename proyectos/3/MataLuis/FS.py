@@ -30,6 +30,26 @@ def listar():
         if name != 'Xx.xXx.xXx.xXx.':
             print(name)
         file.seek(file.tell()+49)
+    file.close()
+
+def borrar(archivo):
+    borrado = False
+    file = open("fiunamfs.img","r+")
+    file.seek(2048)
+    for i in range(64):
+        name = file.read(15)
+        aux = name.strip()
+        if aux == archivo:
+            file.seek(file.tell()-15)
+            file.write('Xx.xXx.xXx.xXx.')
+            borrado = True
+        file.seek(file.tell()+49)
+    file.close()
+    return borrado
+def todo():
+    file = open("fiunamfs.img","r")
+    file.seek(2048)
+    print(file.read(4096))
 
 if (nombre == "FiUnamFS" and version == "0.6"):
     correcto = True
@@ -47,6 +67,14 @@ if (nombre == "FiUnamFS" and version == "0.6"):
             info()
         elif opcion == 1:
             listar()
+        elif opcion == 4:
+            archivo = raw_input("Nombre del archivo a borrar: ")
+            if(borrar(archivo)):
+                print('El archivo fue borrado')
+            else:
+                print('No se encontro el archivo')
+        elif opcion == 5:
+            todo()
 else:
     print("No se puede abrir el sistema de archivos debido a que no es el archivo correcto o la version correcta. Revise nuevamente que tenga la imagen correcta.")
     exit()
