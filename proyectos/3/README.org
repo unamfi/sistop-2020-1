@@ -43,7 +43,9 @@ pueden realizar todas las tareas que les solicité con éste. Indíquenme
 
 *Ojo:* Como lo reportó Omar en clase, el sistema de archivos ejemplo
 que les dí tenía un error. Ya lo corregí; por ello, pasamos de la
-versión =0.5= a la versión =0.6=.
+versión =0.5= a la versión =0.6=. Otro error que me indicó Andrés me
+llevó a pasasr a la versión =0.7=. ¿A qué jugamos? ¡Tengo que darles
+un ejercicio /confiable/! 😉
 
 ** Especificación de =FiUnamFS=
 
