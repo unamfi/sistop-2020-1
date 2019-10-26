@@ -4,9 +4,9 @@ import re
 MSGERR_NO_MONTADO = 'Error: No se ha montado el sistema de archivos'
 MSGERR_ARCH_NO_ENC = 'Error: No se encuentra el archivo de origen'
 MSGADV_FS_YA_MONT = 'Advertencia: El sistema de archivos ya está montado'
-MSGERR_FN_INVALIDO = 'Error: el nombre de destino debe incluir de 1 a 16 caracteres (imprimibles US-ASCII)'
+MSGERR_FN_INVALIDO = 'Error: el tamaño del nombre del archivo debe ser de 1 a 16 caracteres y estos deben ser US-ASCII imprimibles'
 
-PATRON_FN = re.compile(r'[\x21-\x7F][\x20-\x7F]{,16}') # Patrón para verificar si los archivos tienen caracteres válidos
+PATRON_FN = re.compile(r'[\x21-\x7F][\x20-\x7F]{,15}') # Patrón para verificar si los archivos tienen caracteres válidos
 
 class FIUNAMFS(object):
     def __init__(self, ruta_img):
@@ -134,20 +134,41 @@ class FIUNAMFS(object):
         except IOError as ioerr:
             print('IOError: %s' % ioerr)            
     
-    def subir(self, origen, destino):
+    def subir(self, origen, destino=''):
+
+        try:
+            f = open(origen, 'rb') # Abrimos el archivo en modo lectura
+            f.close()
+        except IOError as ioerr:
+            print('IOError: %s' % ioerr)
+            return False
+
         destino = destino.strip() # Le quitamos los caracteres en blanco al inicio y al final
         if not destino:
             destino = origen
         if not self.montado:
             print(MSGERR_NO_MONTADO)
             return False
-        if not re.fullmatch(PATRON_FN, destino): # Checamos si el nombre de destino cumple con el regex
+
+        if not re.fullmatch(PATRON_FN, destino): # Checamos si el nombre de destino cumple con el patrón
             print(MSGERR_FN_INVALIDO)
             print('Nombre ingresado: %s' % destino)
             return False
-        print('Guardando... %s -> %s' % (origen, destino))
 
-
+        resultado = list(filter( lambda entdir: entdir.nombre == destino, self.__listaEntDir)) # Buscamos el elemento que coincida
+        if resultado:
+            print('Guardando: %s -> %s' % (origen, destino))
+            return True
+        
+        print('Guardando: %s -> %s' % (origen, destino))
+        for i, entrDir in enumerate(self.__listaEntDir):
+            try:
+                siguiente = self.__listaEntDir[i+1]
+                espac_entr_clusters = (siguiente.cluster_inicial - entrDir.cluster_inicial) * self.tam_cluster
+                entrDir.tam_archivo
+                print(espac_entr_clusters)
+            except IndexError:
+                pass
 
 
 class EntradaDir(object):
