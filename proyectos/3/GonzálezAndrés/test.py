@@ -3,7 +3,7 @@ import os
 from fiunamfs import FIUNAMFS
 from tabulate import tabulate
 
-fsimg_path = os.path.join('.', 'fiunamfs2.img')
+fsimg_path = os.path.join('.', 'fiunamfs.img')
 
 fs = FIUNAMFS(fsimg_path)
 fs.montar()
@@ -23,15 +23,19 @@ for entDir in lEntDir:
         entDir.f_creacion, 
         entDir.f_modif
     ])
-print(tabulate(tabla, encabezados))
+print('\n', tabulate(tabla, encabezados), '\n')
 
-fs.descargar('README.org', os.path.join('ArchivosDescargados', 'README.org'))
+# fs.descargar('README.org', os.path.join('ArchivosDescargados', 'README.org'))
 # fs.descargar('logo.png', os.path.join('ArchivosDescargados', 'logo.png'))
 # fs.descargar('mensajes.png', os.path.join('ArchivosDescargados', 'mensajes.png'))
+# fs.descargar('blackbird.jpg', os.path.join('ArchivosDescargados', 'blackbird.jpg'))
 
 # fs.subir('README.org', 'OtroMas')
 # fs.subir('README.org', 'OtroMas\na')
-fs.subir(os.path.join('ArchivosParaSubir', 'AB_blackbird.jpg'), 'AB_blackbird.jpg')
+fs.subir(os.path.join('ArchivosParaSubir', 'blackbird.jpg'), 'blackbird.jpg')
+l_archivos = fs.listdir()
+print('\n', l_archivos, '\n')
+
 fs.subir(os.path.join('ArchivosDescargados', 'README.org'), 'README.org')
 # fs.subir('README.org', 'OtroMás')
 # fs.subir('README.org', 'Otro Más  ')
