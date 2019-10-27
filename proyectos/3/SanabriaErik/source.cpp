@@ -11,31 +11,54 @@
 
 int main(int argc, char* argv[])
 {
+	const std::string mag_def{ "FiUnamFS" };
+	std::string mag;
 	std::string fname{ "res/fiunamfs.img" };
-	std::ifstream in_f;
+	std::ifstream archiv;
 
-	const char *mag_def = "FiUnamFS";
+	size_t tam{ 0 };
+	char tmp[8];
 
 	if(argc > 1)
 	{
-		fname = *argv[1];
+		fname = argv[1];
 	}
 
-	in_f.open(fname, std::ios::binary | std::ios::in);
+	std::cout << std::endl << "\tVamos a abrir " << fname << std::endl;
 
-	char mag[8];
+	archiv.open(fname, std::ios::binary | std::ios::in);
 
-	in_f.read(mag, 8);
-
-	if(mag != mag_def)
+	if(!archiv.is_open())
 	{
-		std::cout << std::endl << "El archivo no es valido..." << mag << std::endl;
+		std::cout << std::endl << "\tError al abrir el archivo!" << std::endl;
+
+		return 2;
+	}
+
+	archiv.read(reinterpret_cast<char*>(tmp), 8);
+
+	mag = tmp;
+
+	if(mag_def != mag)
+	{
+		std::cout << std::endl << "\tEl archivo no es valido...\t" << mag << std::endl;
+
+		archiv.close();
+
 		return 1;
 	}
 
-	std::cout << std::endl << "Data:\t" << mag << std::endl;
+	std::cout << std::endl << "\tData:\t" << mag << std::endl;
 
-	in_f.close();
+	archiv.seekg(0, std::ios::end);
+	tam = archiv.tellg();
+
+	archiv.seekg(0, std::ios::beg);
+
+	std::cout << std::endl <<"\tTamanio del archivo: " << tam << " bytes.";
+
+
+	archiv.close();
 
 	return 0;
 }
