@@ -1,4 +1,5 @@
 """docstring"""
+from fslib.de import DirectoryEntry
 from fslib.sb import SuperBlock
 from mmap import mmap
 from os import path
@@ -27,13 +28,31 @@ class FileManager():
         filename = 'fiunamfs.img'
         if not path.isfile(filename):
             raise(IOError, 'El archivo %s no existe' % filename)
-        f_h = open(filename, 'r+')
-        return  mmap(f_h.fileno(), 0)
+        file_system = open(filename, 'r+')
+        data = mmap(file_system.fileno(), 0)
+        file_system.close()
+        return  data
 
     def build_sb(self):
     	if self.super_block is not None:
     		return self.super_block
 
-    def get_fs_data(self):
+    def get_fs(self):
     	if self.super_block is not None:
-    		return self.data 
+    		return self.read_fs()
+
+    def get_de(self, data):
+        name = data[0:15]
+        size = data[16:24]
+        cluster = data[25:30]
+        creation = data[31:45]
+        last_modif = data[45:60]
+        non_used_space = data[61:64]
+        return DirectoryEntry(name=name, size=size, cluster=cluster, creation=creation, last_modif=last_modif, non_used_space=non_used_space)
+
+
+
+
+
+
+
