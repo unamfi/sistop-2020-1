@@ -10,8 +10,7 @@ def main():
 	parser.add_option("-o", "--copyoutside", action="callback", callback=filter, type="string", dest="file_to_copy", help="copy a file from FiUnamFS to your current dir", metavar="<file_to_copy>")
 	parser.add_option("-r", "--remove", action="callback", callback=filter, type="string", dest="file_to_remove", help="removes a file from FiUnamFs", metavar="<file_to_remove>")
 	parser.add_option("-d", "--defrag", action="callback", callback=filter, help="defragments FiUnamFs")
-	
-	(options, args) = parser.parse_args()
+	parser.parse_args()
 
 def filter(option, opt, value, parser):
 	climanager = CommandManager()
