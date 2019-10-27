@@ -51,13 +51,15 @@ class FIUNAMFS(object):
                 self.tam_cluster = int(self.__mmfs[40:45].decode('ascii').strip())
                 # print('Tamaño del cluster: %i bytes' % self.tam_cluster)
 
-                self.tam_dir = int(self.__mmfs[47:49].decode('ascii').strip())
-                # print('Tamaño del directorio: %i clusters' % self.tam_dir)
+                self.clusters_dir = int(self.__mmfs[47:49].decode('ascii').strip())
+                # print('Tamaño del directorio: %i clusters' % self.clusters_dir)
 
                 self.tam_unidad = int(self.__mmfs[52:60].decode('ascii').strip())
                 # print('Tamaño de la unidad: %i clusters' % self.tam_unidad)
 
                 self.tam_entradadir = 64
+
+                self.tam_dir = self.tam_cluster * self.clusters_dir
 
                 self.scandir()
 
@@ -94,7 +96,7 @@ class FIUNAMFS(object):
             return []
         
         inicio = self.tam_cluster
-        fin = self.tam_cluster*self.tam_dir+self.tam_cluster
+        fin = self.tam_dir+self.tam_cluster
         paso = self.tam_entradadir
         for i in range(inicio,fin,paso):
             entdir = self.__mmfs[i:i+paso]
@@ -172,10 +174,10 @@ class FIUNAMFS(object):
             self.__listaEntDir = sorted(self.__listaEntDir, key=lambda ed: ed.cluster_inicial) # Ordenamos la lista de entradas con base en el cluster donde inician
             #print('Guardando: %s -> %s' % (origen, destino))
             for i, ed_actual in enumerate(self.__listaEntDir): # ed_actual : entrada del directorio actual
+                clusters_usados = math.ceil(ed_actual.tam_archivo / self.tam_cluster) # Clusters usados por el archivo i-ésimo
                 try:
                     ed_sig = self.__listaEntDir[i+1] # ed_sig : entrada del directorio siguiente
                     delta_clusters = ed_sig.cluster_inicial - ed_actual.cluster_inicial # vemos cuántos clusters hay entre entrada de directorio y entrada de directorio
-                    clusters_usados = math.ceil(ed_actual.tam_archivo / self.tam_cluster)
                     clusters_libres = delta_clusters - clusters_usados
                     print('Clusters libres entre "%s" y "%s": %i' % (ed_actual.nombre, ed_sig.nombre, clusters_libres))
 
@@ -187,7 +189,15 @@ class FIUNAMFS(object):
 
                 except IndexError:
                     print('Fin de la lista, guardar al final')
-                    return True
+                    cluster_inicial = ed_actual.cluster_inicial + clusters_usados # Cluster inicial + Clusters usados por éste 
+                    ed_nueva = EntradaDir(destino, tam_archivo, cluster_inicial, now(), now())
+                    return self.agregarEntDir(ed_nueva, bytes_archivo)
+            
+            # En caso de que no haya entradas en el directorio, lo guardamos en el primer cluster después del directorio
+            print('Directorio vacío, guardando al final')
+            cluster_inicial = self.clusters_dir + 1 # Clusters de directorio + Cluster de SB 
+            ed_nueva = EntradaDir(destino, tam_archivo, cluster_inicial, now(), now())
+            return self.agregarEntDir(ed_nueva, bytes_archivo)
 
         except IOError as ioerr:
             print('IOError: %s' % ioerr)
@@ -199,7 +209,7 @@ class FIUNAMFS(object):
             return False
         
         inicio = self.tam_cluster
-        fin = self.tam_cluster*self.tam_dir+self.tam_cluster
+        fin = self.tam_dir+self.tam_cluster
         paso = self.tam_entradadir
         for i in range(inicio,fin,paso):
             nombre_ant = self.__mmfs[i + 0 : i + 15].decode('ascii')
@@ -295,11 +305,7 @@ class FIUNAMFS(object):
             fin = cluster_size*dir_clusters+cluster_size
             paso = direntry_size
             for j in range(inicio,fin,paso):                  
-                data[j + 0 : j + 15] = ('%15s' % STR_DIR_VACIO).encode('ascii')
-                # data[i + 16 : i + 24] = ('%08s' % 0).encode('ascii')
-                # data[i + 25 : i + 30] = ('%05s' % 0).encode('ascii')
-                # data[i + 31 : i + 45] = ('%14s' % 0).encode('ascii')
-                # data[i + 46 : i + 60] = ('%14s' % 0).encode('ascii')                
+                data[j + 0 : j + 15] = ('%15s' % STR_DIR_VACIO).encode('ascii')            
                 data.flush()
         data.close()
         fh.close()
