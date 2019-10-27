@@ -13,7 +13,7 @@ def getFileSystem():
 		fileSystem.seek(posicion)
 		consulta = fileSystem.read(15)
 		if(consulta != 'Xx.xXx.xXx.xXx.'):
-			ficheros.append(consulta.replace(" ",""))
+			ficheros.append(consulta.replace(" "," "))
 			fileSystem.seek(posicion+16)
 			tamanio.append(fileSystem.read(8))
 			fileSystem.seek(posicion+25)
@@ -91,7 +91,7 @@ def copiarAMiFileSystem(nombre):
 		if consulta == 'Xx.xXx.xXx.xXx.':
 			#guardo la informacion correspondiente del archivo en su lugar indicado
 			fileSystem.seek(posicion)
-			fileSystem.write(nombre)
+			fileSystem.write(nombre + ' '(15-len(nombre)))
 			fileSystem.seek(posicion+16)
 			fileSystem.write("0"*(8 -(len(str(os.stat(nombre).st_size)))) + str(os.stat(nombre).st_size).encode())
 			fileSystem.seek(posicion+25)
@@ -102,13 +102,37 @@ def copiarAMiFileSystem(nombre):
 			break
 		posicion += 64
 
-def main():
+def desfragmentar():
 	getFileSystem()
+	fileSystem = open('fiunamfs.img', 'r+')
+	posicion = 2048
+	eliminarTodos()
+	for i in range(len(ficheros)):
+		fileSystem.seek(posicion)
+		fileSystem.write(ficheros[i])
+		fileSystem.seek(posicion+16)
+		fileSystem.write("0"*(8 -(len(str(tamanio[i])))) + str(tamanio[i]).encode())
+		fileSystem.seek(posicion+25)
+		fileSystem.write("0"*(5-len(str((posicion)))) + str((posicion)))
+		posicion = posicion+64
+
+def eliminarTodos():
+	fileSystem = open('fiunamfs.img', 'r+')
+	posicion = 2048
+	while(posicion< 10240):
+		fileSystem.seek(posicion)
+		fileSystem.write('Xx.xXx.xXx.xXx.')
+		posicion= posicion + 64
+
+
+def main():
+	#getFileSystem()
 	#infoFileSystem()
 	#archivoAEliminar = raw_input()
 	#eliminarArchivo(archivoAEliminar)
 	#buscarArchivo('logo.png')
 	#copiarAPC("logo.png")
-	copiarAMiFileSystem('mensajes.png')
-		
+	#copiarAMiFileSystem('mensajes.png')
+	desfragmentar()
+	#getFileSystem()
 main()
