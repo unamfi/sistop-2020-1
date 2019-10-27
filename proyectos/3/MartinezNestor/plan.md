@@ -13,3 +13,4 @@
   - [ ] Copiar hacía afuera
   - [ ] Eliminar archivo 
   - [ ] Desfragmentar 
+- [ ] Agregar comentarios 
