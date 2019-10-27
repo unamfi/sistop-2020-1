@@ -1,4 +1,5 @@
 import optparse
+from fslib.climanager import CommandManager
 
 def main(): 	
 	usage = "usage: %prog [options] arg1"
@@ -13,16 +14,19 @@ def main():
 	(options, args) = parser.parse_args()
 
 def filter(option, opt, value, parser):
+
+	climanager = CommandManager()
+
 	if opt in ('-l','--list'):
-		print("List")
+		climanager.ls()
 	elif opt in ('-i','--copyinside'):
-		print("copy inside", value)
+		climanager.cpi(value)
 	elif opt in ('-o','--copyoutside'):
-		print("copy outside", value)
+		climanager.cpo(value)
 	elif opt in ('-r','--remove'):
-		print("remove", value)
+		climanager.rm(value)
 	elif opt in ('-d','--defrag'):
-		print("defrag")
+		climanager.defrag()
 
 
 if __name__ == '__main__':
