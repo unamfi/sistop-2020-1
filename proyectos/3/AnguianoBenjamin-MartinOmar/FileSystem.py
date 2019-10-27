@@ -1,4 +1,4 @@
-
+import os
 
 
 ficheros = []
@@ -80,11 +80,35 @@ def buscarArchivo(nombre):
 			posicion = posicion+1
 	return -1
 
+def copiarAMiFileSystem(nombre):
+	archivo = open(nombre, 'r')
+	fileSystem = open('fiunamfs.img', 'r+')
+	print(str(os.stat(nombre).st_size))
+	posicion = 2048
+	while posicion < 10240:
+		fileSystem.seek(posicion)
+		consulta = fileSystem.read(15)
+		if consulta == 'Xx.xXx.xXx.xXx.':
+			#guardo la informacion correspondiente del archivo en su lugar indicado
+			fileSystem.seek(posicion)
+			fileSystem.write(nombre)
+			fileSystem.seek(posicion+16)
+			fileSystem.write("0"*(8 -(len(str(os.stat(nombre).st_size)))) + str(os.stat(nombre).st_size).encode())
+			fileSystem.seek(posicion+25)
+			fileSystem.write("0"*(5-len(str(posicion+25/2048).encode())) + str(posicion+25/2048).encode())
+			fileSystem.close()
+			archivo.close()
+			print("Archivo " + nombre + " copiado al file system")
+			break
+		posicion += 64
+
 def main():
 	getFileSystem()
 	#infoFileSystem()
 	#archivoAEliminar = raw_input()
 	#eliminarArchivo(archivoAEliminar)
 	#buscarArchivo('logo.png')
-	copiarAPC("logo.png")
+	#copiarAPC("logo.png")
+	copiarAMiFileSystem('mensajes.png')
+		
 main()
