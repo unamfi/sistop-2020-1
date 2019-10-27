@@ -1,8 +1,8 @@
 class DirectoryEntry():
 	"""docstring for Dir"""
-	def __init__(self, file_name, file_size, cluster, creation, last_modif, non_used_space):
-		self.file_name = file_name
-		self.file_size = file_size
+	def __init__(self, name, size, cluster, creation, last_modif, non_used_space):
+		self.name = name
+		self.size = size
 		self.cluster = cluster
 		self.creation = creation
 		self.last_modif = last_modif
