@@ -8,8 +8,7 @@ informacion = []
 def getFileSystem():
 	buscarArchivos()
 	imprimirDatosArchivos()
-
-		
+	
 def buscarArchivos():
 	for i in range(len(ficheros)):
 		ficheros.pop(0)
@@ -34,7 +33,6 @@ def imprimirDatosArchivos():
 	for i in range(rango):
 		print("nombre: "+ ficheros[i]+" tamanio: "+tamanio[i]+" ubicacion: "+ubicacion[i])
 
-
 def infoFileSystem():
 	fileSystem = open('fiunamfs.img', 'r')
 	anadirInfo(0,fileSystem,8)
@@ -43,12 +41,12 @@ def infoFileSystem():
 	anadirInfo(40,fileSystem,5)
 	anadirInfo(47,fileSystem,2)
 	anadirInfo(52,fileSystem,8)
-	print('VERSION 'informacion[1]+' '+informacion[2]+' '+informacion[3]+' '+informacion[4]+' '+informacion[5])
+	print('NOMBRE <'+informacion[0]+'> VERSION <'+informacion[1]+'> ETIQUETA <'+informacion[2].strip()+'> TAMANIO CLUSTER <'+informacion[3]+'> CLUSTERS EN DIR <'+informacion[4]+'> CLUSTERS UNIDAD COMPLETA <'+ informacion[5]+'>')
 	fileSystem.close()
 
-def anadirInfo(posicion,fileSystem, duracion):
+def anadirInfo(posicion,fileSystem, peso):
 	fileSystem.seek(posicion)
-	informacion.append(fileSystem.read(duracion))
+	informacion.append(fileSystem.read(peso))
 
 def eliminarArchivo(nombre):
 	fileSystem = open('fiunamfs.img', 'r+')
@@ -82,8 +80,7 @@ def copiarAPC(nombre):
 		copia.close()
 	else:
 		print('No se encontro el archivo '+ nombre)
-	fileSystem.close()
-	
+	fileSystem.close()	
 
 def buscarArchivo(nombre):
 	buscarArchivos()
@@ -91,8 +88,7 @@ def buscarArchivo(nombre):
 	for i in range(len(ficheros)):
 		if ficheros[i].strip() == nombre:
 			posicion = i
-	return posicion
-	
+	return posicion	
 
 def copiarAMiFileSystem(nombre):
 	archivo = open(str(nombre), 'r')
@@ -131,7 +127,6 @@ def desfragmentar():
 		posicion = posicion+64
 	fileSystem.close()
 	print('Se ha desfragmentado correctamente')
-	
 
 def eliminarTodos():
 	fileSystem = open('fiunamfs.img', 'r+')
@@ -162,10 +157,6 @@ def menu():
 		elif(opcion == 6):
 			print('Hasta la vista')
 			break
-
-
-
-
 def main():
 	infoFileSystem()
 	menu()
