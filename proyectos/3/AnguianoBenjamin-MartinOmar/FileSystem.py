@@ -1,12 +1,20 @@
 import os
 
-
 ficheros = []
 tamanio = []
 ubicacion = []
 informacion = []
 
 def getFileSystem():
+	buscarArchivos()
+	imprimirDatosArchivos()
+
+		
+def buscarArchivos():
+	for i in range(len(ficheros)):
+		ficheros.pop(0)
+		tamanio.pop(0)
+		ubicacion.pop(0)
 	fileSystem = open('fiunamfs.img','r')
 	posicion = 2048
 	while posicion < 10240:
@@ -21,10 +29,12 @@ def getFileSystem():
 		posicion+=64
 	fileSystem.close()
 
+def imprimirDatosArchivos():
 	rango = len(ficheros)
 	for i in range(rango):
 		print("nombre: "+ ficheros[i]+" tamanio: "+tamanio[i]+" ubicacion: "+ubicacion[i])
-		
+
+
 def infoFileSystem():
 	fileSystem = open('fiunamfs.img', 'r')
 	anadirInfo(0,fileSystem,8)
@@ -33,7 +43,7 @@ def infoFileSystem():
 	anadirInfo(40,fileSystem,5)
 	anadirInfo(47,fileSystem,2)
 	anadirInfo(52,fileSystem,8)
-	print(informacion)
+	print('VERSION 'informacion[1]+' '+informacion[2]+' '+informacion[3]+' '+informacion[4]+' '+informacion[5])
 	fileSystem.close()
 
 def anadirInfo(posicion,fileSystem, duracion):
@@ -45,8 +55,8 @@ def eliminarArchivo(nombre):
 	fileSystem.seek(2048)
 	posicion = 2048
 	while posicion < 2048*5:		
-		archivo = fileSystem.read(15).strip()
-		if(archivo == nombre):
+		archivo = fileSystem.read(15)
+		if(archivo.strip() == nombre):
 			fileSystem.seek(posicion)
 			fileSystem.write('Xx.xXx.xXx.xXx.')
 			print(nombre + ' ha sido eliminado')
@@ -61,37 +71,39 @@ def eliminarArchivo(nombre):
 def copiarAPC(nombre):
 	fileSystem = open('fiunamfs.img', 'r')
 	posicion = buscarArchivo(nombre)
-	copia = open(nombre, 'w')
-	print("ubicacion "+ ubicacion[posicion])
-	fileSystem.seek(int(ubicacion[posicion]))
+	print(posicion)
+	if(posicion !=-1):
+		copia = open(nombre, 'w')
+	#print("ubicacion "+ ubicacion[posicion])
+		fileSystem.seek(int(ubicacion[posicion]))
 	#print(fileSystem.read(int(tamanio[posicion])))
-	copia.write(fileSystem.read(int(tamanio[posicion])))
+		copia.write(fileSystem.read(int(tamanio[posicion])))
+		print("El archivo "+ nombre + " ha sido copiado con exito")
+		copia.close()
+	else:
+		print('No se encontro el archivo '+ nombre)
 	fileSystem.close()
-	copia.close()
-	print("El archivo "+ nombre + " ha sido copiado con exito")
+	
 
 def buscarArchivo(nombre):
-	posicion = 0
-	for i in ficheros:
-		if i == nombre:
-			print(posicion)
-			return posicion
-		else:
-			posicion = posicion+1
-	return -1
+	buscarArchivos()
+	posicion = -1
+	for i in range(len(ficheros)):
+		if ficheros[i].strip() == nombre:
+			posicion = i
+	return posicion
+	
 
 def copiarAMiFileSystem(nombre):
-	archivo = open(nombre, 'r')
+	archivo = open(str(nombre), 'r')
 	fileSystem = open('fiunamfs.img', 'r+')
-	print(str(os.stat(nombre).st_size))
 	posicion = 2048
 	while posicion < 10240:
 		fileSystem.seek(posicion)
 		consulta = fileSystem.read(15)
 		if consulta == 'Xx.xXx.xXx.xXx.':
-			#guardo la informacion correspondiente del archivo en su lugar indicado
 			fileSystem.seek(posicion)
-			fileSystem.write(nombre + ' '(15-len(nombre)))
+			fileSystem.write(' '*(15-len(nombre)) + nombre)
 			fileSystem.seek(posicion+16)
 			fileSystem.write("0"*(8 -(len(str(os.stat(nombre).st_size)))) + str(os.stat(nombre).st_size).encode())
 			fileSystem.seek(posicion+25)
@@ -101,6 +113,8 @@ def copiarAMiFileSystem(nombre):
 			print("Archivo " + nombre + " copiado al file system")
 			break
 		posicion += 64
+	archivo.close()
+	fileSystem.close()
 
 def desfragmentar():
 	getFileSystem()
@@ -115,6 +129,9 @@ def desfragmentar():
 		fileSystem.seek(posicion+25)
 		fileSystem.write("0"*(5-len(str((posicion)))) + str((posicion)))
 		posicion = posicion+64
+	fileSystem.close()
+	print('Se ha desfragmentado correctamente')
+	
 
 def eliminarTodos():
 	fileSystem = open('fiunamfs.img', 'r+')
@@ -123,16 +140,34 @@ def eliminarTodos():
 		fileSystem.seek(posicion)
 		fileSystem.write('Xx.xXx.xXx.xXx.')
 		posicion= posicion + 64
+	fileSystem.close()
+
+def menu():
+	while(True):
+		print('1 Listar archivos \n2 Copiar un archivo de fiunamfs a mi PC\n3 Copiar un archivo de mi PC a fiunamfs\n4 Eliminar un archivo de fiunamfs\n5 desfragmentar\n6 Salir')
+		opcion = input("Escoja una opcion >> ")
+		if(opcion == 1):
+			getFileSystem()
+		elif(opcion == 2):
+			archivoACopiar = raw_input("Escriba el nombre del archivo, incluidad la extension ")
+			copiarAPC(archivoACopiar)
+		elif(opcion == 3):
+				archivoACopiar = raw_input('Escriba el nombre del archivo, incluida la extension ')
+				copiarAMiFileSystem(archivoACopiar)
+		elif(opcion == 4):
+			archivoABorrar = raw_input('Escriba el nombre del archivo a borrar, incluida la extension ')
+			eliminarArchivo(archivoABorrar)
+		elif(opcion == 5):
+			desfragmentar()
+		elif(opcion == 6):
+			print('Hasta la vista')
+			break
+
+
 
 
 def main():
-	#getFileSystem()
-	#infoFileSystem()
-	#archivoAEliminar = raw_input()
-	#eliminarArchivo(archivoAEliminar)
-	#buscarArchivo('logo.png')
-	#copiarAPC("logo.png")
-	#copiarAMiFileSystem('mensajes.png')
-	desfragmentar()
-	#getFileSystem()
+	infoFileSystem()
+	menu()
 main()
+
