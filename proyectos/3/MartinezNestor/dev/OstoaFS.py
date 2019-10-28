@@ -1,7 +1,9 @@
+"""docstring"""
 import optparse
-from fslib.climanager import CommandManager
+from fslib.clim import CommandManager
 
-def main(): 	
+def main():
+	"""docstring"""
 	usage = "usage: %prog [options] arg1"
 
 	parser = optparse.OptionParser(usage=usage)
