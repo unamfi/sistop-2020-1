@@ -15,7 +15,7 @@ def muestraTablaDir(listaEntDir):
             format_date(entDir.f_modif)
         ])
     print('\n', tabulate(tabla, encabezados), '\n')
-    print([entDir.direccion_ed for entDir in listaEntDir])
+    # print([entDir.direccion_ed for entDir in listaEntDir])
 
 fsimg_path = os.path.join('.', 'fiunamfs v0.8.img')
 
