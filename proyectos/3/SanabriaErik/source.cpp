@@ -15,9 +15,9 @@
 int main(int argc, char* argv[])
 {
 	const unsigned short num_mag{ 8 };			//tamanio del numero magico
-	const unsigned short num_tam{ num_mag };	//tamanio del numero de bytes del archivo
+	const unsigned short num_tam{ num_mag };	//tamanio del numero de bytes_f del archivo
 	const unsigned short num_nom{ 15 };			//tamanio del nombre del archivo
-//	const unsigned short dir{ 64 };				//cada directorio mide 64 bytes
+//	const unsigned short dir{ 64 };				//cada directorio mide 64 bytes_f
 	const unsigned short pos{ 1024 };
 	const std::string mag_def{ "FiUnamFS" };
 	std::string mag;
@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 	std::ifstream archiv;
 	std::ofstream archiv_out;
 
-	size_t bytes{ 0 };
+	size_t bytes_f{ 0 };
 	size_t tam{ 0 };							//tamanio total del sistema de archivos
 	//size_t tam_out{ 0 };
 	char tmp[num_mag];
@@ -130,12 +130,14 @@ int main(int argc, char* argv[])
 	for(size_t i{ 0 }, t{ static_cast<size_t>(std::pow(10.0f, num_tam - 1)) }; i < num_tam; ++i)
 	{
 		char loc = sizeb[i];
-		bytes += std::atoi(&loc) * t;
+		bytes_f += std::atoi(&loc) * t;
 
-		std::cout << std::endl <<"\tb: " << std::setw(10) << bytes << "\tsizeb: " << std::setw(5) << sizeb[i] << "\tt: " << std::setw(10) << t;
+		std::cout << std::endl <<"\tb: " << std::setw(10) << bytes_f << "\tsizeb: " << std::setw(5) << sizeb[i] << "\tt: " << std::setw(10) << t;
 
 		t /= 10;
 	}
+
+	char *out_d{ new char[bytes_f] };
 
 	const size_t n{ 4776 };
 
@@ -143,9 +145,13 @@ int main(int argc, char* argv[])
 
 	char data_out[n];
 
-	archiv.read(reinterpret_cast<char*>(data_out), n);
+//	archiv.read(reinterpret_cast<char*>(data_out), n);
+//
+//	archiv_out.write(reinterpret_cast<char*>(data_out), n);
 
-	archiv_out.write(reinterpret_cast<char*>(data_out), n);
+	archiv.read(out_d, bytes_f);
+
+	archiv_out.write(out_d, bytes_f);
 
 	/*for(size_t a{ 1 }; a <= tam; ++a)
 	{
@@ -159,9 +165,13 @@ int main(int argc, char* argv[])
 		}
 	}*/
 
+	delete [] out_d;
+
 	archiv_out.close();
 
 	archiv.close();
+
+	std::cout << std::endl << std::flush;
 
 	return 0;
 }
