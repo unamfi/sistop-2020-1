@@ -15,6 +15,7 @@ def muestraTablaDir(listaEntDir):
             format_date(entDir.f_modif)
         ])
     print('\n', tabulate(tabla, encabezados), '\n')
+    print([entDir.direccion_ed for entDir in listaEntDir])
 
 fsimg_path = os.path.join('.', 'fiunamfs v0.8.img')
 
@@ -28,12 +29,19 @@ print(l_archivos)
 muestraTablaDir(fs.scandir())
 
 
-fs.descargar('README.org', os.path.join('ArchivosDescargados', 'README.org'))
-fs.descargar('logo.png', os.path.join('ArchivosDescargados', 'logo.png'))
-fs.descargar('mensajes.png', os.path.join('ArchivosDescargados', 'mensajes.png'))
+# fs.descargar('README.org', os.path.join('ArchivosDescargados', 'README.org'))
+# fs.descargar('logo.png', os.path.join('ArchivosDescargados', 'logo.png'))
+# fs.descargar('mensajes.png', os.path.join('ArchivosDescargados', 'mensajes.png'))
 # fs.descargar('blackbird.jpg', os.path.join('ArchivosDescargados', 'blackbird.jpg'))
 
 fs.subir(os.path.join('ArchivosParaSubir', 'blackbird.jpg'), 'blackbird.jpg')
+muestraTablaDir(fs.scandir())
+
+
+fs.eliminar('mensajes.png')
+fs.subir(os.path.join('ArchivosParaSubir', 'holis.txt'), 'holis.txt')
+fs.subir(os.path.join('ArchivosParaSubir', 'mundo.txt'), 'mundo.txt')
+
 muestraTablaDir(fs.scandir())
 
 # fs.subir('README.org', 'OtroMas')

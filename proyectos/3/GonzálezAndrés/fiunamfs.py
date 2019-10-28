@@ -108,17 +108,12 @@ class FIUNAMFS(object):
         for i in range(inicio,fin,paso):
             entdir = self.__mmfs[i:i+paso]
             nombre = entdir[0:15].decode('ascii').strip()
-            # if nombre == 'README.org':                    
-            #     print(len(('\0'*3+'24527').encode('ascii')), ('\0'*8+'24527').encode('ascii'))
-            #     print(len(self.__mmfs[i+16:i+24]), self.__mmfs[i+16:i+24])
-            #     self.__mmfs[i+16:i+24] = ('00029718').encode('ascii')
-            #     self.__mmfs.flush()
             if nombre != STR_DIR_VACIO:
                 tam_archivo = int(entdir[16:24].decode('ascii').strip())
                 cluster_inicial = int(entdir[25:30].decode('ascii').strip())
                 f_creacion = entdir[31:45].decode('ascii')
                 f_modif = entdir[46:60].decode('ascii')
-                nuevaEntrada = EntradaDir(nombre, tam_archivo, cluster_inicial, f_creacion, f_modif)
+                nuevaEntrada = EntradaDir(nombre, tam_archivo, cluster_inicial, f_creacion, f_modif, i)
                 self.__listaEntDir.append(nuevaEntrada)            
         return self.__listaEntDir
 
@@ -214,7 +209,52 @@ class FIUNAMFS(object):
             print('IOError: %s' % ioerr)
             return False
     
+    def eliminar(self, archivo, harddel = False):
+        """Eliminar un archivo de FIUNAMFS
+        Atributos:
+            archivo -- nombre del archivo a eliminar
+            harddel -- booleano que indica si se hará un borrado 'suave' o 'duro'.\
+            El borrado suave, sólo marca la entrada del directorio con la cadena de 'desocupado'.\
+            En el borrado duro, borra los datos de la entrada del directorio y los datos del archivo
+        """
+        if not self.montado:
+            print(MSGERR_NO_MONTADO)
+            return False
+
+        resultado = list(filter( lambda entdir: entdir.nombre == archivo, self.__listaEntDir)) # Buscamos el elemento que coincida
+        if not resultado:
+            print(MSGERR_ARCH_NO_ENC)
+            return False
+
+        #nuevaListaEntDir = list(set(self.__listaEntDir) - set(resultado)) # Le restamos el valor que encontramos
+        #print(nuevaListaEntDir)
+
+        entrDir = resultado.pop() # Obtenemos la entrada del directorio
+        
+        self.__listaEntDir.remove(entrDir)
+        print(self.__listaEntDir)
+
+        self.__mmfs[entrDir.direccion_ed : entrDir.direccion_ed + 15] = STR_DIR_VACIO.encode('ascii') # Marcamos el directorio como disponible
+        
+        if harddel:
+            self.__mmfs[entrDir.direccion_ed : entrDir.direccion_ed + 64] = ('\0'*64).encode('ascii') # Borramos la entrada del directorio
+
+            dir_inicio = entrDir.cluster_inicial * self.tam_cluster # dirección de inicio
+            dir_fin = dir_inicio + entrDir.tam_archivo # dirección de fin
+            self.__mmfs[dir_inicio : dir_fin] = ('\0'*entrDir.tam_archivo).encode('ascii') # Borramos sus datos
+        
+        print('%s borrado exitosamente.' % archivo)
+        return True
+
+    
     def agregarEntDir(self, entDir, datos):
+        """Agrega una EntradaDir al directorio de FIUNAMFS
+        Atributos:
+            entDir -- EntradaDir a agregar
+            datos -- los datos del archivo a escribir
+        Retorna:
+            Valor booleano que marca True si logró agregar la entrada y false en caso contrario
+        """
         if not self.montado:
             print(MSGERR_NO_MONTADO)
             return False
@@ -242,6 +282,8 @@ class FIUNAMFS(object):
                 
                 self.__mmfs.flush()
                 
+                entDir.direccion_ed = i # Le indicamos en qué dirección inicia la entrada del directorio
+                print(entDir.direccion_ed)
                 self.__listaEntDir.append(entDir) # Agregamos la entrada a la lista
                 return True
     
@@ -257,8 +299,7 @@ class FIUNAMFS(object):
     def crearimg(filename, version=0.8,
                 label='No Label', sector_size=512, sect_per_clust=4,
                 dir_clusters=4, tot_clusters=720):
-        """Tomé prestado el método init de su programa
-        y lo hice un método estático
+        """Tomé prestado el método init de su programa y lo hice un método estático
         """
         fsname = NOMBRE_FS
 
@@ -294,12 +335,6 @@ class FIUNAMFS(object):
         print('Entradas de directorio: %d. Clusters totales: %d' %
               (tot_direntries, tot_clusters))
 
-        # Para almacenar datos dentro de un archivo mmap()eado,
-        # tenemos que codificar nuestras cadenas de texto de modo
-        # que no haya caracteres de ancho diferente a 8 bits
-        # (recuerden Unicode...) — encode() convierte un objeto
-        # tipo 'str' (cadena Unicode) en bytes (arreglo de
-        # caracteres de 8 bits)
         data[0:8] = ('%8s' % NOMBRE_FS).encode()
         data[10:13] = ('%3s' % version).encode()
         data[20:35] = ('%15s' % label).encode()
@@ -319,12 +354,13 @@ class FIUNAMFS(object):
         return True
 
 class EntradaDir(object):
-    def __init__(self, nombre, tam_archivo, cluster_inicial, f_creacion = now(), f_modif = now()):
+    def __init__(self, nombre, tam_archivo, cluster_inicial, f_creacion = now(), f_modif = now(), direccion_ed = 0):
         self.nombre = nombre
         self.tam_archivo = tam_archivo
         self.cluster_inicial = cluster_inicial
         self.f_creacion = f_creacion
         self.f_modif = f_modif
+        self.direccion_ed = direccion_ed
 
     def __str__(self):
         return '%i %s %i bytes %s %s' % (self.tam_archivo, 
@@ -332,6 +368,10 @@ class EntradaDir(object):
                                     self.cluster_inicial, 
                                     self.f_creacion, 
                                     self.f_modif)
+    
+    def __eq__(self, value):
+        return self.nombre == value.nombre and self.cluster_inicial == value.cluster_inicial
+
 # Error de sistema no montado
 # class NMError(Error):
 #     def __init__(self, expression, message):
