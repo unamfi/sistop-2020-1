@@ -20,5 +20,5 @@ Dentro del directorio [dev](https://github.com/nestorivanmo/sistop-2020-1/tree/p
 * logo.png
 * mensajes.png
 
-![icon](images/file_content.png)
+![icon](images/file-content.png)
 
