@@ -139,31 +139,47 @@ int main(int argc, char* argv[])
 
 	char *out_d{ new char[bytes_f] };
 
-	const size_t n{ 4776 };
+
 
 	archiv.seekg(5120, std::ios::beg);
-
-	char data_out[n];
-
-//	archiv.read(reinterpret_cast<char*>(data_out), n);
-//
-//	archiv_out.write(reinterpret_cast<char*>(data_out), n);
 
 	archiv.read(out_d, bytes_f);
 
 	archiv_out.write(out_d, bytes_f);
 
-	/*for(size_t a{ 1 }; a <= tam; ++a)
-	{
-		archiv.read(&b, 1);
+	archiv_out.close();
 
-		std::cout << std::setw(10) << std::hex << static_cast<int>(b) << std::flush;
+	//=======================================================================================================================
 
-		if((a % 10) == 0)
-		{
-			std::cout << std::endl;
-		}
-	}*/
+	archiv_out.open("logo.png", std::ios::binary | std::ios::out);
+
+	const size_t n{ 170173 };
+
+	char data_out[n];
+
+	archiv.seekg(0x4400, std::ios::beg);
+
+	archiv.read(data_out, n);
+
+	archiv_out.write(data_out, n);
+
+	archiv_out.close();
+
+	//=======================================================================================================================
+
+	archiv_out.open("mensajes.png", std::ios::binary | std::ios::out);
+
+	const size_t nam{ 1337 };
+
+	char data_out_2[nam];
+
+	archiv.seekg(0x58400, std::ios::beg);
+
+	archiv.read(data_out_2, nam);
+
+	archiv_out.write(data_out_2, nam);
+
+	//=======================================================================================================================
 
 	delete [] out_d;
 
