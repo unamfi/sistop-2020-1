@@ -10,6 +10,7 @@
 #include <string>
 #include <fstream>
 #include <cmath>
+#include <cstdlib>
 
 int main(int argc, char* argv[])
 {
@@ -128,7 +129,8 @@ int main(int argc, char* argv[])
 
 	for(size_t i{ 0 }, t{ static_cast<size_t>(std::pow(10.0f, num_tam - 1)) }; i < num_tam; ++i)
 	{
-		bytes += sizeb[i] * t;
+		char loc = sizeb[i];
+		bytes += std::atoi(&loc) * t;
 
 		std::cout << std::endl <<"\tb: " << std::setw(10) << bytes << "\tsizeb: " << std::setw(5) << sizeb[i] << "\tt: " << std::setw(10) << t;
 
