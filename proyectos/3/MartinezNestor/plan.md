@@ -10,7 +10,7 @@
 - [x] Crear clase que represente una entrada en el directorio -> ```DirectoryEntry``` 
 - [ ] Crear clase ```CommandManager``` encargada de definir las 5 funciones que pueda realizar el usuario sobre el sistema de archivos : 
   - [x] Listar contenidos 
-  - [ ] Copiar hacía adentro de FiUnamFs
+  - [x] Copiar hacía adentro de FiUnamFs
     - [x] Leer info del archivo en bytes
     - [x] Encontrar un número de entrada del directorio 
     - [x] Escribir la entrada del directorio 
