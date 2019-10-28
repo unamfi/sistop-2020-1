@@ -46,4 +46,4 @@ class CommandManager():
 
 	def __print__root(self, dir):
 		for file in dir:
-			print(file.name.decode(), end='\t')
+			print(file.name.decode())
