@@ -23,6 +23,7 @@ defmodule Fiunamfs do
   end
 
   defp procesar_argumentos(opts) do
+    IO.inspect opts
     case opts do
       {[help: true],_, _} ->
 	IO.puts(print_help())
@@ -54,8 +55,10 @@ defmodule Fiunamfs do
   end
 
   defp print_help_manual do
+    rojo = fn(cadena) ->
+      "\e[0;31m#{cadena}\e[0;0m" end
     """
-    \e[0;31mError fatal\e[0;0m: No se especifica nada
+    #{rojo.("Error Fatal")}: Argumentos fallidos
     --help, -h\tImprime la ayuda
     """
   end
