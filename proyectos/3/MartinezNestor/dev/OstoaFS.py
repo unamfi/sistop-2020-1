@@ -7,11 +7,12 @@ def main():
 	usage = "usage: %prog [options] arg1"
 
 	parser = optparse.OptionParser(usage=usage)
-	parser.add_option("-l", "-s", "--list", action="callback", callback=filter,help="lists all the files inside the current FiUnamFs")
+	parser.add_option("-d", "--defrag", action="callback", callback=filter, help="defragments FiUnamFs")
 	parser.add_option("-i", "--copyinside", action="callback", callback=filter, type="string", dest="file_to_copy", help="copy a file in you current dir to FiUnamFS", metavar="<file_to_copy>")
+	parser.add_option("-l", "-s", "--list", action="callback", callback=filter,help="lists all the files inside the current FiUnamFs")
 	parser.add_option("-o", "--copyoutside", action="callback", callback=filter, type="string", dest="file_to_copy", help="copy a file from FiUnamFS to your current dir", metavar="<file_to_copy>")
 	parser.add_option("-r", "--remove", action="callback", callback=filter, type="string", dest="file_to_remove", help="removes a file from FiUnamFs", metavar="<file_to_remove>")
-	parser.add_option("-d", "--defrag", action="callback", callback=filter, help="defragments FiUnamFs")
+	
 	parser.parse_args()
 
 def filter(option, opt, value, parser):
