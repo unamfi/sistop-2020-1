@@ -22,12 +22,12 @@ class FileManager():
         		num_clusters_unit)
         else:
         	self.super_block = None
-        	raise(IOError, 'No se puede abrir el sistema de archivos')
+        	print('img name does not correspond to \'FiUnamFS\'')
 
     def read_fs(self):
         filename = 'fiunamfs.img'
         if not path.isfile(filename):
-            raise(IOError, 'El archivo %s no existe' % filename)
+            raise(IOError, 'No such file or directory:  \'%s\'' % filename)
         file_system = open(filename, 'r+')
         data = mmap(file_system.fileno(), 0)
         file_system.close()

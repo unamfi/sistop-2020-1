@@ -30,37 +30,43 @@ class CommandManager():
 		self.__print__root(dir=self.root_dir)
 
 	def cpi(self, file):
-		data = open(file,'rb').read()
-		data_size = len(data)
-		dir_entry_id = self.available_dir_entries.pop(0)
+		if self.search(file):
+			print("i: FiUnamFS/%s and %s are identical (not copied)." % (file,file))
+		else:
+			data = open(file,'rb').read()
+			data_size = len(data)
+			dir_entry_id = self.available_dir_entries.pop(0)
 
-		name = file
-		size = data_size
-		cluster = self.get_next_cluster()
+			name = file
+			size = data_size
+			cluster = self.get_next_cluster()
 
-		ctime = os.path.getmtime(file)
-		mtime = os.path.getmtime(file)
-		creation = datetime.fromtimestamp(ctime).strftime('%Y%m%d%H%M%S')
-		last_modif = datetime.fromtimestamp(mtime).strftime('%Y%m%d%H%M%S')
+			ctime = os.path.getmtime(file)
+			mtime = os.path.getmtime(file)
+			creation = datetime.fromtimestamp(ctime).strftime('%Y%m%d%H%M%S')
+			last_modif = datetime.fromtimestamp(mtime).strftime('%Y%m%d%H%M%S')
 
-		index = self.cluster_size + (dir_entry_id * self.root_dir_entry_size)
+			index = self.cluster_size + (dir_entry_id * self.root_dir_entry_size)
 
-		self.file_system[index:index+15] = ('%15s' % name).encode()
-		self.file_system[index+16:index+24] = ('%08d' % size).encode()
-		self.file_system[index+25:index+30] = ('%05d' % cluster).encode()
-		self.file_system[index+31:index+45] = ('%014s' % creation).encode()
-		self.file_system[index+46:index+60] = ('%014s' % last_modif).encode()
+			self.file_system[index:index+15] = ('%15s' % name).encode()
+			self.file_system[index+16:index+24] = ('%08d' % size).encode()
+			self.file_system[index+25:index+30] = ('%05d' % cluster).encode()
+			self.file_system[index+31:index+45] = ('%014s' % creation).encode()
+			self.file_system[index+46:index+60] = ('%014s' % last_modif).encode()
 
-		start_index = cluster * self.cluster_size
-		end_index = start_index + data_size
-		self.file_system[start_index:end_index] = data
+			start_index = cluster * self.cluster_size
+			end_index = start_index + data_size
+			self.file_system[start_index:end_index] = data
 		
 
 	def cpo(self, file):
 		print("Copy outside", file)
 
 	def rm(self, file):
-		print("remove ", file)
+		if self.search(file):
+			pass
+		else:
+			print('rm: %s: No such file or directory' % file)
 
 	def defrag(self):
 		print("defrag")
@@ -93,6 +99,14 @@ class CommandManager():
 			cluster = randint(self.first_data_cluster,int(self.super_block.num_clusters_unit))
 		return cluster
 
+	def search(self, file):
+		if self.root_dir == []:
+			(self.root_dir, self.available_dir_entries, self.occupied_data_clusters) = self.get_dir_entries()		
+		for f in self.root_dir:
+			if f.name.decode().strip() == file:
+				return True
+		return False
+
 	def __print__root(self, dir):
 		for file in dir:
-			print("%s %s" %(file.name.decode(), file.dir_entry_id))
+			print("%s" %(file.name.decode()))
