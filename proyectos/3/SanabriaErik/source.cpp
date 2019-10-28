@@ -22,10 +22,9 @@ int main(int argc, char* argv[])
 	std::ofstream archiv_out;
 
 	size_t tam{ 0 };
-	size_t tam_out{ 0 };
+	//size_t tam_out{ 0 };
 	char tmp[num_mag];
 	char nom[num_nom];
-	char header[dir];
 
 	if(argc > 1)
 	{
@@ -67,17 +66,17 @@ int main(int argc, char* argv[])
 
 	archiv.seekg(1024, std::ios::beg);
 
-//	archiv.read(reinterpret_cast<char*>(nom), num_nom);
-	archiv.read(reinterpret_cast<char*>(header), dir);
+	archiv.read(reinterpret_cast<char*>(nom), num_nom);
+	//archiv.read(reinterpret_cast<char*>(header), dir);
 
-	for(size_t a{ 0 }; a < dir; ++a)
+/*	for(size_t a{ 0 }; a < num_nom; ++a)
 	{
 		if(a < num_nom)
 		{
-			std::cout << std::endl << "\tH[" <<  std::setw(3) <<a << "]: " << header[a] << std::flush;
 			nom[a] = header[a];
+			std::cout << std::endl << "\tH[" << std::setw(3) << a << "]: " << header[a] << "\tnom[" << a << std::setw(3) <<"]: " << nom[a] << std::flush;
 		}
-	}
+	}*/
 
 	std::cout << std::endl << std::endl << std::flush;
 
@@ -86,8 +85,6 @@ int main(int argc, char* argv[])
 		if((nom[k] != 0x20) && (m == 0))
 		{
 			m = k;
-
-			std::cout << k << std::endl;
 
 			for(size_t h{ 0 }; h < num_nom; ++h, ++m)
 			{
@@ -100,18 +97,21 @@ int main(int argc, char* argv[])
 					nom[h] = 0x20;
 				}
 
-				std::cout << std::endl << "\tH[" <<  std::setw(3) << h << "]: " << nom[h] << "\tM[" << std::setw(3) << m << "]: " << nom[m] << std::flush;
+				std::cout << std::endl << "\tnom[" <<  std::setw(3) << h << "]: " << nom[h] << "\tM[" << std::setw(3) << m << "]: " << nom[m] << std::flush;
 			}
 
 			break;
 		}
 	}
 
-
+	for(size_t k{ 0 }; k < num_nom; ++k)
+	{
+		std::cout << std::endl << "\tnom[" <<  std::setw(3) << k << "]: " << nom[k] << std::flush;
+	}
 
 	std::cout << std::endl << "\tNombre: " << std::setw(20) << nom << std::flush;
 
-	archiv_out.open(nom);
+	archiv_out.open(nom, std::ios::binary | std::ios::out);
 
 	if(!archiv_out.is_open())
 	{
