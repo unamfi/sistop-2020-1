@@ -19,7 +19,7 @@ def filter(option, opt, value, parser):
 	climanager = CommandManager()
 
 	if opt in ('-l','--list'):
-		climanager.ls()
+		climanager.ls_()
 	elif opt in ('-i','--copyinside'):
 		climanager.cpi(value)
 	elif opt in ('-o','--copyoutside'):
