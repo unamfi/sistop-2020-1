@@ -59,7 +59,36 @@ class CommandManager():
 			print("i: FiUnamFS/%s and %s are identical (not copied)." % (file,file))
 
 	def cpo(self, file):
-		print("Copy outside", file)
+		file_to_copy = self.search(file)		
+		exists_in_current_dir = False
+		cpodir_name = 'cpo_files'
+
+		if file_to_copy is None: 
+			print('o: %s: No such file or directory' % file)
+		else:
+			ftc_title = file_to_copy.name.decode().strip()
+			currentdir = os.listdir()
+			for file in currentdir:
+				if ftc_title == ('./%s' % cpodir_name) + file:
+					exists_in_current_dir = True 
+					break
+			if exists_in_current_dir:
+				print("o: %s and FiUnamFS/%s are identical (not copied)." % (file,file))
+			else:
+				ftc_cluster = int(file_to_copy.cluster.decode())
+				ftc_size = int(file_to_copy.size.decode())
+				start_index = ftc_cluster*self.cluster_size
+				end_index = start_index + ftc_size
+				ftc_data = self.file_system[start_index:end_index].decode()
+
+				cpodir = './%s' %cpodir_name
+				if not os.path.exists(cpodir):
+					os.makedirs(cpodir)
+
+				path = './%s/%s' % (cpodir_name, ftc_title)
+				newfile = open(path,'w')
+				newfile.write(ftc_data)
+				newfile.close()
 
 	def rm(self, file):
 		f = self.search(file)
@@ -141,4 +170,4 @@ class CommandManager():
 
 	def __print__root(self, dir):
 		for file in dir:
-			print("%s %s %s" %(file.name.decode(), file.cluster.decode(), file.size.decode()))
+			print("%s" %(file.name.decode()))
