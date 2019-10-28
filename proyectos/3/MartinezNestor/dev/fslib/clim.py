@@ -68,12 +68,13 @@ class CommandManager():
 		else:
 			ftc_title = file_to_copy.name.decode().strip()
 			currentdir = os.listdir()
-			for file in currentdir:
-				if ftc_title == ('./%s' % cpodir_name) + file:
+			for file in currentdir:			
+				root = ('./%s/' % cpodir_name)	
+				if root + ftc_title == root + file:
 					exists_in_current_dir = True 
 					break
 			if exists_in_current_dir:
-				print("o: %s and FiUnamFS/%s are identical (not copied)." % (file,file))
+				print("o: %s and FiUnamFS/%s are identical (not copied)." % (root + file,file))
 			else:
 				ftc_cluster = int(file_to_copy.cluster.decode())
 				ftc_size = int(file_to_copy.size.decode())
