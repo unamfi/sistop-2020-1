@@ -14,6 +14,7 @@ class CommandManager():
 	root_dir_empty_entry = "Xx.xXx.xXx.xXx."
 
 	available_dir_entries = []
+	occupied_data_clusters = {}
 	
 	def __init__(self):
 		self.super_block = self.f_m.build_sb()
@@ -23,10 +24,9 @@ class CommandManager():
 		self.root_dir_clusters = int(self.super_block.num_clusters_dir)
 		self.first_data_cluster = self.root_dir_clusters + 1
 		
-		(self.root_dir, self.available_dir_entries, self.occupied_data_clusters) = self.get_dir_entries()
+		(self.root_dir, self.available_dir_entries) = self.get_dir_entries()
 
-	def ls_(self):
-		self.root_dir = self.get_dir_entries(only_root=True)
+	def ls_(self):	
 		self.__print__root(dir=self.root_dir)
 
 	def cpi(self, file):
@@ -37,7 +37,7 @@ class CommandManager():
 
 			name = file
 			size = data_size
-			cluster = self.get_next_cluster()
+			cluster = self.get_next_cluster(size)
 
 			ctime = os.path.getmtime(file)
 			mtime = os.path.getmtime(file)
@@ -78,14 +78,13 @@ class CommandManager():
 			self.file_system[index+46:index+60] = ('%014d' % 0).encode()
 			for i in range(start_index,end_index,2):
 				self.file_system[i:i+1] = ('%01d' % 0).encode()
-				
+
 	def defrag(self):
 		print("defrag")
 
-	def get_dir_entries(self, only_root=False):
+	def get_dir_entries(self, only_root=False, data_clusters=False):
 		dir_entries = []
 		av_dir_entries = []
-		oc_data_clusters = []
 		for cluster in range(self.root_dir_clusters):
 			_c = 0
 			for entry in range(0,self.cluster_size,64):
@@ -97,18 +96,40 @@ class CommandManager():
 				if file.name == self.root_dir_empty_entry.encode():
 					av_dir_entries.append(_c-1)
 				else:
-					oc_data_clusters.append(int(file.cluster))
+					self.pop_odc(int(file.cluster), int(file.size.decode()))
 					dir_entries.append(file)
 		if only_root:
 			return dir_entries
+		elif data_clusters:
+			return None
 		else:
-			return (dir_entries, av_dir_entries, oc_data_clusters)
+			return (dir_entries, av_dir_entries)
 
-	def get_next_cluster(self):
-		cluster = randint(self.first_data_cluster,int(self.super_block.num_clusters_unit))
-		while cluster in self.occupied_data_clusters:
-			cluster = randint(self.first_data_cluster,int(self.super_block.num_clusters_unit))
+	def get_next_cluster(self, bytes):
+		self.get_dir_entries(data_clusters=True)
+		cluster = randint(self.first_data_cluster, int(self.super_block.num_clusters_unit))
+
+		clusters = []
+		_r = bytes / self.cluster_size
+		if _r > 1:
+			_r = bytes // self.cluster_size
+			for i in range(_r+1):
+				clusters.append(i)
+		elif _r == 1:
+			clusters.append(0)
+
+		for c in clusters:
+			while (cluster+c) in self.occupied_data_clusters.keys():
+				cluster = randint(self.first_data_cluster, int(self.super_block.num_clusters_unit))
 		return cluster
+
+	def pop_odc(self, cluster, bytes):
+		_r = bytes // self.cluster_size
+		_s = bytes - (_r * self.cluster_size)
+		if _s > 0:			
+			self.occupied_data_clusters[cluster + _r] = _s
+		for i in range(_r):
+			self.occupied_data_clusters[cluster+i] = self.cluster_size
 
 	def search(self, file):
 		if self.root_dir == []:
@@ -120,4 +141,4 @@ class CommandManager():
 
 	def __print__root(self, dir):
 		for file in dir:
-			print("%s" %(file.name.decode()))
+			print("%s %s %s" %(file.name.decode(), file.cluster.decode(), file.size.decode()))
