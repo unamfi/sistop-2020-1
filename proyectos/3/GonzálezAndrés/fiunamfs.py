@@ -15,11 +15,18 @@ NOMBRE_FS = 'FiUnamFS'
 def now():
     return datetime.now().strftime('%Y%m%d%H%M%S')#.encode('ascii')
 
+def format_date(datestr : str):
+    return '%4s/%2s/%2s %2s:%2s' % (datestr[0:4], datestr[4:6], datestr[6:8], datestr[8:10], datestr[10:12])
+
 class FIUNAMFS(object):
     def __init__(self, ruta_img):
         self.ruta_img = ruta_img
         self.__listaEntDir = []
         self.montado = False
+    
+    def __del__(self):
+        if self.montado == True:
+            self.desmontar()
 
     def montar(self):
         if self.montado:   
@@ -54,8 +61,8 @@ class FIUNAMFS(object):
                 self.clusters_dir = int(self.__mmfs[47:49].decode('ascii').strip())
                 # print('Tamaño del directorio: %i clusters' % self.clusters_dir)
 
-                self.tam_unidad = int(self.__mmfs[52:60].decode('ascii').strip())
-                # print('Tamaño de la unidad: %i clusters' % self.tam_unidad)
+                self.clusters_totales = int(self.__mmfs[52:60].decode('ascii').strip())
+                # print('Tamaño de la unidad: %i clusters' % self.clusters_totales)
 
                 self.tam_entradadir = 64
 
@@ -148,7 +155,6 @@ class FIUNAMFS(object):
         if not self.montado:
             print(MSGERR_NO_MONTADO)
             return False
-
         try:
             f = open(origen, 'rb') # Abrimos el archivo en modo lectura
             bytes_archivo = f.read()
@@ -166,36 +172,41 @@ class FIUNAMFS(object):
                 print('Nombre ingresado: %s' % destino)
                 return False
 
-            resultado = list(filter( lambda entdir: entdir.nombre == destino, self.__listaEntDir)) # Buscamos el elemento que coincida
-            if resultado:
-                print('Ya existe un archivo con ese nombre en el directorio: %s' % destino)
+            # Ahora revisaré si hay espacio en disco y dónde iniciaremos a grabar el archivo
+            # Iniciar valores en límites fuera de rango para no sobreescribir información en caso de error
+            cluster_inicial = self.clusters_totales - 1
+            clusters_libres = 0
+            if not self.__listaEntDir:
+                print('Directorio vacío, guardando archivo en el primer cluster de datos')
+                cluster_inicial = self.clusters_dir + 1 # Clusters de directorio + Cluster de SB
+                clusters_libres = self.clusters_totales - cluster_inicial # Calcular clusters libres
+            else:
+                resultado = list(filter( lambda entdir: entdir.nombre == destino, self.__listaEntDir)) # Buscamos si hay algún archivo con el mismo nombre
+                if resultado:
+                    print('Ya existe un archivo con ese nombre en el directorio: %s' % destino)
+                    return False
+                
+                self.__listaEntDir = sorted(self.__listaEntDir, key=lambda ed: ed.cluster_inicial) # Ordenamos la lista de entradas con base en el cluster donde inician
+                for i, ed_actual in enumerate(self.__listaEntDir): # ed_actual : entrada del directorio actual
+                    clusters_usados = math.ceil(ed_actual.tam_archivo / self.tam_cluster) # Clusters usados por el archivo i-ésimo
+                    try:
+                        ed_sig = self.__listaEntDir[i+1] # ed_sig : entrada del directorio siguiente
+                        delta_clusters = ed_sig.cluster_inicial - ed_actual.cluster_inicial # vemos cuántos clusters hay entre entrada de directorio y entrada de directorio
+                        clusters_libres = delta_clusters - clusters_usados
+                        cluster_inicial = ed_actual.cluster_inicial + clusters_usados # Marcamos la dirección de inicio 
+
+                    except IndexError:
+                        print('Fin de la lista, guardar al final del último cluster del directorio')
+                        cluster_inicial = ed_actual.cluster_inicial + clusters_usados # Cluster inicial + Clusters usados por éste 
+                        clusters_libres = self.clusters_totales - cluster_inicial
+            
+            # Vemos si queda espacio para guardar el archivo
+            if clusters_requeridos > clusters_libres:
+                print('No hay espacio en la unidad para guardar el archivo')
                 return False
-            
-            self.__listaEntDir = sorted(self.__listaEntDir, key=lambda ed: ed.cluster_inicial) # Ordenamos la lista de entradas con base en el cluster donde inician
-            #print('Guardando: %s -> %s' % (origen, destino))
-            for i, ed_actual in enumerate(self.__listaEntDir): # ed_actual : entrada del directorio actual
-                clusters_usados = math.ceil(ed_actual.tam_archivo / self.tam_cluster) # Clusters usados por el archivo i-ésimo
-                try:
-                    ed_sig = self.__listaEntDir[i+1] # ed_sig : entrada del directorio siguiente
-                    delta_clusters = ed_sig.cluster_inicial - ed_actual.cluster_inicial # vemos cuántos clusters hay entre entrada de directorio y entrada de directorio
-                    clusters_libres = delta_clusters - clusters_usados
-                    print('Clusters libres entre "%s" y "%s": %i' % (ed_actual.nombre, ed_sig.nombre, clusters_libres))
 
-                    if clusters_libres>=clusters_requeridos:
-                        cluster_inicial = ed_actual.cluster_inicial+clusters_usados
-                        print('Guardando "%s" en cluster %i' % (origen, cluster_inicial))
-                        ed_nueva = EntradaDir(destino, tam_archivo, cluster_inicial, now(), now())
-                        return self.agregarEntDir(ed_nueva, bytes_archivo)
-
-                except IndexError:
-                    print('Fin de la lista, guardar al final')
-                    cluster_inicial = ed_actual.cluster_inicial + clusters_usados # Cluster inicial + Clusters usados por éste 
-                    ed_nueva = EntradaDir(destino, tam_archivo, cluster_inicial, now(), now())
-                    return self.agregarEntDir(ed_nueva, bytes_archivo)
-            
-            # En caso de que no haya entradas en el directorio, lo guardamos en el primer cluster después del directorio
-            print('Directorio vacío, guardando al final')
-            cluster_inicial = self.clusters_dir + 1 # Clusters de directorio + Cluster de SB 
+            # Guardamos el archivo a partir del cluster "cluster_inicial"
+            print('Guardando "%s" en cluster %i' % (origen, cluster_inicial))
             ed_nueva = EntradaDir(destino, tam_archivo, cluster_inicial, now(), now())
             return self.agregarEntDir(ed_nueva, bytes_archivo)
 
@@ -246,12 +257,8 @@ class FIUNAMFS(object):
     def crearimg(filename, version=0.8,
                 label='No Label', sector_size=512, sect_per_clust=4,
                 dir_clusters=4, tot_clusters=720):
-        """Inicialización de un objeto fiunamfs.
-        El único parámetro obligatorio es el nombre del archivo en el
-        cual se inicializará elsistema de archivos. Los demás
-        parámetros, espero, serán suficientemente autodescriptivos.
-
-        Gunnar Wolf, clase de Sistemas Operativos, Facultad de Ingeniería, UNAM.
+        """Tomé prestado el método init de su programa
+        y lo hice un método estático
         """
         fsname = NOMBRE_FS
 
