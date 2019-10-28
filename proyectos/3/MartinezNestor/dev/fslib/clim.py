@@ -1,5 +1,9 @@
+"""docstring"""
+import os
+from datetime import datetime
+from random import randint
 from fslib.fm import FileManager
-from fslib.de import DirectoryEntry
+
 
 class CommandManager():
 
@@ -9,26 +13,48 @@ class CommandManager():
 	root_dir_entry_size = 64
 	root_dir_empty_entry = "Xx.xXx.xXx.xXx."
 
-	first_data_cluster = 5
-
 	available_dir_entries = []
 	
 	def __init__(self):
 		self.super_block = self.f_m.build_sb()
+		self.file_system = self.f_m.get_fs()
+
 		self.cluster_size = int(self.super_block.cluster_size)
 		self.root_dir_clusters = int(self.super_block.num_clusters_dir)
-		self.file_system = self.f_m.get_fs()
-		self.available_dir_entries = self.get_dir_entries(available=True)
+		self.first_data_cluster = self.root_dir_clusters + 1
+		
+		(self.root_dir, self.available_dir_entries, self.occupied_data_clusters) = self.get_dir_entries()
 
-	def ls(self):
-		self.root_dir = self.get_dir_entries()
+	def ls_(self):
+		self.root_dir = self.get_dir_entries(only_root=True)
 		self.__print__root(dir=self.root_dir)
 
 	def cpi(self, file):
 		data = open(file,'rb').read()
+		data_size = len(data)
 		dir_entry_id = self.available_dir_entries.pop(0)
-		cluster = self.get_next_cluster(cluster=first_data_cluster)
-		dir_entry = DirectoryEntry(name=file, size=size, cluster=cluster, creation=creation, last_modif=last_modif, non_used_space=non_used_space, dir_entry_id=dir_entry_id)
+
+		name = file
+		size = data_size
+		cluster = self.get_next_cluster()
+
+		ctime = os.path.getmtime(file)
+		mtime = os.path.getmtime(file)
+		creation = datetime.fromtimestamp(ctime).strftime('%Y%m%d%H%M%S')
+		last_modif = datetime.fromtimestamp(mtime).strftime('%Y%m%d%H%M%S')
+
+		index = self.cluster_size + (dir_entry_id * self.root_dir_entry_size)
+
+		self.file_system[index:index+15] = ('%15s' % name).encode()
+		self.file_system[index+16:index+24] = ('%08d' % size).encode()
+		self.file_system[index+25:index+30] = ('%05d' % cluster).encode()
+		self.file_system[index+31:index+45] = ('%014s' % creation).encode()
+		self.file_system[index+46:index+60] = ('%014s' % last_modif).encode()
+
+		start_index = cluster * self.cluster_size
+		end_index = start_index + data_size
+		self.file_system[start_index:end_index] = data
+		
 
 	def cpo(self, file):
 		print("Copy outside", file)
@@ -39,9 +65,10 @@ class CommandManager():
 	def defrag(self):
 		print("defrag")
 
-	def get_dir_entries(self, available=False):
+	def get_dir_entries(self, only_root=False):
 		dir_entries = []
 		av_dir_entries = []
+		oc_data_clusters = []
 		for cluster in range(self.root_dir_clusters):
 			_c = 0
 			for entry in range(0,self.cluster_size,64):
@@ -49,20 +76,23 @@ class CommandManager():
 				_b = _a + 64
 				_c += 1
 				dir_entry_data = self.file_system[_a:_b]
-				dir_entry = self.f_m.get_de(data=dir_entry_data, dir_entry_id=_c)
-				if dir_entry.name == self.root_dir_empty_entry.encode():
-					av_dir_entries.append(_c)
+				file = self.f_m.get_de(data=dir_entry_data, dir_entry_id=_c-1)
+				if file.name == self.root_dir_empty_entry.encode():
+					av_dir_entries.append(_c-1)
 				else:
-					dir_entries.append(dir_entry)
-		if available:
-			return av_dir_entries
-		else:
+					oc_data_clusters.append(int(file.cluster))
+					dir_entries.append(file)
+		if only_root:
 			return dir_entries
+		else:
+			return (dir_entries, av_dir_entries, oc_data_clusters)
 
-	def get_next_cluser(self, cluster):
-		pass
-
+	def get_next_cluster(self):
+		cluster = randint(self.first_data_cluster,int(self.super_block.num_clusters_unit))
+		while cluster in self.occupied_data_clusters:
+			cluster = randint(self.first_data_cluster,int(self.super_block.num_clusters_unit))
+		return cluster
 
 	def __print__root(self, dir):
 		for file in dir:
-			print("%s" %(file.name.decode()))
+			print("%s %s" %(file.name.decode(), file.dir_entry_id))
