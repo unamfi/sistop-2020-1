@@ -16,10 +16,12 @@
     - [x] Escribir la entrada del directorio 
     - [x] Asignar un cluster de inicio 
     - [x] Escribir el archivo en el cluster de inicio
-  - [ ] Copiar hacía afuera de FiUnamFs
-    - [ ] Comprobar que el archivo que se quiera copiar fuera de FiUnamFS exista.
-    - [ ] Obtener el objeto ```DirectoryEntry``` a partir del nombre del archivo. 
-    - [ ] 
+  - [x] Copiar hacía afuera de FiUnamFs
+    - [x] Comprobar que el archivo que se quiera copiar fuera de FiUnamFS exista.
+    - [x] Obtener el objeto ```DirectoryEntry``` a partir del nombre del archivo. 
+    - [x] Comprobar que el archivo que se quiera copiar no exista en el directorio local. 
+    - [x] Obtener los datos del archivo con base en su cluster inicial y el tamaño del archivo. 
+    - [x] Copiar el archivo al directorio local de mi computadora (**dev/**). 
   - [x] Eliminar archivo 
     - [x] Comprobar que el archivo que se quiera borrar exista 
     - [x] Agregar el ```dir_entry_id``` del archivo a borrar al arreglo global ```available_dir_entries``` 
