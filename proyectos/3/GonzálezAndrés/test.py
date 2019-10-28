@@ -38,7 +38,7 @@ fs.subir(os.path.join('ArchivosParaSubir', 'blackbird.jpg'), 'blackbird.jpg')
 muestraTablaDir(fs.scandir())
 
 
-fs.eliminar('mensajes.png')
+fs.eliminar('logo.png')
 fs.subir(os.path.join('ArchivosParaSubir', 'holis.txt'), 'holis.txt')
 fs.subir(os.path.join('ArchivosParaSubir', 'mundo.txt'), 'mundo.txt')
 

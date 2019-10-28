@@ -188,8 +188,10 @@ class FIUNAMFS(object):
                         ed_sig = self.__listaEntDir[i+1] # ed_sig : entrada del directorio siguiente
                         delta_clusters = ed_sig.cluster_inicial - ed_actual.cluster_inicial # vemos cuántos clusters hay entre entrada de directorio y entrada de directorio
                         clusters_libres = delta_clusters - clusters_usados
-                        cluster_inicial = ed_actual.cluster_inicial + clusters_usados # Marcamos la dirección de inicio 
-
+                        if clusters_libres > clusters_requeridos: # Si hay espacio entre clusters
+                            cluster_inicial = ed_actual.cluster_inicial + clusters_usados # Marcamos la dirección de inicio
+                            print('Hay espacio entre archivos, guardando...')
+                            break # Rompemos el ciclo para que lo guarde aquí
                     except IndexError:
                         print('Fin de la lista, guardar al final del último cluster del directorio')
                         cluster_inicial = ed_actual.cluster_inicial + clusters_usados # Cluster inicial + Clusters usados por éste 
@@ -232,7 +234,7 @@ class FIUNAMFS(object):
         entrDir = resultado.pop() # Obtenemos la entrada del directorio
         
         self.__listaEntDir.remove(entrDir)
-        print(self.__listaEntDir)
+        # print(self.__listaEntDir)
 
         self.__mmfs[entrDir.direccion_ed : entrDir.direccion_ed + 15] = STR_DIR_VACIO.encode('ascii') # Marcamos el directorio como disponible
         
