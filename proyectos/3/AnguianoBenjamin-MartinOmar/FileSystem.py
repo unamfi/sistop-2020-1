@@ -1,9 +1,13 @@
 import os
+import datetime
+import time
 
 ficheros = []
 tamanio = []
 ubicacion = []
 informacion = []
+fechaCreacion = []
+fechaModificacion = []
 
 def getFileSystem():
 	buscarArchivos()
@@ -14,6 +18,8 @@ def buscarArchivos():
 		ficheros.pop(0)
 		tamanio.pop(0)
 		ubicacion.pop(0)
+		fechaCreacion.pop(0)
+		fechaModificacion.pop(0)
 	fileSystem = open('fiunamfs.img','r')
 	posicion = 2048
 	while posicion < 10240:
@@ -25,13 +31,17 @@ def buscarArchivos():
 			tamanio.append(fileSystem.read(8))
 			fileSystem.seek(posicion+25)
 			ubicacion.append(fileSystem.read(5))
+			fileSystem.seek(posicion+31)
+			fechaCreacion.append(fileSystem.read(14))
+			fileSystem.seek(posicion+46)
+			fechaModificacion.append(fileSystem.read(14))
 		posicion+=64
 	fileSystem.close()
 
 def imprimirDatosArchivos():
 	rango = len(ficheros)
 	for i in range(rango):
-		print("nombre: "+ ficheros[i]+" tamanio: "+tamanio[i]+" ubicacion: "+ubicacion[i])
+		print("nombre: "+ ficheros[i]+" tamanio: "+tamanio[i]+" ubicacion: "+ubicacion[i]+" Fecha Creacion "+str(fechaCreacion[i])+ " ultima modificacion "+ str(fechaModificacion[i]))
 
 def infoFileSystem():
 	fileSystem = open('fiunamfs.img', 'r')
@@ -69,13 +79,15 @@ def eliminarArchivo(nombre):
 def copiarAPC(nombre):
 	fileSystem = open('fiunamfs.img', 'r')
 	posicion = buscarArchivo(nombre)
-	print(posicion)
 	if(posicion !=-1):
+
 		copia = open(nombre, 'w')
-	#print("ubicacion "+ ubicacion[posicion])
 		fileSystem.seek(int(ubicacion[posicion]))
-	#print(fileSystem.read(int(tamanio[posicion])))
 		copia.write(fileSystem.read(int(tamanio[posicion])))
+		copia.seek(0)
+		copia.write(nombre)
+		copia.seek(31)
+		copia.write(str(fechaCreacion[posicion]))
 		print("El archivo "+ nombre + " ha sido copiado con exito")
 		copia.close()
 	else:
@@ -91,7 +103,7 @@ def buscarArchivo(nombre):
 	return posicion	
 
 def copiarAMiFileSystem(nombre):
-	archivo = open(str(nombre), 'r')
+	archivo = open(nombre, 'r+')
 	fileSystem = open('fiunamfs.img', 'r+')
 	posicion = 2048
 	while posicion < 10240:
@@ -99,11 +111,17 @@ def copiarAMiFileSystem(nombre):
 		consulta = fileSystem.read(15)
 		if consulta == 'Xx.xXx.xXx.xXx.':
 			fileSystem.seek(posicion)
-			fileSystem.write(' '*(15-len(nombre)) + nombre)
+			fileSystem.write(' '*(15-len(nombre)) + archivo.read(15))
 			fileSystem.seek(posicion+16)
 			fileSystem.write("0"*(8 -(len(str(os.stat(nombre).st_size)))) + str(os.stat(nombre).st_size).encode())
 			fileSystem.seek(posicion+25)
 			fileSystem.write("0"*(5-len(str(posicion+25/2048).encode())) + str(posicion+25/2048).encode())
+			fileSystem.seek(posicion+31)
+			archivo.seek(31)
+			fileSystem.write(archivo.read(14))
+			fileSystem.seek(posicion+46)
+			fecha = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+			fileSystem.write(fecha)
 			fileSystem.close()
 			archivo.close()
 			print("Archivo " + nombre + " copiado al file system")
