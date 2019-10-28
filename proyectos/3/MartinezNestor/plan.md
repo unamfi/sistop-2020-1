@@ -17,6 +17,9 @@
     - [x] Asignar un cluster de inicio 
     - [x] Escribir el archivo en el cluster de inicio
   - [ ] Copiar hacía afuera de FiUnamFs
+    - [ ] Comprobar que el archivo que se quiera copiar fuera de FiUnamFS exista.
+    - [ ] Obtener el objeto ```DirectoryEntry``` a partir del nombre del archivo. 
+    - [ ] 
   - [x] Eliminar archivo 
     - [x] Comprobar que el archivo que se quiera borrar exista 
     - [x] Agregar el ```dir_entry_id``` del archivo a borrar al arreglo global ```available_dir_entries``` 
@@ -26,3 +29,4 @@
   - [ ] Desfragmentar 
 - [ ] Agregar comentarios -> docstring
 - [ ] Arreglar pylint warnings
+- [ ] Agregar documentación para el repositorio de Github explicando el funcionamiento del código. 
