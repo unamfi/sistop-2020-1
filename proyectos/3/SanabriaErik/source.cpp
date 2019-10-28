@@ -12,8 +12,9 @@
 
 int main(int argc, char* argv[])
 {
-	const unsigned short num_mag{ 8 };
-	const unsigned short num_nom{ 15 };
+	const unsigned short num_mag{ 8 };			//tamanio del numero magico
+	const unsigned short num_nom{ 15 };			//tamanio del nombre del archivo
+	const unsigned short dir{ 64 };				//cada directorio mide 64 bytes
 	const std::string mag_def{ "FiUnamFS" };
 	std::string mag;
 	std::string fname{ "res/fiunamfs.img" };
@@ -21,8 +22,10 @@ int main(int argc, char* argv[])
 	std::ofstream archiv_out;
 
 	size_t tam{ 0 };
+	size_t tam_out{ 0 };
 	char tmp[num_mag];
 	char nom[num_nom];
+	char header[dir];
 
 	if(argc > 1)
 	{
@@ -62,13 +65,51 @@ int main(int argc, char* argv[])
 
 	std::cout << std::endl <<"\tTamanio del archivo: " << tam << " bytes.";
 
-	char b;
+	archiv.seekg(1024, std::ios::beg);
 
-	archiv.seekg(1029, std::ios::beg);
+//	archiv.read(reinterpret_cast<char*>(nom), num_nom);
+	archiv.read(reinterpret_cast<char*>(header), dir);
 
-	archiv.read(reinterpret_cast<char*>(nom), num_nom);
+	for(size_t a{ 0 }; a < dir; ++a)
+	{
+		if(a < num_nom)
+		{
+			std::cout << std::endl << "\tH[" <<  std::setw(3) <<a << "]: " << header[a] << std::flush;
+			nom[a] = header[a];
+		}
+	}
 
-	std::cout << std::endl << "\t" << nom << std::flush << std::endl;
+	std::cout << std::endl << std::endl << std::flush;
+
+	for(size_t k{ 0 }, m{ 0 }; k < num_nom; ++k)
+	{
+		if((nom[k] != 0x20) && (m == 0))
+		{
+			m = k;
+
+			std::cout << k << std::endl;
+
+			for(size_t h{ 0 }; h < num_nom; ++h, ++m)
+			{
+				if(m < num_nom)
+				{
+					nom[h] = nom[m];
+				}
+				else if(m >= num_nom)
+				{
+					nom[h] = 0x20;
+				}
+
+				std::cout << std::endl << "\tH[" <<  std::setw(3) << h << "]: " << nom[h] << "\tM[" << std::setw(3) << m << "]: " << nom[m] << std::flush;
+			}
+
+			break;
+		}
+	}
+
+
+
+	std::cout << std::endl << "\tNombre: " << std::setw(20) << nom << std::flush;
 
 	archiv_out.open(nom);
 
