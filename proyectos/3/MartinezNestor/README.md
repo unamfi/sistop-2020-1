@@ -12,5 +12,13 @@ Aquí podremos encontrar la lista de acciones que tomé para resolver el proyect
 
 ## Solución
 
-Dentro del directorio [dev](https://github.com/nestorivanmo/sistop-2020-1/tree/proyecto3/proyectos/3/MartinezNestor/dev) se encuentra el código completo del proyecto.  
+Dentro del directorio [dev](https://github.com/nestorivanmo/sistop-2020-1/tree/proyecto3/proyectos/3/MartinezNestor/dev) se encuentra el código completo del proyecto junto con capturas de pantalla mostrando el funcionamiento del mismo. 
+
+## Contenidos de FiUnamFS
+
+* README.org 
+* logo.png
+* mensages.png
+
+![icon](images/file_content.png)
 
