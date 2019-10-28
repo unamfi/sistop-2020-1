@@ -9,22 +9,27 @@
 #include <iomanip>
 #include <string>
 #include <fstream>
+#include <cmath>
 
 int main(int argc, char* argv[])
 {
 	const unsigned short num_mag{ 8 };			//tamanio del numero magico
+	const unsigned short num_tam{ num_mag };	//tamanio del numero de bytes del archivo
 	const unsigned short num_nom{ 15 };			//tamanio del nombre del archivo
-	const unsigned short dir{ 64 };				//cada directorio mide 64 bytes
+//	const unsigned short dir{ 64 };				//cada directorio mide 64 bytes
+	const unsigned short pos{ 1024 };
 	const std::string mag_def{ "FiUnamFS" };
 	std::string mag;
 	std::string fname{ "res/fiunamfs.img" };
 	std::ifstream archiv;
 	std::ofstream archiv_out;
 
-	size_t tam{ 0 };
+	size_t bytes{ 0 };
+	size_t tam{ 0 };							//tamanio total del sistema de archivos
 	//size_t tam_out{ 0 };
 	char tmp[num_mag];
 	char nom[num_nom];
+	char sizeb[num_tam];
 
 	if(argc > 1)
 	{
@@ -64,7 +69,7 @@ int main(int argc, char* argv[])
 
 	std::cout << std::endl <<"\tTamanio del archivo: " << tam << " bytes.";
 
-	archiv.seekg(1024, std::ios::beg);
+	archiv.seekg(pos, std::ios::beg);
 
 	archiv.read(reinterpret_cast<char*>(nom), num_nom);
 	//archiv.read(reinterpret_cast<char*>(header), dir);
@@ -104,11 +109,6 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	for(size_t k{ 0 }; k < num_nom; ++k)
-	{
-		std::cout << std::endl << "\tnom[" <<  std::setw(3) << k << "]: " << nom[k] << std::flush;
-	}
-
 	std::cout << std::endl << "\tNombre: " << std::setw(20) << nom << std::flush;
 
 	archiv_out.open(nom, std::ios::binary | std::ios::out);
@@ -118,6 +118,21 @@ int main(int argc, char* argv[])
 		std::cout << std::endl << "\tError al abrir el archivo!" << std::endl;
 
 		return 2;
+	}
+
+	archiv.seekg(pos + num_nom + 1, std::ios::beg);
+
+	archiv.read(reinterpret_cast<char*>(sizeb), num_tam);
+
+//	std::cout << std::endl << std::flush <<"\tBytes: "  << std::hex << sizeb << std::setw(8) << sizeof(sizeb)/sizeof(char);
+
+	for(size_t i{ 0 }, t{ static_cast<size_t>(std::pow(10.0f, num_tam - 1)) }; i < num_tam; ++i)
+	{
+		bytes += sizeb[i] * t;
+
+		std::cout << std::endl <<"\tb: " << std::setw(10) << bytes << "\tsizeb: " << std::setw(5) << sizeb[i] << "\tt: " << std::setw(10) << t;
+
+		t /= 10;
 	}
 
 	const size_t n{ 4776 };
@@ -130,9 +145,6 @@ int main(int argc, char* argv[])
 
 	archiv_out.write(reinterpret_cast<char*>(data_out), n);
 
-
-
-
 	/*for(size_t a{ 1 }; a <= tam; ++a)
 	{
 		archiv.read(&b, 1);
@@ -144,7 +156,6 @@ int main(int argc, char* argv[])
 			std::cout << std::endl;
 		}
 	}*/
-
 
 	archiv_out.close();
 
