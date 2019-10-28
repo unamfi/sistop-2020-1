@@ -30,9 +30,7 @@ class CommandManager():
 		self.__print__root(dir=self.root_dir)
 
 	def cpi(self, file):
-		if self.search(file):
-			print("i: FiUnamFS/%s and %s are identical (not copied)." % (file,file))
-		else:
+		if self.search(file) is None:
 			data = open(file,'rb').read()
 			data_size = len(data)
 			dir_entry_id = self.available_dir_entries.pop(0)
@@ -57,16 +55,18 @@ class CommandManager():
 			start_index = cluster * self.cluster_size
 			end_index = start_index + data_size
 			self.file_system[start_index:end_index] = data
-		
+		else:
+			print("i: FiUnamFS/%s and %s are identical (not copied)." % (file,file))
 
 	def cpo(self, file):
 		print("Copy outside", file)
 
 	def rm(self, file):
-		if self.search(file):
-			pass
+		f = self.search(file)
+		if f is None:
+			print('r: %s: No such file or directory' % file)
 		else:
-			print('rm: %s: No such file or directory' % file)
+			print(f.name.decode())
 
 	def defrag(self):
 		print("defrag")
@@ -104,8 +104,8 @@ class CommandManager():
 			(self.root_dir, self.available_dir_entries, self.occupied_data_clusters) = self.get_dir_entries()		
 		for f in self.root_dir:
 			if f.name.decode().strip() == file:
-				return True
-		return False
+				return f
+		return None
 
 	def __print__root(self, dir):
 		for file in dir:
