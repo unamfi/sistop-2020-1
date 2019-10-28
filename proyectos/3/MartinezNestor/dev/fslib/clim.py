@@ -5,18 +5,18 @@ class CommandManager():
 
 	f_m = FileManager()
 
-	sector_size = 512
-	cluster_size = 512 * 4
-
 	root_dir = []
-	root_dir_clusters = 4
 	root_dir_entry_size = 64
 	root_dir_empty_entry = "Xx.xXx.xXx.xXx."
+
+	first_data_cluster = 5
 
 	available_dir_entries = []
 	
 	def __init__(self):
 		self.super_block = self.f_m.build_sb()
+		self.cluster_size = int(self.super_block.cluster_size)
+		self.root_dir_clusters = int(self.super_block.num_clusters_dir)
 		self.file_system = self.f_m.get_fs()
 		self.available_dir_entries = self.get_dir_entries(available=True)
 
@@ -27,6 +27,8 @@ class CommandManager():
 	def cpi(self, file):
 		data = open(file,'rb').read()
 		dir_entry_id = self.available_dir_entries.pop(0)
+		cluster = self.get_next_cluster(cluster=first_data_cluster)
+		dir_entry = DirectoryEntry(name=file, size=size, cluster=cluster, creation=creation, last_modif=last_modif, non_used_space=non_used_space, dir_entry_id=dir_entry_id)
 
 	def cpo(self, file):
 		print("Copy outside", file)
@@ -56,6 +58,10 @@ class CommandManager():
 			return av_dir_entries
 		else:
 			return dir_entries
+
+	def get_next_cluser(self, cluster):
+		pass
+
 
 	def __print__root(self, dir):
 		for file in dir:
