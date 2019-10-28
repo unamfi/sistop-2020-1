@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <fstream>
 
@@ -57,6 +58,21 @@ int main(int argc, char* argv[])
 
 	std::cout << std::endl <<"\tTamanio del archivo: " << tam << " bytes.";
 
+	char b;
+
+	std::cout << std::endl;
+
+	for(size_t a{ 1 }; a <= tam; ++a)
+	{
+		archiv.read(&b, 1);
+
+		std::cout << std::setw(10) << std::hex << static_cast<int>(b) << std::flush;
+
+		if((a % 10) == 0)
+		{
+			std::cout << std::endl;
+		}
+	}
 
 	archiv.close();
 
