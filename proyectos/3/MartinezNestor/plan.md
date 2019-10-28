@@ -13,9 +13,9 @@
   - [ ] Copiar hacía adentro de FiUnamFs
     - [x] Leer info del archivo en bytes
     - [x] Encontrar un número de entrada del directorio 
-    - [ ] Escribir la entrada del directorio 
-    - [ ] Asignar un cluster de inicio 
-    - [ ] Escribir el archivo en el cluster de inicio
+    - [x] Escribir la entrada del directorio 
+    - [x] Asignar un cluster de inicio 
+    - [x] Escribir el archivo en el cluster de inicio
   - [ ] Copiar hacía afuera de FiUnamFs
   - [ ] Eliminar archivo 
   - [ ] Desfragmentar 
