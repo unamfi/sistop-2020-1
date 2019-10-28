@@ -48,4 +48,4 @@ class FileManager():
         creation = data[31:45]
         last_modif = data[45:60]
         non_used_space = data[61:64]
-        return DirectoryEntry(name=name, size=size, cluster=cluster, creation=creation, last_modif=last_modif, non_used_space=non_used_space, dir_entry_id=dir_entry_id)   
+        return DirectoryEntry(name=name, size=size, cluster=cluster, creation=creation, last_modif=last_modif, non_used_space=non_used_space, dir_entry_id=dir_entry_id) 
