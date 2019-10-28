@@ -17,7 +17,12 @@
     - [x] Asignar un cluster de inicio 
     - [x] Escribir el archivo en el cluster de inicio
   - [ ] Copiar hacía afuera de FiUnamFs
-  - [ ] Eliminar archivo 
+  - [x] Eliminar archivo 
+    - [x] Comprobar que el archivo que se quiera borrar exista 
+    - [x] Agregar el ```dir_entry_id``` del archivo a borrar al arreglo global ```available_dir_entries``` 
+    - [x] Cambiar el nombre del archivo por la cadena ```Xx.xXx.xXx.xXx.``` 
+    - [x] Poner ceros del byte del cluster donde se encuentra el archivo hasta el tamaño del archivo. 
+    - [x] Del byte 16-64  de la entrada del directorio poner ceros.
   - [ ] Desfragmentar 
 - [ ] Agregar comentarios -> docstring
 - [ ] Arreglar pylint warnings
