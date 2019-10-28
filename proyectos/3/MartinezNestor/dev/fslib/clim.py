@@ -111,6 +111,9 @@ class CommandManager():
 	def defrag(self):
 		print("defrag")
 
+	def track(self):
+		print("track")
+
 	def get_dir_entries(self, only_root=False, data_clusters=False):
 		dir_entries = []
 		av_dir_entries = []
@@ -170,4 +173,4 @@ class CommandManager():
 
 	def __print__root(self, dir):
 		for file in dir:
-			print("%s" %(file.name.decode()))
+			print("%s %s %s" %(file.name.decode(), file.cluster.decode(), file.size.decode()))
