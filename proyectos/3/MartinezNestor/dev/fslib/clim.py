@@ -109,7 +109,15 @@ class CommandManager():
 				self.file_system[i:i+1] = ('%01d' % 0).encode()
 
 	def defrag(self):
-		print("defrag")
+		print("Current dir distribution")
+		self.track()
+		print("\nNew dir distribution\n")
+
+		ocd = sorted(self.occupied_data_clusters.keys())
+		nxt_avcluster = self.nxt_avcluster(ocd)
+		print(nxt_avcluster)
+
+		self.track()
 
 	def track(self):
 		self.__print__root(dir=self.root_dir, track=True)
@@ -137,7 +145,7 @@ class CommandManager():
 		else:
 			return (dir_entries, av_dir_entries)
 
-	def get_next_cluster(self, bytes):
+	def get_next_cluster(self, bytes, random=False):
 		self.get_dir_entries(data_clusters=True)
 		cluster = randint(self.first_data_cluster, int(self.super_block.num_clusters_unit))
 
@@ -154,6 +162,11 @@ class CommandManager():
 			while (cluster+c) in self.occupied_data_clusters.keys():
 				cluster = randint(self.first_data_cluster, int(self.super_block.num_clusters_unit))
 		return cluster
+
+	def nxt_avcluster(self, ocd):
+		for i in range(1,len(ocd) - 1):
+			if ocd[i] - ocd[i-1] > 1:				
+				return i + self.first_data_cluster
 
 	def pop_odc(self, cluster, bytes):
 		_r = bytes // self.cluster_size
