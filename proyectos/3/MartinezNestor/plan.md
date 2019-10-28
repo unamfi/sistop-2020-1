@@ -9,7 +9,7 @@
     - [x] Esta clase debe hacer la verificación de que la cadena del sistema de archivos sea ```FiUnamFS```. 
 - [x] Crear clase que represente una entrada en el directorio -> ```DirectoryEntry``` 
 - [ ] Crear clase ```CommandManager``` encargada de definir las 5 funciones que pueda realizar el usuario sobre el sistema de archivos : 
-  - [ ] Listar contenidos 
+  - [x] Listar contenidos 
   - [ ] Copiar hacía adentro
   - [ ] Copiar hacía afuera
   - [ ] Eliminar archivo 
