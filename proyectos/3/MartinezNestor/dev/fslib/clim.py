@@ -66,8 +66,19 @@ class CommandManager():
 		if f is None:
 			print('r: %s: No such file or directory' % file)
 		else:
-			print(f.name.decode())
-
+			dir_entry_id = f.dir_entry_id
+			self.available_dir_entries.append(dir_entry_id)
+			start_index = int(f.cluster.decode()) * self.cluster_size
+			end_index = start_index + int(f.size.decode())
+			index = self.cluster_size + (dir_entry_id * self.root_dir_entry_size)
+			self.file_system[index:index+15] = ('%15s' % self.root_dir_empty_entry).encode()
+			self.file_system[index+16:index+24] = ('%08d' % 0).encode()
+			self.file_system[index+25:index+30] = ('%05d' % 0).encode()
+			self.file_system[index+31:index+45] = ('%014d' % 0).encode()
+			self.file_system[index+46:index+60] = ('%014d' % 0).encode()
+			for i in range(start_index,end_index,2):
+				self.file_system[i:i+1] = ('%01d' % 0).encode()
+				
 	def defrag(self):
 		print("defrag")
 
