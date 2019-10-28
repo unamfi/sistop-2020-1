@@ -29,6 +29,7 @@
     - [x] Poner ceros del byte del cluster donde se encuentra el archivo hasta el tamaño del archivo. 
     - [x] Del byte 16-64  de la entrada del directorio poner ceros.
   - [ ] Desfragmentar 
+  - [ ] Obtener información sobre un archivo 
 - [ ] Agregar comentarios -> docstring
 - [ ] Arreglar pylint warnings
 - [ ] Agregar documentación para el repositorio de Github explicando el funcionamiento del código. 
