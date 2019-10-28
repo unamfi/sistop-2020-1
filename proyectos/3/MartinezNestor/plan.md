@@ -10,8 +10,13 @@
 - [x] Crear clase que represente una entrada en el directorio -> ```DirectoryEntry``` 
 - [ ] Crear clase ```CommandManager``` encargada de definir las 5 funciones que pueda realizar el usuario sobre el sistema de archivos : 
   - [x] Listar contenidos 
-  - [ ] Copiar hacía adentro
-  - [ ] Copiar hacía afuera
+  - [ ] Copiar hacía adentro de FiUnamFs
+    - [x] Leer info del archivo en bytes
+    - [x] Encontrar un número de entrada del directorio 
+    - [ ] Escribir la entrada del directorio 
+    - [ ] Asignar un cluster de inicio 
+    - [ ] Escribir el archivo en el cluster de inicio
+  - [ ] Copiar hacía afuera de FiUnamFs
   - [ ] Eliminar archivo 
   - [ ] Desfragmentar 
 - [ ] Agregar comentarios -> docstring
