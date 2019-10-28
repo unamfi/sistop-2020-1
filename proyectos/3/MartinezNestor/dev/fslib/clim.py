@@ -62,12 +62,15 @@ class CommandManager():
 		file_to_copy = self.search(file)		
 		exists_in_current_dir = False
 		cpodir_name = 'cpo_files'
+		cpodir = './%s' %cpodir_name
+		if not os.path.exists(cpodir):
+			os.makedirs(cpodir)
 
 		if file_to_copy is None: 
 			print('o: %s: No such file or directory' % file)
 		else:
 			ftc_title = file_to_copy.name.decode().strip()
-			currentdir = os.listdir()
+			currentdir = os.listdir('./%s' % cpodir_name)
 			for file in currentdir:			
 				root = ('./%s/' % cpodir_name)	
 				if root + ftc_title == root + file:
@@ -81,10 +84,6 @@ class CommandManager():
 				start_index = ftc_cluster*self.cluster_size
 				end_index = start_index + ftc_size
 				ftc_data = self.file_system[start_index:end_index].decode()
-
-				cpodir = './%s' %cpodir_name
-				if not os.path.exists(cpodir):
-					os.makedirs(cpodir)
 
 				path = './%s/%s' % (cpodir_name, ftc_title)
 				newfile = open(path,'w')
