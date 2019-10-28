@@ -41,16 +41,11 @@ class FileManager():
     	if self.super_block is not None:
     		return self.read_fs()
 
-    def get_de(self, data):
+    def get_de(self, data, dir_entry_id):
         name = data[0:15]
         size = data[16:24]
         cluster = data[25:30]
         creation = data[31:45]
         last_modif = data[45:60]
         non_used_space = data[61:64]
-        return DirectoryEntry(name=name, size=size, cluster=cluster, creation=creation, last_modif=last_modif, non_used_space=non_used_space)
-
-
-
-
-
+        return DirectoryEntry(name=name, size=size, cluster=cluster, creation=creation, last_modif=last_modif, non_used_space=non_used_space, dir_entry_id=dir_entry_id)   
