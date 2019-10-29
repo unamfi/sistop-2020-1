@@ -3,7 +3,7 @@
 /* La verdad no estoy seguro de lo que estaba haciendo, creo que el codigo
 no se acerca a la solucion pero no se me ocurrio nada más :'('*/
 
-int int main(void) {
+//int int main(void) {
 
   int select;
   printf("Seleccione alguna opcion:\n");
@@ -89,7 +89,7 @@ int copFile(){
       fclose(fptr2);
       return 0;
 }
-void rmFile(int argc, char* argv[]){
+//void rmFile(int argc, char* argv[]){
 if(argc!=2 || argv[1]=="--help")
   {
     printf("\nusage: rm FileTodelete\n");
@@ -106,7 +106,7 @@ else
    }
 }
 
-void defragment(Pool* pool)
+//void defragment(Pool* pool)
 {
     if(pool && pool->root)
     {
