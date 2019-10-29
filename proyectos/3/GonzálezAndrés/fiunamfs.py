@@ -258,7 +258,7 @@ class FIUNAMFS(object):
                 delta_clusters = ed_sig.cluster_inicial - ed_actual.cluster_inicial # vemos cuántos clusters hay entre entrada de directorio y entrada de directorio
                 clusters_libres = delta_clusters - clusters_usados
                 
-                if clusters_libres > 0: # Si hay espacio entre clusters
+                if clusters_libres > 1: # Si hay espacio entre clusters
                     print('Hay espacio entre archivos, moviendo %s...' % ed_sig.nombre)
                     
                     dir_in_antigua = ed_sig.cluster_inicial * self.tam_cluster # Dirección donde inician sus datos
@@ -269,8 +269,18 @@ class FIUNAMFS(object):
                     dir_in_nueva = cluster_in_nuevo * self.tam_cluster # Dirección donde iniciarán los datos
                     dir_fin_nueva = dir_in_nueva + ed_sig.tam_archivo # Dirección nueva de fin
 
-                    ed_sig.cluster_inicial = cluster_in_nuevo # Le actualizamos su cluster de inicio
+                    print('Clusters libres %i, Cluster anterior: %i, Cluster nuevo: %i' % (clusters_libres, ed_sig.cluster_inicial, cluster_in_nuevo))
+                    print('Dirección anterior: %i, Dirección nueva: %i' % (dir_in_antigua, dir_in_nueva))
+                    print('Tamaño de datos antiguos: %i , Tamaño de datos por mover: %i\n' % 
+                                (len(self.__mmfs[dir_in_nueva : dir_fin_nueva]),
+                                 len(datos_por_mover)))
+
+                    self.__listaEntDir[i+1].cluster_inicial = cluster_in_nuevo # Le actualizamos su cluster de inicio
                     self.__mmfs[dir_in_nueva : dir_fin_nueva] = datos_por_mover # Movemos sus datos
+                    self.__mmfs.flush()
+
+                    # print('Nuevo cluster en lista: %i' % self.__listaEntDir[i+1].cluster_inicial)
+
                     arch_movidos += 1
             except IndexError:
                 print('Desfragmentación terminada, %i archivos movidos.' % arch_movidos)
@@ -307,8 +317,7 @@ class FIUNAMFS(object):
                 # print('Tamaño mmap fs: ', len(self.__mmfs[dir_inicio_datos : dir_inicio_datos + tam_archivo]))
                 # print('Tamaño a escribir: ', len(datos))
                 
-                self.__mmfs[dir_inicio_datos : dir_inicio_datos+tam_archivo]=datos
-                
+                self.__mmfs[dir_inicio_datos : dir_inicio_datos+tam_archivo]=datos                
                 self.__mmfs.flush()
                 
                 entDir.direccion_ed = i # Le indicamos en qué dirección inicia la entrada del directorio
