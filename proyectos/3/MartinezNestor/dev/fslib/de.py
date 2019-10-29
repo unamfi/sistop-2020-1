@@ -10,4 +10,4 @@ class DirectoryEntry():
 		self.dir_entry_id = dir_entry_id
 
 	def update_cluster(self, cluster):
-		self.cluster = cluster
+		self.cluster = ('%05d' % cluster).encode()
