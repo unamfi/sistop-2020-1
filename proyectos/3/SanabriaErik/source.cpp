@@ -12,12 +12,69 @@
 #include <cmath>
 #include <cstdlib>
 
+void compactName(char *m_nom_s, char *m_nom, const unsigned short new_num, const unsigned short n_nom = 15)
+{
+
+}
+
+size_t cleanName(char *m_nom, const unsigned short n_nom = 15)
+{
+	size_t k{ 0 };
+
+	for(size_t m{ 0 }; k < n_nom; ++k)
+	{
+		if((m_nom[k] != 0x20) && (m == 0))
+		{
+			m = k;
+
+			for(size_t h{ 0 }; h < n_nom; ++h, ++m)
+			{
+				if(m < n_nom)
+				{
+					m_nom[h] = m_nom[m];
+				}
+				else if(m >= n_nom)
+				{
+					m_nom[h] = 0x20;
+				}
+
+//				std::cout << std::endl << "\tnom[" <<  std::setw(3) << h << "]: " << m_nom[h] << "\tM[" << std::setw(3) << m << "]: " << m_nom[m] << std::flush;
+			}
+
+			break;
+		}
+	}
+
+	return n_nom - k;
+}
+
+void extractName(char *head, char *m_nom, const unsigned short n_dir = 64, const unsigned short n_nom = 15)
+{
+	if(head != nullptr && m_nom != nullptr)
+	{
+		for(size_t p{ 0 }; p < n_nom; ++p)
+		{
+			m_nom[p] = head[p];
+		}
+	}
+}
+
+void readHead(std::ifstream *m_archiv, char *head, const unsigned short n_dir = 64, const unsigned short n_pos = 1024)
+{
+	if(m_archiv->is_open())
+	{
+		m_archiv->seekg(n_pos, std::ios::beg);
+		m_archiv->read(head, n_dir);
+		m_archiv->seekg(0, std::ios::beg);
+	}
+}
+
 int main(int argc, char* argv[])
 {
 	const unsigned short num_mag{ 8 };			//tamanio del numero magico
 	const unsigned short num_tam{ num_mag };	//tamanio del numero de bytes_f del archivo
 	const unsigned short num_nom{ 15 };			//tamanio del nombre del archivo
-//	const unsigned short dir{ 64 };				//cada directorio mide 64 bytes_f
+	const unsigned short dir{ 64 };				//cada directorio mide 64 bytes_f
 	const unsigned short pos{ 1024 };
 	const std::string mag_def{ "FiUnamFS" };
 	std::string mag;
@@ -30,7 +87,9 @@ int main(int argc, char* argv[])
 	//size_t tam_out{ 0 };
 	char tmp[num_mag];
 	char nom[num_nom];
+	char nom_2[num_nom];
 	char sizeb[num_tam];
+	char cabeza[dir];
 
 	if(argc > 1)
 	{
@@ -84,7 +143,35 @@ int main(int argc, char* argv[])
 		}
 	}*/
 
-	std::cout << std::endl << std::endl << std::flush;
+	std::cout << std::flush << std::endl << std::endl;
+
+	readHead(&archiv, cabeza);
+
+/*	for(size_t H{ 0 }; H < dir; ++H)
+	{
+		std::cout << "\n\tcabeza[" << std::setw(2) << H << "]:\t" << std::setw(4) << cabeza[H] << std::flush;
+	}*/
+
+	extractName(cabeza, nom_2);
+
+	size_t new_num_nom{ cleanName(nom_2) };
+
+	char *nom_small{ new char[new_num_nom] };
+
+	for(size_t H{ 0 }; H < num_nom; ++H)
+	{
+		std::cout << "\n\tnom_2[" << std::setw(2) << H << "]:\t" << std::setw(4) << nom_2[H] <<"\t" << new_num_nom << std::flush;
+	}
+
+	std::cout << std::flush << std::endl << std::endl << std::flush;
+
+	for(size_t H{ 0 }; H < new_num_nom; ++H)
+	{
+		std::cout << "\n\tnom_2[" << std::setw(2) << H << "]:\t" << std::setw(4) << nom_small[H] << std::flush;
+	}
+
+
+	std::cout << std::flush << std::endl << std::endl << std::flush;
 
 	for(size_t k{ 0 }, m{ 0 }; k < num_nom; ++k)
 	{
@@ -181,6 +268,7 @@ int main(int argc, char* argv[])
 
 	//=======================================================================================================================
 
+	delete [] nom_small;
 	delete [] out_d;
 
 	archiv_out.close();
