@@ -31,14 +31,12 @@ class CommandManager():
 		self.used_dataclusters = sorted(dataclusters)
 
 	def __findhole__(self):
-		print(self.used_dataclusters)
 		space = None
 		for i in range(1,len(self.used_dataclusters)):
 			current_cluster = self.used_dataclusters[i]
 			prev_cluster = self.used_dataclusters[i-1]
 			diff = current_cluster - prev_cluster
 			if diff > 1:
-				print("\t%d > %d" % (prev_cluster, current_cluster))
 				return (prev_cluster, current_cluster)
 		return space 
 
@@ -178,13 +176,10 @@ class CommandManager():
 		while something is not None:
 			top = something[0]
 			nxt = something[1]
-			print(top)
-			print(nxt)
 			direntry = self.__fetch_direntry__(nxt)
 			self.__move__(direntry=direntry, to=top+1)
 			(self.root_dir, self.unused_dir_entries) = self.__readdir__()
-			something = self.__findhole__()
-			print(something)
+			something = self.__findhole__()			
 
 		self.track()
 		
