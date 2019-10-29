@@ -30,7 +30,7 @@ def main():
             if not fs.copiar_FILESYS_a_eXFILESYS(arch_fs, nombre_dest):
                 print("Error")
         elif opt == "3":
-            op = input("\t¿Desea ver el contenido del directorio actual?[s/N]"+
+            op = input("¿Desea ver el contenido del directorio actual?[s/N]"+
                        v.point)
             if op != 's' or op != 'S':
                 lista()
@@ -41,8 +41,8 @@ def main():
                 else:
                     print("Error, verifique el nombre del archivo")
         elif opt == "4":
-            arch = input("¿Qué quiere eliminar?")
-            fs.delete(arch)
+            arch = input("¿Qué quiere eliminar?"+v.point)
+            fs.elimina(arch)
         elif opt == "5":
             print("Desfragmentado...")
             fs.desfragmentar()

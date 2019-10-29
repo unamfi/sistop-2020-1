@@ -10,6 +10,7 @@ from math import ceil
 class Fiunamfs:
 
     def __init__(self, raiz):
+        """Utilizando un FS previamente hecho"""
         super(Fiunamfs, self).__init__()
         self.raiz = raiz
         self.void_entrada_dir = "Xx.xXx.xXx.xXx."
@@ -41,6 +42,7 @@ class Fiunamfs:
 
     @staticmethod
     def crear_fs(raiz, nvol):
+        """Crear el FS desde cero"""
         if nvol == None:
             nvol = "NUEVO_VOL"
         size_nvol = len(nvol)
@@ -56,12 +58,13 @@ class Fiunamfs:
             filesys[47:49] = "04".encode('ascii')
             filesys[52:60] = "00001440".encode('ascii')
             for i in range(64):
-                Fiunamfs.escribir_indir(filesys,i)
+                self.escribir_indir(filesys,i)
             filesys[512*5:] = str("\x00"*(512*1435)).encode('ascii')
             f.close()
     
     def escribir_indir(self, FILESYS, id,name_file="Xx.xXx.xXx.xXx.",
                        size_file="",inicluster="",cdate="",mdate="",no_use=""):
+        """Escribe en el directorio(FS)"""
         byte = 512
         tamanno_indir = 64
         id = int(id)
@@ -83,7 +86,28 @@ class Fiunamfs:
             ("\x00"*(3 - len(str(no_use)))+str(no_use)).encode('ascii')
         return True
 
+    
+    def time_to_formatFILESYS(self, time):
+        date_time = datetime.fromtimestamp(time)
+        return date_time.strftime("%Y%m%d%H%M%S")
+
+    def elimina(self,name):
+        index = self.get_index_dir(name)
+        if index != []:
+            index = index[0]
+            input_dir = self.inputs_dir[index]
+            inicluster = input_dir['inicluster']
+            size_file =  input_dir['size_file']
+            self.inputs_dir[index]['name_dir'] = "Xx.xXx.xXx.xXx."
+            self.inputs_dir[index]['size_file'] = "0"
+            self.inputs_dir[index]['inicluster'] = "0"
+            self.inputs_dir[index]['file_creation'] = "0"
+            self.inputs_dir[index]['file_mod'] = "0"
+            return self.desfragmentar()
+        return False       
+
     def analizar_dir(self):
+        """Escanea el directorio"""
         for input_dir in range(self.num_input_dir):
             name_dir = self.map[512+(64*input_dir):512+(64*input_dir)+15].decode('ascii').replace(" ","")
             a = 512+(64*input_dir)+16
@@ -101,14 +125,11 @@ class Fiunamfs:
                                         file_mod = fecha_modificacion))
 
     def get_index_dir(self,name,key_out='id'):
-        try:
-            lista = []
-            for elem in self.inputs_dir:
-                if elem['name_dir'] == name:
-                    lista.append(elem[key_out])
-            return lista
-        except:
-            return -1
+        lista = []
+        for elem in self.inputs_dir:
+            if elem['name_dir'] == name:
+                lista.append(elem[key_out])
+        return lista
 
     def get_index_not_dir(self,name):
         try:
@@ -121,8 +142,6 @@ class Fiunamfs:
             return -1
     
     def write_index_dir(self):
-        dcluster_byte=512
-        tamanno_indir = 64
         for input_dir in self.inputs_dir:
             self.escribir_indir(self.map,
                                     input_dir['id'],
@@ -133,11 +152,11 @@ class Fiunamfs:
         return True
     
     def listar_contenido(self):
-        print("\033[36mNombre\t\033[35mCluster inicial\t\033[34mtamaño en" +
-              "bytes\033[33m\tFecha Creacion\t\033[32m Fecha modificacion\033[0m")
+        print("\033[36mNombre\t***\t\033[35mCluster inicial\t***\t\033[34mtamaño en" +
+              "bytes\033[33m\t***\tFecha Creacion\t***\t\033[32m Fecha modificacion\033[0m")
         for input_dir in self.inputs_dir:
             if input_dir["name_dir"] != self.void_entrada_dir:
-                print("\033[36m{0}\t\033[35m{1}\t\033[34m{2}\t\033[33m{3}\t\033[32m{4}\033[0m".\
+                print("\033[36m{0}\t***\t\033[35m{1}\t***\t\033[34m{2}\t***\t\033[33m{3}\t***\t\033[32m{4}\033[0m".\
                       format(input_dir["name_dir"],input_dir['inicluster'],
                              input_dir['size_file'],input_dir['file_creation'],
                              input_dir['file_mod']))
@@ -204,14 +223,12 @@ class Fiunamfs:
                     create_date = os.path.getctime(source)
                     return self.write(name,data,create_date)
                 else:
-                    print("Este archivo ya existe en el sistema de archivos")
+                    print("Ya hay un archivo con ese nombre")
                     return False
-        print("No es un archivo valido")
+        print("Archivo no valido")
         return False
     
-    # Desfragmenta el FILESYS 
     def desfragmentar(self):
-        self.inputs_dir
         indexes = self.get_index_not_dir(self.void_entrada_dir)
         cluster_nuevo = 5
         for index in indexes:
@@ -246,22 +263,4 @@ class Fiunamfs:
         for i in range(init,end+1):
             lista.append(i)
         return lista
-
-    def time_to_formatFILESYS(self, time):
-        date_time = datetime.fromtimestamp(time)
-        return date_time.strftime("%Y%m%d%H%M%S")
-
-    def elimina(self,name):
-        index = self.get_index_dir(name)
-        if index != []:
-            index = index[0]
-            input_dir = self.inputs_dir[index]
-            inicluster = input_dir['inicluster']
-            size_file =  input_dir['size_file']
-            self.inputs_dir[index]['name_dir'] = "Xx.xXx.xXx.xXx."
-            self.inputs_dir[index]['size_file'] = "0"
-            self.inputs_dir[index]['inicluster'] = "0"
-            self.inputs_dir[index]['file_creation'] = "0"
-            self.inputs_dir[index]['file_mod'] = "0"
-            return self.desfragmentar()
-        return False        
+ 
