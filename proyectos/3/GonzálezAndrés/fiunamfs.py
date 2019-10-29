@@ -7,6 +7,7 @@ import os
 MSGERR_NO_MONTADO = 'Error: No se ha montado el sistema de archivos'
 MSGERR_ARCH_NO_ENC = 'Error: No se encuentra el archivo de origen'
 MSGADV_FS_YA_MONT = 'Advertencia: El sistema de archivos ya está montado'
+MSGERR_SIN_ESPACIO = 'Error: No hay suficiente espacio para alojar el archivo'
 MSGERR_FN_INVALIDO = 'Error: el tamaño del nombre del archivo debe ser de 1 a 15 caracteres y estos deben ser US-ASCII imprimibles'
 PATRON_FN_VALIDO = re.compile(r'[\x21-\x7F][\x20-\x7F]{,14}') # Patrón para verificar si los archivos tienen caracteres válidos
 STR_DIR_VACIO = 'Xx.xXx.xXx.xXx.'
@@ -65,8 +66,9 @@ class FIUNAMFS(object):
                 # print('Tamaño de la unidad: %i clusters' % self.clusters_totales)
 
                 self.tam_entradadir = 64
-
-                self.tam_dir = self.tam_cluster * self.clusters_dir
+                self.tam_dir = self.tam_cluster * self.clusters_dir # Tamaño del directorio en bytes
+                self.cluster_inicio_datos = self.clusters_dir + 1 # Cluster de inicio de zona de datos
+                self.clusters_datos = self.clusters_totales - self.cluster_inicio_datos # Clusters usados para la zona de datos
 
                 self.scandir()
 
@@ -168,44 +170,36 @@ class FIUNAMFS(object):
         f.close()
 
         # Ahora revisaré si hay espacio en disco y dónde iniciaremos a grabar el archivo
-        # Iniciar valores en límites fuera de rango para no sobreescribir información en caso de error
-        cluster_inicial = self.clusters_totales - 1
-        clusters_libres = 0
-        if not self.__listaEntDir:
-            print('Directorio vacío, guardando archivo en el primer cluster de datos')
-            cluster_inicial = self.clusters_dir + 1 # Clusters de directorio + Cluster de SB
-            clusters_libres = self.clusters_totales - cluster_inicial # Calcular clusters libres
-        else:
+        # cluster_inicial = self.clusters_totales - 1
+        cluster_inicial = self.cluster_inicio_datos # Iniciamos en el primer cluster de datos
+        clusters_libres = self.clusters_datos # Suponemos que tenemos todo el espacio
+        clusters_usados = 0 # Al inicio suponemos que no hay archivos ocupando el cluster
+
+        if self.__listaEntDir:
             resultado = list(filter( lambda entdir: entdir.nombre == destino, self.__listaEntDir)) # Buscamos si hay algún archivo con el mismo nombre
             if resultado:
                 raise ArchExistError('Ya existe un archivo con ese nombre en el directorio: %s' % destino)
-                return False
-            
+
             self.__listaEntDir = sorted(self.__listaEntDir, key=lambda ed: ed.cluster_inicial) # Ordenamos la lista de entradas con base en el cluster donde inician
             for i, ed_actual in enumerate(self.__listaEntDir): # ed_actual : entrada del directorio actual
-                clusters_usados = math.ceil(ed_actual.tam_archivo / self.tam_cluster) # Clusters usados por el archivo i-ésimo
-                try:
-                    ed_sig = self.__listaEntDir[i+1] # ed_sig : entrada del directorio siguiente
-                    delta_clusters = ed_sig.cluster_inicial - ed_actual.cluster_inicial # vemos cuántos clusters hay entre entrada de directorio y entrada de directorio
-                    clusters_libres = delta_clusters - clusters_usados
-                    if clusters_libres > clusters_requeridos: # Si hay espacio entre clusters
-                        cluster_inicial = ed_actual.cluster_inicial + clusters_usados # Marcamos la dirección de inicio
-                        print('Hay espacio entre archivos, guardando...')
-                        break # Rompemos el ciclo para que lo guarde aquí
-                except IndexError:
-                    print('Fin de la lista, guardar al final del último cluster del directorio')
-                    cluster_inicial = ed_actual.cluster_inicial + clusters_usados # Cluster inicial + Clusters usados por éste 
-                    clusters_libres = self.clusters_totales - cluster_inicial
+                # delta_clusters = ed_actual.cluster_inicial - cluster_inicial # vemos cuántos clusters hay entre entrada de directorio y entrada de directorio
+                # clusters_libres = delta_clusters - clusters_usados # Vemos cuantos clusters tenemos disponibles para escribir
+                # delta_clusters = ed_actual.cluster_inicial - cluster_inicial # vemos cuántos clusters hay entre entrada de directorio y entrada de directorio
+                clusters_libres = ed_actual.cluster_inicial - cluster_inicial # Vemos cuantos clusters tenemos disponibles para escribir
+                print('Cluster inicial = % i, Clusters usados = %i, Clusters libres = %i' % (cluster_inicial, clusters_usados, clusters_libres))
+                if clusters_libres > clusters_requeridos: # Si hay espacio...
+                    break # Rompemos el ciclo                    
+                clusters_usados = math.ceil(ed_actual.tam_archivo / self.tam_cluster) # En caso contrario, actualizamos el número de clusters usados
+                cluster_inicial = ed_actual.cluster_inicial+clusters_usados # y actualizamos el cluster de inicio
         
-        # Vemos si queda espacio para guardar el archivo
-        if clusters_requeridos > clusters_libres:
-            print('No hay espacio en la unidad para guardar el archivo')
-            return False
-
-        # Guardamos el archivo a partir del cluster "cluster_inicial"
-        print('Guardando "%s" en cluster %i' % (origen, cluster_inicial))
-        ed_nueva = EntradaDir(destino, tam_archivo, cluster_inicial, now(), now())
-        return self.agregarEntDir(ed_nueva, bytes_archivo)
+        clusters_restantes = self.clusters_datos - cluster_inicial - 1
+        #print('Clusters restantes: %i' % clusters_restantes)
+        if clusters_restantes > clusters_requeridos:
+            print('Guardando "%s" en cluster %i' % (origen, cluster_inicial))
+            ed_nueva = EntradaDir(destino, tam_archivo, cluster_inicial, now(), now())
+            return self.agregarEntDir(ed_nueva, bytes_archivo)
+        else:
+            raise SinEspacioError(MSGERR_SIN_ESPACIO)
 
         # except IOError as ioerr:
         #     print('IOError: %s' % ioerr)
@@ -432,3 +426,7 @@ class FNInvalidoError(Error):
         # self.expression = expression
         self.message = message
         
+class SinEspacioError(Error):
+    def __init__(self, message=MSGERR_SIN_ESPACIO):
+        # self.expression = expression
+        self.message = message
