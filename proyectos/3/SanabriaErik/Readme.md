@@ -91,5 +91,11 @@ ctrl + B
 ctrl + F11
 ```
 
+- Ó si se prefiere desde la terminal, hay que pasarle el path completo como argumento:
+
+```bash
+$ ./proyecto_3 /home/<user>/Documents/UNAM/sistop-2020-1/proyectos/3/fiunamfs.img
+```
+
 ## Licencia
 [GPL v3](https://www.gnu.org/licenses/gpl-3.0.html)
