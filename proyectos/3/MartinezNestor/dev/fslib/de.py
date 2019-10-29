@@ -8,3 +8,6 @@ class DirectoryEntry():
 		self.last_modif = last_modif
 		self.non_used_space = non_used_space
 		self.dir_entry_id = dir_entry_id
+
+	def update_cluster(self, cluster):
+		self.cluster = cluster
