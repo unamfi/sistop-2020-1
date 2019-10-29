@@ -178,7 +178,7 @@ class FIUNAMFS(object):
             else:
                 resultado = list(filter( lambda entdir: entdir.nombre == destino, self.__listaEntDir)) # Buscamos si hay algún archivo con el mismo nombre
                 if resultado:
-                    print('Ya existe un archivo con ese nombre en el directorio: %s' % destino)
+                    raise ArchExistError('Ya existe un archivo con ese nombre en el directorio: %s' % destino)
                     return False
                 
                 self.__listaEntDir = sorted(self.__listaEntDir, key=lambda ed: ed.cluster_inicial) # Ordenamos la lista de entradas con base en el cluster donde inician
@@ -415,3 +415,12 @@ class EntradaDir(object):
 #     def __init__(self, expression, message):
 #         self.expression = expression
 #         self.message = message
+
+class Error(Exception):
+    pass
+
+class ArchExistError(Error):
+    def __init__(self, message):
+        # self.expression = expression
+        self.message = message
+        
