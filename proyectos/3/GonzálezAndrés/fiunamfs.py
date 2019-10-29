@@ -34,7 +34,9 @@ class FIUNAMFS(object):
             self.desmontar()
 
     def montar(self):
-        """\"Monta\" la unidad, poniendo el archivo en ruta_img en memoria
+        """\"Monta\" la unidad, poniendo el archivo en ruta_img en memoria.
+        Inicializa los atributos del sistema de archivos que necesitaremos para \
+        las demás funciones.
         """
         if self.montado:   
             print(MSGADV_FS_YA_MONT)
@@ -196,7 +198,7 @@ class FIUNAMFS(object):
         if self.__listaEntDir:
             resultado = list(filter( lambda entdir: entdir.nombre == destino, self.__listaEntDir)) # Buscamos si hay algún archivo con el mismo nombre
             if resultado:
-                raise ArchExistError('Ya existe un archivo con ese nombre en el directorio: %s' % destino)
+                raise ArchExistError('Error: Ya existe un archivo con ese nombre en el directorio: %s' % destino)
 
             self.__listaEntDir = sorted(self.__listaEntDir, key=lambda ed: ed.cluster_inicial) # Ordenamos la lista de entradas con base en el cluster donde inician
             for i, ed_actual in enumerate(self.__listaEntDir): # ed_actual : entrada del directorio actual
@@ -239,9 +241,6 @@ class FIUNAMFS(object):
         if not resultado:
             print(MSGERR_ARCH_NO_ENC)
             return False
-
-        #nuevaListaEntDir = list(set(self.__listaEntDir) - set(resultado)) # Le restamos el valor que encontramos
-        #print(nuevaListaEntDir)
 
         entrDir = resultado.pop() # Obtenemos la entrada del directorio
         

@@ -53,3 +53,17 @@ Al confirmar la acción, la ventana principal nos muestra un mensaje de éxito y
 ![Descargar, paso 2](./screenshots/descargar2.png)
 
 ![Archivo descargado](./screenshots/descargar3.png)
+
+#### Desfragmentar la unidad
+
+Para desfragmentar la unidad basta con presionar el botón de Desfragmentar Unidad. Esto unirá los clusters que no estén contiguos, hasta tener la unidad desgragmentada por completo.
+
+Unidad antes de ser desfragmentada:
+
+![Unidad antes de ser desfragmentada](./screenshots/defragantes.png)
+
+Unidad desgragmentada:
+
+![Unidad desgragmentada](./screenshots/defragdespues.png)
+
+Aquí podemos notar que los clusters de inicio de los archivos blackburd5.jpg, blackbird7.jpg y mensaje0s.png fueron movidos.
