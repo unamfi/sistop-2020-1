@@ -89,7 +89,7 @@ int copFile(){
       fclose(fptr2);
       return 0;
 }
-//void rmFile(int argc, char* argv[]){
+void rmFile(int argc, char* argv[]){
 if(argc!=2 || argv[1]=="--help")
   {
     printf("\nusage: rm FileTodelete\n");
