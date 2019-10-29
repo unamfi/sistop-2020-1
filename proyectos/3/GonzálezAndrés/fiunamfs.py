@@ -20,6 +20,10 @@ def format_date(datestr : str):
     return '%4s/%2s/%2s %2s:%2s' % (datestr[0:4], datestr[4:6], datestr[6:8], datestr[8:10], datestr[10:12])
 
 class FIUNAMFS(object):
+    """Clase principal. Al instanciar un objeto de esta clase, requerimos \
+    la ruta en dónde se encuentra la imagen del sistema a utilizar.
+    Para poder utilizar sus funciones, requerimos "montar" la unidad.
+    """
     def __init__(self, ruta_img):
         self.ruta_img = ruta_img
         self.__listaEntDir = []
@@ -30,6 +34,8 @@ class FIUNAMFS(object):
             self.desmontar()
 
     def montar(self):
+        """\"Monta\" la unidad, poniendo el archivo en ruta_img en memoria
+        """
         if self.montado:   
             print(MSGADV_FS_YA_MONT)
             return True 
@@ -81,6 +87,8 @@ class FIUNAMFS(object):
                 return False
 
     def desmontar(self):
+        """Cierra los archivos en memoria
+        """
         if self.montado:
             self.__mmfs.close()
             self.__f.close()
@@ -90,15 +98,20 @@ class FIUNAMFS(object):
             print(MSGERR_NO_MONTADO)
 
     def listdir(self):
+        """Devuelve una lista ordenada con los nombres de los archivos en el directorio
+        """
         ldir = []
         if self.montado:
             for entradaDir in self.__listaEntDir:
                 ldir.append(entradaDir.nombre)
         else: 
             print(MSGERR_NO_MONTADO)
-        return ldir
+        return sorted(ldir)
     
     def scandir(self):
+        """Devuelve una lista de entradas del directorio en nuestro\
+        sistema de archivos.
+        """
         self.__listaEntDir = []
         if not self.montado:
             print(MSGERR_NO_MONTADO)
@@ -149,6 +162,11 @@ class FIUNAMFS(object):
             print('IOError: %s' % ioerr)            
     
     def subir(self, origen, destino=''):
+        """Copiar un archivo de nuestro sistema de archivos a FIUNAMFS
+        Atributos:
+            origen -- nombre del archivo a copiar
+            destino -- ruta y nombre del archivo de destino
+        """
         destino = destino.strip() # Le quitamos los caracteres en blanco al inicio y al final
         if not self.montado:
             print(MSGERR_NO_MONTADO)
@@ -327,13 +345,13 @@ class FIUNAMFS(object):
                 self.__listaEntDir.append(entDir) # Agregamos la entrada a la lista
                 return True
     
-    def formatear(self, version=0.8,
-                label='No Label', sector_size=512, sect_per_clust=4,
-                dir_clusters=4):
-        pass
+    # def formatear(self, version=0.8,
+    #             label='No Label', sector_size=512, sect_per_clust=4,
+    #             dir_clusters=4):
+    #     pass
     
-    def guardarimg(self, filename):
-        pass
+    # def guardarimg(self, filename):
+    #     pass
 
     @staticmethod
     def crearimg(filename, version=0.8,
@@ -394,6 +412,8 @@ class FIUNAMFS(object):
         return True
 
 class EntradaDir(object):
+    """Un objeto para abstraer una entrada del directorio en el sistema de archivos FIUNAMFS
+    """
     def __init__(self, nombre, tam_archivo, cluster_inicial, f_creacion = now(), f_modif = now(), direccion_ed = 0):
         self.nombre = nombre
         self.tam_archivo = tam_archivo
