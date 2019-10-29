@@ -22,3 +22,4 @@ Dentro del directorio [dev](https://github.com/nestorivanmo/sistop-2020-1/tree/p
 
 * mensajes.png
 
+![icon](images/disk.png)
