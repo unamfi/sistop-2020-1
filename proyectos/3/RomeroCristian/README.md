@@ -26,38 +26,38 @@ python3 main.py
 * Elimina Archivo
 * Desfragmentar
 
-## Lo que contenia fiunamfs.img
+## Lo que contenía fiunamfs.img
 
 * README.org
 
-[!con1](img/con1.png)
+![con1](img/con1.png)
 
 * logo.png
 
-[!con2](img/con2.png)
+![con2](img/con2.png)
 
 * mensajes.jpg
 
-[!con3](img/con3.png)
+![con3](img/con3.png)
 
 ## Notas:
 
-Para el archivo de prueba que se [[./fiunamfs.img][nos otorgo]] , este estaba para
-un sistema acoplado a 1024 en vez del que se nos pidio 512. se nota ya que se empieza
+Para el archivo de prueba que se [./fiunamfs.img][nos otorgo] , este estaba para
+un sistema acoplado a 1024 en vez del que se nos pidió 512. se nota ya que se empieza
 por el 400 hexadecimal en vez del 200 hexadecimal (Claro si es que no estoy ignorando algo).
-[!prueba](img/error_de_prueba_espanto.png)
+![prueba](img/error_de_prueba_espanto.png)
 
-Aunque aqui si en vez de Xx.xXx.xXx.xXx. de lo pedido es encuentra AQUI_NO_VA_NADA
-[!aqui](img/aqui_esxx.xx.png)
+Aunque aquí si en vez de Xx.xXx.xXx.xXx. de lo pedido es encuentra AQUI_NO_VA_NADA
+![aqui](img/aqui_esxx.xx.png)
 
 Pero bueno aplicando unos pequeños cambios para probar la operaciones, aqui va el
 ejemplo de la desfragmentación.
 
 Antes
-[!antes](img/antes.png)
+![antes](img/antes.png)
 
-Despues
-[!despues](img/despues.png)
+Después
+![despues](img/despues.png)
 
 
 Se anexa [algo.img][una imagen de prueba generada con los requerimientos]
