@@ -61,10 +61,21 @@ class FIUNAMFSExplorer:
 
         self.tree.grid(row = 5, column = 0, columnspan = 2) # Poniendo la tabla
 
-        # Botones descargar
+        # Botones descargar y eliminar
         ttk.Button(text = 'Eliminar', command = self.eliminar_archivo).grid(row = 6, column = 0, sticky = tk.W + tk.E)
         ttk.Button(text = 'Descargar', command = self.descargar_archivo).grid(row = 6, column = 1, sticky = tk.W + tk.E)
 
+        # Boton para desfragmentar
+        ttk.Button(text = 'Desfragmentar Unidad', command = self.desfragmentar_unidad).grid(row = 7, column = 0, columnspan = 2, sticky = tk.W + tk.E + tk.N + tk.S)
+
+        self.imprime_dir()
+
+    def desfragmentar_unidad(self):
+        self.message['fg'] = 'blue'
+        self.message['text'] = 'Desfragmentando unidad...'
+        self.fs.desfragmentar()
+        self.message['fg'] = 'green'
+        self.message['text'] = 'Unidad desgragmentada'
         self.imprime_dir()
     
     def subir_archivo(self):
