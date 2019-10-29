@@ -1,4 +1,5 @@
 """docstring"""
+import sys
 from fslib.de import DirectoryEntry
 from fslib.sb import SuperBlock
 from mmap import mmap
@@ -27,7 +28,8 @@ class FileManager():
     def read_fs(self):
         filename = 'fiunamfs.img'
         if not path.isfile(filename):
-            raise(IOError, 'No such file or directory:  \'%s\'' % filename)
+            print('No such file or directory:  \'%s\'' % filename)
+            sys.exit()
         file_system = open(filename, 'r+')
         data = mmap(file_system.fileno(), 0)
         file_system.close()
