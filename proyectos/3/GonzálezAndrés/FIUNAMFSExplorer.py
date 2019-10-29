@@ -18,9 +18,6 @@ class FIUNAMFSExplorer:
         self.window.title('FIUNAM Explorer')
         self.create_widgets()
 
-        # self.l_archivos = self.fs.listdir()
-        # print(l_archivos)
-
     def create_widgets(self):
         # Frame Container
         frame = tk.LabelFrame(self.window, text = 'Agregar archivos')
@@ -72,16 +69,30 @@ class FIUNAMFSExplorer:
     
     def subir_archivo(self):
         origen = self.entry_origen.get()
+        if not origen:
+            self.message['fg'] = 'red'
+            self.message['text'] = 'Escribe la ruta de origen'
+            return
         destino = self.entry_destino.get()
-        if self.fs.subir(origen, destino):
-            self.imprime_dir()
-            self.message['text'] = 'Archivo %s escrito satisfactoriamente' % destino
+        if not destino:
+            self.message['fg'] = 'red'
+            self.message['text'] = 'Escribe la ruta de destino'
+            return
+        try:
+            if self.fs.subir(origen, destino):
+                self.imprime_dir()
+                self.message['fg'] = 'green'
+                self.message['text'] = 'Archivo %s escrito satisfactoriamente' % destino
+        except Exception as e:
+            self.message['fg'] = 'red'
+            self.message['text'] = str(e)
 
     def eliminar_archivo(self):
         self.message['text'] = ''
         try:
             self.tree.item(self.tree.selection())['values'][0]
         except IndexError as e:
+            self.message['fg'] = 'red'
             self.message['text'] = 'Por favor, selecciona un archivo'
             return
         nombre = self.tree.item(self.tree.selection())['values'][1]
@@ -94,8 +105,8 @@ class FIUNAMFSExplorer:
         tk.Label(self.conf_del_win, text = ('¿Realmente desea eliminar \n%s?:' % nombre)).grid(row = 0, column = 0, columnspan=2)
 
         # Botones
-        tk.Button(self.conf_del_win, text = 'Cancelar', command = lambda : self.conf_del_win.destroy()).grid(row = 1, column = 0, sticky = tk.W + tk.E)
-        tk.Button(self.conf_del_win, text = 'Eliminar', command = lambda : self.eliminar_definitivo(nombre)).grid(row = 1, column = 1, sticky = tk.W + tk.E)
+        tk.Button(self.conf_del_win, text = 'Eliminar', command = lambda : self.eliminar_definitivo(nombre)).grid(row = 1, column = 0, sticky = tk.W + tk.E)
+        tk.Button(self.conf_del_win, text = 'Cancelar', command = self.conf_del_win.destroy).grid(row = 1, column = 1, sticky = tk.W + tk.E)
 
         # Posicion de la ventana de verificación        
         x = self.window.winfo_x()
@@ -109,15 +120,57 @@ class FIUNAMFSExplorer:
         self.fs.eliminar(nombre_archivo)
         self.conf_del_win.destroy()
         self.imprime_dir()
-        self.message['text'] = '%s eliminado' % nombre_archivo
+        self.message['fg'] = 'green'
+        self.message['text'] = '%s eliminado satisfactoriamente' % nombre_archivo
 
     def descargar_archivo(self):
         self.message['text'] = ''
         try:
             self.tree.item(self.tree.selection())['values'][0]
         except IndexError as e:
+            self.message['fg'] = 'red'
             self.message['text'] = 'Por favor, selecciona un archivo'
             return
+        
+        nombre = self.tree.item(self.tree.selection())['values'][1]
+
+        self.conf_descarga_win = tk.Toplevel() # Ventana de confirmación de eliminación
+        self.conf_descarga_win.title = 'Descargar archivo'
+        # Posicion de la ventana de verificación        
+        x = self.window.winfo_x()
+        y = self.window.winfo_y()
+        self.conf_descarga_win.geometry("%dx%d+%d+%d" % (300, 100, x + 100, y + 100))
+        
+        # Mensaje de verificación
+        tk.Label(self.conf_descarga_win, text = 'Ruta del archivo a escribir:').grid(row = 0, column = 0, columnspan=1)
+        self.entry_destino_descarga = tk.Entry(self.conf_descarga_win)
+        self.entry_destino_descarga.focus()
+        self.entry_destino_descarga.grid(row = 0, column = 1, columnspan=1)
+
+        # Mensajes de salida 
+        self.label_msj_pop = tk.Label(self.conf_descarga_win, text = '', fg = 'red')
+        self.label_msj_pop.grid(row = 1, column = 0, columnspan = 2, sticky = tk.W + tk.E)
+
+        # Boton
+        tk.Button(self.conf_descarga_win, text = 'Descargar', command = lambda : self.descargar_definitivo(nombre)).grid(row = 2, column = 0, columnspan=2)
+
+        self.conf_descarga_win.mainloop()
+
+    def descargar_definitivo(self, origen):
+        destino = self.entry_destino_descarga.get()
+        if not destino:
+            self.label_msj_pop['fg'] = 'red'
+            self.label_msj_pop['text'] = 'Escribe un nombre de archivo'
+        else:
+            try:
+                self.fs.descargar(origen, destino)
+                self.conf_descarga_win.destroy()
+                self.imprime_dir()
+                self.message['fg'] = 'green'
+                self.message['text'] = 'Se descargó el archivo %s satisfactoriamente' % destino
+            except Exception as e:
+                self.message['fg'] = 'red'
+                self.message['text'] = str(e)
 
     # Imprimir directorio
     def imprime_dir(self):

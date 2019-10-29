@@ -29,20 +29,23 @@ print(l_archivos)
 muestraTablaDir(fs.scandir())
 
 
-# fs.descargar('README.org', os.path.join('ArchivosDescargados', 'README.org'))
-# fs.descargar('logo.png', os.path.join('ArchivosDescargados', 'logo.png'))
-# fs.descargar('mensajes.png', os.path.join('ArchivosDescargados', 'mensajes.png'))
-# fs.descargar('blackbird.jpg', os.path.join('ArchivosDescargados', 'blackbird.jpg'))
+# fs.descargar('README.org', os.path.join('ArchivosDescargados', 'README2.org'))
+# fs.descargar('logo.png', os.path.join('ArchivosDescargados', 'logo2.png'))
+# fs.descargar('mensajes.png', os.path.join('ArchivosDescargados', 'mensajes2.png'))
+# fs.descargar('blackbird.jpg', os.path.join('ArchivosDescargados', 'blackbird2.jpg'))
 
 fs.subir(os.path.join('ArchivosParaSubir', 'blackbird.jpg'), 'blackbird.jpg')
 muestraTablaDir(fs.scandir())
 
 
-fs.eliminar('logo.png')
+# fs.eliminar('logo.png')
 fs.subir(os.path.join('ArchivosParaSubir', 'holis.txt'), 'holis.txt')
 fs.subir(os.path.join('ArchivosParaSubir', 'mundo.txt'), 'mundo.txt')
-
+fs.desfragmentar()
+# fs.descargar('mensajes.png', os.path.join('ArchivosDescargados', 'mensajes2.png'))
 muestraTablaDir(fs.scandir())
+
+
 
 # fs.subir('README.org', 'OtroMas')
 # fs.subir('README.org', 'OtroMas\na')
