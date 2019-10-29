@@ -11,3 +11,14 @@ class DirectoryEntry():
 
 	def update_cluster(self, cluster):
 		self.cluster = ('%05d' % cluster).encode()
+
+	def needed_clusters(self, cluster_size):
+		rde_size = int(self.size.decode())
+		rde_needed_clusters = rde_size // cluster_size
+		if rde_needed_clusters == 0:
+			rde_needed_clusters = 1 
+		else:
+			real_clusters = rde_size / cluster_size
+			if real_clusters % cluster_size != 0:
+				rde_needed_clusters += 1
+		return rde_needed_clusters
