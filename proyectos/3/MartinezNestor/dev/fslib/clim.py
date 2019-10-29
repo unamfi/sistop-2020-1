@@ -55,6 +55,8 @@ class CommandManager():
 			start_index = cluster * self.cluster_size
 			end_index = start_index + data_size
 			self.file_system[start_index:end_index] = data
+
+			self.__update_datac__(rdentry_cluster=cluster, rdentry_size=size)
 		else:
 			print("i: FiUnamFS/%s and %s are identical (not copied)." % (file,file))
 
@@ -159,6 +161,7 @@ class CommandManager():
 				dir_entry_id += 1
 
 				data = self.file_system[start_index:end_index]
+
 				dir_entry = self.f_m.direntry(data=data, dir_entry_id=dir_entry_id-1)
 
 				if dir_entry.name == self.rootdir_empty_entry.encode():
@@ -235,7 +238,6 @@ class CommandManager():
 					return i + self.first_data_cluster
 		else:
 			cluster = randint(self.first_data_cluster, int(self.super_block.num_clusters_unit))
-
 			clusters = []
 			_r = size / self.cluster_size
 			if _r > 1:
