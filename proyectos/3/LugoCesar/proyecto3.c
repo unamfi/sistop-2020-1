@@ -106,7 +106,7 @@ else
    }
 }
 
-//void defragment(Pool* pool)
+void defragment(Pool* pool)
 {
     if(pool && pool->root)
     {
