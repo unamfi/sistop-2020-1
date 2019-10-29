@@ -14,7 +14,7 @@ def lista():
 
 def main():
     arch = input("Escriba el nombre del archivo a montar"+v.point)
-    if not exists(arch):
+    if exists(arch):
         fs = Fiunamfs(arch)
     else:
         vol = input("Nombre del volumen"+v.point)
@@ -27,14 +27,13 @@ def main():
         elif opt == "2":
             arch_fs = input("Archivo de FS a copiar"+v.point)
             nombre_dest = input("Nombre a otorgar"+v.point)
-            if not self.copiar_FILESYS_a_eXFILESYS(arch_fs, nombre_dest):
+            if not fs.copiar_FILESYS_a_eXFILESYS(arch_fs, nombre_dest):
                 print("Error")
         elif opt == "3":
             op = input("\t¿Desea ver el contenido del directorio actual?[s/N]"+
                        v.point)
             if op != 's' or op != 'S':
                 lista()
-            else:
                 archivo = input("Nombre del archivo"+v.point)
                 if exists(archivo):
                     fs.copiar_eXFILESYS_a_FILESYS(archivo)
@@ -49,7 +48,7 @@ def main():
             fs.desfragmentar()
         elif opt == "q":
             print("Bye")
-            fs.exit=True
+            break
         else:
             print("Opcion invalida")
 

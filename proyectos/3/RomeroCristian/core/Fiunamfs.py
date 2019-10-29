@@ -8,13 +8,44 @@ from math import ceil
 
 
 class Fiunamfs:
-    ##  Este metodo inicializa un nuevo FILESYS creando su superbloque y llenando el indice de directorio
+
+    def __init__(self, raiz):
+        super(Fiunamfs, self).__init__()
+        self.raiz = raiz
+        self.void_entrada_dir = "Xx.xXx.xXx.xXx."
+        if os.path.isfile(self.raiz):
+            with open(self.raiz,"r+") as filesystem:
+                self.map = mmap.mmap(filesystem.fileno(), 0)
+                try:
+                    self.nombre_FILESYS = self.map[0:8].decode('ascii')
+                except:
+                    print("Sistema de archivos no valido")
+                    exit(1)
+                if self.nombre_FILESYS != 'FiUnamFS':
+                    print("Sistema de archivos no valido")
+                    exit(1)
+                self.version_FILESYS = self.map[10:13].decode('ascii')
+                self.etiqueta_vol = self.map[20:35].decode('ascii')
+                self.size_of_cluster_FILESYS = int(self.map[40:45].decode('ascii'))
+                self.num_of_cluster_dir_FILESYS = int(self.map[47:49].decode('ascii'))
+                self.num_of_cluster_total_FILESYS = int(self.map[52:60].decode('ascii'))
+                self.files = {}
+                tamanno_indir = 64
+                self.num_input_dir = int(self.size_of_cluster_FILESYS/\
+                                         tamanno_indir * \
+                                         self.num_of_cluster_dir_FILESYS)
+                self.inputs_dir = []
+            self.analizar_dir()
+        else:
+            exit(1)
+
     @staticmethod
     def crear_fs(raiz, nvol):
         if nvol == None:
             nvol = "NUEVO_VOL"
-            size_nvol = len(nvol)
-            sobrante_nvol = (35 - 20) - size_nvol if size_nvol < 35 - 20 else 0
+        size_nvol = len(nvol)
+        if size_nvol < 15:
+            sobrante_nvol = 15 - size_nvol
         with open(raiz,"w+") as f:
             f.write(("\x00"*(512*1440)))
             filesys = mmap.mmap(f.fileno(),0)
@@ -25,12 +56,12 @@ class Fiunamfs:
             filesys[47:49] = "04".encode('ascii')
             filesys[52:60] = "00001440".encode('ascii')
             for i in range(64):
-                FiUnamFS.escribir_indir(filesys,i)
+                Fiunamfs.escribir_indir(filesys,i)
             filesys[512*5:] = str("\x00"*(512*1435)).encode('ascii')
             f.close()
     
-    ## Este metodo escribe una entrada en el indice de directorio del FILESYS persistente
-    def escribir_indir(FILESYS, id,name_file="AQUI_NO_VA_NADA",size_file="",inicluster="",cdate="",mdate="",no_use=""):
+    def escribir_indir(self, FILESYS, id,name_file="Xx.xXx.xXx.xXx.",
+                       size_file="",inicluster="",cdate="",mdate="",no_use=""):
         byte = 512
         tamanno_indir = 64
         id = int(id)
@@ -52,63 +83,23 @@ class Fiunamfs:
             ("\x00"*(3 - len(str(no_use)))+str(no_use)).encode('ascii')
         return True
 
-
-
-
-
-    # Este metodo lee del FILESYS persistente el indice de directorio y lo asigna a memoria principal
     def analizar_dir(self):
         for input_dir in range(self.num_input_dir):
-            name_dir = self.map[512+(64*input_dir):512+
-                                (64*input_dir)+15].decode('ascii').replace(" ","")
-            tam_archivo = int(self.map[512+(64*input_dir)+
-                                       16:512+(64*input_dir)+24])
-            cluster_inicial = int(self.map[512+(64*input_dir)+
-                                           25:512+(64*input_dir)+30])
+            name_dir = self.map[512+(64*input_dir):512+(64*input_dir)+15].decode('ascii').replace(" ","")
+            a = 512+(64*input_dir)+16
+            b = 512+(64*input_dir)+24
+            tam_archivo = int(self.map[a:b])
+            cluster_inicial = int(self.map[512+(64*input_dir)+25:512+(64*input_dir)+30])
             fecha_creacion = int(self.map[512+(64*input_dir)+
                                           31:512+(64*input_dir)+45])
             fecha_modificacion = int(self.map[512+(64*input_dir)+
                                               46:512+(64*input_dir)+60])
-            # Crea diccionario que sera añadido al array del indice de directorio
             self.inputs_dir.append(dict(id=input_dir,name_dir=name_dir,
                                         size_file=tam_archivo,
                                         inicluster=cluster_inicial,
                                         file_creation = fecha_creacion,
                                         file_mod = fecha_modificacion))
-    # Inicializa el FILESYS y valida que sea un FILESYS valido
-    def __init__(self, raiz):
-        super(FiUnamFS, self).__init__()
-        self.raiz = raiz
-        self.void_entrada_dir = "AQUI_NO_VA_NADA"
-        # Valida que el FILESYS sea archivo valido para inicializar 
-        if os.path.isfile(self.raiz):
-            with open(self.raiz,"r+") as f:
-                self.map = mmap.mmap(f.fileno(),0)
-                try:
-                    self.nombre_FILESYS = self.map[0:8].decode('ascii')
-                except:
-                    print("el sistema de archivos no es valido")
-                    exit()
-                # Se valida que sea no sea otro FILESYS
-                if self.nombre_FILESYS != 'FiUnamFS':
-                    print("el sistema de archivos no es valido")
-                    exit()
-                # Añado datos del superbloque a variable
-                self.version_FILESYS = self.map[10:13].decode('ascii')
-                self.etiqueta_vol = self.map[20:35].decode('ascii')
-                self.size_of_cluster_FILESYS = int(self.map[40:45].decode('ascii'))
-                self.num_of_cluster_dir_FILESYS = int(self.map[47:49].decode('ascii'))
-                self.num_of_cluster_total_FILESYS = int(self.map[52:60].decode('ascii'))
-                self.files = {}
-                dcluster_byte=512
-                tamanno_indir = 64
-                # Se calcula el numero de entradas en directorio
-                self.num_input_dir = int(self.size_of_cluster_FILESYS/tamanno_indir * self.num_of_cluster_dir_FILESYS)
-                self.inputs_dir = []
-            self.analizar_dir()
-        else:
-            exit()
-    # Obtiene una lista de los indices que contiene un nombre pasado por argumento
+
     def get_index_dir(self,name,key_out='id'):
         try:
             lista = []
@@ -129,31 +120,28 @@ class Fiunamfs:
         except:
             return -1
     
-    # Escribe en el archivo persistente el indice del directorio que esta en memoria principal
     def write_index_dir(self):
         dcluster_byte=512
         tamanno_indir = 64
         for input_dir in self.inputs_dir:
-            FiUnamFS.escribir_indir(self.map,input_dir['id'],
+            self.escribir_indir(self.map,
+                                    input_dir['id'],
                                      input_dir['name_dir'],input_dir['size_file'],
                                      input_dir['inicluster'],
                                      input_dir['file_creation'],
                                      input_dir['file_mod'])
         return True
     
-     # Lista el contenido del FILESYS
     def listar_contenido(self):
         print("\033[36mNombre\t\033[35mCluster inicial\t\033[34mtamaño en" +
               "bytes\033[33m\tFecha Creacion\t\033[32m Fecha modificacion\033[0m")
         for input_dir in self.inputs_dir:
             if input_dir["name_dir"] != self.void_entrada_dir:
-                print("\033[31m{0}\t\033[32m{1}\t\033[33m{2\t\033[34m{3}\t" +
-                      "\033[35m{4}\033[0m".\
+                print("\033[36m{0}\t\033[35m{1}\t\033[34m{2}\t\033[33m{3}\t\033[32m{4}\033[0m".\
                       format(input_dir["name_dir"],input_dir['inicluster'],
                              input_dir['size_file'],input_dir['file_creation'],
                              input_dir['file_mod']))
     
-    # regresa los datos del archivo por su nombre
     def read(self,name):
         index = self.get_index_dir(name)
         if index != []:
@@ -164,7 +152,6 @@ class Fiunamfs:
             return self.map[self.size_of_cluster_FILESYS*inicluster:self.size_of_cluster_FILESYS*inicluster+size_file]
         return False
 
-    ### Escribe un nuevo archivo y escribe su entrada en el directorio
     def write(self,name,data,create_date):
         if name not in self.get_index_dir(name,'name_dir'):
             index = self.get_index_dir(self.void_entrada_dir)
@@ -195,24 +182,18 @@ class Fiunamfs:
             print("ya existe un archivo con el mismo nombre")
         return False
     
-    # Convierte una ruta absoluta y obtiene el nombre del archivo
     def parse_ruta_a_nombre_archivo(self,path):
         path = path.split("/")
         return path[len(path)-1]
 
-    #copia del FILESYS a un FILESYS externo
     def copiar_FILESYS_a_eXFILESYS(self,source,dest):
         data = self.read(source)
-        # valida que el destino no sea un directorio
-        # Es obligatorio asignar un nombre al archivo que sera copiado al sistema externo
         if not os.path.isdir(dest):
             with open(dest,"wb+") as f:
                 f.write(data)
                 return True
         return False
     
-    
-    #copia del FILESYS externo al FILESYS
     def copiar_eXFILESYS_a_FILESYS(self,source):
         if os.path.isfile(source):
             with open(source,"r+") as f:
@@ -245,11 +226,9 @@ class Fiunamfs:
             cluster_nuevo = cluster_inicial + tam_clusters
         return self.write_index_dir()
 
-    # Obtiene los datos binarios de una entrada en el FILESYS
     def get_data(self,cluster_inicial,size_bits):
         return self.map[self.size_of_cluster_FILESYS*cluster_inicial:self.size_of_cluster_FILESYS*cluster_inicial+size_bits]
     
-    # Escribe los datos a una entra den el FILESYS
     def set_data(self,cluster_inicial,size_bits,data):
         try:
             self.map[self.size_of_cluster_FILESYS*cluster_inicial:self.size_of_cluster_FILESYS*cluster_inicial+size_bits] = data
@@ -258,26 +237,20 @@ class Fiunamfs:
             print(e)
             return False
     
-    # Obtiene el cluster final de una entrada en el directorio
     def get_cluster_final(self,input_dir):
         tam = ceil(input_dir['size_file']/512) + 1
         return input_dir['inicluster'] + tam
 
-    # Obtiene una lista de numeros por medio de un numero inicial y final
-    # Este metodo es usado para "mapear" numero de clusters
     def get_list_range(self,init,end):
         lista = []
         for i in range(init,end+1):
             lista.append(i)
         return lista
-    # Convierte un timestamp a una cadena con el formato del FILESYS
-    def time_to_formatFILESYS(self,time):
-        date_time = datetime.datetime.fromtimestamp(time)
+
+    def time_to_formatFILESYS(self, time):
+        date_time = datetime.fromtimestamp(time)
         return date_time.strftime("%Y%m%d%H%M%S")
 
-    # Elimina una entrada del indice de directorios dejandola libre
-    # No elimina datos pero al no estar mapeados en el indice se consideran basura
-    # Al final se desfragmenta de manera implicita
     def elimina(self,name):
         index = self.get_index_dir(name)
         if index != []:
@@ -285,7 +258,7 @@ class Fiunamfs:
             input_dir = self.inputs_dir[index]
             inicluster = input_dir['inicluster']
             size_file =  input_dir['size_file']
-            self.inputs_dir[index]['name_dir'] = "AQUI_NO_VA_NADA"
+            self.inputs_dir[index]['name_dir'] = "Xx.xXx.xXx.xXx."
             self.inputs_dir[index]['size_file'] = "0"
             self.inputs_dir[index]['inicluster'] = "0"
             self.inputs_dir[index]['file_creation'] = "0"
