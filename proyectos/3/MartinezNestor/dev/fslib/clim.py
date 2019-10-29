@@ -11,9 +11,9 @@ class CommandManager():
 
 	root_dir = []
 	root_dir_entry_size = 64
-	root_dir_empty_entry = "Xx.xXx.xXx.xXx."
+	rootdir_empty_entry = "Xx.xXx.xXx.xXx."
 
-	available_dir_entries = []
+	unused_dir_entries = []
 	occupied_data_clusters = {}
 	
 	def __init__(self):
@@ -24,20 +24,20 @@ class CommandManager():
 		self.root_dir_clusters = int(self.super_block.num_clusters_dir)
 		self.first_data_cluster = self.root_dir_clusters + 1
 		
-		(self.root_dir, self.available_dir_entries) = self.get_dir_entries()
+		(self.root_dir, self.unused_dir_entries) = self.__readdir__()
 
 	def ls_(self):	
 		self.__print__root(dir=self.root_dir)
 
 	def cpi(self, file):
-		if self.search(file) is None:
+		if self.__search__(file) is None:
 			data = open(file,'rb').read()
 			data_size = len(data)
-			dir_entry_id = self.available_dir_entries.pop(0)
+			dir_entry_id = self.unused_dir_entries.pop(0)
 
 			name = file
 			size = data_size
-			cluster = self.get_next_cluster(size)
+			cluster = self.__nxtcluster__(size)
 
 			ctime = os.path.getmtime(file)
 			mtime = os.path.getmtime(file)
@@ -59,7 +59,7 @@ class CommandManager():
 			print("i: FiUnamFS/%s and %s are identical (not copied)." % (file,file))
 
 	def cpo(self, file):
-		file_to_copy = self.search(file)		
+		file_to_copy = self.__search__(file)		
 		exists_in_current_dir = False
 		cpodir_name = 'cpo_files'
 		cpodir = './%s' %cpodir_name
@@ -91,16 +91,16 @@ class CommandManager():
 				newfile.close()
 
 	def rm(self, file):
-		f = self.search(file)
+		f = self.__search__(file)
 		if f is None:
 			print('r: %s: No such file or directory' % file)
 		else:
 			dir_entry_id = f.dir_entry_id
-			self.available_dir_entries.append(dir_entry_id)
+			self.unused_dir_entries.append(dir_entry_id)
 			start_index = int(f.cluster.decode()) * self.cluster_size
 			end_index = start_index + int(f.size.decode())
 			index = self.cluster_size + (dir_entry_id * self.root_dir_entry_size)
-			self.file_system[index:index+15] = ('%15s' % self.root_dir_empty_entry).encode()
+			self.file_system[index:index+15] = ('%15s' % self.rootdir_empty_entry).encode()
 			self.file_system[index+16:index+24] = ('%08d' % 0).encode()
 			self.file_system[index+25:index+30] = ('%05d' % 0).encode()
 			self.file_system[index+31:index+45] = ('%014d' % 0).encode()
@@ -113,72 +113,146 @@ class CommandManager():
 		self.track()
 		print("\nNew dir distribution\n")
 
-		ocd = sorted(self.occupied_data_clusters.keys())
-		nxt_avcluster = self.nxt_avcluster(ocd)
-		print(nxt_avcluster)
+		odc = sorted(self.occupied_data_clusters.keys())
+		nxtcluster = self.__nxtcluster__(random=True, odc=odc)
 
-		self.track()
+		# self.track()
 
 	def track(self):
 		self.__print__root(dir=self.root_dir, track=True)
 
-	def get_dir_entries(self, only_root=False, data_clusters=False):
+
+	"""
+		Protected functions
+
+	"""
+
+	def __readdir__(self, only_root=False, update_dc=False):
+		"""
+			__readdir__ 
+
+				only_root: Bool
+					flag to return only the root dir entries 
+
+				update_dc: Bool
+					flag that makes __readdir__ returns nothing.
+					This flag is used to update the data clusters.
+
+				-> dir_entries: <List>
+					list of the current entries on FiUnamFS's root dir.
+								
+				-> unused_dir_entries: <List>
+					list of the unused entries on FiUnamFS's root dir.
+
+			Reads through FiUnamFS's root dir clusters (1-4 version 0.7) 
+			in order to get the entries of the root dir and the unused
+			dir entries.
+		"""
 		dir_entries = []
-		av_dir_entries = []
+		unused_dir_entries = []
+
 		for cluster in range(self.root_dir_clusters):
-			_c = 0
-			for entry in range(0,self.cluster_size,64):
-				_a = ((cluster+1)*self.cluster_size) + (_c*64)
-				_b = _a + 64
-				_c += 1
-				dir_entry_data = self.file_system[_a:_b]
-				file = self.f_m.get_de(data=dir_entry_data, dir_entry_id=_c-1)
-				if file.name == self.root_dir_empty_entry.encode():
-					av_dir_entries.append(_c-1)
+			dir_entry_id = 0
+			for _ in range(0,self.cluster_size,64):
+				start_index = ((cluster+1)*self.cluster_size) + (dir_entry_id*64)
+				end_index = start_index + 64
+				dir_entry_id += 1
+
+				data = self.file_system[start_index:end_index]
+				dir_entry = self.f_m.direntry(data=data, dir_entry_id=dir_entry_id-1)
+
+				if dir_entry.name == self.rootdir_empty_entry.encode():
+					unused_dir_entries.append(dir_entry_id-1)
 				else:
-					self.pop_odc(int(file.cluster), int(file.size.decode()))
-					dir_entries.append(file)
+					rde_cluster = int(dir_entry.cluster)
+					rde_size = int(dir_entry.size.decode())
+
+					self.__update_datac__(rdentry_cluster=rde_cluster, rdentry_size=rde_size)
+					dir_entries.append(dir_entry)
+
 		if only_root:
 			return dir_entries
-		elif data_clusters:
+		elif update_dc:
 			return None
+		return (dir_entries, unused_dir_entries)
+
+	def __update_datac__(self, rdentry_cluster, rdentry_size):
+		"""
+			__update_datac__
+
+				rdentry_cluster: Int 
+					root dir entry initial cluster
+
+				rdentry_size: Int
+					root dir entry file size
+
+			Updates occupied data cluster dictionary. If a
+			root dir entry has a value of 'c' as it's inital
+			data cluster and a value of 's' as it's file size,
+			then, this function updates the occupied data 
+			cluster dictionary to add the necesary keys (each
+			key in the dictionary represents a cluser) that the
+			root dir entry needs to occupy the necessary 'n' 
+			clusters determined by it's size 's'.
+
+		"""
+		needed_clusters = rdentry_size // self.cluster_size
+		for i in range(needed_clusters):
+			self.occupied_data_clusters[rdentry_cluster+i] = self.cluster_size
+
+		remaning_bytes = rdentry_size - (needed_clusters * self.cluster_size)
+		if remaning_bytes > 0:			
+			self.occupied_data_clusters[rdentry_cluster + needed_clusters] = remaning_bytes
+		
+
+	def __nxtcluster__(self, size=0, random=False, odc=None):
+		"""
+			__nxtcluster__
+
+				size: Int
+					Size of an 'f' file.
+
+				random: Bool
+					Flag to indicate if the returned cluster should be a 
+					random integer withing the superblock's data clusters.
+
+				odc: <List>
+					List of the occupied data clusters.
+
+				-> cluster: Int
+					Available data cluster. 
+
+
+			Returns an available data cluster based on the current list 
+			of the occupied data clusters and the file size.
+
+		"""
+		self.__readdir__(update_dc=True)
+
+		if size == 0 and random and odc is not None:
+			for i in range(1, len(odc) - 1):
+				if odc[i] - odc[i-1] > 1:				
+					return i + self.first_data_cluster
 		else:
-			return (dir_entries, av_dir_entries)
+			cluster = randint(self.first_data_cluster, int(self.super_block.num_clusters_unit))
 
-	def get_next_cluster(self, bytes, random=False):
-		self.get_dir_entries(data_clusters=True)
-		cluster = randint(self.first_data_cluster, int(self.super_block.num_clusters_unit))
+			clusters = []
+			_r = size / self.cluster_size
+			if _r > 1:
+				_r = size // self.cluster_size
+				for i in range(_r+1):
+					clusters.append(i)
+			elif _r == 1:
+				clusters.append(0)
 
-		clusters = []
-		_r = bytes / self.cluster_size
-		if _r > 1:
-			_r = bytes // self.cluster_size
-			for i in range(_r+1):
-				clusters.append(i)
-		elif _r == 1:
-			clusters.append(0)
+			for _c in clusters:
+				while (cluster+_c) in self.occupied_data_clusters.keys():
+					cluster = randint(self.first_data_cluster, int(self.super_block.num_clusters_unit))
+			return cluster
 
-		for c in clusters:
-			while (cluster+c) in self.occupied_data_clusters.keys():
-				cluster = randint(self.first_data_cluster, int(self.super_block.num_clusters_unit))
-		return cluster
-
-	def nxt_avcluster(self, ocd):
-		for i in range(1,len(ocd) - 1):
-			if ocd[i] - ocd[i-1] > 1:				
-				return i + self.first_data_cluster
-
-	def pop_odc(self, cluster, bytes):
-		_r = bytes // self.cluster_size
-		_s = bytes - (_r * self.cluster_size)
-		if _s > 0:			
-			self.occupied_data_clusters[cluster + _r] = _s
-		for i in range(_r):
-			self.occupied_data_clusters[cluster+i] = self.cluster_size
-
-	def search(self, file):
+	def __search__(self, file):
 		if self.root_dir == []:
-			(self.root_dir, self.available_dir_entries, self.occupied_data_clusters) = self.get_dir_entries()		
+			(self.root_dir, self.unused_dir_entries, self.occupied_data_clusters) = self.__readdir__()		
 		for f in self.root_dir:
 			if f.name.decode().strip() == file:
 				return f
@@ -190,7 +264,4 @@ class CommandManager():
 				print("%s \tcluster: %d \tsize: %d bytes" %(file.name.decode(), int(file.cluster.decode()), int(file.size.decode())))
 			else:
 				print("%s" %(file.name.decode()))
-
-	def move(self, file, dest_byte):
-		pass
 

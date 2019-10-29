@@ -41,7 +41,7 @@ class FileManager():
     	if self.super_block is not None:
     		return self.read_fs()
 
-    def get_de(self, data, dir_entry_id):
+    def direntry(self, data, dir_entry_id):
         name = data[0:15]
         size = data[16:24]
         cluster = data[25:30]
