@@ -1,7 +1,7 @@
 #include <dirent.h>
 #include <stdio.h>
 /* La verdad no estoy seguro de lo que estaba haciendo, creo que el codigo
-no se acerca a la solucion pero no se me ocurrio nada más :'('*/
+no se acerca a la solucion pero no se me ocurrio nada más :'(*/
 
 //int int main(void) {
 
