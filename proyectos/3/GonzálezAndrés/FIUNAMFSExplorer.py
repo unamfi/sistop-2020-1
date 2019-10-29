@@ -9,7 +9,7 @@ HEADINGS = ['Cluster', 'Nombre', 'Tamaño (bytes)', 'Fecha Creación', 'Fecha Mo
 class FIUNAMFSExplorer:
     def __init__(self, window=None):
         # Montar sistema de archivos
-        fsimg_path = os.path.join('.', 'fiunamfs v0.8.img')
+        fsimg_path = os.path.join('.', 'fiunamfs.img')
         self.fs = FIUNAMFS(fsimg_path)
         self.fs.montar()
         # self.lEntDir = self.fs.scandir()

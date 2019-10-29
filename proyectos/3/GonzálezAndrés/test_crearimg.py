@@ -3,10 +3,10 @@ from fiunamfs import FIUNAMFS, EntradaDir, format_date
 from tabulate import tabulate
 import math
 
-fsimg_path = os.path.join('.', 'fiunamfs backup.img')
-FIUNAMFS.crearimg(filename = fsimg_path, label='Backup')
+# fsimg_path = os.path.join('.', 'fiunamfs backup.img')
+# FIUNAMFS.crearimg(filename = fsimg_path, label='Backup')
 
-fsimg_path = os.path.join('.', 'fiunamfs v0.8.img')
+fsimg_path = os.path.join('.', 'fiunamfs.img')
 FIUNAMFS.crearimg(filename = fsimg_path, label='Andres')
 
 fs = FIUNAMFS(fsimg_path)
