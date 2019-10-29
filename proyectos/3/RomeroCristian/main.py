@@ -16,7 +16,7 @@ def main():
     arch = input("Escriba el nombre del archivo a montar"+v.point)
     if not exists(arch):
         fs = Fiunamfs(arch)
-    else Fiunamfs.crear_fs:
+    else:
         vol = input("Nombre del volumen"+v.point)
         fs = Fiunamfs.crear_fs(arch, vol)
     while True:
@@ -53,3 +53,6 @@ def main():
         else:
             print("Opcion invalida")
 
+
+if __name__ == "__main__":
+    main()

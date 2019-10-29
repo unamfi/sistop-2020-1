@@ -7,7 +7,7 @@ from datetime import datetime
 from math import ceil
 
 
-class FiUnamFS:
+class Fiunamfs:
     ##  Este metodo inicializa un nuevo FILESYS creando su superbloque y llenando el indice de directorio
     @staticmethod
     def crear_fs(raiz, nvol):
@@ -134,7 +134,11 @@ class FiUnamFS:
         dcluster_byte=512
         tamanno_indir = 64
         for input_dir in self.inputs_dir:
-            FiUnamFS.escribir`_indir(self.map,input_dir['id'],input_dir['name_dir'],input_dir['size_file'],input_dir['inicluster'],input_dir['file_creation'],input_dir['file_mod'])
+            FiUnamFS.escribir_indir(self.map,input_dir['id'],
+                                     input_dir['name_dir'],input_dir['size_file'],
+                                     input_dir['inicluster'],
+                                     input_dir['file_creation'],
+                                     input_dir['file_mod'])
         return True
     
      # Lista el contenido del FILESYS
