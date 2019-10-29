@@ -12,6 +12,11 @@
 #include <cmath>
 #include <cstdlib>
 
+//Funcion que extrae el tamanio en
+//bytes dek archivo a extraer del encabezado
+//char *m_head: arreglo del encabezado
+//const unsigned short pos = 16: posicion relativa donde esta la data
+//const unsigned short n_tam = 8: tamanio del
 size_t extractSize(char *m_head, const unsigned short pos = 16, const unsigned short n_tam = 8)
 {
 	size_t num_bytes{ 0 };
@@ -21,14 +26,18 @@ size_t extractSize(char *m_head, const unsigned short pos = 16, const unsigned s
 		char loc = m_head[i];
 		num_bytes += std::atoi(&loc) * t;
 
-//		std::cout << std::endl <<"\tb: " << std::setw(10) << num_bytes << "\tsizeb: " << std::setw(5) << m_head[i] << "\tt: " << std::setw(10) << t;
-
 		t /= 10;
 	}
 
 	return num_bytes;
 }
 
+//Funcion que compacta el arreglo del nombre
+//en base al retorno de cleanName() obtenemos
+//la nueva longitud del nombre
+//char *m_nom_s: aqui va el nombre compacto
+//char *m_nom: aqui entra el nombre anterior
+//const unsigned short new_num: el nuevo numero de caracteres deseados
 void compactName(char *m_nom_s, char *m_nom, const unsigned short new_num)
 {
 	for(size_t f{ 0 }; f < new_num; ++f)
@@ -37,6 +46,12 @@ void compactName(char *m_nom_s, char *m_nom, const unsigned short new_num)
 	}
 }
 
+//Funcion que limpia el arreglo del nombre,
+//como cuando lo leemos viene precedido de espacios,
+//hay que reordenarlo, mover el nombre hasta el principio
+//char *m_nom: arreglo que contiene el nombre
+//const unsigned short n_nom = 15: El tamanio maximo del nombre en bytes
+//retorna el numero de caracteres que no son espacios vacios.
 size_t cleanName(char *m_nom, const unsigned short n_nom = 15)
 {
 	size_t k{ 0 };
@@ -66,7 +81,11 @@ size_t cleanName(char *m_nom, const unsigned short n_nom = 15)
 	return n_nom - k;
 }
 
-void extractName(char *head, char *m_nom, const unsigned short n_dir = 64, const unsigned short n_nom = 15)
+//Funcion que lee el nombre del archivo de la cabeza
+//char *head: El arreglo de la cabeza
+//char *m_nom: El arreglo donde vamos a guardar el nombre
+//const unsigned short n_nom = 15: El tamanio maximo del nombre en bytes
+void extractName(char *head, char *m_nom, const unsigned short n_nom = 15)
 {
 	if(head != nullptr && m_nom != nullptr)
 	{
@@ -77,36 +96,39 @@ void extractName(char *head, char *m_nom, const unsigned short n_dir = 64, const
 	}
 }
 
+//Funcion que lee el encabezado,
+//std::ifstream *m_archiv: es un apuntador al archivo que contiene el sistema de archivos
+//char *head: en donde guardaremos el encabezado
+//const unsigned short n_dir = 64: tamanio del encabezado en bytes
+//const unsigned short n_pos = 1024: tamanio del offset absoluto del sistema de archivos en bytes
 void readHead(std::ifstream *m_archiv, char *head, const unsigned short n_dir = 64, const unsigned short n_pos = 1024)
 {
-	if(m_archiv->is_open())
+	if(m_archiv->is_open())							//Solo si el archivo esta abierto
 	{
-		m_archiv->seekg(n_pos, std::ios::beg);
-		m_archiv->read(head, n_dir);
-		m_archiv->seekg(0, std::ios::beg);
+		m_archiv->seekg(n_pos, std::ios::beg);		//nos ubicamos en la posicion correcta
+		m_archiv->read(head, n_dir);				//leemos
+		m_archiv->seekg(0, std::ios::beg);			//regresamos la posicion al inicio
 	}
 }
 
 int main(int argc, char* argv[])
 {
 	const unsigned short num_mag{ 8 };			//tamanio del numero magico
-	const unsigned short num_tam{ num_mag };	//tamanio del numero de bytes_f del archivo
 	const unsigned short num_nom{ 15 };			//tamanio del nombre del archivo
 	const unsigned short dir{ 64 };				//cada directorio mide 64 bytes_f
-	const unsigned short pos{ 1024 };
-	const std::string mag_def{ "FiUnamFS" };
-	std::string mag;
-	std::string fname{ "res/fiunamfs.img" };
-	std::ifstream archiv;
-	std::ofstream archiv_out;
+	const unsigned short pos{ 1024 };			//posicion absoluta donde inicia el encabezado
+	const unsigned short offset{ 5120 };		//fin del superbloque y el encabezado
+	const std::string mag_def{ "FiUnamFS" };	//numero magico esperado
+	std::string mag;							//numero magico leido
+	std::string fname{ "res/fiunamfs.img" };	//nombre y ubicacion default del sistema de archivos
+	std::ifstream archiv;						//archivo de entrada que contiene el sistema de archivos
+	std::ofstream archiv_out;					//archivo para las salidas
 
 	size_t tam{ 0 };							//tamanio total del sistema de archivos
-	//size_t tam_out{ 0 };
-	char tmp[num_mag];
-	char nom[num_nom];
-	char nom_2[num_nom];
-	char sizeb[num_tam];
-	char cabeza[dir];
+
+	char tmp[num_mag];							//arreglo para leer el numero magico
+	char nom_2[num_nom];						//arreglo para leer el nombre del archivo dentro del sistema de archivos
+	char cabeza[dir];							//arreglo para leer el encabezado
 
 	if(argc > 1)
 	{
@@ -176,7 +198,7 @@ int main(int argc, char* argv[])
 		return 2;
 	}
 
-	archiv.seekg(5120, std::ios::beg);
+	archiv.seekg(offset, std::ios::beg);
 
 	archiv.read(out_d, bytes_archiv_out);
 
