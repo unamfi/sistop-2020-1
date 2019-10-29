@@ -150,6 +150,10 @@ class FIUNAMFS(object):
     
     def subir(self, origen, destino=''):
         destino = destino.strip() # Le quitamos los caracteres en blanco al inicio y al final
+        if not self.montado:
+            print(MSGERR_NO_MONTADO)
+            return False
+
         if not destino:
             destino = origen # Si no se nombre de archivo de destino, usamos el de origen
 
@@ -158,9 +162,6 @@ class FIUNAMFS(object):
             # print('Nombre ingresado: %s' % destino)
             return False
 
-        if not self.montado:
-            print(MSGERR_NO_MONTADO)
-            return False
         # try:
         f = open(origen, 'rb') # Abrimos el archivo en modo lectura
         bytes_archivo = f.read()
@@ -170,7 +171,6 @@ class FIUNAMFS(object):
         f.close()
 
         # Ahora revisaré si hay espacio en disco y dónde iniciaremos a grabar el archivo
-        # cluster_inicial = self.clusters_totales - 1
         cluster_inicial = self.cluster_inicio_datos # Iniciamos en el primer cluster de datos
         clusters_libres = self.clusters_datos # Suponemos que tenemos todo el espacio
         clusters_usados = 0 # Al inicio suponemos que no hay archivos ocupando el cluster
@@ -182,11 +182,8 @@ class FIUNAMFS(object):
 
             self.__listaEntDir = sorted(self.__listaEntDir, key=lambda ed: ed.cluster_inicial) # Ordenamos la lista de entradas con base en el cluster donde inician
             for i, ed_actual in enumerate(self.__listaEntDir): # ed_actual : entrada del directorio actual
-                # delta_clusters = ed_actual.cluster_inicial - cluster_inicial # vemos cuántos clusters hay entre entrada de directorio y entrada de directorio
-                # clusters_libres = delta_clusters - clusters_usados # Vemos cuantos clusters tenemos disponibles para escribir
-                # delta_clusters = ed_actual.cluster_inicial - cluster_inicial # vemos cuántos clusters hay entre entrada de directorio y entrada de directorio
                 clusters_libres = ed_actual.cluster_inicial - cluster_inicial # Vemos cuantos clusters tenemos disponibles para escribir
-                print('Cluster inicial = % i, Clusters usados = %i, Clusters libres = %i' % (cluster_inicial, clusters_usados, clusters_libres))
+                # print('Cluster inicial = % i, Clusters usados = %i, Clusters libres = %i' % (cluster_inicial, clusters_usados, clusters_libres))
                 if clusters_libres > clusters_requeridos: # Si hay espacio...
                     break # Rompemos el ciclo                    
                 clusters_usados = math.ceil(ed_actual.tam_archivo / self.tam_cluster) # En caso contrario, actualizamos el número de clusters usados
@@ -246,42 +243,50 @@ class FIUNAMFS(object):
         return True
 
     def desfragmentar(self):
+        if not self.montado:
+            print(MSGERR_NO_MONTADO)
+            return False
+
         arch_movidos = 0 # Contador para indicar los archivos que fueron movidos durante la desfragmentación
-        self.__listaEntDir = sorted(self.__listaEntDir, key=lambda ed: ed.cluster_inicial) # Ordenamos la lista de entradas con base en el cluster donde inician
-        for i, ed_actual in enumerate(self.__listaEntDir): # ed_actual : entrada del directorio actual
-            clusters_usados = math.ceil(ed_actual.tam_archivo / self.tam_cluster) # Clusters usados por el archivo i-ésimo
-            try:
-                ed_sig = self.__listaEntDir[i+1] # ed_sig : entrada del directorio siguiente
-                delta_clusters = ed_sig.cluster_inicial - ed_actual.cluster_inicial # vemos cuántos clusters hay entre entrada de directorio y entrada de directorio
-                clusters_libres = delta_clusters - clusters_usados
-                
-                if clusters_libres > 1: # Si hay espacio entre clusters
-                    print('Hay espacio entre archivos, moviendo %s...' % ed_sig.nombre)
-                    
-                    dir_in_antigua = ed_sig.cluster_inicial * self.tam_cluster # Dirección donde inician sus datos
-                    dir_fin_antigua = dir_in_antigua + ed_sig.tam_archivo # Dirección de fin                    
+        if self.__listaEntDir:
+            cluster_inicial = self.cluster_inicio_datos # Iniciamos en el primer cluster de datos
+            clusters_libres = self.clusters_datos # Suponemos que tenemos todo el espacio
+            clusters_usados = 0 # Al inicio suponemos que no hay archivos ocupando el cluster
+            #dir_in_antigua = cluster_inicial * self.tam_cluster
+
+            self.__listaEntDir = sorted(self.__listaEntDir, key=lambda ed: ed.cluster_inicial) # Ordenamos la lista de entradas con base en el cluster donde inician
+
+            for i, ed_actual in enumerate(self.__listaEntDir): # ed_actual : entrada del directorio actual
+                clusters_libres = ed_actual.cluster_inicial - cluster_inicial # Vemos cuantos clusters tenemos disponibles para escribir
+                # print('Cluster inicial = % i, Clusters usados = %i, Clusters libres = %i' % (cluster_inicial, clusters_usados, clusters_libres))
+                if clusters_libres > 0: # Si hay espacio entre clusters...
+                    # print('Hay espacio entre archivos, moviendo %s...' % ed_actual.nombre)
+
+                    dir_in_antigua = ed_actual.cluster_inicial * self.tam_cluster # Dirección donde inician sus datos
+                    dir_fin_antigua = dir_in_antigua + ed_actual.tam_archivo # Dirección de fin                    
                     datos_por_mover = self.__mmfs[dir_in_antigua : dir_fin_antigua] # Guardar los datos del archivo
                     
-                    cluster_in_nuevo = ed_actual.cluster_inicial + clusters_usados # Marcamos el cluster de inicio
+                    cluster_in_nuevo = cluster_inicial + clusters_usados # Marcamos el cluster de inicio
                     dir_in_nueva = cluster_in_nuevo * self.tam_cluster # Dirección donde iniciarán los datos
-                    dir_fin_nueva = dir_in_nueva + ed_sig.tam_archivo # Dirección nueva de fin
+                    dir_fin_nueva = dir_in_nueva + ed_actual.tam_archivo # Dirección nueva de fin
 
-                    print('Clusters libres %i, Cluster anterior: %i, Cluster nuevo: %i' % (clusters_libres, ed_sig.cluster_inicial, cluster_in_nuevo))
-                    print('Dirección anterior: %i, Dirección nueva: %i' % (dir_in_antigua, dir_in_nueva))
-                    print('Tamaño de datos antiguos: %i , Tamaño de datos por mover: %i\n' % 
-                                (len(self.__mmfs[dir_in_nueva : dir_fin_nueva]),
-                                 len(datos_por_mover)))
+                    # print('Clusters libres %i, Cluster anterior: %i, Cluster nuevo: %i' % (clusters_libres, ed_actual.cluster_inicial, cluster_in_nuevo))
+                    # print('Dirección anterior: %i, Dirección nueva: %i' % (dir_in_antigua, dir_in_nueva))
+                    # print('Tamaño de datos antiguos: %i , Tamaño de datos por mover: %i\n' % 
+                    #             (len(self.__mmfs[dir_in_nueva : dir_fin_nueva]),
+                    #             len(datos_por_mover)))
 
-                    self.__listaEntDir[i+1].cluster_inicial = cluster_in_nuevo # Le actualizamos su cluster de inicio
+                    ed_actual.cluster_inicial = cluster_in_nuevo # Le actualizamos su cluster de inicio
+                    self.__mmfs[ed_actual.direccion_ed + 25 : ed_actual.direccion_ed + 30] = ('%05s' % ed_actual.cluster_inicial).encode('ascii') # Actualizo la entrada del directorio
                     self.__mmfs[dir_in_nueva : dir_fin_nueva] = datos_por_mover # Movemos sus datos
                     self.__mmfs.flush()
-
-                    # print('Nuevo cluster en lista: %i' % self.__listaEntDir[i+1].cluster_inicial)
-
                     arch_movidos += 1
-            except IndexError:
-                print('Desfragmentación terminada, %i archivos movidos.' % arch_movidos)
-                return arch_movidos>0
+
+                clusters_usados = math.ceil(ed_actual.tam_archivo / self.tam_cluster) # En caso contrario, actualizamos el número de clusters usados
+                cluster_inicial = ed_actual.cluster_inicial+clusters_usados # y actualizamos el cluster de inicio
+
+        print('Desfragmentación terminada, %i archivos movidos.' % arch_movidos)
+        return arch_movidos>0
 
     def agregarEntDir(self, entDir, datos):
         """Agrega una EntradaDir al directorio de FIUNAMFS
