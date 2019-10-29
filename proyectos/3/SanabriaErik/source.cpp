@@ -12,9 +12,29 @@
 #include <cmath>
 #include <cstdlib>
 
-void compactName(char *m_nom_s, char *m_nom, const unsigned short new_num, const unsigned short n_nom = 15)
+size_t extractSize(char *m_head, const unsigned short pos = 16, const unsigned short n_tam = 8)
 {
+	size_t num_bytes{ 0 };
 
+	for(size_t i{ pos }, t{ static_cast<size_t>(std::pow(10.0f, n_tam - 1)) }; i < (pos + n_tam); ++i)
+	{
+		char loc = m_head[i];
+		num_bytes += std::atoi(&loc) * t;
+
+//		std::cout << std::endl <<"\tb: " << std::setw(10) << num_bytes << "\tsizeb: " << std::setw(5) << m_head[i] << "\tt: " << std::setw(10) << t;
+
+		t /= 10;
+	}
+
+	return num_bytes;
+}
+
+void compactName(char *m_nom_s, char *m_nom, const unsigned short new_num)
+{
+	for(size_t f{ 0 }; f < new_num; ++f)
+	{
+		m_nom_s[f] = m_nom[f];
+	}
 }
 
 size_t cleanName(char *m_nom, const unsigned short n_nom = 15)
@@ -37,8 +57,6 @@ size_t cleanName(char *m_nom, const unsigned short n_nom = 15)
 				{
 					m_nom[h] = 0x20;
 				}
-
-//				std::cout << std::endl << "\tnom[" <<  std::setw(3) << h << "]: " << m_nom[h] << "\tM[" << std::setw(3) << m << "]: " << m_nom[m] << std::flush;
 			}
 
 			break;
@@ -123,6 +141,7 @@ int main(int argc, char* argv[])
 	std::cout << std::endl << "\tData:\t" << mag << std::endl;
 
 	archiv.seekg(0, std::ios::end);
+
 	tam = archiv.tellg();
 
 	archiv.seekg(0, std::ios::beg);
@@ -130,18 +149,6 @@ int main(int argc, char* argv[])
 	std::cout << std::endl <<"\tTamanio del archivo: " << tam << " bytes.";
 
 	archiv.seekg(pos, std::ios::beg);
-
-	archiv.read(reinterpret_cast<char*>(nom), num_nom);
-	//archiv.read(reinterpret_cast<char*>(header), dir);
-
-/*	for(size_t a{ 0 }; a < num_nom; ++a)
-	{
-		if(a < num_nom)
-		{
-			nom[a] = header[a];
-			std::cout << std::endl << "\tH[" << std::setw(3) << a << "]: " << header[a] << "\tnom[" << a << std::setw(3) <<"]: " << nom[a] << std::flush;
-		}
-	}*/
 
 	std::cout << std::flush << std::endl << std::endl;
 
@@ -158,48 +165,27 @@ int main(int argc, char* argv[])
 
 	char *nom_small{ new char[new_num_nom] };
 
-	for(size_t H{ 0 }; H < num_nom; ++H)
+	/*for(size_t H{ 0 }; H < num_nom; ++H)
 	{
 		std::cout << "\n\tnom_2[" << std::setw(2) << H << "]:\t" << std::setw(4) << nom_2[H] <<"\t" << new_num_nom << std::flush;
-	}
+	}*/
 
-	std::cout << std::flush << std::endl << std::endl << std::flush;
+	compactName(nom_small, nom_2, new_num_nom);
 
-	for(size_t H{ 0 }; H < new_num_nom; ++H)
+	size_t bytes_archiv_out{ extractSize(cabeza) };
+
+
+
+	std::cout << std::flush << std::endl << bytes_archiv_out << std::endl << std::flush;
+
+	/*for(size_t H{ 0 }; H < new_num_nom; ++H)
 	{
-		std::cout << "\n\tnom_2[" << std::setw(2) << H << "]:\t" << std::setw(4) << nom_small[H] << std::flush;
-	}
+		std::cout << "\n\tnom_small[" << std::setw(2) << H << "]:\t" << std::setw(4) << nom_small[H] << std::flush;
+	}*/
 
+	std::cout << std::endl << "\tVamos a exportar a: " << nom_small << std::flush;
 
-	std::cout << std::flush << std::endl << std::endl << std::flush;
-
-	for(size_t k{ 0 }, m{ 0 }; k < num_nom; ++k)
-	{
-		if((nom[k] != 0x20) && (m == 0))
-		{
-			m = k;
-
-			for(size_t h{ 0 }; h < num_nom; ++h, ++m)
-			{
-				if(m < num_nom)
-				{
-					nom[h] = nom[m];
-				}
-				else if(m >= num_nom)
-				{
-					nom[h] = 0x20;
-				}
-
-				std::cout << std::endl << "\tnom[" <<  std::setw(3) << h << "]: " << nom[h] << "\tM[" << std::setw(3) << m << "]: " << nom[m] << std::flush;
-			}
-
-			break;
-		}
-	}
-
-	std::cout << std::endl << "\tNombre: " << std::setw(20) << nom << std::flush;
-
-	archiv_out.open(nom, std::ios::binary | std::ios::out);
+	archiv_out.open("README.org", std::ios::binary | std::ios::out);
 
 	if(!archiv_out.is_open())
 	{
@@ -208,21 +194,6 @@ int main(int argc, char* argv[])
 		return 2;
 	}
 
-	archiv.seekg(pos + num_nom + 1, std::ios::beg);
-
-	archiv.read(reinterpret_cast<char*>(sizeb), num_tam);
-
-//	std::cout << std::endl << std::flush <<"\tBytes: "  << std::hex << sizeb << std::setw(8) << sizeof(sizeb)/sizeof(char);
-
-	for(size_t i{ 0 }, t{ static_cast<size_t>(std::pow(10.0f, num_tam - 1)) }; i < num_tam; ++i)
-	{
-		char loc = sizeb[i];
-		bytes_f += std::atoi(&loc) * t;
-
-		std::cout << std::endl <<"\tb: " << std::setw(10) << bytes_f << "\tsizeb: " << std::setw(5) << sizeb[i] << "\tt: " << std::setw(10) << t;
-
-		t /= 10;
-	}
 
 	char *out_d{ new char[bytes_f] };
 
