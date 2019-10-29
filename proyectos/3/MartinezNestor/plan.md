@@ -8,7 +8,7 @@
   - [x] Crear clase ```FileManager``` encargada de abrir el archivo ```FiUnamFS.img``` y vaciar el contenido del superbloque (cluster 0) en la clase ```SuperBlock```. 
     - [x] Esta clase debe hacer la verificación de que la cadena del sistema de archivos sea ```FiUnamFS```. 
 - [x] Crear clase que represente una entrada en el directorio -> ```DirectoryEntry``` 
-- [ ] Crear clase ```CommandManager``` encargada de definir las 5 funciones que pueda realizar el usuario sobre el sistema de archivos : 
+- [x] Crear clase ```CommandManager``` encargada de definir las 5 funciones que pueda realizar el usuario sobre el sistema de archivos : 
   - [x] Listar contenidos 
   - [x] Copiar hacía adentro de FiUnamFs
     - [x] Leer info del archivo en bytes
@@ -28,7 +28,7 @@
     - [x] Cambiar el nombre del archivo por la cadena ```Xx.xXx.xXx.xXx.``` 
     - [x] Poner ceros del byte del cluster donde se encuentra el archivo hasta el tamaño del archivo. 
     - [x] Del byte 16-64  de la entrada del directorio poner ceros.
-  - [ ] Desfragmentar 
+  - [x] Desfragmentar 
     - [x] Obtener un diccionario que represente los clusters disponibles en mi disco. 
     - [x] Obtener una lista de entradas en el directorio que no estén en el lugar correcto .
     - [x] Escoger, de la lista anterior, la primer entrada del directorio (al final tendré que mover todas las entradas de esta lista)
@@ -36,5 +36,5 @@
   - [x] Obtener información sobre un archivo 
 - [ ] Agregar comentarios -> docstring
 - [ ] Arreglar pylint warnings
-- [ ] Agregar documentación para el repositorio de Github explicando el funcionamiento del código.  -> Screen shots 
+- [x] Agregar documentación para el repositorio de Github explicando el funcionamiento del código.  -> Screen shots 
 - [ ] quitar últimas líneas de la función  ```rm``` en ```CommandManager```.  
