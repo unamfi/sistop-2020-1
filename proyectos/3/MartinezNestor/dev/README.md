@@ -28,3 +28,27 @@ Dependencias externas:
   * ```datetime```,  ```mmap``` , ```optparse```, ```os``` , ```random```.
 
 ## Desarrollo 
+
+### 0. Ayuda sobre como manjear ```OstoaFS```:
+
+![icon](../images/help.png)
+
+### 1. Listar 
+
+![icon](../images/list.png)
+
+### 2. Copiar uno de los archivos de ```FiUnamFS``` hacía tu computadora
+
+![icon](../images/cpo.png)
+
+### 3. Copiar un archivo de tu computadora hacía ```FiUnamFS``` 
+
+![icon](../images/cpi.png)
+
+### 4. Eliminar un archivo de ```FiUnamFS``` 
+
+![icon](../images/rem.png)
+
+### 5. Desfragmentar ```FiUnamFS``` 
+
+![icon](../images/defrag.png)
