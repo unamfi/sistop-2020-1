@@ -171,7 +171,7 @@ int main(int argc, char* argv[])
 
 	archiv.seekg(pos, std::ios::beg);
 
-	std::cout << std::flush << std::endl << std::endl;
+	std::cout << std::flush << std::endl <<"\tVamos a extraer todos los archivos de " << fname << std::endl << std::endl;
 
 	readHead(&archiv, cabeza);
 
@@ -187,7 +187,7 @@ int main(int argc, char* argv[])
 
 	char *out_d{ new char[bytes_archiv_out] };
 
-	std::cout << std::endl << "\tVamos a exportar a: " << nom_small << std::flush;
+	std::cout << std::endl << "\tVamos a exportar a: " << nom_small << ", " << "logo.png, mensajes.png" << std::flush;
 
 	archiv_out.open(nom_small, std::ios::binary | std::ios::out);
 
