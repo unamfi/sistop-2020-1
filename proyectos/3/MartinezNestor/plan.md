@@ -29,6 +29,10 @@
     - [x] Poner ceros del byte del cluster donde se encuentra el archivo hasta el tamaño del archivo. 
     - [x] Del byte 16-64  de la entrada del directorio poner ceros.
   - [ ] Desfragmentar 
+    - [x] Obtener un diccionario que represente los clusters disponibles en mi disco. 
+    - [x] Obtener una lista de entradas en el directorio que no estén en el lugar correcto .
+    - [x] Escoger, de la lista anterior, la primer entrada del directorio (al final tendré que mover todas las entradas de esta lista)
+    - [x] Si tamaño del siguiente espacio vacío es mayor o igual que el tamaño de la entrada del directorio a mover, entonces mueve esa entrada comenzando en el cluster del siguiente espacio vacío. De lo contrario, agrega la entrada del directorio a la lista de entradas en el directorio hasta el final. Repite desde el punto 1. 
   - [x] Obtener información sobre un archivo 
 - [ ] Agregar comentarios -> docstring
 - [ ] Arreglar pylint warnings
