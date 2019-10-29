@@ -248,7 +248,34 @@ class FIUNAMFS(object):
         print('%s borrado exitosamente.' % archivo)
         return True
 
-    
+    def desfragmentar(self):
+        arch_movidos = 0 # Contador para indicar los archivos que fueron movidos durante la desfragmentación
+        self.__listaEntDir = sorted(self.__listaEntDir, key=lambda ed: ed.cluster_inicial) # Ordenamos la lista de entradas con base en el cluster donde inician
+        for i, ed_actual in enumerate(self.__listaEntDir): # ed_actual : entrada del directorio actual
+            clusters_usados = math.ceil(ed_actual.tam_archivo / self.tam_cluster) # Clusters usados por el archivo i-ésimo
+            try:
+                ed_sig = self.__listaEntDir[i+1] # ed_sig : entrada del directorio siguiente
+                delta_clusters = ed_sig.cluster_inicial - ed_actual.cluster_inicial # vemos cuántos clusters hay entre entrada de directorio y entrada de directorio
+                clusters_libres = delta_clusters - clusters_usados
+                
+                if clusters_libres > 0: # Si hay espacio entre clusters
+                    print('Hay espacio entre archivos, moviendo %s...' % ed_sig.nombre)
+                    
+                    dir_in_antigua = ed_sig.cluster_inicial * self.tam_cluster # Dirección donde inician sus datos
+                    dir_fin_antigua = dir_in_antigua + ed_sig.tam_archivo # Dirección de fin                    
+                    datos_por_mover = self.__mmfs[dir_in_antigua : dir_fin_antigua] # Guardar los datos del archivo
+                    
+                    cluster_in_nuevo = ed_actual.cluster_inicial + clusters_usados # Marcamos el cluster de inicio
+                    dir_in_nueva = cluster_in_nuevo * self.tam_cluster # Dirección donde iniciarán los datos
+                    dir_fin_nueva = dir_in_nueva + ed_sig.tam_archivo # Dirección nueva de fin
+
+                    ed_sig.cluster_inicial = cluster_in_nuevo # Le actualizamos su cluster de inicio
+                    self.__mmfs[dir_in_nueva : dir_fin_nueva] = datos_por_mover # Movemos sus datos
+                    arch_movidos += 1
+            except IndexError:
+                print('Desfragmentación terminada, %i archivos movidos.' % arch_movidos)
+                return arch_movidos>0
+
     def agregarEntDir(self, entDir, datos):
         """Agrega una EntradaDir al directorio de FIUNAMFS
         Atributos:
