@@ -15,6 +15,56 @@ class CommandManager():
 
 	unused_dir_entries = []
 	occupied_data_clusters = {}
+	middle_clusters = {}
+	wanderers = [] #List of DirectoryEntry representing all the root dir entries that are not in their correct positions
+	direntry_tomove = None
+
+	used_dataclusters = []
+	def __update_dc_(self):
+		dataclusters = []
+		for entry in self.root_dir:
+			offset = int(entry.cluster.decode())
+			currentcluster = 0
+			for cluster in range(entry.needed_clusters(self.cluster_size)):
+				dataclusters.append(offset + currentcluster)
+				currentcluster += 1
+		self.used_dataclusters = sorted(dataclusters)
+
+	def __findhole__(self):
+		print(self.used_dataclusters)
+		space = None
+		for i in range(1,len(self.used_dataclusters)):
+			current_cluster = self.used_dataclusters[i]
+			prev_cluster = self.used_dataclusters[i-1]
+			diff = current_cluster - prev_cluster
+			if diff > 1:
+				print("\t%d > %d" % (prev_cluster, current_cluster))
+				return (prev_cluster, current_cluster)
+		return space 
+
+	def __move__(self, direntry, to):
+		data_to_move = self.__fetch__(direntry)
+		self.__update__rootdir__(direntry=direntry, newcluster=to)
+		start_index = int(direntry.cluster.decode()) * self.cluster_size
+		end_index = start_index + (len(data_to_move))		
+		self.file_system[start_index:end_index] = data_to_move
+
+	def __fetch__(self, direntry):
+		initial_cluster = int(direntry.cluster.decode())
+		start_index = initial_cluster * self.cluster_size
+		end_index = start_index + int(direntry.size.decode())
+		return self.file_system[start_index: end_index]
+
+	def __update__rootdir__(self, direntry, newcluster):
+		found = False
+		for entry in self.root_dir:			
+			if entry.name == direntry.name:
+				entry.update_cluster(newcluster)
+				index = self.cluster_size + (direntry.dir_entry_id * self.root_dir_entry_size)
+				self.file_system[index+25:index+30] = ('%05d' % newcluster).encode()
+				found = True
+		if not found:
+			print("Invalid directory entry")
 	
 	def __init__(self):
 		self.superblock = self.f_m.build_sb()
@@ -55,9 +105,9 @@ class CommandManager():
 			start_index = cluster * self.cluster_size
 			end_index = start_index + data_size
 			self.file_system[start_index:end_index] = data
-			print(self.occupied_data_clusters.keys())
-			self.__update_datac__(rdentry_cluster=cluster, rdentry_size=size)
-			print(self.occupied_data_clusters.keys())
+
+			(self.root_dir, self.unused_dir_entries) = self.__readdir__()
+			self.__update_dc_()
 		else:
 			print("i: FiUnamFS/%s and %s are identical (not copied)." % (file,file))
 
@@ -98,9 +148,10 @@ class CommandManager():
 		if f is None:
 			print('r: %s: No such file or directory' % file)
 		else:
+			cluster = int(f.cluster.decode())
 			dir_entry_id = f.dir_entry_id
 			self.unused_dir_entries.append(dir_entry_id)
-			start_index = int(f.cluster.decode()) * self.cluster_size
+			start_index = cluster * self.cluster_size
 			end_index = start_index + int(f.size.decode())
 			index = self.cluster_size + (dir_entry_id * self.root_dir_entry_size)
 			self.file_system[index:index+15] = ('%15s' % self.rootdir_empty_entry).encode()
@@ -110,26 +161,44 @@ class CommandManager():
 			self.file_system[index+46:index+60] = ('%014d' % 0).encode()
 			for i in range(start_index,end_index,2):
 				self.file_system[i:i+1] = ('%01d' % 0).encode()
+			(self.root_dir, self.unused_dir_entries) = self.__readdir__()
+			self.used_dataclusters.remove(cluster)
 
 	def defrag(self):
 		print("Current dir distribution")
 		self.track()
 		print("\nNew dir distribution\n")
-		print(self.occupied_data_clusters.keys())
-		odc = sorted(self.occupied_data_clusters.keys())
-		middle_clusters = self.__middle_clusters__(odc=odc)
-		while len(middle_clusters.keys()) > 0:
-			print(middle_clusters)
-			print()
-			print(self.occupied_data_clusters.keys())
-			cheapest = self.__cheapest__(middle_clusters)
-			self.__fit_cluster__(cheapest_direntry=cheapest, middle_clusters=middle_clusters)
+
+		self.__update_dc_()
+
+		(top, nxt) = self.__findhole__()
+
+		something = (top, nxt)
+
+		while something is not None:
+			top = something[0]
+			nxt = something[1]
+			print(top)
+			print(nxt)
+			direntry = self.__fetch_direntry__(nxt)
+			self.__move__(direntry=direntry, to=top+1)
+			(self.root_dir, self.unused_dir_entries) = self.__readdir__()
+			something = self.__findhole__()
+			print(something)
 
 		self.track()
+		
+
+	def __fetch_direntry__(self, entryid):
+		for entry in self.root_dir:
+			if int(entry.cluster.decode()) == entryid:
+				return entry
+				break
+		print("No direntry with %d id" % entryid)
+
 
 	def track(self):
 		self.__print__root(dir=self.root_dir, track=True)
-
 
 	"""
 		CommandManager's protected functions
@@ -175,11 +244,12 @@ class CommandManager():
 					self.__update_datac__(rdentry_cluster=rde_cluster, rdentry_size=rde_size)
 					dir_entries.append(dir_entry)
 
+		self.__update_dc_()
 		if only_root:
 			return dir_entries
 		return (dir_entries, unused_dir_entries)
 
-	def __update_datac__(self, rdentry_cluster, rdentry_size):
+	def __update_datac__(self, rdentry_cluster, rdentry_size, ignore=False):
 		"""
 			__update_datac__
 
@@ -201,13 +271,17 @@ class CommandManager():
 		"""
 		needed_clusters = rdentry_size // self.cluster_size
 		for i in range(needed_clusters):
-			self.occupied_data_clusters[rdentry_cluster+i] = self.cluster_size
-
-
+			if ignore:
+				del self.occupied_data_clusters[rdentry_cluster+i] 
+			else:
+				self.occupied_data_clusters[rdentry_cluster+i] = self.cluster_size
 
 		remaning_bytes = rdentry_size - (needed_clusters * self.cluster_size)
-		if remaning_bytes > 0:			
-			self.occupied_data_clusters[rdentry_cluster + needed_clusters] = remaning_bytes
+		if remaning_bytes > 0:
+			if ignore:
+				del self.occupied_data_clusters[rdentry_cluster + needed_clusters]
+			else:
+				self.occupied_data_clusters[rdentry_cluster + needed_clusters] = remaning_bytes
 		
 
 	def __nxtcluster__(self, size=0, random=False, odc=None):
@@ -252,7 +326,7 @@ class CommandManager():
 					cluster = randint(self.first_data_cluster, int(self.superblock.num_clusters_unit))
 			return cluster
 
-	def __middle_clusters__(self, odc):
+	def __middle_clusters__(self):
 		"""
 			__middle_clusters__
 	
@@ -261,13 +335,14 @@ class CommandManager():
 					occupied data clusters.
 
 				-> differences: <Dictionary>
-					keys: next cluster in the middle.
-					values: number of clusters until the next occupied 
+					key: next cluster in the middle.
+					value: number of clusters until the next occupied 
 					cluster.
 
 			Returns a dictionary representing the availiable clusters 
 			that are in between two occupied clusters.
 		"""
+		odc = sorted(self.occupied_data_clusters.keys())
 		differences = {} 
 		for i in range(1, len(odc)):
 			current_cluster = odc[i]
@@ -275,45 +350,42 @@ class CommandManager():
 			difference = current_cluster - prev_cluster
 
 			if difference > 1:
-				differences[prev_cluster] = difference
+				differences[prev_cluster+1] = difference-1
 
 		return differences
 
-	def __cheapest__(self, middle_clusters):
+	def __wandering__(self):
 		"""
-			__cheapest__
-	
-				middle_clusters: <Dictionary>
-					Receives a dictionary representing the availiable clusters 
-					that are in between two occupied clusters.
+			__wandering__
 
-				-> cluster: Int
-					Intial cluster of the next cheapest file to move. 
+				-> wandering: <List>(DirectoryEntry)
+					List of root dir entries that are not in their correct position
 
-			Returns a cluster 'c' that corresponds to the initial
-			cluster of the next cheapest file to move. 
+			Returns the list of root dir entries that are
+			not in the correct positions 
 		"""
-		wandering = [] #list of root dir entries that are not in their correct position
-		for cluster in middle_clusters.keys():
-			for dir_entry in self.root_dir:
-				dentry_initial_cluster = int(dir_entry.cluster.decode())
-				if dentry_initial_cluster > cluster:
-					if dentry_initial_cluster not in wandering:
-						wandering.append(dir_entry)
-		
-		if len(wandering) == 0:
-			return None 
+		wandering = []
+		if bool(self.middle_clusters):
+			for cluster in self.middle_clusters.keys():
+				for dir_entry in self.root_dir:
+					dentry_initial_cluster = int(dir_entry.cluster.decode())
+					if dentry_initial_cluster > cluster + self.middle_clusters[cluster]:						
+						if dentry_initial_cluster not in wandering:
+							wandering.append(dir_entry)
+			if wandering:
+				return wandering
+			return None
+		else:
+			return None
 
-		cheapest = wandering[0]
-		for wcluster in wandering:
-			if int(wcluster.size) < int(cheapest.size):
-				cheapest = wcluster
-		return cheapest		
+	def __fits__(self, dentry_clusters, inside):
+		disk_clusters = inside
+		return dentry_clusters <= disk_clusters
 
-	def __fit_cluster__(self, cheapest_direntry, middle_clusters):
-		for key in middle_clusters.keys():
+	def __fit_cluster__(self, cheapest_direntry):
+		for key in self.middle_clusters.keys():
 			cde_size = int(cheapest_direntry.size.decode()) #cde -> cheapest_direntry
-			if cde_size <= (middle_clusters[key]*self.cluster_size):
+			if cde_size <= (self.middle_clusters[key]*self.cluster_size):
 				start_index = key * self.cluster_size
 				end_index = start_index + (cde_size)
 
@@ -321,21 +393,10 @@ class CommandManager():
 
 				cde_cluster = int(cheapest_direntry.cluster)
 				self.__update_datac__(rdentry_cluster=cde_cluster, rdentry_size=cde_size)
-
-				del middle_clusters[key]
 				break
+			else:
+				del self.middle_clusters[key]
 
-	def __move__(self, direntry, cluster, start_index, end_index):
-		data_to_move = self.file_system[start_index: end_index]
-		for dir_entry in self.root_dir:
-			if dir_entry.name == direntry.name:
-				dir_entry.update_cluster(cluster)
-				index = self.cluster_size + (direntry.dir_entry_id * self.root_dir_entry_size)
-				self.file_system[index+25:index+30] = ('%05d' % cluster).encode()
-				break
-		start_index = int(direntry.cluster.decode()) * self.cluster_size
-		end_index = start_index + (len(data_to_move))		
-		self.file_system[start_index:end_index] = data_to_move
 
 	def __search__(self, file):
 		if self.root_dir == []:
