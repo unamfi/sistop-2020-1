@@ -17,8 +17,11 @@ Dentro del directorio [dev](https://github.com/nestorivanmo/sistop-2020-1/tree/p
 ## Contenidos de FiUnamFS
 
 * README.org 
+
 * logo.png
+
 * mensajes.png
 
-![icon](images/file-content.png)
+
+![file-content](images/file-content.png)
 
