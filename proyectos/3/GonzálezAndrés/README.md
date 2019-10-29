@@ -36,10 +36,20 @@ En caso de existir un error, se mostrará el mensaje correspondiente a este (est
 
 Para eliminar un archivo basta con seleccionarlo haciendo clic en él y oprimir el botón correspondiente. Hacer esto nos mostrará un cuadro de diálogo pidiendo confirmación.
 
-![Eliminar paso 1](./screenshots/eliminar1.png)
+![Eliminar, paso 1](./screenshots/eliminar1.png)
 
 Al confirmar, muestra mensaje de éxito y elimina el archivo.
 
-![Eliminar paso 2](./screenshots/eliminar1.png)
+![Eliminar, paso 2](./screenshots/eliminar1.png)
 
 #### Copiar un archivo de FIUNAMFS a nuestro sistema de archivos
+
+Para copiar un archivo a nuestro sistema de archivos, necesitamos seleccionar el archivo sobre el cuál queremos hacer esta operación y oprimir el botón de Descargar. Al hacer esto, se desplegará una ventana dónde tendremos que indicar la ruta y nombre del archivo por escribir.
+
+![Descargar, paso 1](./screenshots/descargar1.png)
+
+Al confirmar la acción, la ventana principal nos muestra un mensaje de éxito y podemos comprobar que el archivo fue escrito en la ruta que le especificamos.
+
+![Descargar, paso 2](./screenshots/descargar2.png)
+
+![Archivo descargado](./screenshots/descargar3.png)
