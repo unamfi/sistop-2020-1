@@ -100,7 +100,6 @@ int main(int argc, char* argv[])
 	std::ifstream archiv;
 	std::ofstream archiv_out;
 
-	size_t bytes_f{ 0 };
 	size_t tam{ 0 };							//tamanio total del sistema de archivos
 	//size_t tam_out{ 0 };
 	char tmp[num_mag];
@@ -120,7 +119,7 @@ int main(int argc, char* argv[])
 
 	if(!archiv.is_open())
 	{
-		std::cout << std::endl << "\tError al abrir el archivo!" << std::endl;
+		std::cout << std::endl << "\tError al abrir el archivo: " << fname << std::endl << std::flush;
 
 		return 2;
 	}
@@ -154,56 +153,34 @@ int main(int argc, char* argv[])
 
 	readHead(&archiv, cabeza);
 
-/*	for(size_t H{ 0 }; H < dir; ++H)
-	{
-		std::cout << "\n\tcabeza[" << std::setw(2) << H << "]:\t" << std::setw(4) << cabeza[H] << std::flush;
-	}*/
-
 	extractName(cabeza, nom_2);
 
 	size_t new_num_nom{ cleanName(nom_2) };
 
 	char *nom_small{ new char[new_num_nom] };
 
-	/*for(size_t H{ 0 }; H < num_nom; ++H)
-	{
-		std::cout << "\n\tnom_2[" << std::setw(2) << H << "]:\t" << std::setw(4) << nom_2[H] <<"\t" << new_num_nom << std::flush;
-	}*/
-
 	compactName(nom_small, nom_2, new_num_nom);
 
 	size_t bytes_archiv_out{ extractSize(cabeza) };
 
-
-
-	std::cout << std::flush << std::endl << bytes_archiv_out << std::endl << std::flush;
-
-	/*for(size_t H{ 0 }; H < new_num_nom; ++H)
-	{
-		std::cout << "\n\tnom_small[" << std::setw(2) << H << "]:\t" << std::setw(4) << nom_small[H] << std::flush;
-	}*/
+	char *out_d{ new char[bytes_archiv_out] };
 
 	std::cout << std::endl << "\tVamos a exportar a: " << nom_small << std::flush;
 
-	archiv_out.open("README.org", std::ios::binary | std::ios::out);
+	archiv_out.open(nom_small, std::ios::binary | std::ios::out);
 
 	if(!archiv_out.is_open())
 	{
-		std::cout << std::endl << "\tError al abrir el archivo!" << std::endl;
+		std::cout << std::endl << "\tError al abrir el archivo: " << nom_small << std::endl << std::flush;
 
 		return 2;
 	}
 
-
-	char *out_d{ new char[bytes_f] };
-
-
-
 	archiv.seekg(5120, std::ios::beg);
 
-	archiv.read(out_d, bytes_f);
+	archiv.read(out_d, bytes_archiv_out);
 
-	archiv_out.write(out_d, bytes_f);
+	archiv_out.write(out_d, bytes_archiv_out);
 
 	archiv_out.close();
 
