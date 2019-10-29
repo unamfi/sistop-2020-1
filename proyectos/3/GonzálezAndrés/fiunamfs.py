@@ -147,69 +147,72 @@ class FIUNAMFS(object):
             print('IOError: %s' % ioerr)            
     
     def subir(self, origen, destino=''):
+        destino = destino.strip() # Le quitamos los caracteres en blanco al inicio y al final
+        if not destino:
+            destino = origen # Si no se nombre de archivo de destino, usamos el de origen
+
+        if not re.fullmatch(PATRON_FN_VALIDO, destino): # Checamos si el nombre de destino cumple con el patrón
+            raise FNInvalidoError(MSGERR_FN_INVALIDO)
+            # print('Nombre ingresado: %s' % destino)
+            return False
+
         if not self.montado:
             print(MSGERR_NO_MONTADO)
             return False
-        try:
-            f = open(origen, 'rb') # Abrimos el archivo en modo lectura
-            bytes_archivo = f.read()
-            tam_archivo = len(bytes_archivo)
-            clusters_requeridos = math.ceil(tam_archivo / self.tam_cluster)
-            print('Tamaño de "%s": %i bytes, %i clusters' % (origen, tam_archivo, clusters_requeridos))
-            f.close()
+        # try:
+        f = open(origen, 'rb') # Abrimos el archivo en modo lectura
+        bytes_archivo = f.read()
+        tam_archivo = len(bytes_archivo)
+        clusters_requeridos = math.ceil(tam_archivo / self.tam_cluster)
+        print('Tamaño de "%s": %i bytes, %i clusters' % (origen, tam_archivo, clusters_requeridos))
+        f.close()
 
-            destino = destino.strip() # Le quitamos los caracteres en blanco al inicio y al final
-            if not destino:
-                destino = origen # Si no se nombre de archivo de destino, usamos el de origen
-
-            if not re.fullmatch(PATRON_FN_VALIDO, destino): # Checamos si el nombre de destino cumple con el patrón
-                print(MSGERR_FN_INVALIDO)
-                print('Nombre ingresado: %s' % destino)
+        # Ahora revisaré si hay espacio en disco y dónde iniciaremos a grabar el archivo
+        # Iniciar valores en límites fuera de rango para no sobreescribir información en caso de error
+        cluster_inicial = self.clusters_totales - 1
+        clusters_libres = 0
+        if not self.__listaEntDir:
+            print('Directorio vacío, guardando archivo en el primer cluster de datos')
+            cluster_inicial = self.clusters_dir + 1 # Clusters de directorio + Cluster de SB
+            clusters_libres = self.clusters_totales - cluster_inicial # Calcular clusters libres
+        else:
+            resultado = list(filter( lambda entdir: entdir.nombre == destino, self.__listaEntDir)) # Buscamos si hay algún archivo con el mismo nombre
+            if resultado:
+                raise ArchExistError('Ya existe un archivo con ese nombre en el directorio: %s' % destino)
                 return False
-
-            # Ahora revisaré si hay espacio en disco y dónde iniciaremos a grabar el archivo
-            # Iniciar valores en límites fuera de rango para no sobreescribir información en caso de error
-            cluster_inicial = self.clusters_totales - 1
-            clusters_libres = 0
-            if not self.__listaEntDir:
-                print('Directorio vacío, guardando archivo en el primer cluster de datos')
-                cluster_inicial = self.clusters_dir + 1 # Clusters de directorio + Cluster de SB
-                clusters_libres = self.clusters_totales - cluster_inicial # Calcular clusters libres
-            else:
-                resultado = list(filter( lambda entdir: entdir.nombre == destino, self.__listaEntDir)) # Buscamos si hay algún archivo con el mismo nombre
-                if resultado:
-                    raise ArchExistError('Ya existe un archivo con ese nombre en el directorio: %s' % destino)
-                    return False
-                
-                self.__listaEntDir = sorted(self.__listaEntDir, key=lambda ed: ed.cluster_inicial) # Ordenamos la lista de entradas con base en el cluster donde inician
-                for i, ed_actual in enumerate(self.__listaEntDir): # ed_actual : entrada del directorio actual
-                    clusters_usados = math.ceil(ed_actual.tam_archivo / self.tam_cluster) # Clusters usados por el archivo i-ésimo
-                    try:
-                        ed_sig = self.__listaEntDir[i+1] # ed_sig : entrada del directorio siguiente
-                        delta_clusters = ed_sig.cluster_inicial - ed_actual.cluster_inicial # vemos cuántos clusters hay entre entrada de directorio y entrada de directorio
-                        clusters_libres = delta_clusters - clusters_usados
-                        if clusters_libres > clusters_requeridos: # Si hay espacio entre clusters
-                            cluster_inicial = ed_actual.cluster_inicial + clusters_usados # Marcamos la dirección de inicio
-                            print('Hay espacio entre archivos, guardando...')
-                            break # Rompemos el ciclo para que lo guarde aquí
-                    except IndexError:
-                        print('Fin de la lista, guardar al final del último cluster del directorio')
-                        cluster_inicial = ed_actual.cluster_inicial + clusters_usados # Cluster inicial + Clusters usados por éste 
-                        clusters_libres = self.clusters_totales - cluster_inicial
             
-            # Vemos si queda espacio para guardar el archivo
-            if clusters_requeridos > clusters_libres:
-                print('No hay espacio en la unidad para guardar el archivo')
-                return False
-
-            # Guardamos el archivo a partir del cluster "cluster_inicial"
-            print('Guardando "%s" en cluster %i' % (origen, cluster_inicial))
-            ed_nueva = EntradaDir(destino, tam_archivo, cluster_inicial, now(), now())
-            return self.agregarEntDir(ed_nueva, bytes_archivo)
-
-        except IOError as ioerr:
-            print('IOError: %s' % ioerr)
+            self.__listaEntDir = sorted(self.__listaEntDir, key=lambda ed: ed.cluster_inicial) # Ordenamos la lista de entradas con base en el cluster donde inician
+            for i, ed_actual in enumerate(self.__listaEntDir): # ed_actual : entrada del directorio actual
+                clusters_usados = math.ceil(ed_actual.tam_archivo / self.tam_cluster) # Clusters usados por el archivo i-ésimo
+                try:
+                    ed_sig = self.__listaEntDir[i+1] # ed_sig : entrada del directorio siguiente
+                    delta_clusters = ed_sig.cluster_inicial - ed_actual.cluster_inicial # vemos cuántos clusters hay entre entrada de directorio y entrada de directorio
+                    clusters_libres = delta_clusters - clusters_usados
+                    if clusters_libres > clusters_requeridos: # Si hay espacio entre clusters
+                        cluster_inicial = ed_actual.cluster_inicial + clusters_usados # Marcamos la dirección de inicio
+                        print('Hay espacio entre archivos, guardando...')
+                        break # Rompemos el ciclo para que lo guarde aquí
+                except IndexError:
+                    print('Fin de la lista, guardar al final del último cluster del directorio')
+                    cluster_inicial = ed_actual.cluster_inicial + clusters_usados # Cluster inicial + Clusters usados por éste 
+                    clusters_libres = self.clusters_totales - cluster_inicial
+        
+        # Vemos si queda espacio para guardar el archivo
+        if clusters_requeridos > clusters_libres:
+            print('No hay espacio en la unidad para guardar el archivo')
             return False
+
+        # Guardamos el archivo a partir del cluster "cluster_inicial"
+        print('Guardando "%s" en cluster %i' % (origen, cluster_inicial))
+        ed_nueva = EntradaDir(destino, tam_archivo, cluster_inicial, now(), now())
+        return self.agregarEntDir(ed_nueva, bytes_archivo)
+
+        # except IOError as ioerr:
+        #     print('IOError: %s' % ioerr)
+        #     return False
+        
+        # except FNInvalidoError as fnierr:
+        #     raise FNInvalidoError
     
     def eliminar(self, archivo, harddel = False):
         """Eliminar un archivo de FIUNAMFS
@@ -421,6 +424,11 @@ class Error(Exception):
 
 class ArchExistError(Error):
     def __init__(self, message):
+        # self.expression = expression
+        self.message = message
+
+class FNInvalidoError(Error):
+    def __init__(self, message=MSGERR_FN_INVALIDO):
         # self.expression = expression
         self.message = message
         
