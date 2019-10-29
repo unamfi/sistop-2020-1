@@ -97,7 +97,7 @@ class FIUNAMFS(object):
             self.montado = False
             print('Sistema de archivos desmontado')
         else:
-            print(MSGERR_NO_MONTADO)
+            raise NotMountedError(MSGERR_NO_MONTADO)
 
     def listdir(self):
         """Devuelve una lista ordenada con los nombres de los archivos en el directorio
@@ -107,7 +107,7 @@ class FIUNAMFS(object):
             for entradaDir in self.__listaEntDir:
                 ldir.append(entradaDir.nombre)
         else: 
-            print(MSGERR_NO_MONTADO)
+            raise NotMountedError(MSGERR_NO_MONTADO)
         return sorted(ldir)
     
     def scandir(self):
@@ -116,7 +116,7 @@ class FIUNAMFS(object):
         """
         self.__listaEntDir = []
         if not self.montado:
-            print(MSGERR_NO_MONTADO)
+            raise NotMountedError(MSGERR_NO_MONTADO)
             return []
         
         inicio = self.tam_cluster
@@ -141,7 +141,7 @@ class FIUNAMFS(object):
             destino -- ruta y nombre del archivo de destino
         """
         if not self.montado:
-            print(MSGERR_NO_MONTADO)
+            raise NotMountedError(MSGERR_NO_MONTADO)
             return False
 
         resultado = list(filter( lambda entdir: entdir.nombre == origen, self.__listaEntDir)) # Buscamos el elemento que coincida
@@ -171,7 +171,7 @@ class FIUNAMFS(object):
         """
         destino = destino.strip() # Le quitamos los caracteres en blanco al inicio y al final
         if not self.montado:
-            print(MSGERR_NO_MONTADO)
+            raise NotMountedError(MSGERR_NO_MONTADO)
             return False
 
         if not destino:
@@ -234,7 +234,7 @@ class FIUNAMFS(object):
             En el borrado duro, borra los datos de la entrada del directorio y los datos del archivo
         """
         if not self.montado:
-            print(MSGERR_NO_MONTADO)
+            raise NotMountedError(MSGERR_NO_MONTADO)
             return False
 
         resultado = list(filter( lambda entdir: entdir.nombre == archivo, self.__listaEntDir)) # Buscamos el elemento que coincida
@@ -261,7 +261,7 @@ class FIUNAMFS(object):
 
     def desfragmentar(self):
         if not self.montado:
-            print(MSGERR_NO_MONTADO)
+            raise NotMountedError(MSGERR_NO_MONTADO)
             return False
 
         arch_movidos = 0 # Contador para indicar los archivos que fueron movidos durante la desfragmentación
@@ -314,7 +314,7 @@ class FIUNAMFS(object):
             Valor booleano que marca True si logró agregar la entrada y false en caso contrario
         """
         if not self.montado:
-            print(MSGERR_NO_MONTADO)
+            raise NotMountedError(MSGERR_NO_MONTADO)
             return False
         
         inicio = self.tam_cluster
@@ -431,14 +431,14 @@ class EntradaDir(object):
     def __eq__(self, value):
         return self.nombre == value.nombre and self.cluster_inicial == value.cluster_inicial
 
-# Error de sistema no montado
-# class NMError(Error):
-#     def __init__(self, expression, message):
-#         self.expression = expression
-#         self.message = message
-
 class Error(Exception):
     pass
+
+# Error de sistema no montado
+class NotMountedError(Error):
+    def __init__(self, message=MSGERR_NO_MONTADO):
+#         self.expression = expression
+        self.message = message
 
 class ArchExistError(Error):
     def __init__(self, message):
