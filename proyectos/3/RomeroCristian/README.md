@@ -42,7 +42,7 @@ python3 main.py
 
 ## Notas:
 
-Para el archivo de prueba que se [./fiunamfs.img][nos otorgo] , este estaba para
+Para el archivo de prueba que se [nos otorgo](./fiunamfs.img), este estaba para
 un sistema acoplado a 1024 en vez del que se nos pidió 512. se nota ya que se empieza
 por el 400 hexadecimal en vez del 200 hexadecimal (Claro si es que no estoy ignorando algo).
 ![prueba](img/error_de_prueba_espanto.png)
@@ -60,4 +60,4 @@ Después
 ![despues](img/despues.png)
 
 
-Se anexa [algo.img][una imagen de prueba generada con los requerimientos]
+Se anexa [una imagen de prueba generada con los requerimientos](algo.img)
