@@ -90,7 +90,209 @@ def get_existing_files():
 
 	actual_pointer_aux = 5120
 	
+	file_system_disk.close()
+
+	def insert_bytes(init_byte,limit_byte,word):
+
+	if len(word) < (limit_byte-init_byte):
+		try:
+			int(word)
+			for i in range((limit_byte-init_byte)-len(word)):
+				word = '0' + word 
+		except ValueError:
+			for i in range((limit_byte-init_byte)-len(word)):
+				word = ' ' + word
+	try:	
+		file_system_disk = open('FiUnamFS.img','r+')
+
+	except FileNotFoundError: 
+		file_system_disk = open('FiUnamFS.img','w')
+		file_system_disk.seek(1474560)
+		file_system_disk.write('\0') 
+
+	file_system_disk.seek(init_byte)
+	file_system_disk.write(word)			
+	file_system_disk.close()
+
+
+def copy_from_computer_to_disk(route):
+	global disk_name
+	global init_dir, file_content_locator
+	actual_pointer_for_insert = init_dir
+	computer_file = open(route,'r')
+	file_system_disk = open(disk_name,'r+')
+	file_name =  os.path.basename(route)
+	sizeof_file =  str(os.path.getsize(route))
+	if len(file_content_locator) > 0: 
+		init_cluster = str(int((file_content_locator[-1] + file_sizes[-1]) / 1024))
+	else: 
+		init_cluster = '5'
+	#Fecha de creación 
+	c_date = time.strftime('%Y%m%d%H%M%S', time.gmtime(os.path.getctime(route)))
+
+	#Fecha de modificación
+	m_date = time.strftime('%Y%m%d%H%M%S', time.gmtime(os.path.getmtime(route)))
+	try:
+		file_content = computer_file.read()
+		flag = 0
+		while flag == 0:
+			file_system_disk.seek(actual_pointer_for_insert)
+			query = file_system_disk.read(15)
+			if query == 'AQUI_NO_VA_NADA':
+				
+
+				insert_bytes(actual_pointer_for_insert,actual_pointer_for_insert + 15, file_name)
+				insert_bytes(actual_pointer_for_insert + 16, actual_pointer_for_insert + 24, sizeof_file)
+				insert_bytes(actual_pointer_for_insert + 25, actual_pointer_for_insert + 30, init_cluster)
+				insert_bytes(actual_pointer_for_insert + 31, actual_pointer_for_insert + 45, c_date)
+				insert_bytes(actual_pointer_for_insert + 46, actual_pointer_for_insert + 60, m_date)
+
+				sum_file_sizes = 0 
+				for i in range(len(file_sizes)):
+					sum_file_sizes += file_sizes[i] + 4
+				sum_file_sizes += 5120
+
+				file_content_locator.append(sum_file_sizes)
+				insert_bytes(sum_file_sizes,sum_file_sizes+os.path.getsize(route),file_content)
+				#Valida si no es el primero que sea mayor, si no, el archivo a insertar está vacío
+				#if len(file_content_locator) > 1:
+				#	if file_content_locator[-1] == file_content_locator[-2]:
+				#		file_content_locator[-1] = file_content_locator[-2] + 4
+
+				file_names.append(file_name)
+				file_sizes.append(os.path.getsize(route))
+
+				flag = 1
+
+
+			actual_pointer_for_insert = actual_pointer_for_insert + 64
+	except UnicodeDecodeError:
+		print('Archivo no compatible con el sistema de archivos.')
 	
 
+
+	file_system_disk.close()
+	computer_file.close()
+
+
+def copy_from_disk_to_computer(file_name):
+	global disk_name
+	new_file = open(file_name,'w')
+	file_system_disk = open(disk_name,'r')
+	file_position = file_names.index(file_name)
+	file_size = file_sizes[file_position]
+	file_pointer = file_content_locator[file_position]
+	file_system_disk.seek(file_pointer)
+	new_file.write(file_system_disk.read(file_size))
+	file_system_disk.close()
+	new_file.close()
+
+def list_files():
+	global disk_name,file_names,file_sizes
+	for file_name in file_names:
+		print(file_name)
+
+
+def delete_file(file_name):
+	global disk_name
+	global no_file_name,no_size,no_init_cluster,no_date
+
+	actual_pointer_for_delete = init_dir
+	file_system_disk = open(disk_name,'r+',encoding='latin-1')
+	flag = 0
+	while flag == 0: 
+		file_system_disk.seek(actual_pointer_for_delete)
+		query = file_system_disk.read(15)
+		if query.replace(" ","") == file_name:
+			insert_bytes(actual_pointer_for_delete, actual_pointer_for_delete + 15, no_file_name)
+			insert_bytes(actual_pointer_for_delete + 16,actual_pointer_for_delete + 24, no_size)
+			insert_bytes(actual_pointer_for_delete + 25,actual_pointer_for_delete + 30, no_init_cluster)
+			insert_bytes(actual_pointer_for_delete + 31,actual_pointer_for_delete + 45, no_date)
+			insert_bytes(actual_pointer_for_delete + 46,actual_pointer_for_delete + 60, no_date)
+			index = file_names.index(file_name)
+			location = file_content_locator[index]
+			file_system_disk.seek(location)
+			total_file_sizes = 0
+			sum_file_sizes = 0 
+			for i in range(len(file_sizes)):
+				total_file_sizes += file_sizes[i] + 4
+
+			for i in range(index+1,len(file_names)):
+				sum_file_sizes += file_sizes[i] + 4
+
+			for i in range(total_file_sizes):
+				if i < sum_file_sizes-4:
+					file_system_disk.seek(file_content_locator[index + 1]+i)
+					content2 = file_system_disk.read(1)
+					file_system_disk.seek(location)
+					
+					file_system_disk.write(content2)
+					location += 1
+				else:
+					#Se les asigna '\0' a los bytes faltantes
+					file_system_disk.seek(location)
+
+					file_system_disk.write('\0')
+					location += 1
+				
+			#Eliminando registros de las listas. 
+			file_names.remove(file_name)
+			del file_sizes[index]
+			del file_content_locator[index]
+
+			flag = 1
+
+		actual_pointer_for_delete = actual_pointer_for_delete + 64
+	
+	file_system_disk.close()
+
+def disk_defragmenter():
+	global disk_name
+	global no_file_name,no_size,no_init_cluster,no_date
+
+	file_system_disk = open(disk_name,'r+')
+	for i in range(64):
+		flag = 0
+		flag2 = 0 
+		pointer_for_def = init_dir
+		p_dest = 0 
+		p_origin = 0
+		while flag == 0 and pointer_for_def < 5120: 
+			file_system_disk.seek(pointer_for_def)
+			query = file_system_disk.read(15)
+			if query == 'AQUI_NO_VA_NADA':
+				p_dest = pointer_for_def
+				pointer_for_def += 64
+				p_origin = pointer_for_def
+
+				file_system_disk.seek(pointer_for_def)
+				file_name = file_system_disk.read(15)
+
+				file_system_disk.seek(pointer_for_def+16)
+				file_size = file_system_disk.read(8)
+				#print(file_size)
+				file_system_disk.seek(pointer_for_def+25)
+				file_ini_cluster = file_system_disk.read(5)
+				#print(file_ini_cluster)
+				file_system_disk.seek(pointer_for_def+31)
+				file_creation_date = file_system_disk.read(14)
+				#print(file_creation_date)
+				file_system_disk.seek(pointer_for_def+46)
+				file_mod_date = file_system_disk.read(14)
+				#print(file_mod_date)
+				insert_bytes(p_dest, p_dest + 15, file_name)
+				insert_bytes(p_dest + 16, p_dest + 24, file_size)
+				insert_bytes(p_dest + 25, p_dest + 30, file_ini_cluster)
+				insert_bytes(p_dest + 31, p_dest + 45, file_creation_date)
+				insert_bytes(p_dest + 46, p_dest + 60, file_mod_date)
+
+				insert_bytes(p_origin, p_origin + 15, no_file_name)
+				insert_bytes(p_origin + 16,p_origin + 24, no_size)
+				insert_bytes(p_origin + 25,p_origin + 30, no_init_cluster)
+				insert_bytes(p_origin + 31,p_origin + 45, no_date)
+				insert_bytes(p_origin + 46,p_origin + 60, no_date)
+				flag = 1
+			else: 
+				pointer_for_def += 64
 
 	file_system_disk.close()
