@@ -155,7 +155,7 @@ class FSUnamFI:
             cluster_inicial = int(entradas[-1].cluster_inicial)
             archivo_size = int(entradas[-1].archivo_size)
         else:
-            cluster_inicial = 1
+            cluster_inicial = 5
             archivo_size = 0
         return math.ceil((cluster_inicial * self.sb.cluster_size + archivo_size) / self.sb.cluster_size)
 
@@ -170,3 +170,8 @@ class FSUnamFI:
             print('[-] El archivo no existe, vuelva a intentarlo')
 
     #def desfragmentar():
+
+fs = FSUnamFI()
+fs.listar()
+fs.copiar_a_fs('README.org')
+fs.listar()
