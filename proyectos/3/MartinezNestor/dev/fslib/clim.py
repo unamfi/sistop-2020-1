@@ -16,53 +16,12 @@ class CommandManager():
 	unused_dir_entries = []
 	occupied_data_clusters = {}
 	middle_clusters = {}
-	wanderers = [] #List of DirectoryEntry representing all the root dir entries that are not in their correct positions
+	#List of DirectoryEntry representing all the root dir 
+	#entries that are not in their correct positions
+	wanderers = [] 
 	direntry_tomove = None
 
 	used_dataclusters = []
-	def __update_dc_(self):
-		dataclusters = []
-		for entry in self.root_dir:
-			offset = int(entry.cluster.decode())
-			currentcluster = 0
-			for cluster in range(entry.needed_clusters(self.cluster_size)):
-				dataclusters.append(offset + currentcluster)
-				currentcluster += 1
-		self.used_dataclusters = sorted(dataclusters)
-
-	def __findhole__(self):
-		space = None
-		for i in range(1,len(self.used_dataclusters)):
-			current_cluster = self.used_dataclusters[i]
-			prev_cluster = self.used_dataclusters[i-1]
-			diff = current_cluster - prev_cluster
-			if diff > 1:
-				return (prev_cluster, current_cluster)
-		return space 
-
-	def __move__(self, direntry, to):
-		data_to_move = self.__fetch__(direntry)
-		self.__update__rootdir__(direntry=direntry, newcluster=to)
-		start_index = int(direntry.cluster.decode()) * self.cluster_size
-		end_index = start_index + (len(data_to_move))		
-		self.file_system[start_index:end_index] = data_to_move
-
-	def __fetch__(self, direntry):
-		initial_cluster = int(direntry.cluster.decode())
-		start_index = initial_cluster * self.cluster_size
-		end_index = start_index + int(direntry.size.decode())
-		return self.file_system[start_index: end_index]
-
-	def __update__rootdir__(self, direntry, newcluster):
-		found = False
-		for entry in self.root_dir:			
-			if entry.name == direntry.name:
-				entry.update_cluster(newcluster)
-				index = self.cluster_size + (direntry.dir_entry_id * self.root_dir_entry_size)
-				self.file_system[index+25:index+30] = ('%05d' % newcluster).encode()
-				found = True
-		if not found:
-			print("Invalid directory entry")
 	
 	def __init__(self):
 		self.superblock = self.f_m.build_sb()
@@ -189,6 +148,7 @@ class CommandManager():
 	def track(self):
 		self.__print__root(dir=self.root_dir, track=True)
 
+
 	"""
 		CommandManager's protected functions
 
@@ -277,6 +237,53 @@ class CommandManager():
 				while (cluster+_c) in self.occupied_data_clusters.keys():
 					cluster = randint(self.first_data_cluster, int(self.superblock.num_clusters_unit))
 			return cluster
+
+	def __update_dc_(self):
+		dataclusters = []
+		for entry in self.root_dir:
+			offset = int(entry.cluster.decode())
+			currentcluster = 0
+			for cluster in range(entry.needed_clusters(self.cluster_size)):
+				dataclusters.append(offset + currentcluster)
+				currentcluster += 1
+		self.used_dataclusters = sorted(dataclusters)
+
+	def __findhole__(self):
+		"""
+			Finds available disk space and returns a tuple.
+		"""
+		space = None
+		for i in range(1,len(self.used_dataclusters)):
+			current_cluster = self.used_dataclusters[i]
+			prev_cluster = self.used_dataclusters[i-1]
+			diff = current_cluster - prev_cluster
+			if diff > 1:
+				return (prev_cluster, current_cluster)
+		return space 
+
+	def __move__(self, direntry, to):
+		data_to_move = self.__fetch__(direntry)
+		self.__update__rootdir__(direntry=direntry, newcluster=to)
+		start_index = int(direntry.cluster.decode()) * self.cluster_size
+		end_index = start_index + (len(data_to_move))		
+		self.file_system[start_index:end_index] = data_to_move
+
+	def __fetch__(self, direntry):
+		initial_cluster = int(direntry.cluster.decode())
+		start_index = initial_cluster * self.cluster_size
+		end_index = start_index + int(direntry.size.decode())
+		return self.file_system[start_index: end_index]
+
+	def __update__rootdir__(self, direntry, newcluster):
+		found = False
+		for entry in self.root_dir:			
+			if entry.name == direntry.name:
+				entry.update_cluster(newcluster)
+				index = self.cluster_size + (direntry.dir_entry_id * self.root_dir_entry_size)
+				self.file_system[index+25:index+30] = ('%05d' % newcluster).encode()
+				found = True
+		if not found:
+			print("Invalid directory entry")
 
 	def __search__(self, file):
 		if self.root_dir == []:
