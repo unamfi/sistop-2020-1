@@ -1,0 +1,16 @@
+Documentación de proyecto
+Integrantes: Ulysses López López
+
+Este proyecto consistió en realizar un sistema de archivos el cuál tiene las opciones de:
+-Copiar de la computadora al sistema FIUNAMFS
+-Copiar del sistema FIUNAMFS a la computadora
+-Enlistar los archivos que contiene el sistema de archivos FIUNAMFS
+-Eliminar un archivo del sistema de archivos FIUNAMFS
+
+Se realizó una función para que desfragmente automaticamente.
+
+Lo que se requiere para ejecutar el proyecto 3 es Python 3
+El archivo de llama Proyecto3.py y se ejecuta en terminal de la siguiente manera:
+------------------------------------>   python3 Proyecto3.py
+
+

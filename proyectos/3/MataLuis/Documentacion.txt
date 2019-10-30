@@ -1,0 +1,8 @@
+Documentacion:
+
+Se trataron de atender todos los requerimientos 
+El sistema muestra un menu inicial para saber que opcion debe tomar.
+Las funcione simplementadas son Listar, Copiar desde la PC, Copiar a la PC y  Mostrar informacion del sistema leyendo el superbloque. 
+Con las funciones de copiar se encontraron dificultades por la estructura del sistema de archivos. 
+
+Trabajo realizado por Luis Mata
