@@ -10,6 +10,9 @@ informacion = []
 fechaCreacion = []
 fechaModificacion = []
 nombres=[]
+bitacora = []
+bitacoraArchivo = []
+
 
 	#Obtengo e imprimo los metadatos de los archivos que hay en el sistema
 def getFileSystem():
@@ -176,30 +179,69 @@ def eliminarTodos():
 		posicion= posicion + 64
 	fileSystem.close()
 
-def menu():
+def menu(banderaBitacora):
 	while(True):
 		print('1 Listar archivos \n2 Copiar un archivo de fiunamfs a mi PC\n3 Copiar un archivo de mi PC a fiunamfs\n4 Eliminar un archivo de fiunamfs\n5 desfragmentar\n6 Salir')
 		buscarArchivos()
 		opcion = input("Escoja una opcion >> ")
 		if(opcion == 1):
-			getFileSystem()
+			print(banderaBitacora)
+			if(banderaBitacora == 'Y'):
+				agregarABitacora('getFileSystem()','')
+			else:
+				getFileSystem()
 		elif(opcion == 2):
 			archivoACopiar = raw_input("Escriba el nombre del archivo, incluidad la extension ")
-			copiarAPC(archivoACopiar)
+			if(banderaBitacora == 'Y'):
+				agregarABitacora('copiarAPC()', archivoACopiar)
+			else:
+				copiarAPC(archivoACopiar)
 		elif(opcion == 3):
-				archivoACopiar = raw_input('Escriba el nombre del archivo, incluida la extension ')
-				copiarAMiFileSystem(archivoACopiar)
+			archivoACopiar = raw_input('Escriba el nombre del archivo, incluida la extension ')
+			if(banderaBitacora == 'Y'):
+				agregarABitacora('copiarAMiFileSystem()', archivoACopiar)
+			else:
+				copiarAPC(archivoACopiar)
 		elif(opcion == 4):
-			archivoABorrar = raw_input('Escriba el nombre del archivo a borrar, incluida la extension ')
-			eliminarArchivo(archivoABorrar)
+			archivoABorrar = raw_input('Escriba el nombre del archivo, incluida la extension ')
+			if(banderaBitacora == 'Y'):
+				agregarABitacora('eliminarArchivo()', archivoABorrar)
+			else:
+				eliminarArchivo(archivoABorrar)
 		elif(opcion == 5):
-			desfragmentar()
+			if(banderaBitacora == 'Y'):
+				agregarABitacora('desfragmentar()','')
+			else:
+				desfragmentar()
 		elif(opcion == 6):
+			if(banderaBitacora == 'Y'):
+				print('Eventos a realizar desde la bitacora')
+				for i in range(len(bitacora)):
+					print(bitacora[i])
+				for i in range(len(bitacora)):
+					lanzarProceso(bitacora[i], bitacoraArchivo[i])
 			print('Hasta la vista')
 			break
+def agregarABitacora(proceso, archivo):
+	bitacora.append(proceso)
+	bitacoraArchivo.append(archivo)
+def lanzarProceso(proceso, archivo):
+	if(proceso == 'getFileSystem()'):
+		getFileSystem()
+	elif(proceso == 'copiarAPC'):
+		copiarAPC(archivo)
+	elif(proceso == 'copiarAMiFileSystem'):
+		copiarAMiFileSystem(archivo)
+	elif(proceso == 'eliminarArchivo'):
+		eliminarArchivo(archivo)
+	else:
+		desfragmentar()
+
 def main():
+	#Revisa dos lineas de abajo y banderaBitacora (Esta hasta arriba), no lo reconoce en el metodo menu.
+	print('Desea usar bitacora: Y o N >>')
+	banderaBitacora = raw_input()
 	infoFileSystem()
-	menu()
+	menu(banderaBitacora)
 	
 main()
-
