@@ -19,7 +19,17 @@ Siguiendo la especificaci贸n que aparece en la siguiente secci贸n,   tienen que 
 
 ## Descripci贸n de la soluci贸n
 
-[DESC]
+Para este proyecto se tomaron en cuenta los requísitos de implementación, dados en el planteamiento 
+por el profesor. Se crearon 3 clases las cuales se describen a continuación:
+
+#### Clase Superbloque
+Contiene toda la información general del sistema de archivos, de qué tamaño serán los clústers, cuántos clústers tenemos, etc.
+
+#### Clase ENT_DIR
+Define cómo están construidas todas las entradas de directorio; es decir qué datos debe tener y en qué posición.
+
+#### Clase FSUnamFI
+Utiliza los datos brindados por las 2 clases anteriores para realizar el funcionamiento requerido en el planteamiento. Contiene las funciones para listar, borrar, copiar un archivo de FIUnamFs a nuestra máquina, copiar un archivo de nuestra máquina al sistema de archivos y defragmentar.
 
 ## Entorno y dependencias
 
