@@ -1,4 +1,5 @@
 from sys import exit
+from os import stat
 
 file = open("fiunamfs.img","r")
 nombre = file.read(8)
@@ -13,6 +14,42 @@ numero = file.read(2)
 file.seek(52)
 numeroCompleto = file.read(8)
 file.close()
+
+archivos = []
+tams = []
+clusters = []
+
+def clusterVacio():
+    arreAux = []
+    busca = 1
+    bandera = True
+    for i in range(len(clusters)):
+        clu=clusters[i]
+        arreAux.append(int(clu[0]))
+    print(arreAux)
+    while bandera:
+        if busca in arreAux:
+            busca = busca + 1
+        else:
+            bandera = False
+    return busca   
+
+def tablaArchivos():
+    global archivos
+    global tams
+    global clusters
+    archivos = []
+    tams = []
+    clusters = []
+    file = open("fiunamfs.img","r+")
+    file.seek(2048)
+    for i in range(64):
+        archivos.append(file.read(15))
+        tams.append(file.read(8))
+        clusters.append(file.read(5))
+        file.seek(file.tell()+36)
+    file.close()
+
 def info():
     print("Nombre del Sistema: " + nombre)
     print("Version: " + version)
@@ -22,7 +59,6 @@ def info():
     print("Numero de cluster que mide la unidad completa: " + numeroCompleto)
 
 def listar():
-    ##print('Hola')
     file = open("fiunamfs.img","r")
     file.seek(2048)
     for i in range(64):
@@ -46,14 +82,37 @@ def borrar(archivo):
         file.seek(file.tell()+49)
     file.close()
     return borrado
-def todo():
-    file = open("fiunamfs.img","r")
-    file.seek(2048)
-    print(file.read(4096))
 
-if (nombre == "FiUnamFS" and version == "0.6"):
+def tamaArchivo(path):
+    si = stat(path).st_size
+    return si
+
+   
+    
+
+def nombreArchivo(path):
+    tam = len(path)
+    slash = 0
+    name = ''
+    name2 = ''
+    for i in range(tam):
+        if (path[i] == '/'):
+            slash = i
+    for i in range(slash+1,tam):
+        name = name + path[i]
+    ##Agregar funcion de limiar nombres de los archivos a 15 caracteres
+    espaces = 15 - len(name)
+    for i in range (espaces):
+        name2 = name2 + " "
+    return name2 + name
+            
+
+  
+
+if (nombre == "FiUnamFS" and version == "0.7"):
     correcto = True
     while(correcto):
+        tablaArchivos()
         print("Sistema de Archivos FI Unam FS")
         print("1: Listar")
         print("2: Copiar archivo")
@@ -73,8 +132,26 @@ if (nombre == "FiUnamFS" and version == "0.6"):
                 print('El archivo fue borrado')
             else:
                 print('No se encontro el archivo')
+        elif opcion == 3:
+            archivo = raw_input("Nombre del archivo a copiar: ")
+            nombre = nombreArchivo(archivo)
+            deSistemaAPc(archivo, nombre)
+        elif opcion == 2:
+            archivo = raw_input("Nombre del archivo a copiar: ")
+            nombre = nombreArchivo(archivo)
+            dePcASistema(archivo, nombre)
+        elif opcion == 9:
+            print(archivos)
+            print(clusters)
+            print(tams)
+        elif opcion == 8:
+            va = clusterVacio()
+            print (va)
+        elif opcion == 7:
+            print("Sistema desmontado")
+            correcto = False
         elif opcion == 5:
-            todo()
+            print("No se implemento")
 else:
     print("No se puede abrir el sistema de archivos debido a que no es el archivo correcto o la version correcta. Revise nuevamente que tenga la imagen correcta.")
     exit()
