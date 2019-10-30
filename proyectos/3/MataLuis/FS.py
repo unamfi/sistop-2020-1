@@ -87,6 +87,39 @@ def tamaArchivo(path):
     si = stat(path).st_size
     return si
 
+def dePcASistema(path, nombre):
+    posicion =0
+    actual =0
+    try:
+        new = open(path,"r+")
+        file = open("fiunamfs.img","r+")
+        file.seek(2048)
+        bandera  =  False
+        tam = stat(path).st_size
+        while(bandera == False):
+            name = file.read(15)
+            if (name == 'Xx.xXx.xXx.xXx.'):
+                file.seek(file.tell()-15)
+                file.write(nombre)
+                actual = file.tell()
+                print("El archivo fue copiado")
+                bandera = True
+            file.seek(file.tell()+49)
+        file.close()
+        file = open("fiunamfs.img","r+")
+        pa = clusterVacio()
+        inde = 2048*pa
+        tamano = tamaArchivo(path)
+        file.seek(inde)
+        file.write(new.read(tamano))
+        file.close()
+        file = open("fiunamfs.img","r+")
+        file.seek(actual)
+        file.write(str(pa))
+        file.close()
+    except:
+        print("Este archivo no existe")
+    
    
     
 
