@@ -62,7 +62,7 @@ class FSUnamFI:
         
         print('{:15} {:10} {:20} {:20}'.format("Nombre", "Tamaño", "Creación", "Modificación"))
         for entrada in entradas:
-            print('{:15} {:10} {:20} {:20} {:5}'.format(entrada.nombre_archivo, entrada.archivo_size, self.convertir_fecha(entrada.creacion_archivo), self.convertir_fecha(entrada.modificacion_archivo), entrada.num_entrada))
+            print('{:15} {:10} {:20} {:20}'.format(entrada.nombre_archivo, entrada.archivo_size, self.convertir_fecha(entrada.creacion_archivo), self.convertir_fecha(entrada.modificacion_archivo)))
 
     # Para imprimir la fecha de una manera más adecuada al usuario
     def convertir_fecha(self, fecha):
@@ -150,4 +150,5 @@ class FSUnamFI:
 
 fs = FSUnamFI()
 fs.listar()
-fs.copiar_a_pc('mensajes.png', './')
+fs.copiar_a_fs('mensajes2.png')
+fs.listar()
