@@ -78,6 +78,7 @@ class FSUnamFI:
     def buscar_entrada(self, nombre_buscar):
         for num_entrada in range(128):
             p_entrada = self.sb.cluster_size + num_entrada * ENT_DIR.entrada_size
+            print(self.fs_mmap[p_entrada:p_entrada + ENT_DIR.entrada_size])
             entrada = ENT_DIR(self.fs_mmap[p_entrada:p_entrada + ENT_DIR.entrada_size])
 
             if nombre_buscar == entrada.nombre_archivo:
@@ -101,11 +102,14 @@ class FSUnamFI:
                 print('[-] El archivo ya existe, cambie el nombre o borre el archivo')
             else:
                 self.crear_entrada(archivo)
+        else:
+            print('[-] No se ha encontrado el archivo')
 
 
     # Cuando se copia una archivo externo debemos generar los metadatos
     def crear_entrada(self, archivo):
         nombre = archivo[:]
+        print(nombre)
         with open(archivo) as f:
             f_mmap = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_COPY)
             size = len(f_mmap)
@@ -115,26 +119,49 @@ class FSUnamFI:
         fecha_modificacion = time.strftime("%Y%m%d%H%M%S")
 
         entradas = self.obtener_entradas()
+
+        if entradas:
+            p_entrada_nueva = self.sb.cluster_size + (entradas[-1].num_entrada + 1) * 64
+        else:
+            p_entrada_nueva = self.sb.cluster_size 
+
         cluster_inicial = self.calcular_cluster(entradas)
-        p_entrada_nueva = self.sb.cluster_size + (entradas[-1].num_entrada + 1) * 64
         entrada_nueva = ' ' * (15 - len(nombre))
-        entrada_nueva += nombre
-        entrada_nueva += '0' * (9-len(str(size))) + str(size)
-        entrada_nueva += '0' * (6-len(str(cluster_inicial))) + str(cluster_inicial) + '0'
-        entrada_nueva += fecha_creacion + '0'
+        entrada_nueva += nombre.encode('ascii')
+        entrada_nueva += '0' * (8-len(str(size))) + str(size) + '\\x'
+        entrada_nueva += '0' * (5-len(str(cluster_inicial))) + str(cluster_inicial) + '\\x'
+        entrada_nueva += fecha_creacion + '\\x'
         entrada_nueva += fecha_modificacion
-        entrada_nueva += ' ' * 4
+        entrada_nueva += '\\x00' * 4
+
+        print(entrada_nueva)
 
         self.fs_mmap[p_entrada_nueva:p_entrada_nueva + ENT_DIR.entrada_size] = entrada_nueva.encode('ascii')
         
-        self.cargar_contenido(contenido, cluster_inicial)
+        if(self.cargar_contenido(contenido, cluster_inicial)):
+            print('[+] Se ha guardado el archivo correctamente')
+        else:
+            print('[-] Error al agregar contenido, espacio no suficiente')
+            self.eliminar_archivo(archivo)
 
     def cargar_contenido(self, contenido, cluster_inicial):
-        clusters = math.ceil(len(contenido)/self.sb.cluster_size) * 2048
-        self.fs_mmap[cluster_inicial*2048:cluster_inicial*2048 + clusters] = contenido + ('0' * (clusters - len(contenido))).encode('ascii')
-        
+        clusters = math.ceil(len(contenido)/self.sb.cluster_size)
+        if (cluster_inicial + clusters) < self.sb.num_cluster_total:
+            clusters *= self.sb.cluster_size
+            cluster_inicial *= self.sb.cluster_size
+            self.fs_mmap[cluster_inicial:cluster_inicial + clusters] = contenido + ('0' * (clusters - len(contenido))).encode('ascii')
+            return True
+        else:
+            return False
+
     def calcular_cluster(self, entradas):
-        return math.ceil((int(entradas[-1].cluster_inicial) * 2048 + int(entradas[-1].archivo_size)) / 2048)
+        if entradas:
+            cluster_inicial = int(entradas[-1].cluster_inicial)
+            archivo_size = int(entradas[-1].archivo_size)
+        else:
+            cluster_inicial = 1
+            archivo_size = 0
+        return math.ceil((cluster_inicial * self.sb.cluster_size + archivo_size) / self.sb.cluster_size)
 
     def eliminar_archivo(self, archivo):
         entrada = self.buscar_entrada(archivo)
@@ -149,6 +176,4 @@ class FSUnamFI:
     #def desfragmentar():
 
 fs = FSUnamFI()
-fs.listar()
-fs.copiar_a_fs('mensajes2.png')
-fs.listar()
+fs.copiar_a_fs('logo.png')
