@@ -28,11 +28,11 @@ class ENT_DIR:
     entrada_size = 64
 
     def __init__(self, entrada):
-        self.nombre_archivo = entrada[0:15].decode('ascii').strip()
-        self.archivo_size = entrada[16:24].decode('ascii')
-        self.cluster_inicial = entrada[25:30].decode('ascii')
-        self.creacion_archivo = entrada[31:45].decode('ascii')
-        self.modificacion_archivo = entrada[40:60].decode('ascii')
+        self.nombre_archivo       = entrada[0:15].decode('ascii').strip()
+        self.archivo_size         = entrada[16:24].decode('ascii')
+        self.cluster_inicial      = entrada[25:30].decode('ascii')
+        self.creacion_archivo     = entrada[31:45].decode('ascii')
+        self.modificacion_archivo = entrada[46:60].decode('ascii')
         self.num_entrada = -1
 
 class FSUnamFI:
@@ -60,11 +60,41 @@ class FSUnamFI:
     def listar(self):
         entradas = self.obtenerEntradas()
         
-        print('{:15} {:10} {:15} {:15}'.format("Nombre", "Tamaño", "Creacion", "Modificación"))
+        print('{:15} {:10} {:20} {:20}'.format("Nombre", "Tamaño", "Creación", "Modificación"))
         for entrada in entradas:
-            print('{:15} {:10} {:15} {:15}'.format(entrada.nombre_archivo, entrada.archivo_size, entrada.creacion_archivo, entrada.modificacion_archivo))
+            print('{:15} {:10} {:20} {:20}'.format(entrada.nombre_archivo, entrada.archivo_size, self.convertirFecha(entrada.creacion_archivo), self.convertirFecha(entrada.modificacion_archivo)))
 
-    #def copiar_a_pc():
+    # Para imprimir la fecha de una manera más adecuada al usuario
+    def convertirFecha(self, fecha):
+        anio = fecha[:4]
+        mes = fecha[4:6]
+        dia = fecha[6:8]
+        hora = fecha[8:10]
+        min = fecha[10:12]
+        seg = fecha[12:14]
+        return dia + '/' + mes + '/' + anio + ' ' + hora + ':' + min + ':' + seg
+
+    # La función buscar será fundamental, ya que sabremos si existe una entrada y su ubicación
+    def buscarEntrada(self, nombre_buscar):
+        for num_entrada in range(128):
+            p_entrada = self.sb.cluster_size + num_entrada * ENT_DIR.entrada_size
+            entrada = ENT_DIR(self.fs_mmap[p_entrada:p_entrada + ENT_DIR.entrada_size])
+
+            if nombre_buscar == entrada.nombre_archivo:
+                return entrada
+        return None
+
+    def copiar_a_pc(self, archivo, ruta):
+        entrada = self.buscarEntrada(archivo)
+        if entrada != None and os.path.exists(ruta):
+            cluster = int(entrada.cluster_inicial) * self.sb.cluster_size
+            with open(ruta + '/' + archivo, 'w+b') as nuevo_archivo:
+                nuevo_archivo.write(self.fs_mmap[cluster: cluster+int(entrada.archivo_size)])
+                print('[+] El archivo se copio correctamente')
+        else:
+            print('[-] Archivo no encontrado')
+
+
 
     #def copiar_a_fs():
 
@@ -72,9 +102,6 @@ class FSUnamFI:
 
     #def desfragmentar():
 
-
 fs = FSUnamFI()
-fs.listar()
-
-        
+fs.copiar_a_pc('README.org','/home/emanuel/Documents/C-Semestral')
 
