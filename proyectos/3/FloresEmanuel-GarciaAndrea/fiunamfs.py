@@ -60,9 +60,9 @@ class FSUnamFI:
     def listar(self):
         entradas = self.obtener_entradas()
         
-        print('{:15} {:10} {:20} {:20}'.format("Nombre", "Tamaño", "Creación", "Modificación"))
+        print('{:15} {:10} {:20} {:20} {:10}'.format("Nombre", "Tamaño", "Creación", "Modificación", "Clúster"))
         for entrada in entradas:
-            print('{:15} {:10} {:20} {:20}'.format(entrada.nombre_archivo, entrada.archivo_size, self.convertir_fecha(entrada.creacion_archivo), self.convertir_fecha(entrada.modificacion_archivo)))
+            print('{:15} {:10} {:20} {:20} {:10}'.format(entrada.nombre_archivo, entrada.archivo_size, self.convertir_fecha(entrada.creacion_archivo), self.convertir_fecha(entrada.modificacion_archivo), entrada.cluster_inicial))
 
     # Para imprimir la fecha de una manera más adecuada al usuario
     def convertir_fecha(self, fecha):
@@ -78,7 +78,6 @@ class FSUnamFI:
     def buscar_entrada(self, nombre_buscar):
         for num_entrada in range(128):
             p_entrada = self.sb.cluster_size + num_entrada * ENT_DIR.entrada_size
-            print(self.fs_mmap[p_entrada:p_entrada + ENT_DIR.entrada_size])
             entrada = ENT_DIR(self.fs_mmap[p_entrada:p_entrada + ENT_DIR.entrada_size])
 
             if nombre_buscar == entrada.nombre_archivo:
@@ -109,7 +108,6 @@ class FSUnamFI:
     # Cuando se copia una archivo externo debemos generar los metadatos
     def crear_entrada(self, archivo):
         nombre = archivo[:]
-        print(nombre)
         with open(archivo) as f:
             f_mmap = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_COPY)
             size = len(f_mmap)
@@ -126,17 +124,15 @@ class FSUnamFI:
             p_entrada_nueva = self.sb.cluster_size 
 
         cluster_inicial = self.calcular_cluster(entradas)
-        entrada_nueva = ' ' * (15 - len(nombre))
+        entrada_nueva = ' '.encode('ascii') * (15 - len(nombre)) 
         entrada_nueva += nombre.encode('ascii')
-        entrada_nueva += '0' * (8-len(str(size))) + str(size) + '\\x'
-        entrada_nueva += '0' * (5-len(str(cluster_inicial))) + str(cluster_inicial) + '\\x'
-        entrada_nueva += fecha_creacion + '\\x'
-        entrada_nueva += fecha_modificacion
-        entrada_nueva += '\\x00' * 4
+        entrada_nueva += bytes(1) + ('0' * (8-len(str(size))) + str(size)).encode('ascii')
+        entrada_nueva += bytes(1) + ('0' * (5-len(str(cluster_inicial))) + str(cluster_inicial)).encode('ascii')
+        entrada_nueva += bytes(1) + fecha_creacion.encode('ascii') 
+        entrada_nueva += bytes(1) + fecha_modificacion.encode('ascii')
+        entrada_nueva += bytes(4)
 
-        print(entrada_nueva)
-
-        self.fs_mmap[p_entrada_nueva:p_entrada_nueva + ENT_DIR.entrada_size] = entrada_nueva.encode('ascii')
+        self.fs_mmap[p_entrada_nueva:p_entrada_nueva + ENT_DIR.entrada_size] = entrada_nueva
         
         if(self.cargar_contenido(contenido, cluster_inicial)):
             print('[+] Se ha guardado el archivo correctamente')
@@ -174,6 +170,3 @@ class FSUnamFI:
             print('[-] El archivo no existe, vuelva a intentarlo')
 
     #def desfragmentar():
-
-fs = FSUnamFI()
-fs.copiar_a_fs('logo.png')
