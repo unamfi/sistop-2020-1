@@ -1,0 +1,40 @@
+# Plan de solución
+
+- [x] Setup inicial
+  - [x] Crear un archivo con el nombre del sistema de archivos. Este archivo será el punto de partida de todo el sistema de archivos porque desde aquí se controlará lo que el usuario quiera hacer -> ```OstoaFS.py``` 
+  - [x] Crear directorio vacío donde estarán las definiciones de las clases que el sistema de archivos necesitará -> ```fslib``` 
+- [x] Detectar comandos del usuario 
+- [x] Abrir ```fiunams.img``` 
+  - [x] Crear clase ```FileManager``` encargada de abrir el archivo ```FiUnamFS.img``` y vaciar el contenido del superbloque (cluster 0) en la clase ```SuperBlock```. 
+    - [x] Esta clase debe hacer la verificación de que la cadena del sistema de archivos sea ```FiUnamFS```. 
+- [x] Crear clase que represente una entrada en el directorio -> ```DirectoryEntry``` 
+- [x] Crear clase ```CommandManager``` encargada de definir las 5 funciones que pueda realizar el usuario sobre el sistema de archivos : 
+  - [x] Listar contenidos 
+  - [x] Copiar hacía adentro de FiUnamFs
+    - [x] Leer info del archivo en bytes
+    - [x] Encontrar un número de entrada del directorio 
+    - [x] Escribir la entrada del directorio 
+    - [x] Asignar un cluster de inicio 
+    - [x] Escribir el archivo en el cluster de inicio
+  - [x] Copiar hacía afuera de FiUnamFs
+    - [x] Comprobar que el archivo que se quiera copiar fuera de FiUnamFS exista.
+    - [x] Obtener el objeto ```DirectoryEntry``` a partir del nombre del archivo. 
+    - [x] Comprobar que el archivo que se quiera copiar no exista en el directorio local. 
+    - [x] Obtener los datos del archivo con base en su cluster inicial y el tamaño del archivo. 
+    - [x] Copiar el archivo al directorio local de mi computadora (**dev/**). 
+  - [x] Eliminar archivo 
+    - [x] Comprobar que el archivo que se quiera borrar exista 
+    - [x] Agregar el ```dir_entry_id``` del archivo a borrar al arreglo global ```available_dir_entries``` 
+    - [x] Cambiar el nombre del archivo por la cadena ```Xx.xXx.xXx.xXx.``` 
+    - [x] Poner ceros del byte del cluster donde se encuentra el archivo hasta el tamaño del archivo. 
+    - [x] Del byte 16-64  de la entrada del directorio poner ceros.
+  - [x] Desfragmentar 
+    - [x] Obtener un diccionario que represente los clusters disponibles en mi disco. 
+    - [x] Obtener una lista de entradas en el directorio que no estén en el lugar correcto .
+    - [x] Escoger, de la lista anterior, la primer entrada del directorio (al final tendré que mover todas las entradas de esta lista)
+    - [x] Si tamaño del siguiente espacio vacío es mayor o igual que el tamaño de la entrada del directorio a mover, entonces mueve esa entrada comenzando en el cluster del siguiente espacio vacío. De lo contrario, agrega la entrada del directorio a la lista de entradas en el directorio hasta el final. Repite desde el punto 1. 
+  - [x] Obtener información sobre un archivo 
+- [ ] Agregar comentarios -> docstring
+- [ ] Arreglar pylint warnings
+- [x] Agregar documentación para el repositorio de Github explicando el funcionamiento del código.  -> Screen shots 
+- [ ] quitar últimas líneas de la función  ```rm``` en ```CommandManager```.  
