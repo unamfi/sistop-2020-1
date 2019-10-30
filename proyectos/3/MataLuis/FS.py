@@ -120,9 +120,25 @@ def dePcASistema(path, nombre):
     except:
         print("Este archivo no existe")
     
+def deSistemaAPc(archivo,nombre):
+    tam = 0 
+    clu = 0
+    file = open("fiunamfs.img","r") #Se abre el archivo en modo solo lectura
+    file.seek(2048) #Se salta el superbloque 
+    new = open(archivo,"r+")
+    for i in range(64):
+        name = file.read(15)
+        aux = name.strip()
+        if (aux == nombre):
+            tam = file.read(8)
+            clu = file.read(5)
+            file.close()
+    aux2 = 2048*clu
+    file = open("fiunamfs.img","r")
+    file.seek(aux2)
+    new.write(file.read(tam))
    
     
-
 def nombreArchivo(path):
     tam = len(path)
     slash = 0
