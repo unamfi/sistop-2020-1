@@ -1,6 +1,6 @@
 import mmap
 import os, os.path
-import time
+import time, math
 
 class Superbloque:
     # Se leen los datos del superbloque
@@ -100,7 +100,41 @@ class FSUnamFI:
             if self.buscar_entrada(archivo) != None:
                 print('[-] El archivo ya existe, cambie el nombre o borre el archivo')
             else:
-                print('Hola')
+                self.crear_entrada(archivo)
+
+
+    # Cuando se copia una archivo externo debemos generar los metadatos
+    def crear_entrada(self, archivo):
+        nombre = archivo[:]
+        with open(archivo) as f:
+            f_mmap = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_COPY)
+            size = len(f_mmap)
+            contenido = f_mmap.read()
+        
+        fecha_creacion = time.strftime("%Y%m%d%H%M%S")
+        fecha_modificacion = time.strftime("%Y%m%d%H%M%S")
+
+        entradas = self.obtener_entradas()
+        cluster_inicial = self.calcular_cluster(entradas)
+        p_entrada_nueva = self.sb.cluster_size + (entradas[-1].num_entrada + 1) * 64
+        entrada_nueva = ' ' * (15 - len(nombre))
+        entrada_nueva += nombre
+        entrada_nueva += '0' * (9-len(str(size))) + str(size)
+        entrada_nueva += '0' * (6-len(str(cluster_inicial))) + str(cluster_inicial) + '0'
+        entrada_nueva += fecha_creacion + '0'
+        entrada_nueva += fecha_modificacion
+        entrada_nueva += ' ' * 4
+
+        self.fs_mmap[p_entrada_nueva:p_entrada_nueva + ENT_DIR.entrada_size] = entrada_nueva.encode('ascii')
+        
+        self.cargar_contenido(contenido, cluster_inicial)
+
+    def cargar_contenido(self, contenido, cluster_inicial):
+        clusters = math.ceil(len(contenido)/self.sb.cluster_size) * 2048
+        self.fs_mmap[cluster_inicial*2048:cluster_inicial*2048 + clusters] = contenido + ('0' * (clusters - len(contenido))).encode('ascii')
+        
+    def calcular_cluster(self, entradas):
+        return math.ceil((int(entradas[-1].cluster_inicial) * 2048 + int(entradas[-1].archivo_size)) / 2048)
 
     def eliminar_archivo(self, archivo):
         entrada = self.buscar_entrada(archivo)
@@ -116,6 +150,4 @@ class FSUnamFI:
 
 fs = FSUnamFI()
 fs.listar()
-fs.eliminar_archivo('logo.png')
-fs.listar()
-
+fs.copiar_a_pc('mensajes.png', './')
