@@ -2,48 +2,48 @@
 
 ## Alumnos
 
-* Flores Mart铆nez Emanuel
-* Garc铆a Ru铆z Andrea
+* Flores Mart脙颅nez Emanuel
+* Garc脙颅a Ru脙颅z Andrea
 
 ## Planteamiento del problema
 
-Desarrollar un programa que pueda obtener,   crear y modificar informaci贸n en el micro-sistema-de-archivos de la   Facultad de Ingenier铆a, `FiUnamFS`.
+Desarrollar un programa que pueda obtener,   crear y modificar informaci脙鲁n en el micro-sistema-de-archivos de la   Facultad de Ingenier脙颅a, `FiUnamFS`.
 
-Siguiendo la especificaci贸n que aparece en la siguiente secci贸n,   tienen que desarrollar un programa que pueda:
+Siguiendo la especificaci脙鲁n que aparece en la siguiente secci脙鲁n,   tienen que desarrollar un programa que pueda:
 
 1. Listar los contenidos del directorio
 2. Copiar uno de los archivos de dentro del `FiUnamFS` hacia tu sistema
 3. Copiar un archivo de tu computadora hacia tu `FiUnamFS`
 4. Eliminar un archivo del `FiUnamFS`
-5. Desafortunadamente, este sistema de archivos *simplote* es muy dado     a la fragmentaci贸n externa. Generen tambi茅n un programa que     *desfragmente* al `FiUnamFS`. Ojo, la defragmentaci贸n debe hacerse     *dentro del sistema de archivos* (no creando un sistema de archivos     nuevo y copiando hacia 茅ste).
+5. Desafortunadamente, este sistema de archivos *simplote* es muy dado     a la fragmentaci脙鲁n externa. Generen tambi脙漏n un programa que     *desfragmente* al `FiUnamFS`. Ojo, la defragmentaci脙鲁n debe hacerse     *dentro del sistema de archivos* (no creando un sistema de archivos     nuevo y copiando hacia 脙漏ste).
 
 ## Descripci贸n de la soluci贸n
 
-Para este proyecto se tomaron en cuenta los requísitos de implementación, dados en el planteamiento 
-por el profesor. Se crearon 3 clases las cuales se describen a continuación:
+Para este proyecto se tomaron en cuenta los requ铆sitos de implementaci贸n, dados en el planteamiento 
+por el profesor. Se crearon 3 clases las cuales se describen a continuaci贸n:
 
 #### Clase Superbloque
-Contiene toda la información general del sistema de archivos, de qué tamaño serán los clústers, cuántos clústers tenemos, etc.
+Contiene toda la informaci贸n general del sistema de archivos, de qu茅 tama帽o ser谩n los cl煤sters, cu谩ntos cl煤sters tenemos, etc.
 
 #### Clase ENT_DIR
-Define cómo están construidas todas las entradas de directorio; es decir qué datos debe tener y en qué posición.
+Define c贸mo est谩n construidas todas las entradas de directorio; es decir qu茅 datos debe tener y en qu茅 posici贸n.
 
 #### Clase FSUnamFI
-Utiliza los datos brindados por las 2 clases anteriores para realizar el funcionamiento requerido en el planteamiento. Contiene las funciones para listar, borrar, copiar un archivo de FIUnamFs a nuestra máquina, copiar un archivo de nuestra máquina al sistema de archivos y defragmentar.
+Utiliza los datos brindados por las 2 clases anteriores para realizar el funcionamiento requerido en el planteamiento. Contiene las funciones para listar, borrar, copiar un archivo de FIUnamFs a nuestra m谩quina, copiar un archivo de nuestra m谩quina al sistema de archivos y defragmentar.
 
 ## Entorno y dependencias
 
-Este programa se desarroll贸 en una sistema operativo tipo *UNIX*  por lo que se recomienda ampliamente utilizarlo en un sistema similar. Est谩 escrito en el lenguaje de programaci贸n *Python 3*, en espec铆fico la versi贸n *3.5.3*.
+Este programa se desarroll脙鲁 en una sistema operativo tipo *UNIX*  por lo que se recomienda ampliamente utilizarlo en un sistema similar. Est脙隆 escrito en el lenguaje de programaci脙鲁n *Python 3*, en espec脙颅fico la versi脙鲁n *3.5.3*.
 
-Este programa se prob贸 en sistema basado en Debian (Deepin 15.10.1 GNU/Linux).
+Este programa se prob脙鲁 en sistema basado en Debian (Deepin 15.10.1 GNU/Linux).
 
-## Ejecuci贸n
+## Ejecuci脙鲁n
 
 Para ejecutar el `FiUnamFS ` se cuenta con tres tipos de comandos distintos
 
-* Los comandos que no necesitan par谩metros `ls` y  `dfg`
-* Los comandos que cuenta con un par谩metro `cp_in` y `rm`
-* Y `cp_out` que cuenta con dos par谩metros.
+* Los comandos que no necesitan par脙隆metros `ls` y  `dfg`
+* Los comandos que cuenta con un par脙隆metro `cp_in` y `rm`
+* Y `cp_out` que cuenta con dos par脙隆metros.
 
 #### ls
 
