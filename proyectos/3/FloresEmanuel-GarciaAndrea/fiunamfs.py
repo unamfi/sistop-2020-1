@@ -24,11 +24,12 @@ class Superbloque:
 
 # Clase para las ENTradas del DIRectorio
 class ENT_DIR:
-    entrada_libre = 'Xx.xXx.xXx.xXx.'
+    entrada_sin_usar = 'Xx.xXx.xXx.xXx.'
+    entrada_size = 64
 
     def __init__(self, entrada):
         self.nombre_archivo = entrada[0:15].decode('ascii').strip()
-        self.tam_archivo = entrada[16:24].decode('ascii')
+        self.archivo_size = entrada[16:24].decode('ascii')
         self.cluster_inicial = entrada[25:30].decode('ascii')
         self.creacion_archivo = entrada[31:45].decode('ascii')
         self.modificacion_archivo = entrada[40:60].decode('ascii')
@@ -38,25 +39,42 @@ class FSUnamFI:
     # Elementos que se estarán utilizando en la mayoría de las funciones
     f = open('fiunamfs.img','a+b')
     fs_mmap = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_WRITE)
-    superbloque = Superbloque()
-    tam_entrada = 64
+    sb = Superbloque()
+    entrada_size = 64
 
     def obtenerEntradas(self):
         entradas = []
         # Se recorrera el directorio de entradas, cada entrada mide 64 bytes
         # El tamaño del directorio es: 2048 * 4 = 8192
-        for p_entrada in range(0, 8192, 64):
-            entrada = ENT_DIR(self.fs_mmap[p_entrada:p_entrada + self.tam_entrada])
+        # La cantidad de entradas serán 8192/64 = 128
+        for num_entrada in range(128):
+            p_entrada = self.sb.cluster_size + num_entrada * ENT_DIR.entrada_size
+            entrada = ENT_DIR(self.fs_mmap[p_entrada:p_entrada + ENT_DIR.entrada_size])
 
-            if entrada.nombre_archivo != ENT_DIR.entrada_libre:
-                entrada.num_entrada = p_entrada//64
+            if entrada.nombre_archivo != ENT_DIR.entrada_sin_usar:
+                entrada.num_entrada = num_entrada
                 entradas.append(entrada)
 
         return entradas
 
+    def listar(self):
+        entradas = self.obtenerEntradas()
+        
+        print('{:15} {:10} {:15} {:15}'.format("Nombre", "Tamaño", "Creacion", "Modificación"))
+        for entrada in entradas:
+            print('{:15} {:10} {:15} {:15}'.format(entrada.nombre_archivo, entrada.archivo_size, entrada.creacion_archivo, entrada.modificacion_archivo))
+
+    #def copiar_a_pc():
+
+    #def copiar_a_fs():
+
+    #def eliminar_archivo():
+
+    #def desfragmentar():
+
+
 fs = FSUnamFI()
-for i in fs.obtenerEntradas():
-    print(i.nombre_archivo, i.num_entrada)
+fs.listar()
 
         
 
