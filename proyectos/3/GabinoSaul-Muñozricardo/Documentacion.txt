@@ -1,0 +1,14 @@
+Documentacion de Proyecto 3
+--------------------------------------
+Integrates:
+
+Gabino Sansores Saúl
+Muñoz Ricardo
+
+----------------------------------------
+Para desarrolar nuestro sistema de archivos decidimos utilizar el lenguaje de alto nivel python en su 
+version 3
+
+se mostrara que se inicializaron los clusters y podra observar las opciones posibles en donde para ser ejecutadas
+sera de la siguiente manera
+----------------------------------------
