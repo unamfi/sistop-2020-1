@@ -166,13 +166,8 @@ class CommandManager():
 		print("Current dir distribution")
 		self.track()
 		print("\nNew dir distribution\n")
-
 		self.__update_dc_()
-
-		(top, nxt) = self.__findhole__()
-
-		something = (top, nxt)
-
+		something = self.__findhole__()
 		while something is not None:
 			top = something[0]
 			nxt = something[1]
@@ -180,7 +175,6 @@ class CommandManager():
 			self.__move__(direntry=direntry, to=top+1)
 			(self.root_dir, self.unused_dir_entries) = self.__readdir__()
 			something = self.__findhole__()			
-
 		self.track()
 		
 
@@ -235,49 +229,12 @@ class CommandManager():
 				else:
 					rde_cluster = int(dir_entry.cluster)
 					rde_size = int(dir_entry.size.decode())
-
-					self.__update_datac__(rdentry_cluster=rde_cluster, rdentry_size=rde_size)
 					dir_entries.append(dir_entry)
 
 		self.__update_dc_()
 		if only_root:
 			return dir_entries
 		return (dir_entries, unused_dir_entries)
-
-	def __update_datac__(self, rdentry_cluster, rdentry_size, ignore=False):
-		"""
-			__update_datac__
-
-				rdentry_cluster: Int 
-					root dir entry initial cluster
-
-				rdentry_size: Int
-					root dir entry file size
-
-			Updates occupied data cluster dictionary. If a
-			root dir entry has a value of 'c' as it's inital
-			data cluster and a value of 's' as it's file size,
-			then, this function updates the occupied data 
-			cluster dictionary to add the necesary keys (each
-			key in the dictionary represents a cluser) that the
-			root dir entry needs to occupy the necessary 'n' 
-			clusters determined by it's size 's'.
-
-		"""
-		needed_clusters = rdentry_size // self.cluster_size
-		for i in range(needed_clusters):
-			if ignore:
-				del self.occupied_data_clusters[rdentry_cluster+i] 
-			else:
-				self.occupied_data_clusters[rdentry_cluster+i] = self.cluster_size
-
-		remaning_bytes = rdentry_size - (needed_clusters * self.cluster_size)
-		if remaning_bytes > 0:
-			if ignore:
-				del self.occupied_data_clusters[rdentry_cluster + needed_clusters]
-			else:
-				self.occupied_data_clusters[rdentry_cluster + needed_clusters] = remaning_bytes
-		
 
 	def __nxtcluster__(self, size=0, random=False, odc=None):
 		"""
@@ -320,78 +277,6 @@ class CommandManager():
 				while (cluster+_c) in self.occupied_data_clusters.keys():
 					cluster = randint(self.first_data_cluster, int(self.superblock.num_clusters_unit))
 			return cluster
-
-	def __middle_clusters__(self):
-		"""
-			__middle_clusters__
-	
-				odc: <Dictionary>
-					Receives a sorted dictionary that represents the 
-					occupied data clusters.
-
-				-> differences: <Dictionary>
-					key: next cluster in the middle.
-					value: number of clusters until the next occupied 
-					cluster.
-
-			Returns a dictionary representing the availiable clusters 
-			that are in between two occupied clusters.
-		"""
-		odc = sorted(self.occupied_data_clusters.keys())
-		differences = {} 
-		for i in range(1, len(odc)):
-			current_cluster = odc[i]
-			prev_cluster = odc[i-1]
-			difference = current_cluster - prev_cluster
-
-			if difference > 1:
-				differences[prev_cluster+1] = difference-1
-
-		return differences
-
-	def __wandering__(self):
-		"""
-			__wandering__
-
-				-> wandering: <List>(DirectoryEntry)
-					List of root dir entries that are not in their correct position
-
-			Returns the list of root dir entries that are
-			not in the correct positions 
-		"""
-		wandering = []
-		if bool(self.middle_clusters):
-			for cluster in self.middle_clusters.keys():
-				for dir_entry in self.root_dir:
-					dentry_initial_cluster = int(dir_entry.cluster.decode())
-					if dentry_initial_cluster > cluster + self.middle_clusters[cluster]:						
-						if dentry_initial_cluster not in wandering:
-							wandering.append(dir_entry)
-			if wandering:
-				return wandering
-			return None
-		else:
-			return None
-
-	def __fits__(self, dentry_clusters, inside):
-		disk_clusters = inside
-		return dentry_clusters <= disk_clusters
-
-	def __fit_cluster__(self, cheapest_direntry):
-		for key in self.middle_clusters.keys():
-			cde_size = int(cheapest_direntry.size.decode()) #cde -> cheapest_direntry
-			if cde_size <= (self.middle_clusters[key]*self.cluster_size):
-				start_index = key * self.cluster_size
-				end_index = start_index + (cde_size)
-
-				self.__move__(direntry=cheapest_direntry, cluster=key, start_index=start_index, end_index=end_index)
-
-				cde_cluster = int(cheapest_direntry.cluster)
-				self.__update_datac__(rdentry_cluster=cde_cluster, rdentry_size=cde_size)
-				break
-			else:
-				del self.middle_clusters[key]
-
 
 	def __search__(self, file):
 		if self.root_dir == []:
