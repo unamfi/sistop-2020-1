@@ -228,7 +228,6 @@ def main():
 				copyFrom((nombreArchivo))
 			elif(option==4):
 				os.system('clear')
-				print(w)
 				print("\n\nopcion: Eliminar un archivo\n")
 				archivo_a_eliminar = raw_input("\nArchivo a eliminar: ")
 				deleteFile(archivo_a_eliminar)

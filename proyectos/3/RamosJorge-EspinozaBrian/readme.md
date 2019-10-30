@@ -1,4 +1,3 @@
-#Sistop 2019-2
 ## Proyecto 3 
 
 El proposito de este proyecto es otener, crear y modificar información en el micro-sistema-de-archivos de la Facultad de Ingeniería en su version 0.7 ```FiUnamFS.```
@@ -68,21 +67,28 @@ _Aparecera un menú de opciones, donde podrás escoger una opción de loas ya me
 
 > nota: Anteriormente habiamos estado trabajando con la version 3 de python pero tuvimos problemas con el so por lo que decidimos en esta ocasion trabajar cn una version 2 de python
 
-## Ejecutando las pruebas ⚙️
+## Ejecutando el programa  ⚙️
 
 _Explica como ejecutar las pruebas automatizadas para este sistema_
+####ejecucion del programa
+![ejecucion del programa](./capturas/ejecucion.png)
+####listar archivos
+![listar archivos](./capturas/01.png)
+####Copiar un archivo a mi PC
+![Copiar un archivo a mi PC](./capturas/02.png)
+####Copiar un archivo a mi PC prueba
+![Copiar un archivo a mi PC](./capturas/022.png)
+####Copiar un archivo desde mi PC
+![Copiar un archivo desde mi PC](./capturas/03.png)
+####Copiar un archivo desde mi PC prueba
+![Copiar un archivo desde mi PC](./capturas/033.png)
+####Eliminar un archivo
+![Eliminar un archivo](./capturas/04.png)
+####Eliminar un archivo prueba
+![Eliminar un archivo](./capturas/044.png)
 
 
-
-## Y las pruebas de estilo de codificación ⌨️
-
-_Aqui van impresiones del programa_
-
-```
-ejemplo
-```
-
-## Construido con 
+## Desarrollo 
 
 Sistemas operativos utilizados:
 
