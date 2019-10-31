@@ -38,7 +38,7 @@ class ENT_DIR:
         self.num_entrada = -1
 
 class FSUnamFI:
-    # Elementos que se estarán utilizando en la mayoría de las funciones
+    # Elementos que se estar锟斤拷n utilizando en la mayor锟斤拷a de las funciones
     f = open('fiunamfs.img','a+b')
     fs_mmap = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_WRITE)
     sb = Superbloque()
@@ -47,8 +47,8 @@ class FSUnamFI:
     def obtener_entradas(self):
         entradas = []
         # Se recorrera el directorio de entradas, cada entrada mide 64 bytes
-        # El tamaño del directorio es: 2048 * 4 = 8192
-        # La cantidad de entradas serán 8192/64 = 128
+        # El tama锟�0锟�9o del directorio es: 2048 * 4 = 8192
+        # La cantidad de entradas ser锟斤拷n 8192/64 = 128
         for num_entrada in range(128):
             p_entrada = self.sb.cluster_size + num_entrada * ENT_DIR.entrada_size
             entrada = ENT_DIR(self.fs_mmap[p_entrada:p_entrada + ENT_DIR.entrada_size])
@@ -62,11 +62,11 @@ class FSUnamFI:
     def listar(self):
         entradas = self.obtener_entradas()
         
-        print('{:15} {:10} {:20} {:20} {:10}'.format("Nombre", "Tamaño", "Creación", "Modificación", "Clúster"))
+        print('{:15} {:10} {:20} {:20} {:10}'.format("Nombre", "Tama帽o", "Creaci贸n", "Modificaci贸n", "Cl煤ster"))
         for entrada in entradas:
             print('{:15} {:10} {:20} {:20} {:10}'.format(entrada.nombre_archivo, entrada.archivo_size, self.convertir_fecha(entrada.creacion_archivo), self.convertir_fecha(entrada.modificacion_archivo), entrada.cluster_inicial))
 
-    # Para imprimir la fecha de una manera más adecuada al usuario
+    # Para imprimir la fecha de una manera m锟斤拷s adecuada al usuario
     def convertir_fecha(self, fecha):
         anio = fecha[:4]
         mes = fecha[4:6]
@@ -76,7 +76,7 @@ class FSUnamFI:
         seg = fecha[12:14]
         return dia + '/' + mes + '/' + anio + ' ' + hora + ':' + min + ':' + seg
 
-    # La función buscar será fundamental, ya que sabremos si existe una entrada y su ubicación
+    # La funci锟斤拷n buscar ser锟斤拷 fundamental, ya que sabremos si existe una entrada y su ubicaci锟斤拷n
     def buscar_entrada(self, nombre_buscar):
         for num_entrada in range(128):
             p_entrada = self.sb.cluster_size + num_entrada * ENT_DIR.entrada_size
@@ -93,7 +93,7 @@ class FSUnamFI:
             cluster = int(entrada.cluster_inicial) * self.sb.cluster_size
             with open(ruta + '/' + archivo, 'w+b') as nuevo_archivo:
                 nuevo_archivo.write(self.fs_mmap[cluster: cluster+int(entrada.archivo_size)])
-                print('[+] El archivo se copió correctamente')
+                print('[+] El archivo se copi贸 correctamente')
         else:
             print('[-] Archivo o ruta no encontrado')
 
@@ -175,7 +175,6 @@ class FSUnamFI:
         
         entradas = self.obtener_entradas()
         tam_cluster = self.sb.cluster_size
-        defrag = {}
         clusters = {}
         #El primer cl煤ster a partir del cual podemos definir informaci贸n ya que del 0 - 4 tenemos el superbloque y el directorio 
         clus_init = 5
@@ -189,7 +188,7 @@ class FSUnamFI:
             clus_min = min(clusters)
             if(clus_min > clus_init):
                  inicio = tam_cluster * clus_min
-                 #Número de clusters que ocupa el archivo
+                 #N锟斤拷mero de clusters que ocupa el archivo
                  fin = math.ceil(clusters.get(clus_min)[0]/tam_cluster)
                  #Recupera el archivo
                  archivo = self.fs_mmap[inicio : inicio + (fin*tam_cluster)]
@@ -216,25 +215,25 @@ def main():
           if instruccion in ins_no_param:
                 ins_no_param[instruccion]()
           else:
-                print ("Instruccion no válida, intentalo de nuevo :(")   
+                print ("Instruccion no v谩lida, intentalo de nuevo :(")   
     elif(num_oper == 3):
           instruccion = sys.argv[1]
           if instruccion in ins_param:
                 if((instruccion == "rm" or instruccion == "cp_in") and len(sys.argv) == 3):
                     ins_param[instruccion](sys.argv[2])
                 else:
-                    print("Los parámetros no coinciden :(")
+                    print("Los par谩metros no coinciden :(")
           else: 
-                print ("Instruccion no válida, intentalo de nuevo :(")   
+                print ("Instruccion no v谩lida, intentalo de nuevo :(")   
     elif(num_oper == 4):
           instruccion = sys.argv[1]
           if instruccion in ins_param and instruccion == "cp_out":
                 fs.copiar_a_pc(sys.argv[2], sys.argv[3])
           else:
-                print ("Instrucción no válida, intentalo de nuevo :(")
+                print ("Instrucci贸n no v谩lida, intentalo de nuevo :(")
              
     else:
-          print("Faltan o sobran argumentos D: Consulta la documentación para introducir los datos correctamente (:")
+          print("Faltan o sobran argumentos D: Consulta la documentaci贸n para introducir los datos correctamente (:")
 
 
 if __name__ == '__main__':
