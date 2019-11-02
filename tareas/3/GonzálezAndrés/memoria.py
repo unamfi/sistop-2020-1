@@ -1,3 +1,5 @@
+from math import floor
+
 class Memoria:
     CHAR_ULIBRE = '-' # Identificador de unidad libre
     def __init__(self, unidades):
@@ -5,6 +7,8 @@ class Memoria:
         self.__u_libres = unidades
         self.memoria = ['-' for i in range(unidades)]
         self.__mapmem = []
+        self.u_min = 1 # Unidades mínimas asignables
+        self.u_max = floor(unidades/2) # Unidades máximas asignables
     
     def liberar(self, proceso):
         if self.__mapmem:
@@ -36,6 +40,7 @@ class Memoria:
                     dir_in_antigua = emm.direccion
                     dir_fin_antigua = dir_in_antigua + emm.u_ocupadas # Dirección de fin                    
                     proceso_por_mover = self.memoria[dir_in_antigua : dir_fin_antigua] # Guardar los datos del archivo
+                    self.memoria[dir_in_antigua : dir_fin_antigua] = [self.CHAR_ULIBRE for _ in range(emm.u_ocupadas)]
                     
                     dir_fin_nueva = direccion + emm.u_ocupadas # Dirección nueva de fin
 
@@ -54,11 +59,12 @@ class Memoria:
             unidades_req - el número de unidades que pide el proceso
             tipo_ajuste - 0: Primer ajuste. 1: Mejor ajuste, 2: Peor ajuste
         """
+        self.imprime_mem()
         if unidades_req > self.__u_libres:
             print('No se pueden asignar %i unidades, memoria sin espacio disponible' % unidades_req)
             return
-        if unidades_req < 1 or unidades_req > 15:
-            print('No se puede asignar menos de 1 unidad ni más de 15 unidades')
+        if unidades_req < self.u_min or unidades_req > self.u_max:
+            print('No se puede asignar menos de %i unidad ni más de %i unidades' % (self.u_min, self.u_max))
             return
         
         # Vemos si hy espacio en memoria entre procesos
@@ -79,9 +85,11 @@ class Memoria:
                 direccion = emm.direccion+emm.u_ocupadas # Dirección del proceso = direccón del proceso que está en lista más su tamaño
         
         urestantes_fin = self.unidades - direccion - 1# unidades restantes al final de la memoria
+        
         if urestantes_fin < unidades_req: # Si no queda espacio...
             print('No hay espacio contiguo suficiente. La unidad necesita compactarse') # Significa que la unidad requiere compactarse
-            return False
+            self.compactar()
+            direccion = self.unidades - self.__u_libres 
 
         print('Asignando %s en direccion %i' % (proceso, direccion))
         emm_nueva = EntrMapMem(direccion, nombre=proceso, u_ocupadas=unidades_req)
@@ -102,6 +110,7 @@ class EntrMapMem: # Entrada del mapa de memoria
         self.u_ocupadas = u_ocupadas
 
 mem = Memoria(30)
+print('Estado actual: ')
 mem.imprime_mem()
 mem.asignar('A')
 mem.asignar('A')
