@@ -9,6 +9,13 @@ class Memoria:
         self.__mapmem = []
         self.u_min = 1 # Unidades mínimas asignables
         self.u_max = floor(unidades/2) # Unidades máximas asignables
+
+    @property
+    def procesosEnMemoria(self):
+        pem = [] # Procesos en memoria
+        for emm in self.__mapmem:
+            pem.append(emm.nombre)
+        return pem
     
     def liberar(self, proceso):
         if self.__mapmem:
@@ -59,7 +66,7 @@ class Memoria:
             unidades_req - el número de unidades que pide el proceso
             tipo_ajuste - 0: Primer ajuste. 1: Mejor ajuste, 2: Peor ajuste
         """
-        self.imprime_mem()
+        # self.imprime_mem()
         if unidades_req > self.__u_libres:
             print('No se pueden asignar %i unidades, memoria sin espacio disponible' % unidades_req)
             return
@@ -84,7 +91,7 @@ class Memoria:
                     break # Rompemos el ciclo                    
                 direccion = emm.direccion+emm.u_ocupadas # Dirección del proceso = direccón del proceso que está en lista más su tamaño
         
-        urestantes_fin = self.unidades - direccion - 1# unidades restantes al final de la memoria
+        urestantes_fin = self.unidades - direccion - 1 # unidades restantes al final de la memoria
         
         if urestantes_fin < unidades_req: # Si no queda espacio...
             print('No hay espacio contiguo suficiente. La unidad necesita compactarse') # Significa que la unidad requiere compactarse
@@ -99,9 +106,10 @@ class Memoria:
         return True
     
     def imprime_mem(self):
-        for e in self.memoria:
-            print(e, end='')
-        print('')
+        print(''.join(self.memoria))
+        # for e in self.memoria:
+        #     print(e, end='')
+        # print('')
 
 class EntrMapMem: # Entrada del mapa de memoria
     def __init__(self, direccion, nombre, u_ocupadas):
@@ -109,19 +117,19 @@ class EntrMapMem: # Entrada del mapa de memoria
         self.nombre = nombre
         self.u_ocupadas = u_ocupadas
 
-mem = Memoria(30)
-print('Estado actual: ')
-mem.imprime_mem()
-mem.asignar('A')
-mem.asignar('A')
-mem.asignar('B', 0)
-mem.asignar('B', 16)
-mem.asignar('B', 5)
-mem.asignar('C', 15)
-mem.asignar('D', 10)
-mem.liberar('B')
-mem.asignar('D', 10)
-mem.imprime_mem()
-mem.compactar()
-mem.asignar('D', 10)
-mem.imprime_mem()
+# mem = Memoria(30)
+# print('Estado actual: ')
+# mem.imprime_mem()
+# mem.asignar('A')
+# mem.asignar('A')
+# mem.asignar('B', 0)
+# mem.asignar('B', 16)
+# mem.asignar('B', 5)
+# mem.asignar('C', 15)
+# mem.asignar('D', 10)
+# mem.liberar('B')
+# mem.asignar('D', 10)
+# mem.imprime_mem()
+# mem.compactar()
+# mem.asignar('D', 10)
+# mem.imprime_mem()
