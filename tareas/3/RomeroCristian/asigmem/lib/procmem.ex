@@ -27,7 +27,7 @@ defmodule Procmem do
       opt in ["a", "A"] ->
 	proc_id = <<sel_new_proc(cad, 97)>>
 	new_proc_tam = String.to_integer(String.trim(
-	    IO.gets("Nuevo Proceso [#{proc_id}] "))) -1
+	    IO.gets("Nuevo Proceso [#{proc_id}] "))) 
 	menu_interactivo(asignar_primero(cad, proc_id, new_proc_tam))
       opt in ["q", "Q"] ->
 	0
@@ -38,7 +38,11 @@ defmodule Procmem do
   defp asignar_primero(cad, proc_nom, tam) do
     cad = to_string(cad)
     proc_nom = to_string(List.duplicate(proc_nom, tam))
-    to_charlist(String.replace(cad, IO.inspect(List.duplicate("-", tam)), proc_nom))
+    {_, exp} = Regex.compile(to_string(List.duplicate("-", tam)))
+    to_charlist(Regex.replace(exp, to_string(cad),
+      to_string(proc_nom), global: false))
+
+   
     
   end
 

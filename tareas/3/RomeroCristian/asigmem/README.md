@@ -1,21 +1,32 @@
 # Asigmem
 
-**TODO: Add description**
+## Autor
 
-## Installation
+* Romero Andrade Cristian
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `asigmem` to your list of dependencies in `mix.exs`:
+## Dependecias
 
-```elixir
-def deps do
-  [
-    {:asigmem, "~> 0.1.0"}
-  ]
-end
+Tener instalador _elixir_ y _mix_
+
+* Arch linux
+
+  * `pacman -S elixir`
+  
+* Ubuntu 14.04/16.04/17.04/18.04/19.04 or Debian 7/8/9 
+
+  * Agregue el repositorio de Erlang Solutionso: `wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb && sudo dpkg -i erlang-solutions_2.0_all.deb`
+  * Ejecuta: `sudo apt-get update`
+  * Instale la plataforma Erlang / OTP y todas sus aplicaciones: `sudo apt-get install esl-erlang`
+  * Instalar Elixir: `sudo apt-get install elixir`
+
+
+
+## Compilación
+
+Ubicarse en la raíz del proyecto y ejecutar
+
+```bash
+	mix escript.build
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/asigmem](https://hexdocs.pm/asigmem).
-
+Asignación de memoria
