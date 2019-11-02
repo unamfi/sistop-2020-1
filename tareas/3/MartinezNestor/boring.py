@@ -32,16 +32,5 @@ class BoringHelper(object):
 			procs.append(proc)
 		return procs
 
-	def print_mmap(self, mmap):
-		""" 
-			Deals with printing nicely the memory map.
-		"""
-		index = 0
-		for entry in mmap:
-			end_c = ' '
-			if index == len(mmap)-1:
-				end_c = "\n"
-			print(entry, end=end_c)
-			index += 1
-
-
+	def showmenu(self):
+		pass
