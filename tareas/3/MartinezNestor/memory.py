@@ -56,7 +56,7 @@ class MemoryManager(object):
 		self.__print_mmap__()
 		self.__compact__()
 			
-	def __mmap__(self, procs, compact=False):
+	def __mmap__(self, procs):
 		"""
 			Builds a list representing the memory map
 			given a list of processes
@@ -111,13 +111,13 @@ class MemoryManager(object):
 		""" 
 			Deals with printing nicely the memory map.
 		"""
-		print("Asignación actual:", end='\n\n')
+		print("Asignacion actual:\n\n")
 		index = 0
 		for entry in self.memorymap:
 			end_c = ' '
 			if index == len(self.memorymap)-1:
 				end_c = "\n"
-			print(entry, end=end_c)
+			print("%s %s" % (entry, end_c))
 			index += 1
 
 	def __compact__(self):

@@ -33,4 +33,7 @@ class BoringHelper(object):
 		return procs
 
 	def showmenu(self):
+		"""
+			Shows the user the multiple options
+		"""
 		pass
