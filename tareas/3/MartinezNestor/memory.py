@@ -18,6 +18,8 @@ class MemoryManager(object):
 
 	#List that represents the current memory map
 	memorymap = []
+	units_available = 0
+	procs = []
 
 	def __init__(self, units, strategy=0):
 		"""
@@ -49,14 +51,12 @@ class MemoryManager(object):
 			print("Error: more processes requested than can be assigned.")
 			sys.exit()
 		b_helper = BoringHelper(num_procs=num_procs)
-		procs = b_helper.generate()
-		self.__mmap__(procs=procs)
-		b_helper.print_mmap(self.memorymap)
-		print(len(self.memorymap))
-		for proc in procs:
-			print("%s : %s" % (proc.letter_id, proc.units))
+		self.procs = b_helper.generate()
+		self.__mmap__(procs=self.procs)
+		self.__print_mmap__()
+		self.__compact__()
 			
-	def __mmap__(self, procs):
+	def __mmap__(self, procs, compact=False):
 		"""
 			Builds a list representing the memory map
 			given a list of processes
@@ -66,23 +66,22 @@ class MemoryManager(object):
 		for proc in procs:
 			units_occupied += proc.units
 			if units_occupied > self.units:
-				print("From proc \'%s\' until the end, there is no more memory" % proc.letter_id)
+				print("From proc \'%s\' until the end, there is no more memory\n" % proc.letter_id)
 				procs = procs[0:index]
 				units_occupied -= proc.units
 				break
 			index += 1
-		units_available = self.units - units_occupied
-		print("Disk units: %d. Oc: %d. Av: %d" % (self.units, units_occupied, units_available))
+		self.units_available = self.units - units_occupied
+		units_av = self.units_available
+		#print("Disk units: %d. Oc: %d. Av: %d" % (self.units, units_occupied, self.units_available))
 		for proc in procs:
-			if units_available > 0:
+			if units_av > 0:
 				space = bool(getrandbits(1))
 				if space:
-					duration = randint(1, units_available)
-					units_available -= duration
+					duration = randint(1, units_av)
+					units_av -= duration
 					self.__proc_in_mmap__(proc=None, nil=True, times=duration)
-				self.__proc_in_mmap__(proc)
-			else:
-				self.__proc_in_mmap__(proc)
+			self.__proc_in_mmap__(proc)
 		self.__complete_mmap__()
 
 
@@ -105,12 +104,32 @@ class MemoryManager(object):
 		current = len(self.memorymap)
 		if current < self.units:
 			diff = self.units - current
-			for i in range(diff):
+			for _ in range(diff):
 				self.memorymap.append('-')
 
+	def __print_mmap__(self):
+		""" 
+			Deals with printing nicely the memory map.
+		"""
+		print("Asignación actual:", end='\n\n')
+		index = 0
+		for entry in self.memorymap:
+			end_c = ' '
+			if index == len(self.memorymap)-1:
+				end_c = "\n"
+			print(entry, end=end_c)
+			index += 1
 
+	def __compact__(self):
+		"""
+			Compacts the memory map when requested
+		"""		
+		self.memorymap = []
+		for proc in self.procs:
+			self.__proc_in_mmap__(proc)
+		self.__complete_mmap__()
 
 if __name__ == "__main__":
 	#Change this parameters to modify the execution of the program
 	MEM = MemoryManager(units=30, strategy=0)
-	MEM.start(num_procs=6)
+	MEM.start(num_procs=3)
