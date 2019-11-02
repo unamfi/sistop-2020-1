@@ -97,6 +97,8 @@ class Memoria:
             print('No hay espacio contiguo suficiente. La unidad necesita compactarse') # Significa que la unidad requiere compactarse
             self.compactar()
             direccion = self.unidades - self.__u_libres 
+            print('Nueva situación: \n\t', end='')
+            self.imprime_mem()
 
         print('Asignando %s en direccion %i' % (proceso, direccion))
         emm_nueva = EntrMapMem(direccion, nombre=proceso, u_ocupadas=unidades_req)
@@ -107,29 +109,9 @@ class Memoria:
     
     def imprime_mem(self):
         print(''.join(self.memoria))
-        # for e in self.memoria:
-        #     print(e, end='')
-        # print('')
 
 class EntrMapMem: # Entrada del mapa de memoria
     def __init__(self, direccion, nombre, u_ocupadas):
         self.direccion = direccion
         self.nombre = nombre
         self.u_ocupadas = u_ocupadas
-
-# mem = Memoria(30)
-# print('Estado actual: ')
-# mem.imprime_mem()
-# mem.asignar('A')
-# mem.asignar('A')
-# mem.asignar('B', 0)
-# mem.asignar('B', 16)
-# mem.asignar('B', 5)
-# mem.asignar('C', 15)
-# mem.asignar('D', 10)
-# mem.liberar('B')
-# mem.asignar('D', 10)
-# mem.imprime_mem()
-# mem.compactar()
-# mem.asignar('D', 10)
-# mem.imprime_mem()
