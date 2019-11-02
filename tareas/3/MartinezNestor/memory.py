@@ -117,7 +117,7 @@ class MemoryManager(object):
 			end_c = ' '
 			if index == len(self.memorymap)-1:
 				end_c = "\n"
-			print("%s %s" % (entry, end_c))
+			print(entry, end=end_c)
 			index += 1
 
 	def __compact__(self):
