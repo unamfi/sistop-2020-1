@@ -39,12 +39,13 @@ defmodule Asigmem do
   end
 
   defp process(options) do
-    IO.inspect options
+    # IO.inspect options
 
     case options do
       {[help: :true], _, _} -> IO.puts help_cli()
-      {lista, _, _} -> Procmem.proc(lista)
       {[],[],[]} -> noargs()     
+      {lista, _, _} -> Procmem.proc(lista)
+ 
 
       
     end
