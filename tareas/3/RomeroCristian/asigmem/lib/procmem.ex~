@@ -1,0 +1,29 @@
+defmodule Procmem do
+
+
+  # {[procesos: "ABCD", mejor: true, peor: true, primer: true], [], []}
+  def get_process({list, _, _}) do
+    unless list[:procesos] do
+
+      
+      
+    else
+      p
+      
+    end
+  end
+
+  defp parse_procesos([ proc | tail]) do
+    
+  end
+
+  defp primero(proc) do
+    
+  end
+
+  defp mejor(proc) do
+  end
+
+  defp peor(proc) do
+  end
+end
