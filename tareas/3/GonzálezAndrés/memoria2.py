@@ -20,7 +20,32 @@ class Memoria:
             return True
 
     def compactar(self):
-        pass
+        procesos_mov = 0 # Contador para indicar los procesos que fueron movidos durante la compactación
+        if self.__mapmem:
+            direccion = 0 # 
+            u_libres = self.__u_libres # Suponemos que tenemos todo el espacio
+            clusters_usados = 0 # Al inicio suponemos que no hay archivos ocupando el cluster
+
+            self.__mapmem = sorted(self.__mapmem, key=lambda ed: ed.direccion) # Ordenamos la lista de entradas con base en el cluster donde inician
+
+            for i, emm in enumerate(self.__mapmem): # emm : entrada de mapa de memoria
+                u_libres = emm.direccion - direccion # Vemos cuantas unidades tenemos disponibles entre procesos
+
+                if u_libres > 0: # Si hay espacio entre procesos...
+
+                    dir_in_antigua = emm.direccion
+                    dir_fin_antigua = dir_in_antigua + emm.u_ocupadas # Dirección de fin                    
+                    proceso_por_mover = self.memoria[dir_in_antigua : dir_fin_antigua] # Guardar los datos del archivo
+                    
+                    dir_fin_nueva = direccion + emm.u_ocupadas # Dirección nueva de fin
+
+                    emm.direccion = direccion # Le actualizamos su dirección de inicio
+                    self.memoria[direccion : dir_fin_nueva] = proceso_por_mover # Movemos el proceso
+                    procesos_mov += 1
+
+                direccion = emm.direccion+emm.u_ocupadas # y actualizamos la dirección de inicio
+        print('Compactación terminada, %i procesos movidos.' % procesos_mov)
+        return procesos_mov>0
 
     def asignar(self, proceso, unidades_req=2, tipo_ajuste=0):
         """Asigna una cantidad de unidades de memoria a un proceso
@@ -33,12 +58,8 @@ class Memoria:
             print('No se pueden asignar %i unidades, memoria sin espacio disponible' % unidades_req)
             return
         if unidades_req < 1 or unidades_req > 15:
-            print('No se pueden asignar menos de 1 unidad ni más de 15 unidades')
+            print('No se puede asignar menos de 1 unidad ni más de 15 unidades')
             return
-        # if not self.__mapmem:
-        #     emm = EntrMapMem(0, proceso, unidades_req)
-        #     self.__mapmem.append(emm)
-        #     return
         
         # Vemos si hy espacio en memoria entre procesos
         direccion = 0 # Iniciamos en la primer dirección de memoria
@@ -62,12 +83,17 @@ class Memoria:
             print('No hay espacio contiguo suficiente. La unidad necesita compactarse') # Significa que la unidad requiere compactarse
             return False
 
-        print('Asignando "%s" en direccion %i' % (proceso, direccion))
+        print('Asignando %s en direccion %i' % (proceso, direccion))
         emm_nueva = EntrMapMem(direccion, nombre=proceso, u_ocupadas=unidades_req)
         self.__mapmem.append(emm_nueva)
         self.memoria[direccion:direccion+unidades_req] = [proceso for _ in range(unidades_req)]
         self.__u_libres -= unidades_req
         return True
+    
+    def imprime_mem(self):
+        for e in self.memoria:
+            print(e, end='')
+        print('')
 
 class EntrMapMem: # Entrada del mapa de memoria
     def __init__(self, direccion, nombre, u_ocupadas):
@@ -76,7 +102,7 @@ class EntrMapMem: # Entrada del mapa de memoria
         self.u_ocupadas = u_ocupadas
 
 mem = Memoria(30)
-print(mem.memoria)
+mem.imprime_mem()
 mem.asignar('A')
 mem.asignar('A')
 mem.asignar('B', 0)
@@ -86,4 +112,7 @@ mem.asignar('C', 15)
 mem.asignar('D', 10)
 mem.liberar('B')
 mem.asignar('D', 10)
-print(mem.memoria)
+mem.imprime_mem()
+mem.compactar()
+mem.asignar('D', 10)
+mem.imprime_mem()
