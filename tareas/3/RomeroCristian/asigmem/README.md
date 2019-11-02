@@ -19,14 +19,19 @@ Tener instalador _elixir_ y _mix_
   * Instale la plataforma Erlang / OTP y todas sus aplicaciones: `sudo apt-get install esl-erlang`
   * Instalar Elixir: `sudo apt-get install elixir`
 
-
-
 ## Compilación
 
 Ubicarse en la raíz del proyecto y ejecutar
 
 ```bash
 	mix escript.build
+```
+
+Al compilar se genera el binario en la riz del proyecto
+
+### Ejemplo de ejecucuión
+```bash
+
 ```
 
 Asignación de memoria
