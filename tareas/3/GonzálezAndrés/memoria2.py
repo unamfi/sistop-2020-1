@@ -7,7 +7,17 @@ class Memoria:
         self.__mapmem = []
     
     def liberar(self, proceso):
-        pass
+        if self.__mapmem:
+            resultado = list(filter( lambda emm: emm.nombre == proceso, self.__mapmem)) # Buscamos si hay algún proceso con el mismo nombre
+            if not resultado:
+                print('No existe el proceso en memoria')
+                return False
+            eem_del = resultado.pop()
+            self.__mapmem.remove(eem_del)
+            self.memoria[eem_del.direccion : eem_del.direccion + eem_del.u_ocupadas] = [self.CHAR_ULIBRE for _ in range(eem_del.u_ocupadas)]
+            self.__u_libres += eem_del.u_ocupadas
+            print('Proceso %s liberado' % proceso)
+            return True
 
     def compactar(self):
         pass
@@ -47,13 +57,17 @@ class Memoria:
                     break # Rompemos el ciclo                    
                 direccion = emm.direccion+emm.u_ocupadas # Dirección del proceso = direccón del proceso que está en lista más su tamaño
         
+        urestantes_fin = self.unidades - direccion - 1# unidades restantes al final de la memoria
+        if urestantes_fin < unidades_req: # Si no queda espacio...
+            print('No hay espacio contiguo suficiente. La unidad necesita compactarse') # Significa que la unidad requiere compactarse
+            return False
+
         print('Asignando "%s" en direccion %i' % (proceso, direccion))
         emm_nueva = EntrMapMem(direccion, nombre=proceso, u_ocupadas=unidades_req)
         self.__mapmem.append(emm_nueva)
         self.memoria[direccion:direccion+unidades_req] = [proceso for _ in range(unidades_req)]
         self.__u_libres -= unidades_req
         return True
-        
 
 class EntrMapMem: # Entrada del mapa de memoria
     def __init__(self, direccion, nombre, u_ocupadas):
@@ -69,5 +83,7 @@ mem.asignar('B', 0)
 mem.asignar('B', 16)
 mem.asignar('B', 5)
 mem.asignar('C', 15)
+mem.asignar('D', 10)
+mem.liberar('B')
 mem.asignar('D', 10)
 print(mem.memoria)
