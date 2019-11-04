@@ -167,7 +167,7 @@ class MemoryManager(object):
 		if self.units_available < 1:
 			print("No hay unidades disponibles. Intenta liberar (1) memoria.")
 		else:
-			nextkey = self.b_helper.nextkey(len(self.procs))
+			nextkey = self.b_helper.nextkey(self.procs)
 			uinput = input("Nuevo proceso (%s): " % nextkey)
 			if uinput.isdigit():
 				units = int(uinput)
@@ -198,9 +198,16 @@ class MemoryManager(object):
 			Removes 'proc' process from the memory map.
 		"""
 		index = 0
+		for p in self.procs:
+			if p == proc:
+				break
+			index += 1
+		del self.procs[index]
+		index = 0
 		for entry in self.memorymap:
 			if entry == proc.letter_id:
 				self.memorymap[index] = "-"
+				self.units_available += 1
 			index += 1
 
 if __name__ == "__main__":

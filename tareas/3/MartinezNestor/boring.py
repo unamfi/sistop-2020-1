@@ -25,7 +25,6 @@ class BoringHelper(object):
 			if i > len(self.alphabet)-1:
 				print("Maximun number of generated processes has been reached(%d)" % len(self.alphabet))
 				sys.exit()
-
 			units = randint(Process.MIN_UNITS, Process.MAX_UNITS)
 			letter_id = self.alphabet[i]
 			proc = Process(letter_id=letter_id, units=units)
@@ -38,8 +37,15 @@ class BoringHelper(object):
 		"""
 		return input("\nAsignar (0) Liberar (1) Salir (2): ")
 
-	def nextkey(self, count):
+	def nextkey(self, procs):
 		"""
 			Returns the next key if the alphabet
 		"""
-		return self.alphabet[count]
+		index = 0
+		for proc in procs:
+			if proc.letter_id == self.alphabet[index]:
+				pass
+			else:
+				return self.alphabet[index]
+			index += 1
+		return self.alphabet[len(procs)]
