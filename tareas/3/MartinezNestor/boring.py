@@ -31,19 +31,17 @@ class BoringHelper(object):
 			procs.append(proc)
 		return procs
 
-	def showmenu(self):
-		"""
-			Shows the user the multiple options
-		"""
-		return input("\nAsignar (0) Liberar (1) Salir (2): ")
-
 	def nextkey(self, procs):
 		"""
 			Returns the next key if the alphabet
 		"""
-		index = 0
+		pcs = []
 		for proc in procs:
-			if proc.letter_id == self.alphabet[index]:
+			pcs.append(proc.letter_id)
+		pcs = sorted(pcs)
+		index = 0
+		for letter in pcs:
+			if letter == self.alphabet[index]:
 				pass
 			else:
 				return self.alphabet[index]

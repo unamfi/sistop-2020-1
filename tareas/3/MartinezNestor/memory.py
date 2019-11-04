@@ -53,7 +53,7 @@ class MemoryManager(object):
 		"""
 		os.system('clear')
 		if num_procs > self.units:
-			print("Error: more processes requested than can be assigned.")
+			print("Error: solicitas más memoria de la disponible.")
 			sys.exit()
 		self.b_helper = BoringHelper(num_procs=num_procs)
 		self.procs = self.b_helper.generate_procs()
@@ -61,7 +61,7 @@ class MemoryManager(object):
 		self.__print_mmap__()
 		_r = ""
 		while _r != "2":
-			_r = self.b_helper.showmenu()
+			_r = input("\nAsignar (0) Liberar (1) Salir (2): ")
 			if _r == "0":
 				if self.units_available > 0:
 					self.__assign__()
@@ -176,9 +176,6 @@ class MemoryManager(object):
 					print("No hay unidades disponibles. Intenta liberar (1) memoria.")
 				elif units > 0:
 					newproc = Process(letter_id=nextkey, units=units)
-					self.procs.append(newproc)
-					self.units_available += newproc.units
-
 					available_space = self.__findspace__(units=units)
 					if available_space:
 						self.__bestfit__(proc=newproc)
@@ -197,6 +194,8 @@ class MemoryManager(object):
 		"""
 			Best fit strategy to assign a process to the memory map.
 		"""
+		self.procs.append(proc)
+		self.units_available -= proc.units
 		spaces = self.__findspaces__()
 		startindex = None
 		lessdiff = self.units + 1
@@ -269,9 +268,13 @@ class MemoryManager(object):
 		"""
 			Returns the processes in a nicely way.
 		"""
-		proc_string = ""
+		pcs = []
 		for proc in self.procs:
-			proc_string += (proc.letter_id)
+			pcs.append(proc.letter_id)
+		pcs = sorted(pcs)
+		proc_string = ""
+		for letter in pcs:
+			proc_string += letter
 		return proc_string
 
 	def __removeproc__(self, proc):
