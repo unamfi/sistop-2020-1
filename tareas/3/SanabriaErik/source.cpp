@@ -45,6 +45,7 @@ int main()
 {
 	size_t mem{ 30 };
 	size_t numprocs{ 0 };
+	size_t tam{ 0 };
 
 	std::cout <<"\n\tIngrese el numero de unidades de memoria, mayor a 30: ";
 	std::cin >> mem;
@@ -78,8 +79,40 @@ int main()
 		return 2;
 	}
 
+	std::cout << std::endl << std::flush;
 
-	if(!asigMem())
+	char let{ 0x41 };
+
+	for(size_t h{ 0 }; h < numprocs; ++h, ++let)
+	{
+		std::cout << "\n\tIngresa el tamanio del proceso " << let << " entre 2 y 15: ";
+		std::cin >> tam;
+
+		if((tam > 15) || (tam < 2))
+		{
+			std::cout <<"\tEl valor (" << tam << ") ingresado para " << let << " es invalido!" << std::flush;
+
+			--h;
+			--let;
+		}
+		else if((tam >= 2) && (tam <= 15))
+		{
+			std::cout << "\n\tVamos a ingresar el proceso " << let << std::flush;
+
+			if(!asigMem(arr_mem, let, tam, mem))
+			{
+				std::cout << "\n\tLa asignacion de " << let << " con tamanio " << tam << " fue exitosa!" << std::flush;
+
+				printMem(arr_mem, mem);
+			}
+
+		}
+	}
+
+	if(!asigMem(arr_mem, 'A', 2, mem))
+	{
+		printMem(arr_mem, mem);
+	}
 
 	delete [] arr_mem;
 
