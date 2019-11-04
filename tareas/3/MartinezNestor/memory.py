@@ -6,6 +6,7 @@ import os
 import sys
 from random import randint, getrandbits
 from boring import BoringHelper
+from proc import Process
 
 class MemoryManager(object):
 	"""
@@ -58,19 +59,19 @@ class MemoryManager(object):
 		self.procs = self.b_helper.generate_procs()
 		self.__mmap__(procs=self.procs)
 		self.__print_mmap__()
-		r = ""
-		while r is not "2":
-			r = self.b_helper.showmenu()
-			if r == "0":
-				self.__assign__()
-			elif r == "1":
+		_r = ""
+		while _r != "2":
+			_r = self.b_helper.showmenu()
+			if _r == "0":
+				if self.units_available > 0:
+					self.__assign__()
+				else:
+					print("No hay unidades disponibles. Intenta liberar (1) memoria.")
+			elif _r == "1":
 				self.__liberate__()
 		os.system('clear')
 
-	
-	"""
-		Protected functions
-	"""	
+	#Protected functions
 	def __mmap__(self, procs):
 		"""
 			Builds a list representing the memory map
@@ -81,7 +82,7 @@ class MemoryManager(object):
 		for proc in procs:
 			units_occupied += proc.units
 			if units_occupied > self.units:
-				print("From proc \'%s\' until the end, there is no more memory\n" % proc.letter_id)
+				print("Del proc \'%s\' hacia el final, ya no hay memoria.\n" % proc.letter_id)
 				self.procs = procs[0:index]
 				units_occupied -= proc.units
 				break
@@ -126,7 +127,7 @@ class MemoryManager(object):
 		""" 
 			Deals with printing nicely the memory map.
 		"""
-		print("Asignacion actual:")
+		print("\nAsignacion actual:")
 		index = 0
 		for entry in self.memorymap:
 			end_c = ' '
@@ -171,9 +172,89 @@ class MemoryManager(object):
 			uinput = input("Nuevo proceso (%s): " % nextkey)
 			if uinput.isdigit():
 				units = int(uinput)
-				print(units)
+				if self.units_available < units:
+					print("No hay unidades disponibles. Intenta liberar (1) memoria.")
+				elif units > 0:
+					newproc = Process(letter_id=nextkey, units=units)
+					self.procs.append(newproc)
+					self.units_available += newproc.units
+
+					available_space = self.__findspace__(units=units)
+					if available_space:
+						self.__bestfit__(proc=newproc)
+					else:
+						print("*Compactación requerida*")
+						self.__compact__()
+						self.__print_mmap__()
+						self.__bestfit__(proc=newproc)
+					self.__print_mmap__()
+				else:
+					print("No puedes asignar unidades en 0.")
 			else:
 				print("Solo puedo aceptar enteros.")
+
+	def __bestfit__(self, proc):
+		"""
+			Best fit strategy to assign a process to the memory map.
+		"""
+		spaces = self.__findspaces__()
+		startindex = None
+		lessdiff = self.units + 1
+		for key in spaces:
+			diff = spaces[key] - proc.units
+			if diff == 0:
+				startindex = key
+				break
+			else:
+				if diff > 0 and diff < lessdiff:
+					lessdiff = diff
+					startindex = key
+		i = 0
+		while i < proc.units:
+			self.memorymap[startindex + i] = proc.letter_id
+			i += 1
+
+
+	def __findspaces__(self):
+		"""
+			Returns a dictionary where the key is 
+			the number of entry in the memory map
+			and the value is the current available spaces.
+		"""
+		spaces = {}
+		numspaces = 0
+		index = 0
+		for entry in self.memorymap:
+			if entry == "-":
+				numspaces += 1
+			elif numspaces > 0:
+				spaces[index-numspaces] = numspaces
+				numspaces = 0
+			index += 1
+		if numspaces > 0:
+			spaces[index-numspaces] = numspaces
+			numspaces = 0
+		return spaces
+
+
+	def __findspace__(self, units):
+		"""
+			Returns true if the assigned process can be inserted given the current
+			disk distribution.
+			In case no such space can be found, the functions returns false. 
+		"""
+		space = 0
+		for entry in self.memorymap:
+			if entry == "-":
+				space += 1
+			else:
+				if space >= units:
+					return True
+				space = 0
+		if space >= units:
+			return True
+		return False
+
 
 	def __findproc__(self, letter):
 		"""
@@ -198,8 +279,8 @@ class MemoryManager(object):
 			Removes 'proc' process from the memory map.
 		"""
 		index = 0
-		for p in self.procs:
-			if p == proc:
+		for _p in self.procs:
+			if _p == proc:
 				break
 			index += 1
 		del self.procs[index]
