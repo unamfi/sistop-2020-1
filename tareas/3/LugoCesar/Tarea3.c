@@ -27,8 +27,7 @@ void initMem() {
   while (i < 30){
 
     if (rand()%3 == 0){
-      int sizeSp = rand()%4 + 2; //Asignacion para que el tamaño sea entre 2 y 15
-      int j = 0;
+      int sizeSp = rand()%4 + 2; 
 
       for (j = 0; j < sizeSp; j++){
           memory[i] = '-';
