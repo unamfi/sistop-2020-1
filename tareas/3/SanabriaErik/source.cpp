@@ -13,6 +13,16 @@ size_t genRand(size_t a, size_t b)
 	return num;
 }
 
+void printMem(char *data, size_t n = 30)
+{
+	std::cout << "\n\tContenidos de la memoria:\n\t" << std::flush;
+
+	for(size_t i{ 0 }; i < n; ++i)
+	{
+		std::cout << data[i];
+	}
+}
+
 int main()
 {
 	size_t mem{ 30 };
@@ -27,16 +37,17 @@ int main()
 		return 1;
 	}
 
-	for(size_t i{ 0 }; i < 20; ++i)
+	//inicializando el arreglo de memoria.
+	char *arr_mem{ new char[mem] };
+
+	for(size_t k{ 0 }; k < mem; ++k)
 	{
-		size_t A{ 0 };
-		size_t B{ 0 };
-		std::cout <<"\n\tA: ";
-		std::cin >> A;
-		std::cout <<"\n\tB: ";
-		std::cin >> B;
-		std::cout << std::endl <<"\t" << genRand(A, B) << std::flush;
+		arr_mem[k] = '-';
 	}
+
+	printMem(arr_mem, mem);
+
+	delete [] arr_mem;
 
 	return 0;
 }
