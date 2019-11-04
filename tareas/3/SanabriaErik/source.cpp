@@ -23,9 +23,28 @@ void printMem(char *data, size_t n = 30)
 	}
 }
 
+size_t asigMem(char *data, char newData, size_t newDataSize, size_t n = 30)
+{
+	for(size_t k{ 0 }; k < n; ++k)
+	{
+		if((data[k] == '-') && ((n - k) >= newDataSize))
+		{
+			for(size_t h{ 0 }; h < newDataSize; ++h)
+			{
+				data[h] = newData;
+			}
+
+			return 0;
+		}
+	}
+
+	return 1;
+}
+
 int main()
 {
 	size_t mem{ 30 };
+	size_t numprocs{ 0 };
 
 	std::cout <<"\n\tIngrese el numero de unidades de memoria, mayor a 30: ";
 	std::cin >> mem;
@@ -46,6 +65,21 @@ int main()
 	}
 
 	printMem(arr_mem, mem);
+
+	std::cout << "\n\tIngrese el numero de procesos deseados entre 1 y " << mem << ": " << std::flush;
+	std::cin >> numprocs;
+
+	if((numprocs <= 0) || (numprocs > mem))
+	{
+		std::cout << std::endl <<"\n\tEl numero " << numprocs << " es mayor a " << mem << "! Terminando!" << std::flush;
+
+		delete [] arr_mem;
+
+		return 2;
+	}
+
+
+	if(!asigMem())
 
 	delete [] arr_mem;
 
