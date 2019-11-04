@@ -15,12 +15,14 @@ size_t genRand(size_t a, size_t b)
 
 void printMem(char *data, size_t n = 30)
 {
-	std::cout << "\n\tContenidos de la memoria:\n\t" << std::flush;
+	std::cout << "\n\n\tContenidos de la memoria:\n\t" << std::flush;
 
 	for(size_t i{ 0 }; i < n; ++i)
 	{
 		std::cout << data[i];
 	}
+
+	std::cout << std::endl;
 }
 
 size_t asigMem(char *data, char newData, size_t newDataSize, size_t n = 30)
@@ -29,12 +31,20 @@ size_t asigMem(char *data, char newData, size_t newDataSize, size_t n = 30)
 	{
 		if((data[k] == '-') && ((n - k) >= newDataSize))
 		{
-			for(size_t h{ 0 }; h < newDataSize; ++h)
+			for(size_t h{ k }; h < (newDataSize + k); ++h)
 			{
 				data[h] = newData;
+
+				std::cout << "\n\t[" << h <<"]: " << data[h];
 			}
 
 			return 0;
+		}
+		else if(data[k] != '-')
+		{
+			std::cout << "\n\t[" << k << "]: Buscando...";
+
+			continue;
 		}
 	}
 
@@ -105,13 +115,7 @@ int main()
 
 				printMem(arr_mem, mem);
 			}
-
 		}
-	}
-
-	if(!asigMem(arr_mem, 'A', 2, mem))
-	{
-		printMem(arr_mem, mem);
 	}
 
 	delete [] arr_mem;
