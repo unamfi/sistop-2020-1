@@ -16,7 +16,7 @@ class BoringHelper(object):
 	def __init__(self, num_procs):
 		self.num_procs = num_procs
 
-	def generate(self):
+	def generate_procs(self):
 		"""
 			Generates 'num_procs' number of processes
 		"""
@@ -36,4 +36,10 @@ class BoringHelper(object):
 		"""
 			Shows the user the multiple options
 		"""
-		pass
+		return input("\nAsignar (0) Liberar (1) Salir (2): ")
+
+	def nextkey(self, count):
+		"""
+			Returns the next key if the alphabet
+		"""
+		return self.alphabet[count]
