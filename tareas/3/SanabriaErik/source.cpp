@@ -115,6 +115,14 @@ int main()
 
 				printMem(arr_mem, mem);
 			}
+			else
+			{
+				std::cout << "\\n\tEl proceso " << let <<" ya no cabe!" << std::endl << std::flush;
+
+				printMem(arr_mem, mem);
+
+				break;
+			}
 		}
 	}
 
