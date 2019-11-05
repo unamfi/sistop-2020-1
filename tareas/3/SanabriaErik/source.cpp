@@ -51,10 +51,22 @@ size_t asigMem(char *data, char newData, size_t newDataSize, size_t n = 30)
 	return 1;
 }
 
+void remLet(char *data, char let, size_t n = 30)
+{
+	for(size_t i{ 0 }; i < n; ++i)
+	{
+		if(data[i] == let)
+		{
+			data[i] = '-';
+		}
+	}
+}
+
 int main()
 {
 	size_t mem{ 30 };
 	size_t numprocs{ 0 };
+	size_t numprocs_act{ 0 };
 	size_t tam{ 0 };
 
 	std::cout <<"\n\tIngrese el numero de unidades de memoria, mayor a 30: ";
@@ -109,6 +121,8 @@ int main()
 		{
 			std::cout << "\n\tVamos a ingresar el proceso " << let << std::flush;
 
+			numprocs_act = h;
+
 			if(!asigMem(arr_mem, let, tam, mem))
 			{
 				std::cout << "\n\tLa asignacion de " << let << " con tamanio " << tam << " fue exitosa!" << std::flush;
@@ -123,6 +137,41 @@ int main()
 
 				break;
 			}
+		}
+	}
+
+	while(true)
+	{
+		char res{ 'N' };
+		char letra{ 0x41 };
+		char let_rem{ 0x41 };
+
+		std::cout << std::endl <<"\tDesea borrar algun proceso (Y/N): " << std::flush;
+		std::cin >> res;
+
+		if((res == 'N') || (res == 'n'))
+		{
+			std::cout << std::endl <<"\tTerminando (" << res <<")." << std::flush;
+
+			break;
+		}
+		else if((res == 'Y') || (res == 'y'))
+		{
+			std::cout << std::endl <<"\tQue proceso desea remover: (" << std::flush;
+
+			for(size_t a{ 0 }; a <= numprocs_act; ++a, ++letra)
+			{
+				std::cout << letra << ", " << std::flush;
+			}
+
+			std::cout <<")" << std::flush << "\n\tRespuesta: ";
+			std::cin >> let_rem;
+		}
+		else
+		{
+			std::cout << std::endl << "\tLa respuesta " << res << " es invalida!" << std::flush;
+
+			continue;
 		}
 	}
 
