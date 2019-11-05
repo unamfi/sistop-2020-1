@@ -1,17 +1,4 @@
 #include <iostream>
-#include <ctime>
-#include <cstdlib>
-
-//Funcion que genera numeros aleatorios
-//entre a y b.
-//a: el minimo
-//b: el maximo
-size_t genRand(size_t a, size_t b)
-{
-	std::srand(std::time(0));
-	size_t num{a + (std::rand()%(b - a + 1))};
-	return num;
-}
 
 void printMem(char *data, size_t n = 30)
 {
@@ -34,16 +21,12 @@ size_t asigMem(char *data, char newData, size_t newDataSize, size_t n = 30)
 			for(size_t h{ k }; h < (newDataSize + k); ++h)
 			{
 				data[h] = newData;
-
-				std::cout << "\n\t[" << h <<"]: " << data[h];
 			}
 
 			return 0;
 		}
 		else if(data[k] != '-')
 		{
-			std::cout << "\n\t[" << k << "]: Buscando...";
-
 			continue;
 		}
 	}
