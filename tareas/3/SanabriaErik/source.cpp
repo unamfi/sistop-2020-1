@@ -117,7 +117,7 @@ int main()
 			}
 			else
 			{
-				std::cout << "\\n\tEl proceso " << let <<" ya no cabe!" << std::endl << std::flush;
+				std::cout << "\n\n\tEl proceso " << let <<" ya no cabe!" << std::endl << std::flush;
 
 				printMem(arr_mem, mem);
 
