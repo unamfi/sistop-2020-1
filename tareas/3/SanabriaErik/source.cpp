@@ -51,15 +51,26 @@ size_t asigMem(char *data, char newData, size_t newDataSize, size_t n = 30)
 	return 1;
 }
 
-void remLet(char *data, char let, size_t n = 30)
+size_t remLet(char *data, char let, size_t n = 30)
 {
+	bool blet{ false };			//se encuentra la letra?
+
 	for(size_t i{ 0 }; i < n; ++i)
 	{
 		if(data[i] == let)
 		{
+			blet = true;
+
 			data[i] = '-';
 		}
 	}
+
+	if(!blet)
+	{
+		return 1;
+	}
+
+	return 0;
 }
 
 int main()
@@ -166,6 +177,21 @@ int main()
 
 			std::cout <<")" << std::flush << "\n\tRespuesta: ";
 			std::cin >> let_rem;
+
+			std::cout << std::endl << "\tVamos a remover a " << let_rem << std::flush;
+
+			if(!remLet(arr_mem, let_rem, mem))
+			{
+				std::cout << std::endl << "\t" << let_rem << " se removio con exito!" << std::flush;
+
+				printMem(arr_mem, mem);
+			}
+			else
+			{
+				std::cout << std::endl <<"\tEl proceso " << let_rem << " no existe!" << std::flush;
+
+				continue;
+			}
 		}
 		else
 		{
