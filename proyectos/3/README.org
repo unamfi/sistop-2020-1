@@ -5,7 +5,7 @@ Planteamiento: 2019.10.08
 Entrega: 2019.10.29
 #+END_SRC
 
-# ¡Las [[./calificaciones.org][calificaciones y comentarios]] ya están disponibles!
+¡Las [[./calificaciones.org][calificaciones y comentarios]] ya están disponibles!
 
 ** Descripción del proyecto
 
