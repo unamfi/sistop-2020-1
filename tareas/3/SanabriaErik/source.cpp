@@ -1,5 +1,8 @@
 #include <iostream>
 
+//Funcion que imprime los contenido de la memoria
+//char *data: arreglo de la memoria
+//size_t n: tamanio de la memoria
 void printMem(char *data, size_t n = 30)
 {
 	std::cout << "\n\n\tContenidos de la memoria:\n\t" << std::flush;
@@ -12,6 +15,11 @@ void printMem(char *data, size_t n = 30)
 	std::cout << std::endl;
 }
 
+//Funcion que asigna memoria
+//char *data: arreglo de la memoria
+//char newData: el proceso nuevo
+//size_t newDataSize: el tamanio del nuevo proceso
+//size_t n: tamanio de la memoria
 size_t asigMem(char *data, char newData, size_t newDataSize, size_t n = 30)
 {
 	for(size_t k{ 0 }; k < n; ++k)
@@ -34,6 +42,10 @@ size_t asigMem(char *data, char newData, size_t newDataSize, size_t n = 30)
 	return 1;
 }
 
+//Funcion que quita procesos
+//char *data: arreglo de la memoria
+//char let: el proceso nuevo
+//size_t n: tamanio de la memoria
 size_t remLet(char *data, char let, size_t n = 30)
 {
 	bool blet{ false };			//se encuentra la letra?
@@ -58,10 +70,11 @@ size_t remLet(char *data, char let, size_t n = 30)
 
 int main()
 {
-	size_t mem{ 30 };
-	size_t numprocs{ 0 };
-	size_t numprocs_act{ 0 };
-	size_t tam{ 0 };
+	size_t mem{ 30 };				//tamanio de la memoria
+	size_t numprocs{ 0 };			//numero de procesos deseados
+	size_t numprocs_act{ 0 };		//numero actual de procesos
+	size_t tam{ 0 };				//tamanio de proceso a ingresar
+	char let{ 0x41 };				//letra A en hexadecimal
 
 	std::cout <<"\n\tIngrese el numero de unidades de memoria, mayor a 30: ";
 	std::cin >> mem;
@@ -96,8 +109,6 @@ int main()
 	}
 
 	std::cout << std::endl << std::flush;
-
-	char let{ 0x41 };
 
 	for(size_t h{ 0 }; h < numprocs; ++h, ++let)
 	{
@@ -136,9 +147,9 @@ int main()
 
 	while(true)
 	{
-		char res{ 'N' };
-		char letra{ 0x41 };
-		char let_rem{ 0x41 };
+		char res{ 'N' };			//respuesta
+		char letra{ 0x41 };			//letra A
+		char let_rem{ 0x41 };		//proceso a remover, inicializado con A
 
 		std::cout << std::endl <<"\tDesea borrar algun proceso (Y/N): " << std::flush;
 		std::cin >> res;
