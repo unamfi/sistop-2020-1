@@ -32,6 +32,7 @@ el que ustedes me planteen los temas de su interés.
 | 2019.11.12 | Paginación de cinco niveles                          | Eric Sanabria                      |                                                                                       |            |
 | 2019.11.14 | Rootkits                                             | Saúl Gabino y Ricardo Muñoz        |                                                                                       |            |
 | 2019.11.19 | De RAID en adelante                                  | Luis Mata                          |                                                                                       |            |
+| 2019.11.21 | El registro de Windows                               | Alejandro Peralta y José González  |                                                                                       |            |
 |------------+------------------------------------------------------+------------------------------------+---------------------------------------------------------------------------------------+------------|
 #+TBLFM: 
 
