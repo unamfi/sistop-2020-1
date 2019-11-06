@@ -27,11 +27,74 @@ Ubicarse en la raíz del proyecto y ejecutar
 	mix escript.build
 ```
 
-Al compilar se genera el binario en la riz del proyecto
+Al compilar se genera el binario en la raíz del proyecto
 
-### Ejemplo de ejecucuión
+### Ejemplo de ejecucuión sin argumentos
+
 ```bash
+./aigmen
 
+Asignación:
+uuuugg-----------nnnn-ggggg------y
+Asignar o Liberar [a/l]: l
+Proceso a liberar: u
+
+Asignación:
+----gg-----------nnnn-ggggg------y
+Asignar o Liberar [a/l]: a
+Nuevo Proceso [a] 20
+*Compactación Requerida*
+Nueva situación:
+ggnnnngggggy----------------------
+Asignando a aaaaaaaaaaaaaaaaaaaa
+
+Asignación:
+ggnnnngggggyaaaaaaaaaaaaaaaaaaaa--
+Asignar o Liberar [a/l]: l
+Proceso a liberar: x
+
+Asignación:
+ggnnnngggggyaaaaaaaaaaaaaaaaaaaa--
+Asignar o Liberar [a/l]: l
+Proceso a liberar: a
+
+Asignación:
+ggnnnngggggy----------------------
+Asignar o Liberar [a/l]: q
 ```
 
-Asignación de memoria
+### Ejemplo de ejecucuión con argumentos
+
+```bash
+./asigmem -p aabbcc---d--ee
+
+Asignación:
+aabbcc---d--ee
+Asignar o Liberar [a/l]: a
+Nuevo Proceso [f] 5
+*Compactación Requerida*
+Nueva situación:
+aabbccdee-----
+Asignando a fffff
+
+Asignación:
+aabbccdeefffff
+Asignar o Liberar [a/l]: a
+Nuevo Proceso [g] 1
+*Compactación Requerida*
+Nueva situación:
+aabbccdeefffff
+
+No hay espacio para el proceso
+
+Asignando a g
+
+Asignación:
+aabbccdeefffff
+Asignar o Liberar [a/l]: l
+Proceso a liberar: e
+
+Asignación:
+aabbccd--fffff
+Asignar o Liberar [a/l]: q
+```

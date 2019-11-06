@@ -1,8 +1,15 @@
 defmodule Asigmem do
   @moduledoc """
-  Documentation for Asigmem.
+  Asignación de Memoria
+  ---
+
+  Este modulo es el menu que recibe las instrucciónes
+  del usuario
   """
 
+  @doc """
+  Recibe los argumentos del emulador de terminal
+  """
   def main(args) do
     args
     |> parse_args
@@ -20,34 +27,32 @@ defmodule Asigmem do
     System.halt(1)
   end
 
-  defp parse_args(args) do
+  @doc """
+  Analiza los argumentos
+  """
+  def parse_args(args) do
     OptionParser.parse(args,
       switches: [
 	help: :boolean,
-	procesos: :string,
-	primer: :boolean,
-	mejor: :boolean,
-	peor: :boolean
+	procesos: :string
       ],
       aliases: [
 	h: :help,
-	p: :procesos,
-	a: :ajuste,
+	p: :procesos
       ]
     )
    
   end
 
-  defp process(options) do
-    # IO.inspect options
-
+  @doc """
+  Inicia el programa analizando ya los argumentos
+  """
+  def process(options) do
     case options do
       {[help: :true], _, _} -> IO.puts help_cli()
-      {[],[],[]} -> noargs()     
+      {[],[],[]} -> Procmem.proc([])    
       {lista, _, _} -> Procmem.proc(lista)
- 
-
-      
+      :true -> noargs()
     end
   end
 
@@ -57,8 +62,8 @@ defmodule Asigmem do
     asigmem [ARGUMENTOS]
 
     --help, -h\t Este mensaje
-    --procesos, -p\t Define los 30 procesos que el usuario quiera
-    --ajuste, -a\t Selecione 'peor', 'mejor' o 'primer' ajuste
+    --procesos, -p\t Define los procesos que el usuario quiera, '-' es memoria libre
+    \tEjemplo ./asigmem -p aa--b-ccddeeeefff------
     """
   end
 
