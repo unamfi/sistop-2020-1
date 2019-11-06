@@ -1,0 +1,677 @@
+#+title: Calificaciones y comentarios del proyecto 3
+#+author: Gunnar Wolf
+
+El planteamiento del proyecto y la rúbrica para su calificación están
+[[./README.md][disponibles aquí]].
+
+
+
+* Benji Anguiano y Omar Martín
+- Documentación :: [[./AnguianoBenjamin-MartinOmar/Documentacion.odt][Documentacion.odt]]
+- Código :: [[./AnguianoBenjamin-MartinOmar/FileSystem.py][FileSystem.py]]
+- Lenguaje de desarrollo :: Python
+- Interfaz :: Línea de comando: menú de opciones
+- Estrategia empleada ::
+  - Emplea al archivo de imagen en modo de acceso aleatorio, haciendo
+    combinaciones =seek()= + =read()= y =seek()= + =write()= para
+    referir a cada estructura
+- Observaciones ::
+  - Usan sintaxis específica a Python 2.x. Hay diferencias /muy/
+    fuertes respecto a 3.x, y estamos a pocos meses de que termine el
+    soporte a 2.x. Les sugiero "pegar el salto" a python3.
+  - Incluyeron para hacer sus pruebas una copia del sistema de
+    archivos empleado, así como los archivos contenidos en éste. Esto
+    puede ser correcto como evidencia, o para mostrar sobre qué
+    versión específica trabajaron — Pero dado que varios puntos de la
+    ejecución modifica al sistema de archivos, debían haberlo agregado
+    al =.gitignore=.
+  - Hay mucha repetición de código que debería abstraerse / separarse
+    a funciones. Por ejemplo, seis de las funciones comienzan con la
+    línea:
+    #+begin_src python
+    fileSystem = open('fiunamfs.img', 'r+') 
+    #+end_src
+    ¿Y si quisiéramos cambiar el nombre de archivo? Las fechas son
+    formateadas utilizando la concatenación expresa (sólo dos veces,
+    cierto, pero igual llama la atención). ¿Si queremos agregarle
+    información? ¡No se repitan a sí mismos!
+  - Al diseñar una bitácora, recuerden que únicamente se emplea /para
+    las funciones que modifican al sistema de archivos/ (no a las que
+    únicamente lo consultan).
+
+
+| *Rubro*                          | *Parcial* | *Peso* | *Puntos* |
+|----------------------------------+-----------+--------+----------|
+| *Proyecto*                       |           |    0.3 |     2.75 |
+| Cumplimiento                     |        10 |        |     1.00 |
+| Claridad de desarrollo           |        10 |        |     1.00 |
+| Interfaz usuario                 |       7.5 |        |     0.75 |
+|----------------------------------+-----------+--------+----------|
+| *Desarrollo*                     |           |    0.3 |     2.75 |
+| Directorio de proyecto           |       7.5 |        |     0.75 |
+| Código válido                    |        10 |        |     1.00 |
+| Comentarios                      |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Legibilidad*                    |           |    0.2 |     2.00 |
+| Estructura                       |        10 |        |     1.00 |
+| Nomenclatura                     |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Entrega*                        |           |    0.2 |     2.00 |
+| Entorno y dependencias           |        10 |        |     1.00 |
+| Historia en Git                  |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Extras*                         |           |        |     0.70 |
+| Directorios jerárquicos          |           |    0.1 |     0.00 |
+| Sistema de archivos con bitácora |         7 |    0.1 |     0.70 |
+|----------------------------------+-----------+--------+----------|
+| *TOTAL*                          |           |        |    10.20 |
+|----------------------------------+-----------+--------+----------|
+#+TBLFM: @2$4=@3+@4+@5 ; f-2::@3$4=$2*@2$3/3 ; f-2::@4$4=$2*@2$3/3 ; f-2::@5$4=$2*@2$3/3 ; f-2::@6$4=@7+@8+@9 ; f-2::@7$4=$2*@6$3/3 ; f-2::@8$4=$2*@6$3/3 ; f-2::@9$4=$2*@6$3/3 ; f-2::@10$4=@11+@12 ; f-2::@11$4=$2*@10$3/2 ; f-2::@12$4=$2*@10$3/2 ; f-2::@13$4=@14+@15 ; f-2::@14$4=$2*@13$3/2 ; f-2::@15$4=$2*@13$3/2 ; f-2::@16$4=@17+@18 ; f-2::@17$4=$2*$3 ; f-2::@18$4=$2*$3 ; f-2::@19$4=@2+@6+@10+@13+@16 ; f-2
+
+* +Saúl Gabino y Ricardo Muñoz+
+
+[[./GabinoSaul-Muñozricardo/File_system_FI.py]] Este proyecto está copiado
+de [[https://github.com/gwolf/sistop-2019-2/blob/master/proyectos/3/MoralesCarlos-PerezQuirozMiguel/file_system.py][uno entregado el semestre pasado]]. No lo considero como entregado.
+
+* Andrés González
+- Documentación :: [[./GonzálezAndrés/README.md][README.md]]
+- Código :: [[./GonzálezAndrés/FIUNAMFSExplorer.py][FIUNAMFSExplorer.py]], [[./GonzálezAndrés/fiunamfs.py][fiunamfs.py]], [[./GonzálezAndrés/test_crearimg.py][test_crearimg.py]]
+- Lenguaje de desarrollo :: Python
+- Interfaz :: GUI (TkInter)
+- Estrategia empleada ::
+  - Separa la lógica de manejo de FS en =fiunamfs.py= y la interfaz
+    usuario en =FIUNAMFSExplorer.py=. ¡Muy bien!
+  - Manejo de la imagen mediante =mmap=
+- Observaciones ::
+  - ¡Excelente implementación!
+  - Al modificar la imagen el directorio Git se "ensucia". Habría que
+    agregarlo al =.gitignore=.
+  - Todos los accesos y cáclulos son correctamente
+    parametrizados. Tanto así que te permitió corregir mi
+    implementación en dos ocasiones.
+
+| *Rubro*                             | *Parcial* | *Peso* | *Puntos* |
+|-------------------------------------+-----------+--------+----------|
+| *Proyecto*                          |           |    0.3 |     3.00 |
+| Cumplimiento                        |        10 |        |     1.00 |
+| Claridad de desarrollo              |        10 |        |     1.00 |
+| Interfaz usuario                    |        10 |        |     1.00 |
+|-------------------------------------+-----------+--------+----------|
+| *Desarrollo*                        |           |    0.3 |     2.75 |
+| Directorio de proyecto              |       7.5 |        |     0.75 |
+| Código válido                       |        10 |        |     1.00 |
+| Comentarios                         |        10 |        |     1.00 |
+|-------------------------------------+-----------+--------+----------|
+| *Legibilidad*                       |           |    0.2 |     2.00 |
+| Estructura                          |        10 |        |     1.00 |
+| Nomenclatura                        |        10 |        |     1.00 |
+|-------------------------------------+-----------+--------+----------|
+| *Entrega*                           |           |    0.2 |     2.00 |
+| Entorno y dependencias              |        10 |        |     1.00 |
+| Historia en Git                     |        10 |        |     1.00 |
+|-------------------------------------+-----------+--------+----------|
+| *Extras*                            |           |        |     1.00 |
+| Envió correcciones al planteamiento |        10 |    0.1 |     1.00 |
+| Directorios jerárquicos             |           |    0.1 |     0.00 |
+| Sistema de archivos con bitácora    |           |    0.1 |     0.00 |
+|-------------------------------------+-----------+--------+----------|
+| *TOTAL*                             |           |        |    10.75 |
+|-------------------------------------+-----------+--------+----------|
+#+TBLFM: @2$4=@3+@4+@5 ; f-2::@3$4=$2*@2$3/3 ; f-2::@4$4=$2*@2$3/3 ; f-2::@5$4=$2*@2$3/3 ; f-2::@6$4=@7+@8+@9 ; f-2::@7$4=$2*@6$3/3 ; f-2::@8$4=$2*@6$3/3 ; f-2::@9$4=$2*@6$3/3 ; f-2::@10$4=@11+@12 ; f-2::@11$4=$2*@10$3/2 ; f-2::@12$4=$2*@10$3/2 ; f-2::@13$4=@14+@15 ; f-2::@14$4=$2*@13$3/2 ; f-2::@15$4=$2*@13$3/2 ; f-2::@16$4=@17+@18+@19 ; f-2::@17$4=$2*$3 ; f-2::@18$4=$2*$3 ; f-2::@19$4=$2*$3;f-2::@20$4=@2+@6+@10+@13+@16 ; f-2
+
+* Luis López
+- Documentación :: [[./LopezLuis/proyecto3.pdf][proyecto3.pdf]]
+- Código :: [[./LopezLuis/sistema.java][sistema.java]]
+- Lenguaje de desarrollo :: Java
+- Interfaz :: Línea de comando: menú de opciones
+- Estrategia empleada ::
+  - Emplea =java.io.RandomAccessFile=, haciendo combinaciones =seek()=
+    + =read()= y =seek()= + =write()= para referir a cada estructura
+- Observaciones ::
+  - ¡Uf! Te recomiendo fuertemente trabajar en tu redacción. Un
+    párrafo único, con una frase que no termina, de media
+    página... Marea ☹ En serio, es muy difícil de leer.
+  - Incorporas para buena parte de tu lógica los valores específicos
+    /en duro/. Por ejemplo, para procesar el directorio, en varios
+    lugares especificas variaciones /muy cercanas/ a la siguiente:
+    #+begin_src java
+      byte[] buff= new byte[64];
+      String contenido;
+      for(int i=2048;i<10240;i+=64) {
+	  a.seek(i);
+	  a.read(buff);		
+	  contenido=new String(buff);
+	  // (...)
+      }
+    #+end_src
+    Es /completamente válido/ para el planteamiento que hice, pero te
+    convendría parametrizarlo un poco. Tu código resultaría más fácil
+    de leer y de adecuar en caso de haber algún cambio en mis
+    parámetros. Por ejemplo, si al leer el superbloque determinas
+    =direntry_size=, =dir_start= y =dir_end=, este mismo fragmento
+    podría ser:
+    #+begin_src java
+      byte[] buff= new byte[ direntry_size ];
+      String contenido;
+      for(int i = dir_start; i < dir_end; i += direntry_size) {
+	  a.seek(i);
+	  a.read(buff);
+	  contenido=new String(buff);
+	  // (...)
+	  }
+      }
+    #+end_src
+    - Incluso... Como en varios puntos de tu código manejas esta misma
+      lógica para leer una entrada de directorio, ¿por qué no
+      separarla a su propia clase =direntry=?
+
+
+| *Rubro*                          | *Parcial* | *Peso* | *Puntos* |
+|----------------------------------+-----------+--------+----------|
+| *Proyecto*                       |           |    0.3 |     2.50 |
+| Cumplimiento                     |        10 |        |     1.00 |
+| Claridad de desarrollo           |       7.5 |        |     0.75 |
+| Interfaz usuario                 |       7.5 |        |     0.75 |
+|----------------------------------+-----------+--------+----------|
+| *Desarrollo*                     |           |    0.3 |     2.50 |
+| Directorio de proyecto           |        10 |        |     1.00 |
+| Código válido                    |        10 |        |     1.00 |
+| Comentarios                      |         5 |        |     0.50 |
+|----------------------------------+-----------+--------+----------|
+| *Legibilidad*                    |           |    0.2 |     1.50 |
+| Estructura                       |       7.5 |        |     0.75 |
+| Nomenclatura                     |       7.5 |        |     0.75 |
+|----------------------------------+-----------+--------+----------|
+| *Entrega*                        |           |    0.2 |     1.75 |
+| Entorno y dependencias           |        10 |        |     1.00 |
+| Historia en Git                  |       7.5 |        |     0.75 |
+|----------------------------------+-----------+--------+----------|
+| *Extras*                         |           |        |        0 |
+| Directorios jerárquicos          |           |    0.1 |        0 |
+| Sistema de archivos con bitácora |           |    0.1 |        0 |
+|----------------------------------+-----------+--------+----------|
+| *TOTAL*                          |           |        |     8.25 |
+|----------------------------------+-----------+--------+----------|
+#+TBLFM: @2$4=@3+@4+@5 ; f-2::@3$4=$2*@2$3/3 ; f-2::@4$4=$2*@2$3/3 ; f-2::@5$4=$2*@2$3/3 ; f-2::@6$4=@7+@8+@9 ; f-2::@7$4=$2*@6$3/3 ; f-2::@8$4=$2*@6$3/3 ; f-2::@9$4=$2*@6$3/3 ; f-2::@10$4=@11+@12 ; f-2::@11$4=$2*@10$3/2 ; f-2::@12$4=$2*@10$3/2 ; f-2::@13$4=@14+@15 ; f-2::@14$4=$2*@13$3/2 ; f-2::@15$4=$2*@13$3/2 ; f-2::@16$4=@17+@18 ; f-2::@17$4=$2*@16$3 ; f-2::@18$4=$2*@16$3 ; f-2::@19$4=@2+@6+@10+@13+@16 ; f-2
+
+* Ulysses López
+- Documentación :: [[./LopezUlysses/Documentacion.txt][Documentacion.txt]]
+- Código :: [[./LopezUlysses/Proyecto3.py][Proyecto3.py]]
+- Lenguaje de desarrollo :: Python
+- Interfaz :: Línea de comando, con codificación por color para
+              algunas de las acciones principales
+- Estrategia empleada ::
+  - Emplea al archivo de imagen en modo de acceso aleatorio, haciendo
+    combinaciones =seek()= + =read()= y =seek()= + =write()= para
+    referir a cada estructura
+- Observaciones ::
+  - Si no encuentra un =fiunamfs= en el directorio, crea uno
+    nuevo. ¡Bien!
+    - ... Pero no lo agregaste a un =.gitignore= ☹
+  - La implementación es un tanto frágil ☹ Eliminar un archivo me lleva
+    a que el programa se caiga por excepción:
+    #+begin_src text
+      Traceback (most recent call last):
+	File "Proyecto3.py", line 332, in <module>
+	  user_interface()
+	File "Proyecto3.py", line 258, in user_interface
+	  get_existing_files()
+	File "Proyecto3.py", line 56, in get_existing_files
+	  file_sizes.append(int(file_system_disk.read(8)))
+      ValueError: invalid literal for int() with base 10: '\x00\x00\x00\x00\x00\x00\x00\x00'
+    #+end_src
+  - La función de desfragmentación se llama automáticamente después de
+    las operaciones que modifican al sistema de archivos (=cptofi= y
+    =delete=)
+    - ¿Por qué los sistemas de archivos "reales" no hacían esto? ⇒ Por
+      rendimiento. ¡Es muy /caro/ (toma mucho tiempo) desfragmentar a
+      cada escritura!
+  - Separa bastante bien la lógica de operación de la interfaz
+    usuario: Casi toda la interacción es manejada desde
+    =user_interface()=, la cual llama a las diferentes funciones, pero
+    éstas no hacen interacción con el usuario. ¡Bien!
+
+| *Rubro*                          | *Parcial* | *Peso* | *Puntos* |
+|----------------------------------+-----------+--------+----------|
+| *Proyecto*                       |           |    0.3 |     2.50 |
+| Cumplimiento                     |        10 |        |     1.00 |
+| Claridad de desarrollo           |       7.5 |        |     0.75 |
+| Interfaz usuario                 |       7.5 |        |     0.75 |
+|----------------------------------+-----------+--------+----------|
+| *Desarrollo*                     |           |    0.3 |     1.50 |
+| Directorio de proyecto           |       7.5 |        |     0.75 |
+| Código válido                    |       7.5 |        |     0.75 |
+| Comentarios                      |         0 |        |     0.00 |
+|----------------------------------+-----------+--------+----------|
+| *Legibilidad*                    |           |    0.2 |     2.00 |
+| Estructura                       |        10 |        |     1.00 |
+| Nomenclatura                     |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Entrega*                        |           |    0.2 |     1.50 |
+| Entorno y dependencias           |        10 |        |     1.00 |
+| Historia en Git                  |         5 |        |     0.50 |
+|----------------------------------+-----------+--------+----------|
+| *Extras*                         |           |        |        0 |
+| Directorios jerárquicos          |           |    0.1 |        0 |
+| Sistema de archivos con bitácora |           |    0.1 |        0 |
+|----------------------------------+-----------+--------+----------|
+| *TOTAL*                          |           |        |     7.50 |
+|----------------------------------+-----------+--------+----------|
+#+TBLFM: @2$4=@3+@4+@5 ; f-2::@3$4=$2*@2$3/3 ; f-2::@4$4=$2*@2$3/3 ; f-2::@5$4=$2*@2$3/3 ; f-2::@6$4=@7+@8+@9 ; f-2::@7$4=$2*@6$3/3 ; f-2::@8$4=$2*@6$3/3 ; f-2::@9$4=$2*@6$3/3 ; f-2::@10$4=@11+@12 ; f-2::@11$4=$2*@10$3/2 ; f-2::@12$4=$2*@10$3/2 ; f-2::@13$4=@14+@15 ; f-2::@14$4=$2*@13$3/2 ; f-2::@15$4=$2*@13$3/2 ; f-2::@16$4=@17+@18 ; f-2::@17$4=$2*@16$3 ; f-2::@18$4=$2*@16$3 ; f-2::@19$4=@2+@6+@10+@13+@16 ; f-2
+
+* César Lugo
+- Documentación :: No entregada
+- Código :: [[./LugoCesar/proyecto3.c][proyecto3.c]]
+- Lenguaje de desarrollo :: C
+- Interfaz :: Menú sobre línea de comando
+- Estrategia empleada ::
+  - El punto al que llegaste con el desarrollo no llega a presentar
+    cómo resolverías el problema
+- Observaciones ::
+  - Incompleto ☹ Lo abandonaste demasiado temprano como para intentar
+    corregirte detalles del desarrollo
+
+| *Rubro*                          | *Parcial* | *Peso* | *Puntos* |
+|----------------------------------+-----------+--------+----------|
+| *Proyecto*                       |           |    0.3 |     0.75 |
+| Cumplimiento                     |         0 |        |     0.00 |
+| Claridad de desarrollo           |       7.5 |        |     0.75 |
+| Interfaz usuario                 |         0 |        |     0.00 |
+|----------------------------------+-----------+--------+----------|
+| *Desarrollo*                     |           |    0.3 |     1.50 |
+| Directorio de proyecto           |        10 |        |     1.00 |
+| Código válido                    |         0 |        |     0.00 |
+| Comentarios                      |         5 |        |     0.50 |
+|----------------------------------+-----------+--------+----------|
+| *Legibilidad*                    |           |    0.2 |     1.50 |
+| Estructura                       |       7.5 |        |     0.75 |
+| Nomenclatura                     |       7.5 |        |     0.75 |
+|----------------------------------+-----------+--------+----------|
+| *Entrega*                        |           |    0.2 |     1.50 |
+| Entorno y dependencias           |         5 |        |     0.50 |
+| Historia en Git                  |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Extras*                         |           |        |        0 |
+| Directorios jerárquicos          |           |    0.1 |        0 |
+| Sistema de archivos con bitácora |           |    0.1 |        0 |
+|----------------------------------+-----------+--------+----------|
+| *TOTAL*                          |           |        |     5.25 |
+|----------------------------------+-----------+--------+----------|
+#+TBLFM: @2$4=@3+@4+@5 ; f-2::@3$4=$2*@2$3/3 ; f-2::@4$4=$2*@2$3/3 ; f-2::@5$4=$2*@2$3/3 ; f-2::@6$4=@7+@8+@9 ; f-2::@7$4=$2*@6$3/3 ; f-2::@8$4=$2*@6$3/3 ; f-2::@9$4=$2*@6$3/3 ; f-2::@10$4=@11+@12 ; f-2::@11$4=$2*@10$3/2 ; f-2::@12$4=$2*@10$3/2 ; f-2::@13$4=@14+@15 ; f-2::@14$4=$2*@13$3/2 ; f-2::@15$4=$2*@13$3/2 ; f-2::@16$4=@17+@18 ; f-2::@17$4=$2*@16$3 ; f-2::@18$4=$2*@16$3 ; f-2::@19$4=@2+@6+@10+@13+@16 ; f-2
+
+* Néstor Martínez
+- Documentación :: [[./MartinezNestor/README.md][README.md]], [[./MartinezNestor/plan.md][plan.md]], [[./MartinezNestor/dev/README.md][dev/README.md]]
+- Código :: [[./MartinezNestor/dev/OstoaFS.py][OstoaFS.py]], [[./MartinezNestor/dev/fslib/__init__.py][__init__.py]], [[./MartinezNestor/dev/fslib/clim.py][clim.py]], [[./MartinezNestor/dev/fslib/de.py][de.py]], [[./MartinezNestor/dev/fslib/fm.py][fm.py]], [[./MartinezNestor/dev/fslib/sb.py][sb.py]]
+- Lenguaje de desarrollo :: Python
+- Interfaz :: Operación como comando de sistema, la funcionalidad se
+              controla con "switches" de operación estilo tradicional
+              Unix
+- Estrategia empleada ::
+  - Manejo de la imagen mediante =mmap=
+- Observaciones ::
+  - Al modificar la imagen el directorio Git se "ensucia". Habría que
+    agregarlo al =.gitignore=.
+  - Código mayormente modularizado y separado semánticamente. Sin
+    embargo, =clim.py= sigue teniendo mucho mayor centralidad que las
+    demás.
+
+| *Rubro*                          | *Parcial* | *Peso* | *Puntos* |
+|----------------------------------+-----------+--------+----------|
+| *Proyecto*                       |           |    0.3 |     2.75 |
+| Cumplimiento                     |        10 |        |     1.00 |
+| Claridad de desarrollo           |        10 |        |     1.00 |
+| Interfaz usuario                 |       7.5 |        |     0.75 |
+|----------------------------------+-----------+--------+----------|
+| *Desarrollo*                     |           |    0.3 |     2.75 |
+| Directorio de proyecto           |       7.5 |        |     0.75 |
+| Código válido                    |        10 |        |     1.00 |
+| Comentarios                      |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Legibilidad*                    |           |    0.2 |     2.00 |
+| Estructura                       |        10 |        |     1.00 |
+| Nomenclatura                     |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Entrega*                        |           |    0.2 |     2.00 |
+| Entorno y dependencias           |        10 |        |     1.00 |
+| Historia en Git                  |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Extras*                         |           |        |        0 |
+| Directorios jerárquicos          |           |    0.1 |        0 |
+| Sistema de archivos con bitácora |           |    0.1 |        0 |
+|----------------------------------+-----------+--------+----------|
+| *TOTAL*                          |           |        |     9.50 |
+|----------------------------------+-----------+--------+----------|
+#+TBLFM: @2$4=@3+@4+@5 ; f-2::@3$4=$2*@2$3/3 ; f-2::@4$4=$2*@2$3/3 ; f-2::@5$4=$2*@2$3/3 ; f-2::@6$4=@7+@8+@9 ; f-2::@7$4=$2*@6$3/3 ; f-2::@8$4=$2*@6$3/3 ; f-2::@9$4=$2*@6$3/3 ; f-2::@10$4=@11+@12 ; f-2::@11$4=$2*@10$3/2 ; f-2::@12$4=$2*@10$3/2 ; f-2::@13$4=@14+@15 ; f-2::@14$4=$2*@13$3/2 ; f-2::@15$4=$2*@13$3/2 ; f-2::@16$4=@17+@18 ; f-2::@17$4=$2*@16$3 ; f-2::@18$4=$2*@16$3 ; f-2::@19$4=@2+@6+@10+@13+@16 ; f-2
+
+* Luis Mata
+- Documentación :: [[./MataLuis/Documentacion.txt][Documentacion.txt]]
+- Código :: [[./MataLuis/FS.py][FS.py]]
+- Lenguaje de desarrollo :: Python
+- Interfaz :: Menú sobre línea de comando
+- Estrategia empleada ::
+  - Emplea al archivo de imagen en modo de acceso aleatorio, haciendo
+    combinaciones =seek()= + =read()= y =seek()= + =write()= para
+    referir a cada estructura
+- Observaciones ::
+  - Veo que usaste elementos de sintaxis específicos a Python 2.x. Hay
+    diferencias /muy/ fuertes respecto a 3.x, y estamos a pocos meses
+    de que termine el soporte a 2.x. Te sugiero "pegar el salto" a
+    python3.
+  - No implementa desfragmentación ☹
+  - Hay algunos problemas sencillos de resolver en el código
+    - Cuando copias del sistema a la PC, abres el archivo destino en
+      modo =r+=. Si no existe, falla con una horrible excepción:
+      #+begin_src text
+	1: Listar
+	2: Copiar archivo
+	3: Copiar archivo a la computadora
+	4: Eliminar archivo
+	5: Desgramentar
+	6: Mostar informacion del sistema de archivos
+	7: Salir
+	Opcion: 3
+	Nombre del archivo a copiar: logo.png
+	Traceback (most recent call last):
+	  File "FS.py", line 187, in <module>
+	    deSistemaAPc(archivo, nombre)
+	  File "FS.py", line 128, in deSistemaAPc
+	    new = open(archivo,"r+")
+	IOError: [Errno 2] No such file or directory: 'logo.png'
+      #+end_src
+      ...Pero aún después de corregir esto, los archivos que genera
+      son de 0b. ¿Por qué? (no me quise meter mucho más a fondo)
+    - No puedo calificarte la documentación, pues no documenté que lo
+      calificaría :-Þ Pero... Quedó muy carente ☹
+
+| *Rubro*                          | *Parcial* | *Peso* | *Puntos* |
+|----------------------------------+-----------+--------+----------|
+| *Proyecto*                       |           |    0.3 |     2.00 |
+| Cumplimiento                     |         5 |        |     0.50 |
+| Claridad de desarrollo           |       7.5 |        |     0.75 |
+| Interfaz usuario                 |       7.5 |        |     0.75 |
+|----------------------------------+-----------+--------+----------|
+| *Desarrollo*                     |           |    0.3 |     2.25 |
+| Directorio de proyecto           |        10 |        |     1.00 |
+| Código válido                    |       7.5 |        |     0.75 |
+| Comentarios                      |         5 |        |     0.50 |
+|----------------------------------+-----------+--------+----------|
+| *Legibilidad*                    |           |    0.2 |     2.00 |
+| Estructura                       |        10 |        |     1.00 |
+| Nomenclatura                     |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Entrega*                        |           |    0.2 |     1.50 |
+| Entorno y dependencias           |         5 |        |     0.50 |
+| Historia en Git                  |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Extras*                         |           |        |        0 |
+| Directorios jerárquicos          |           |    0.1 |        0 |
+| Sistema de archivos con bitácora |           |    0.1 |        0 |
+|----------------------------------+-----------+--------+----------|
+| *TOTAL*                          |           |        |     7.75 |
+|----------------------------------+-----------+--------+----------|
+#+TBLFM: @2$4=@3+@4+@5 ; f-2::@3$4=$2*@2$3/3 ; f-2::@4$4=$2*@2$3/3 ; f-2::@5$4=$2*@2$3/3 ; f-2::@6$4=@7+@8+@9 ; f-2::@7$4=$2*@6$3/3 ; f-2::@8$4=$2*@6$3/3 ; f-2::@9$4=$2*@6$3/3 ; f-2::@10$4=@11+@12 ; f-2::@11$4=$2*@10$3/2 ; f-2::@12$4=$2*@10$3/2 ; f-2::@13$4=@14+@15 ; f-2::@14$4=$2*@13$3/2 ; f-2::@15$4=$2*@13$3/2 ; f-2::@16$4=@17+@18 ; f-2::@17$4=$2*@16$3 ; f-2::@18$4=$2*@16$3 ; f-2::@19$4=@2+@6+@10+@13+@16 ; f-2
+
+* Jorge Ramos y Brian Espinoza
+- Documentación :: [[./RamosJorge-EspinozaBrian/readme.md][readme.md]]
+- Código :: [[./RamosJorge-EspinozaBrian/proyecto3.py][proyecto3.py]]
+- Lenguaje de desarrollo :: Python
+- Interfaz :: Menú sobre línea de comando
+- Estrategia empleada ::
+  - Emplea al archivo de imagen en modo de acceso aleatorio, haciendo
+    combinaciones =seek()= + =read()= y =seek()= + =write()= para
+    referir a cada estructura
+- Observaciones ::
+  - La documentación menciona que se requiere Python 3.x, pero
+    inmediatamente después menciona que requiere Python 2.x. Y, sí, el
+    programa está desarrollado para 2.x
+    - estamos a pocos meses de que termine el soporte a 2.x. Les
+      sugiero "pegar el salto" a python3.
+  - La documentación está /muy/ bien. Sólo hay algo que me hizo
+    derramar una lagrimita: El uso de la palabra /librerías/. En
+    español se dice /bibliotecas/. Hay un mundo de diferencia entre
+    sus significados, ¡piénsenlo!
+  - ¡Usabilidad! Si listo los archivos para ver qué contiene el
+    sistema, y acto seguido intento copiar alguno de ellos, la opción
+    "2" muy gentilmente... Borra la pantalla ☹
+  - Falta: Implementar la desfragmentación
+  - Al modificar la imagen el directorio Git se "ensucia". Habría que
+    agregarlo al =.gitignore=.
+
+
+| *Rubro*                          | *Parcial* | *Peso* | *Puntos* |
+|----------------------------------+-----------+--------+----------|
+| *Proyecto*                       |           |    0.3 |     2.25 |
+| Cumplimiento                     |       7.5 |        |     0.75 |
+| Claridad de desarrollo           |        10 |        |     1.00 |
+| Interfaz usuario                 |         5 |        |     0.50 |
+|----------------------------------+-----------+--------+----------|
+| *Desarrollo*                     |           |    0.3 |     2.75 |
+| Directorio de proyecto           |       7.5 |        |     0.75 |
+| Código válido                    |        10 |        |     1.00 |
+| Comentarios                      |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Legibilidad*                    |           |    0.2 |     2.00 |
+| Estructura                       |        10 |        |     1.00 |
+| Nomenclatura                     |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Entrega*                        |           |    0.2 |     2.00 |
+| Entorno y dependencias           |        10 |        |     1.00 |
+| Historia en Git                  |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Extras*                         |           |        |        0 |
+| Directorios jerárquicos          |           |    0.1 |        0 |
+| Sistema de archivos con bitácora |           |    0.1 |        0 |
+|----------------------------------+-----------+--------+----------|
+| *TOTAL*                          |           |        |     9.00 |
+|----------------------------------+-----------+--------+----------|
+#+TBLFM: @2$4=@3+@4+@5 ; f-2::@3$4=$2*@2$3/3 ; f-2::@4$4=$2*@2$3/3 ; f-2::@5$4=$2*@2$3/3 ; f-2::@6$4=@7+@8+@9 ; f-2::@7$4=$2*@6$3/3 ; f-2::@8$4=$2*@6$3/3 ; f-2::@9$4=$2*@6$3/3 ; f-2::@10$4=@11+@12 ; f-2::@11$4=$2*@10$3/2 ; f-2::@12$4=$2*@10$3/2 ; f-2::@13$4=@14+@15 ; f-2::@14$4=$2*@13$3/2 ; f-2::@15$4=$2*@13$3/2 ; f-2::@16$4=@17+@18 ; f-2::@17$4=$2*@16$3 ; f-2::@18$4=$2*@16$3 ; f-2::@19$4=@2+@6+@10+@13+@16 ; f-2
+
+* Cristian Romero
+- Documentación :: [[./RomeroCristian/README.md][README.md]]
+- Código :: [[./RomeroCristian/fiunamfs.py][fiunamfs.py]], [[./RomeroCristian/main.py][main.py]], [[./RomeroCristian/core/__init__.py][__init__.py]], [[./RomeroCristian/core/Fiunamfs.py][Fiunamfs.py]], [[./RomeroCristian/core/Console.py][Console.py]]
+- Lenguaje de desarrollo :: Python
+- Interfaz :: Línea de comando, con codificación por color para
+              diferenciar las columnas en el listado
+- Estrategia empleada ::
+  - Manejo de la imagen mediante =mmap=
+- Observaciones ::
+  - Sííí... Tremendo error mío el darles una imagen fallada y de otra
+    versión ☹ Creo que detallaste en tu documentación todos los
+    problemas... Me parece perfecto que incluyeras una imagen que /sí/
+    cumpliera con la especificación
+  - La interfaz de usuario es probablemente la que más contempla
+    aspectos de /usabilidad/... No te puedo poner el 10 en el
+    rubroporque ya está estipulado así en la rúbrica... ☹ Pero me
+    parece muy buena!
+    - Facilitar la lectura del contenido, presentar al usuario con
+      elecciones que hará frecuentemente junto con las operaciones
+      típicas. ¡Muy bien!
+    - Al iniciar la ejecución, preguntas /cuál será el archivo de la
+      imagen/. Eso te exime de que te penalice por no incluir a la
+      imagen ejemplo que incluyes por no mencionarla en el
+      =.gitignore= ☺
+  - La función de desfragmentación se llama automáticamente al final
+    de la operación que puede dejar /agujeros/ en un sistema de
+    asignación contigua (=elimina()=)
+    - ¿Por qué los sistemas de archivos "reales" no hacían esto? ⇒ Por
+      rendimiento. ¡Es muy /caro/ (toma mucho tiempo) desfragmentar a
+      cada escritura!
+
+| *Rubro*                          | *Parcial* | *Peso* | *Puntos* |
+|----------------------------------+-----------+--------+----------|
+| *Proyecto*                       |           |    0.3 |     3.00 |
+| Cumplimiento                     |        10 |        |     1.00 |
+| Claridad de desarrollo           |        10 |        |     1.00 |
+| Interfaz usuario                 |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Desarrollo*                     |           |    0.3 |     2.50 |
+| Directorio de proyecto           |        10 |        |     1.00 |
+| Código válido                    |        10 |        |     1.00 |
+| Comentarios                      |         5 |        |     0.50 |
+|----------------------------------+-----------+--------+----------|
+| *Legibilidad*                    |           |    0.2 |     2.00 |
+| Estructura                       |        10 |        |     1.00 |
+| Nomenclatura                     |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Entrega*                        |           |    0.2 |     2.00 |
+| Entorno y dependencias           |        10 |        |     1.00 |
+| Historia en Git                  |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Extras*                         |           |        |        0 |
+| Directorios jerárquicos          |           |    0.1 |        0 |
+| Sistema de archivos con bitácora |           |    0.1 |        0 |
+|----------------------------------+-----------+--------+----------|
+| *TOTAL*                          |           |        |     9.50 |
+|----------------------------------+-----------+--------+----------|
+#+TBLFM: @2$4=@3+@4+@5 ; f-2::@3$4=$2*@2$3/3 ; f-2::@4$4=$2*@2$3/3 ; f-2::@5$4=$2*@2$3/3 ; f-2::@6$4=@7+@8+@9 ; f-2::@7$4=$2*@6$3/3 ; f-2::@8$4=$2*@6$3/3 ; f-2::@9$4=$2*@6$3/3 ; f-2::@10$4=@11+@12 ; f-2::@11$4=$2*@10$3/2 ; f-2::@12$4=$2*@10$3/2 ; f-2::@13$4=@14+@15 ; f-2::@14$4=$2*@13$3/2 ; f-2::@15$4=$2*@13$3/2 ; f-2::@16$4=@17+@18 ; f-2::@17$4=$2*@16$3 ; f-2::@18$4=$2*@16$3 ; f-2::@19$4=@2+@6+@10+@13+@16 ; f-2
+
+* Ricardo Rosales
+- Documentación :: [[./RosalesRicardo/README.md][README.md]]
+- Código :: [[./RosalesRicardo/fiUnam.py][fiUnam.py]], [[./RosalesRicardo/fifs.py][fifs.py]], [[./RosalesRicardo/main.py][main.py]]
+- Lenguaje de desarrollo :: Python
+- Interfaz :: Operación como comando de sistema, la funcionalidad se
+              controla con parámetros que se reciben desde la línea de comando
+- Estrategia empleada ::
+  - Manejo de la imagen mediante =mmap=
+- Observaciones ::
+  - ⸘Huh‽ La documentación habla del uso de la biblioteca tkinter para
+    una interfaz... y comienza a hablar de aviones y
+    semáforos... Supongo que se te fue del texto de tu proyecto
+    anterior ÷]
+  - El directorio de entrega incluye algunos módulos de Python
+    compilados (=fiUnam.pyc=, =fifs.pyc=) y la imagen del sistema de
+    archivos (=fiunamfs.img=). Deberían estar listados en un
+    =.gitignore= ☹
+  - Hay un problema al solicitar =cpin=, que me parece que corrompe a
+    la imagen. Puede estar en tu función =registerfile()=; cometiste
+    un error menor pero importante: Dabas la codificación a la salida
+    de =bytes()=, no como parámetro para ésta:
+    #+begin_src diff
+      --- a/proyectos/3/RosalesRicardo/fiUnam.py
+      +++ b/proyectos/3/RosalesRicardo/fiUnam.py
+      @@ -97,25 +97,25 @@ class FIFS:
+		   if self.dentry_notused == i.fname:
+		       # tener cuidado con longitud de nombres
+		       spaces = i.offset_fname - len(fe)
+      -                self.fs_map[prtb:prtb + i.offset_fname] = bytes(fe.rjust(len(fe)+spaces)).encode('utf-8')
+      +                self.fs_map[prtb:prtb + i.offset_fname] = bytes(fe.rjust(len(fe)+spaces).encode('utf-8'))
+ 
+		       fe_size = str(os.stat(fe).st_size)
+		       size_zeros = i.offset_fsize - len(fe_size)
+		       new_ptrb = prtb + i.offset_fname + 1
+      -                self.fs_map[new_ptrb :new_ptrb + i.offset_fsize] = bytes(fe_size.zfill(len(fe_size)+size_zeros)).encode('utf-8')
+      +                self.fs_map[new_ptrb :new_ptrb + i.offset_fsize] = bytes(fe_size.zfill(len(fe_size)+size_zeros).encode('utf-8'))
+ 
+		       fe_cluster = str(cluster)
+		       cluster_zeros = i.offset_fcluster - len(fe_cluster)
+		       new_ptrb += i.offset_fsize + 1
+      -                self.fs_map[new_ptrb:new_ptrb + i.offset_fcluster] = bytes(fe_cluster.zfill(len(fe_cluster)+cluster_zeros)).encode('utf-8')
+      +                self.fs_map[new_ptrb:new_ptrb + i.offset_fcluster] = bytes(fe_cluster.zfill(len(fe_cluster)+cluster_zeros).encode('utf-8'))
+ 
+		       fe_date_create= time.strftime('%Y%m%d%H%M%S', time.gmtime(os.path.getctime(fe)))
+		       new_ptrb += i.offset_fcluster + 1
+      -                self.fs_map[new_ptrb:new_ptrb + i.offset_fcreated] = bytes(fe_date_create).encode('utf-8')
+      +                self.fs_map[new_ptrb:new_ptrb + i.offset_fcreated] = bytes(fe_date_create.encode('utf-8'))
+ 
+		       fe_date_modif=time.strftime('%Y%m%d%H%M%S', time.gmtime(os.path.getmtime(fe)))
+		       new_ptrb += i.offset_fcreated+ 1
+      -                self.fs_map[new_ptrb:new_ptrb + i.offset_fmodif] = bytes(fe_date_modif).encode('utf-8')
+      +                self.fs_map[new_ptrb:new_ptrb + i.offset_fmodif] = bytes(fe_date_modif.encode('utf-8'))
+ 
+		       break
+    #+end_src
+
+| *Rubro*                          | *Parcial* | *Peso* | *Puntos* |
+|----------------------------------+-----------+--------+----------|
+| *Proyecto*                       |           |    0.3 |     2.50 |
+| Cumplimiento                     |        10 |        |     1.00 |
+| Claridad de desarrollo           |       7.5 |        |     0.75 |
+| Interfaz usuario                 |       7.5 |        |     0.75 |
+|----------------------------------+-----------+--------+----------|
+| *Desarrollo*                     |           |    0.3 |     2.50 |
+| Directorio de proyecto           |       7.5 |        |     0.75 |
+| Código válido                    |       7.5 |        |     0.75 |
+| Comentarios                      |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Legibilidad*                    |           |    0.2 |     2.00 |
+| Estructura                       |        10 |        |     1.00 |
+| Nomenclatura                     |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Entrega*                        |           |    0.2 |     1.50 |
+| Entorno y dependencias           |        10 |        |     1.00 |
+| Historia en Git                  |         5 |        |     0.50 |
+|----------------------------------+-----------+--------+----------|
+| *Extras*                         |           |        |        0 |
+| Directorios jerárquicos          |           |    0.1 |        0 |
+| Sistema de archivos con bitácora |           |    0.1 |        0 |
+|----------------------------------+-----------+--------+----------|
+| *TOTAL*                          |           |        |     8.50 |
+|----------------------------------+-----------+--------+----------|
+#+TBLFM: @2$4=@3+@4+@5 ; f-2::@3$4=$2*@2$3/3 ; f-2::@4$4=$2*@2$3/3 ; f-2::@5$4=$2*@2$3/3 ; f-2::@6$4=@7+@8+@9 ; f-2::@7$4=$2*@6$3/3 ; f-2::@8$4=$2*@6$3/3 ; f-2::@9$4=$2*@6$3/3 ; f-2::@10$4=@11+@12 ; f-2::@11$4=$2*@10$3/2 ; f-2::@12$4=$2*@10$3/2 ; f-2::@13$4=@14+@15 ; f-2::@14$4=$2*@13$3/2 ; f-2::@15$4=$2*@13$3/2 ; f-2::@16$4=@17+@18 ; f-2::@17$4=$2*@16$3 ; f-2::@18$4=$2*@16$3 ; f-2::@19$4=@2+@6+@10+@13+@16 ; f-2
+
+* Erik Sanabria
+- Documentación :: [[./SanabriaErik/Readme.md][Readme.md]]
+- Código :: [[./SanabriaErik/source.cpp][source.cpp]]
+- Lenguaje de desarrollo :: C++
+- Interfaz ::
+  - Listado y copia de archivos hacia "afuera" realizados de forma
+    automática al ejecutar el código. Copia hacia "adentro",
+    desfragmentación y eliminación no implementadas.
+- Estrategia empleada ::
+  - Emplea al archivo de imagen en modo de acceso aleatorio con
+    =std::ifstream=, haciendo combinaciones =seekg()= + =read()= y
+    =seekg()= + =write()= para referir a cada estructura
+- Observaciones ::
+  - ¡Muy bueno que hagas verificaciones de sanidad al iniciar la
+    ejecución! Pero... 
+    #+begin_src text
+      $ g++ source.cpp  && ./a.out 
+
+	      Vamos a abrir res/fiunamfs.img
+
+	      El archivo no es valido...	FiUnamFS@¿¡»
+    #+end_src
+    Con distinta basura a cada ejecución. Estuve buscando por qué
+    entra la basura al final de la cadena... Y termina siendo muy
+    sencillo: Recuerda que la definición de una cadena en C es
+    /cualquier conjunto de caracteres terminados por un =\0=.../ Si
+    declaras a tu buffer temporal =chr tmp[num_mag]=, y la cadena con
+    el valor mágico =FiUnamFS= mide ocho caracteres, la cadena se
+    /desborda/ hacia adelante. Recuerda dejar siempre un caracter para
+    el =\0=.
+  - Si bien obtienes los datos del encabezado de =README.org= del
+    sistema de archivos, los otros dos archivos los estás incluyendo
+    /en duro/ en tu fuente. Documentas la inconsistencia en el
+    directorio de mi archivo. Lo acepto, el error fue mío ☹ Pero
+    bueno, tu código quedó hecho a medida, no únicamente de este
+    sistema de archivos, sino que de los tres archivos que yo puse ☹
+  - No incluyes lógica para copiar archivos hacia la imagen, eliminar
+    archivos, ni desfragmentar.
+
+| *Rubro*                          | *Parcial* | *Peso* | *Puntos* |
+|----------------------------------+-----------+--------+----------|
+| *Proyecto*                       |           |    0.3 |     2.00 |
+| Cumplimiento                     |         5 |        |     0.50 |
+| Claridad de desarrollo           |        10 |        |     1.00 |
+| Interfaz usuario                 |         5 |        |     0.50 |
+|----------------------------------+-----------+--------+----------|
+| *Desarrollo*                     |           |    0.3 |     2.75 |
+| Directorio de proyecto           |        10 |        |     1.00 |
+| Código válido                    |       7.5 |        |     0.75 |
+| Comentarios                      |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Legibilidad*                    |           |    0.2 |     2.00 |
+| Estructura                       |        10 |        |     1.00 |
+| Nomenclatura                     |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Entrega*                        |           |    0.2 |     2.00 |
+| Entorno y dependencias           |        10 |        |     1.00 |
+| Historia en Git                  |        10 |        |     1.00 |
+|----------------------------------+-----------+--------+----------|
+| *Extras*                         |           |        |        0 |
+| Directorios jerárquicos          |           |    0.1 |        0 |
+| Sistema de archivos con bitácora |           |    0.1 |        0 |
+|----------------------------------+-----------+--------+----------|
+| *TOTAL*                          |           |        |     8.75 |
+|----------------------------------+-----------+--------+----------|
+#+TBLFM: @2$4=@3+@4+@5 ; f-2::@3$4=$2*@2$3/3 ; f-2::@4$4=$2*@2$3/3 ; f-2::@5$4=$2*@2$3/3 ; f-2::@6$4=@7+@8+@9 ; f-2::@7$4=$2*@6$3/3 ; f-2::@8$4=$2*@6$3/3 ; f-2::@9$4=$2*@6$3/3 ; f-2::@10$4=@11+@12 ; f-2::@11$4=$2*@10$3/2 ; f-2::@12$4=$2*@10$3/2 ; f-2::@13$4=@14+@15 ; f-2::@14$4=$2*@13$3/2 ; f-2::@15$4=$2*@13$3/2 ; f-2::@16$4=@17+@18 ; f-2::@17$4=$2*@16$3 ; f-2::@18$4=$2*@16$3 ; f-2::@19$4=@2+@6+@10+@13+@16 ; f-2
