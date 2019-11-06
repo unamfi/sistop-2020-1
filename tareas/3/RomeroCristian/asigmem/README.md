@@ -1,20 +1,20 @@
-# Asigmem
+# Asignación de memoria -- Primer Ajuste
 
 ## Autor
 
 * Romero Andrade Cristian
 
-## Dependecias
+## Dependencias
 
 Tener instalador _elixir_ y _mix_
 
-* Arch linux
+* Arch Linux
 
   * `pacman -S elixir`
   
-* Ubuntu 14.04/16.04/17.04/18.04/19.04 or Debian 7/8/9 
+* Ubuntu 14.04/16.04/17.04/18.04/19.04 ó Debian 7/8/9 
 
-  * Agregue el repositorio de Erlang Solutionso: `wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb && sudo dpkg -i erlang-solutions_2.0_all.deb`
+  * Agregue el repositorio de Erlang Solutions: `wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb && sudo dpkg -i erlang-solutions_2.0_all.deb`
   * Ejecuta: `sudo apt-get update`
   * Instale la plataforma Erlang / OTP y todas sus aplicaciones: `sudo apt-get install esl-erlang`
   * Instalar Elixir: `sudo apt-get install elixir`
@@ -29,7 +29,7 @@ Ubicarse en la raíz del proyecto y ejecutar
 
 Al compilar se genera el binario en la raíz del proyecto
 
-### Ejemplo de ejecucuión sin argumentos
+### Ejemplo de ejecución sin argumentos
 
 ```bash
 ./aigmen
@@ -63,7 +63,7 @@ ggnnnngggggy----------------------
 Asignar o Liberar [a/l]: q
 ```
 
-### Ejemplo de ejecucuión con argumentos
+### Ejemplo de ejecución con argumentos
 
 ```bash
 ./asigmem -p aabbcc---d--ee
