@@ -6,7 +6,7 @@
 
 ## Dependencias
 
-Tener instalador _elixir_ y _mix_
+Tener instalado _elixir_ y _mix_
 
 * Arch Linux
 
