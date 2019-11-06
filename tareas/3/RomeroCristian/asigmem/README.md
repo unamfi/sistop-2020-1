@@ -21,6 +21,9 @@ Tener instalado _elixir_ y _mix_
 
 ## Compilación
 
+Ya se encuentra el archivo ejecutable con el nombre de `asigmem`, sin
+embargo la compilación se hace de la siguiente manera.
+
 Ubicarse en la raíz del proyecto y ejecutar
 
 ```bash
