@@ -1,0 +1,25 @@
+LENGUAJE USADO: Python
+PROBADO EN LA VERSIÓN 2.7.17rc1.
+Ubuntu 19.10 (LINEA DE COMANDOS)
+No requiere librerias adicionales
+
+
+Cómo ejecutar el programa:
+Desde línea de comandos, buscamos la carpeta donde se encuentra el
+programa “tarea3.py” y nos colocamos en esa carpeta.
+
+Ejecutamos usando: python tarea3.py
+
+Consideraciones al ejecutar.
+
+Se pedirá el tamaño de la unidad de memoria (entre 2 y 15 se acepta)
+Se desplegará un menú con 2 opciones:
+1. Asignar proceso
+2. Eliminar un proceso y compactar
+
+Cuando se escoge 1, pedirá el nombre (Debe ser una letra) y a continuación el tamaño del 
+proceso (la cantidad de unidades de memoria que utilizará).
+Mostrará la memoria con su nueva asignacón.
+
+Si escogemos la opción 2, pedirá el nombre (letra) del proceso a eliminar, procederá a eliminarlo y a compactar la unidad.
+
