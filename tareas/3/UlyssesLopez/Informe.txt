@@ -1,0 +1,14 @@
+Nombre: Ulysses López López
+Fecha: 05-11-2019
+Tarea #3: Asignación de Memoria
+Lenguaje utilizado: C
+Nombre del Archivo: Tarea3ULL.c
+
+Para poder crear ejecutable se ejecuta en consola el siguiente comando: 
+
+				gcc Tarea3ULL.c -o Tarea3ULL
+
+Para poder visualizar la tarea se utiliza el comando:
+	
+				./Tarea3ULL
+
