@@ -1,0 +1,5 @@
+El programa resuelve con primer ajuste, la compactacion se hace sola una vez y de ahi si el proceso cabe en memoria se ingresa si no vuelve a hacer otra compactacion, cuando se intenta agregar un proceso y esta lleno automaticamente se elimina uno para que este pueda ingresar, tambien existe una opcion para que directamente elimine un proceso, pero presentara error si se intenta quitar algo sin que haya nada.
+
+Los datos son procesos al azar no se repiten por que puse un arreglo de booleanos para saber cuales ya han sido utilizados.
+
+De manera general eso fue lo que hice.
