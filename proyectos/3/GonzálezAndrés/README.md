@@ -8,7 +8,7 @@ González Flores Andrés
 
 ## Descripción de la interfaz
 
-Este proyecto está hecho con python 3, con una interfaz gráfica usando la librería tkinter.
+Este proyecto está hecho con python 3, con una interfaz gráfica usando el módulo tkinter.
 
 Para correrlo es necesario tener en la misma carpeta un archivo de imagen de sistema llamado fiunamfs.img y ejecutar el comando `$ python FIUNAMFSExplorer.py` o `$ python3 FIUNAMFSExplorer.py`, dependiendo de cuál sea el nombre del ejecutable de python 3. Hacer esto nos mostrará una interfaz como la que sigue:
 
@@ -40,7 +40,7 @@ Para eliminar un archivo basta con seleccionarlo haciendo clic en él y oprimir 
 
 Al confirmar, muestra mensaje de éxito y elimina el archivo.
 
-![Eliminar, paso 2](./ss/eliminar1.png)
+![Eliminar, paso 2](./ss/eliminar2.png)
 
 #### Copiar un archivo de FIUNAMFS a nuestro sistema de archivos
 
