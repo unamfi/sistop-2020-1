@@ -40,6 +40,56 @@ El planteamiento del proyecto y la rúbrica para su calificación están
     únicamente lo consultan).
 
 
+| *Rubro*                             | *Parcial* | *Peso* | *Puntos* |
+|-------------------------------------+-----------+--------+----------|
+| *Proyecto*                          |           |    0.3 |     2.75 |
+| Cumplimiento                        |        10 |        |     1.00 |
+| Claridad de desarrollo              |        10 |        |     1.00 |
+| Interfaz usuario                    |       7.5 |        |     0.75 |
+|-------------------------------------+-----------+--------+----------|
+| *Desarrollo*                        |           |    0.3 |     2.75 |
+| Directorio de proyecto              |       7.5 |        |     0.75 |
+| Código válido                       |        10 |        |     1.00 |
+| Comentarios                         |        10 |        |     1.00 |
+|-------------------------------------+-----------+--------+----------|
+| *Legibilidad*                       |           |    0.2 |     2.00 |
+| Estructura                          |        10 |        |     1.00 |
+| Nomenclatura                        |        10 |        |     1.00 |
+|-------------------------------------+-----------+--------+----------|
+| *Entrega*                           |           |    0.2 |     2.00 |
+| Entorno y dependencias              |        10 |        |     1.00 |
+| Historia en Git                     |        10 |        |     1.00 |
+|-------------------------------------+-----------+--------+----------|
+| *Extras*                            |           |        |     1.70 |
+| Envió correcciones al planteamiento |        10 |    0.1 |     1.00 |
+| Directorios jerárquicos             |           |    0.1 |     0.00 |
+| Sistema de archivos con bitácora    |         7 |    0.1 |     0.70 |
+|-------------------------------------+-----------+--------+----------|
+| *TOTAL*                             |           |        |    11.20 |
+|-------------------------------------+-----------+--------+----------|
+#+TBLFM: @2$4=@3+@4+@5 ; f-2::@3$4=$2*@2$3/3 ; f-2::@4$4=$2*@2$3/3 ; f-2::@5$4=$2*@2$3/3 ; f-2::@6$4=@7+@8+@9 ; f-2::@7$4=$2*@6$3/3 ; f-2::@8$4=$2*@6$3/3 ; f-2::@9$4=$2*@6$3/3 ; f-2::@10$4=@11+@12 ; f-2::@11$4=$2*@10$3/2 ; f-2::@12$4=$2*@10$3/2 ; f-2::@13$4=@14+@15 ; f-2::@14$4=$2*@13$3/2 ; f-2::@15$4=$2*@13$3/2 ; f-2::@16$4=@17+@18+@19 ; f-2::@17$4=$2*$3 ; f-2::@18$4=$2*$3 ; f-2::@19$4=$2*$3 ; f-2::@20$4=@2+@6+@10+@13+@16 ; f-2
+
+* +Saúl Gabino y Ricardo Muñoz+
+
+[[./GabinoSaul-Muñozricardo/File_system_FI.py]] Este proyecto está copiado
+de [[https://github.com/gwolf/sistop-2019-2/blob/master/proyectos/3/MoralesCarlos-PerezQuirozMiguel/file_system.py][uno entregado el semestre pasado]]. No lo considero como entregado.
+
+* Emanuel Flores y Andrea García
+- Documentación :: [[./FloresEmanuel-GarciaAndrea/README.md][README.md]]
+- Código :: [[./FloresEmanuel-GarciaAndrea/fiunamfs.py][fiunamfs.py]]
+- Lenguaje de desarrollo :: Python
+- Interfaz :: Operación como comando de sistema, la funcionalidad se
+              controla con parámetros que se reciben desde la línea de
+              comando
+- Estrategia empleada ::
+  - Manejo de la imagen mediante =mmap=
+  - Desarrollo orientado a objetos, hay tres clases principales de
+    objetos que representan los objetos necesarios: =Superbloque=,
+    =ENT_DIR= y =FSUnamFI=
+- Observaciones ::
+  - Les faltó un =.gitignore= — El directorio tiene archivos que son
+    modificados como parte del uso natural del FS
+
 | *Rubro*                          | *Parcial* | *Peso* | *Puntos* |
 |----------------------------------+-----------+--------+----------|
 | *Proyecto*                       |           |    0.3 |     2.75 |
@@ -60,18 +110,13 @@ El planteamiento del proyecto y la rúbrica para su calificación están
 | Entorno y dependencias           |        10 |        |     1.00 |
 | Historia en Git                  |        10 |        |     1.00 |
 |----------------------------------+-----------+--------+----------|
-| *Extras*                         |           |        |     0.70 |
+| *Extras*                         |           |        |     0.00 |
 | Directorios jerárquicos          |           |    0.1 |     0.00 |
-| Sistema de archivos con bitácora |         7 |    0.1 |     0.70 |
+| Sistema de archivos con bitácora |           |    0.1 |     0.00 |
 |----------------------------------+-----------+--------+----------|
-| *TOTAL*                          |           |        |    10.20 |
+| *TOTAL*                          |           |        |     9.50 |
 |----------------------------------+-----------+--------+----------|
 #+TBLFM: @2$4=@3+@4+@5 ; f-2::@3$4=$2*@2$3/3 ; f-2::@4$4=$2*@2$3/3 ; f-2::@5$4=$2*@2$3/3 ; f-2::@6$4=@7+@8+@9 ; f-2::@7$4=$2*@6$3/3 ; f-2::@8$4=$2*@6$3/3 ; f-2::@9$4=$2*@6$3/3 ; f-2::@10$4=@11+@12 ; f-2::@11$4=$2*@10$3/2 ; f-2::@12$4=$2*@10$3/2 ; f-2::@13$4=@14+@15 ; f-2::@14$4=$2*@13$3/2 ; f-2::@15$4=$2*@13$3/2 ; f-2::@16$4=@17+@18 ; f-2::@17$4=$2*$3 ; f-2::@18$4=$2*$3 ; f-2::@19$4=@2+@6+@10+@13+@16 ; f-2
-
-* +Saúl Gabino y Ricardo Muñoz+
-
-[[./GabinoSaul-Muñozricardo/File_system_FI.py]] Este proyecto está copiado
-de [[https://github.com/gwolf/sistop-2019-2/blob/master/proyectos/3/MoralesCarlos-PerezQuirozMiguel/file_system.py][uno entregado el semestre pasado]]. No lo considero como entregado.
 
 * Andrés González
 - Documentación :: [[./GonzálezAndrés/README.md][README.md]]
