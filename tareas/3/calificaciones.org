@@ -1,0 +1,225 @@
+* Tarea 3: Asignación de memoria
+
+** Benjamín Anguiano y Omar Martín
+- Archivos entregados :: [[./AnguianoBenjamin-MartinOMar/README.org][README.org]], [[./AnguianoBenjamin-MartinOMar/tarea3.py][tarea3.py]]
+- Lenguaje :: Python
+- Comentarios ::
+  - ¡No es lo mismo memoria primaria (RAM, volátil) y almacenamiento
+    (persistente)! =compactar unidad=, =tamaño de la unidad=... ¡Ojo
+    con los términos que usan!
+  - El programa no representa a cada proceso por separado — y no hace
+    verificaciones de sanidad, por ejemplo, que no exista un proceso
+    con el nombre del recién creado. Eso puede llevar a situaciones
+    como que yo repita un mismo nombre para procesos, y obtenga una
+    memoria con la cadena =AAAAABBBAAAAABBBBBB-=. Y, dado que no
+    distinguen a un proceso de otro al llevar la misma letra, si
+    indico que termina el proceso =B=, termino con
+    =AAAAAAAAAA----------=.
+    - ...Y el comportamineto si le especifico varias letras como
+      nombre del proceso es... Raro, por decir lo menos :)
+  - Su sistema propuesto causa una compactación cada vez que termina
+    un proceso. Si bien eso facilita los cálculos de espacio libre,
+    resultaría muy ineficiente en un sistema real: ¿Cada vez que
+    termina un proceso debemos detener a todos los demás y
+    reacomodarlos?
+  - Respecto al tipo de ajuste, la política de compactar siempre
+    asegura que no haya huecos en la asignación. Bueno, modifiqué el
+    programa para que no siempre compacte...Y sobreescribe la memoria
+    de los procesos :-(
+    #+BEGIN_SRC text
+      Escoja una opcion: 
+      1 Agregar proceso 
+      2 Eliminar Proceso y compactar unidad 
+       >>1
+      DDDDDFFFF----CCCC---RRRRR-------------------------
+      Asigne letra del proceso>> Y
+      Tamanio del proceso>> 8
+      8tamanio, memdisp 32
+      0
+      DDDDDFFFFYYYYYYYY---RRRRR-------------------------
+    #+END_SRC
+- Calificación :: 7
+
+** Emanuel Flores y Andrea García
+- Archivos entregados :: [[./FloresEmanuel-GarcíaAndrea/README.md][README.md]], [[./FloresEmanuel-GarcíaAndrea/tarea3.py][tarea3.py]]
+- Lenguaje :: Python
+- Comentarios ::
+  - ¡Implementación muy buena y completa! ☺
+  - Un buen /plus/ el que el usuario pueda elegir el tipo de
+    asignación que ocurrirá
+- Calificación :: 10
+
+** Andrés González
+- Archivos entregados :: [[./GonzálezAndrés/memoria.py][memoria.py]], [[./GonzálezAndrés/t3.py][t3.py]]
+- Lenguaje :: Python
+- Comentarios ::
+  - La implementación es buena, y veo que implementaste lo necesario
+    para efectuar los tres tipos de asignación
+    - ...Pero tuve que pegarme un clavado a las fuentes para encontrar
+      que esto existía... No hay documentación ☹
+    - Además, para elegir el comportamiento (cambiar el ajuste) es
+      necesario modificar tus fuentes ☹
+- Calificación :: 10
+
+** Luis López
+- Archivos entregados :: [[./LopezLuis/Descripcion.txt][Descripcion.txt]], [[./LopezLuis/Me.java][Me.java]]
+- Lenguaje :: Java
+- Comentarios ::
+  - Gracias por generar aleatoriamente a los procesos... por lo menos
+    eso me ahorra ir metiendo datos (aunque me dificulta "jugar")
+  - El comportamiento que modelas es interesante, y bastante diferente
+    de lo que vimos en clase.
+    - Si te falta memoria para aceptar a un proceso nuevo... La
+      práctica común es rechazar /a ese proceso/, no "darle la patada"
+      a uno que ya estaba corriendo
+    - Ahora que... Lo que describes se parece un poco al modelo de
+      Android
+  - Entregaste el archivo =Me.java=, aunque lo llamas como clase
+    =mem.Me=. ¡Asegúrate de usar la estructura correcta de
+    archivos/directorios para facilitar la ejecución de tus programas!
+  - El flujo de tu proceso, como lo documentaste, es ir llenando el
+    espacio de memoria hasta que algo no quepa... Y después de esto,
+    ir vaciándolo hasta que quede de nuevo vacío
+    - Eso no permite apreciar el tipo de ajuste que se emplea
+    - Una vez liberado algo de espacio, podrías intentar aceptar
+      nuevos procesos..?
+- Calificación :: 7.5
+
+** César Lugo
+- Archivos entregados :: [[./LugoCesar/Tarea3.c][Tarea3.c]]
+- Lenguaje :: C
+- Comentarios ::
+  - Me toca seguir la implementación únicamente a partir del código
+    fuente (no incluyes documentación que explique lo que hiciste, ni
+    siquiera comentarios en fuente) ☹
+  - Implementas primer ajuste, y lo mencionas explícitamente. ¡Bien!
+  - No declaraste tu variable =j= en =initMem()=. ¿No se quejó tu compilador?
+    - Basta agregar un =int j= para que compile exitosamente y cumpla
+      con lo que esperaba del programa
+- Calificación :: 8
+
+** Nestor Martínez
+- Archivos entregados :: [[./MartinezNestor/boring.py][boring.py]], [[./MartinezNestor/images/asignacion.png][asignacion.png]], [[./MartinezNestor/images/compactacion.png][compactacion.png]],
+     [[./MartinezNestor/images/liberacion.png][liberacion.png]], [[./MartinezNestor/images/warning.png][warning.png]], [[./MartinezNestor/memory.py][memory.py]], [[./MartinezNestor/proc.py][proc.py]], [[./MartinezNestor/README.md][README.md]]
+- Lenguaje :: Python
+- Comentarios ::
+  - ¡Buena estructura del código!
+  - Revisando en los comentarios del código, y viendo algunos mensajes
+    que se imprimen: ¡Ojo! Lo que están implementando es una
+    simulación de un administrador de asignación /de memoria/, ¡no de
+    disco! (aunque algunos aspectos se parezcan a los que vimos en la
+    unidad anterior)
+- Calificación :: 10
+
+** Luis Mata
+- Archivos entregados :: [[./MataLuis/memoria.py][memoria.py]]
+- Lenguaje :: Python
+- Comentarios ::
+  - Hmmm... Tu estrategia de asignación es novedosa y... ¿Curiosa?
+    - Siempre intenta agregar al nuevo proceso al final de la lista
+    - Si no cabe al final, obliga a una compactación
+    - Eso lleva a comportamientos subóptimos como el siguiente:
+      #+begin_src text
+	AA--------------------------DD
+	1: Agregar proceso 
+	2: Liberar proceso
+	3: Compactar
+	-> 1
+	Asigne un espacio entre 2 y 15
+	Proceso[E]: 3
+	Ese proceso ya no cabe.
+	Se tratara de compactar
+	Espacio utilizado: 4
+	Nueva situacion
+	AADD
+	Espacio utilizado: 7
+	AADDEEE
+	AADDEEE
+      #+end_src
+      - Si bien al resultado final es válido, es subóptimo: Obliga a
+        compactación cuando no hace falta.
+    - El código es corto y fácil de leer.
+- Calificación :: 8
+
+** Ricardo Muñoz y Saúl Gabino
+- Su entrega está *copiada* de una [[https://github.com/gwolf/sistop-2019-1/blob/master/tareas/2/Guzm%C3%A1nKarla/asigmem.py][entrega anterior de esta tarea]]. No
+  puedo tomarla como entregada.
+
+** Jorge Ramos y Brian Espinoza
+- Su entrega está *copiada* de una [[https://github.com/gwolf/sistop-2019-1/blob/master/tareas/2/Guzm%C3%A1nKarla/asigmem.py][entrega anterior de esta tarea]]. No
+  puedo tomarla como entregada.
+
+** Cristian Romero
+- Archivos entregados :: [[./RomeroCristian/asigmem/asigmem][asigmem]], [[./RomeroCristian/asigmem/.formatter.exs][.formatter.exs]], [[./RomeroCristian/asigmem/lib/asigmem.ex][asigmem.ex]],
+     [[./RomeroCristian/asigmem/lib/procmem.ex][procmem.ex]], [[./RomeroCristian/asigmem/mix.exs][mix.exs]], [[./RomeroCristian/asigmem/README.md][README.md]], [[./RomeroCristian/asigmem/test/asigmem_test.exs][asigmem_test.exs]], [[./RomeroCristian/asigmem/test/test_helper.exs][test_helper.exs]]
+- Lenguaje :: Elixir
+- Comentarios ::
+  - ¿Un lenguaje poco utilizado? ¡Buenísimo! Vamos a echarle un ojo
+    - ¿Lenguaje funcional? ¿Para la VM de Erlang? ¡Suena prometedor!
+      (...Y suena a que estaría buenísimo para la unidad de
+      /administración de procesos/)
+  - Te agradezco. Generar un mapeo aleatorio desde el principio me
+    ahorró tiempo para hacer mis pruebas :-]
+    - Y más aún la idea de poder especificar desde línea de comando el
+      estado de inicio deseado. ¡Buena idea!
+  - Interesante implementación. La sintaxis de elixir no me queda aún
+    del todo clara, pero se deja entender... decentemente bien, para
+    un novato :-]
+- Calificación :: 10
+
+** Ricardo Rosales
+- Archivos entregados :: [[./RosalesRicardo/README.md][README.md]], [[./RosalesRicardo/tarea3.py][tarea3.py]]
+- Lenguaje :: Python
+- Comentarios ::
+  - Te agradezco. Generar un mapeo aleatorio desde el principio me
+    ahorró tiempo para hacer mis pruebas :-]
+  - La implementación es buena, pero la falta de documentación me hizo
+    rascarme un poco la cabeza. Por ejemplo, ¿por qué verificas que
+    =noUnidades= sea mayor a 1000 o /diferente de -1/ en =main()=?
+    ¿Por qué a veces, y me parece que únicamente al quedar muy poca
+    memoria disponible, sale de =mapeo()=? Supongo que tiene que ver
+    con las condiciones que llevan a =break=...
+- Calificación :: 9
+
+** Erik Sanabria
+- Archivos entregados :: [[./SanabriaErik/.cproject][.cproject]], [[./SanabriaErik/.project][.project]], [[./SanabriaErik/Readme.md][Readme.md]],
+     [[./SanabriaErik/.settings/language.settings.xml][language.settings.xml]], [[./SanabriaErik/source.cpp][source.cpp]]
+- Lenguaje :: C++
+- Comentarios ::
+  - La compilación de tu código no /necesita/ de Eclipse CDT — Es
+    correcto que documentes que ese es tu /entorno de desarrollo/,
+    pero no hay nada en el código que no sea C++ estándar.
+  - La ejecución de tu programa se presenta en dos etapas: Asignación
+    de uno, otro, otro procesos, y liberación de uno, otro, otro
+    procesos. Esta interacción pautada no permite apreciar si es que
+    se aprovechan los /huecos/ que se forman entre ellos.
+    - Esto es, puedo llegar a un mapa de memoria como
+      =AAAA----CCC------EEEEEE--------=, pero a partir de ahí, no
+      puede solicitarse agregar nuevos procesos
+    - La función =asigMem()= sí sería capaz de hacerlo, por /primer ajuste/
+    - Pero no hay función de compactación ☹
+- Calificación :: 7
+
+** Ulysses López
+- Archivos entregados :: [[./UlyssesLopez/Informe.txt][Informe.txt]], [[./UlyssesLopez/Tarea3ULL.c][Tarea3ULL.c]]
+- Lenguaje :: C
+- Comentarios ::
+  - Gracias por generar aleatoriamente a los procesos... por lo menos
+    eso me ahorra ir metiendo datos (aunque me dificulta "jugar")
+  - Un pequeño error lógico hace que tu programa sólo pueda terminarse
+    interrumpiéndolo (=Ctrl-C=):
+    #+begin_src diff
+      @@ -95,7 +95,7 @@ int main()
+	      int sizepro;
+	      srand(time(NULL));
+	      beginmemory();
+      -       while(end != 'N'|| end != 'n')
+      +       while(end != 'N' && end != 'n')
+	      {
+		      printf("Asignación actual:\n%s\n",memory);
+		      printf("¿Qué acción desea realizar?\n\nAsignar --> A\t\tLiberar --> L\n\n");
+    #+end_src
+  - Buena implementación. Y tengo que reconocerlo — La complejidad de
+    manejar cadenas en C, saber cuándo es qué tipo de referencia, y
+    mantener en mente a qué apunta cada cosa... No es asunto menor :-]
+- Calificación :: 10

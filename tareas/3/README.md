@@ -58,6 +58,6 @@ deciden cómo implementarlo, ambas estrategias valen).
 Esta tarea puede ser entregada _de forma individual_ o _en equipos de
 dos personas_.
 
-<!-- ## Calificaciones y comentarios -->
+## Calificaciones y comentarios
 
-<!-- [Disponibles en el archivo calificaciones.org](./calificacion.org) -->
+[Disponibles en el archivo calificaciones.org](./calificacion.org)
