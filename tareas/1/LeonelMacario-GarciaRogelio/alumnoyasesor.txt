@@ -1,0 +1,31 @@
+Alumnos: Macario Falcón Leonel
+         García Hernández Rogelio
+
+
+
+Problema: Los alumnos y el asesor
+
+Programa reaizado en Python 2.7 
+
+Puntos a considerar:  
+
+ ----  Los alumnos son asignados de uno en uno y 
+       mediante un mutex eliminamos la posibilidad 
+       de ser interrumpido mientras se ejecuta. 
+       
+	  
+
+----  El asesor tine permitido tener a 5 alumnos por asesoria.
+      Cada alumno puede realizar hasta 2 preguntas. 
+      Cada que el asesor contesta se cierra la asesoria, 
+      pero en algunos casos se pude volver que un alumno vuelva 
+      a preguntar, recibiendo su respuesta.
+
+            
+      
+Bibliografia: 
+
+Fundamentos de sistemas operativos / Gunnar Wolf [y tres más].– Primera edición. – México D.F. : Universidad 
+Nacional Autónoma de México, Instituto de Investigaciones Económicas : Facultad de Ingeniería,2015.
+367 p.: ilustraciones ; 28 cm.
+
