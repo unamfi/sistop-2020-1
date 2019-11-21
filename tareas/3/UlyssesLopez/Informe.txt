@@ -1,6 +1,6 @@
 Nombre: Ulysses López López
 Fecha: 05-11-2019
-Tarea #3: Asignación de Memoria
+Tarea #3: Asignación de Memoria Primer Ajuste
 Lenguaje utilizado: C
 Nombre del Archivo: Tarea3ULL.c
 
