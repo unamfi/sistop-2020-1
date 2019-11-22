@@ -147,6 +147,25 @@
       mucha repetición...) y seguro se beneficiaría de ello.
 - Calificación :: 7
 
+** César Lugo
+- Documentación :: /No entregada/
+- Archivos :: [[./LugoCesar/Tarea2.py][Tarea2.py]]
+- Lenguaje de implementación :: Python
+- Se acerca al planteamiento :: Sí
+- Algoritmos base completos :: No (falta SPN)
+- Tabla de resultados :: Sí
+- Esquema visual :: Sí
+- Algún algoritmo de colas múltiples :: No
+- Comentarios ::
+  - ¡Disculpas por no incluirlo a tiempo en la revisión! ☹
+  - Las funciones que implementan los tres mecanismos que implementas
+    (=FCFS()=, =RR1()= y =RR4()=) tienen mucha repetición. Podrías
+    separar en una sola función, me parece, toda la lógica a excepción
+    del ciclo interno (el bloque =for i in range(l)= para FCFS y
+    =while any(time !=0 for time in t)= para las RR), lo que haría más
+    legible y mantenible tu código
+- Calificación :: 9
+
 ** César Martínez y Lisset Noriega
 - Documentación :: /No entregada/
 - Archivos :: [[./MartinezCesar-NoriegaLisset/FCFS.py][FCFS.py]], [[./MartinezCesar-NoriegaLisset/PlanifProcesos.py][PlanifProcesos.py]], [[./MartinezCesar-NoriegaLisset/Proceso.py][Proceso.py]], [[./MartinezCesar-NoriegaLisset/RoundRobin.py][RoundRobin.py]], [[./MartinezCesar-NoriegaLisset/SPN.py][SPN.py]]
